@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Airport.DBEntities\Airport.DBEntities.csproj" />
+    <ProjectReference Include="..\Airport.EF\Airport.EF.csproj" />
+  </ItemGroup>
+
+</Project>
