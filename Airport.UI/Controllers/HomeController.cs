@@ -1,5 +1,6 @@
 ﻿using Airport.DBEntitiesDAL.Interfaces;
 using Airport.UI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -10,21 +11,18 @@ using System.Threading.Tasks;
 
 namespace Airport.UI.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
 
-        IUsersDAL _user;
-
-        public HomeController(ILogger<HomeController> logger,IUsersDAL user)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _user = user;
         }
 
         public IActionResult Index()
         {
-            var s = _user.Select();
             return View();
         }
         public IActionResult Privacy()

@@ -1,0 +1,67 @@
+﻿@{
+    Layout = null;
+
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Airport.UI</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="container">
+        <form id="loginForm">
+            <input type="text" name="UserEposta" />
+            <input type="password" name="UserPassword" />
+            <button type="submit">Giriş Yap</button>
+        </form>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   <script>
+        $('#loginForm').on("submit",function(e){
+            e.preventDefault();
+            var formData = $(this).serialize()
+            $.ajax({
+                url: '@Url.Action(nameof(Airport.UI.Controllers.LoginController.Login))',
+                type: "POST",
+                data: formData,
+                success: function (data) {
+                   if(data.status == 200){
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Successfully logged in',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+
+                        setTimeout(function(){
+                            location.href = "/";
+                        },1500)
+
+                   }else if(data.status == 404){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'No Data',
+                            text: 'Check eposta and password please',
+                        })
+                    } else if (data.status == 404) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                        })
+                    }
+                }
+            });
+        })
+    </script>
+</body>
+</html>

@@ -24,7 +24,7 @@ namespace Airport.DBEntities.Context
             //var connectionString = "Server =.\\SQLEXPRESS; Database = spor_sepeti; Trusted_Connection = True; MultipleActiveResultSets = true";
             //optionsBuilder.UseSqlServer(connectionString);
 
-            var connectionString = "Server =.\\SQLEXPRESS01; Database = spor_sepeti; Trusted_Connection = True; MultipleActiveResultSets = true";
+            var connectionString = "Server =.\\SQLEXPRESS01; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
             optionsBuilder.UseSqlServer(connectionString);
 
 
@@ -44,7 +44,7 @@ namespace Airport.DBEntities.Context
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<Users> Users { get; set; }
+        public DbSet<UserDatas> UserDatas { get; set; }
       
     }
 }
