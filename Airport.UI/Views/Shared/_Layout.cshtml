@@ -4,30 +4,97 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Airport.UI</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <!-- <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css"
+        integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/app.css">
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Airport.UI</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+        <nav>
+        <div class="container">
+            <div class="_Nav_Flex">
+                <div class="_Logo">
+                    <a href="/" title="Main Page"><img src="~/images/Logo.png" class="_Nav_Logo"
+                            alt="Airport Global Logo"></a>
+                </div>
+                <div class="_Nav_Content">
+                    <div class="_Nav_List">
+                        <ul>
+                            <li class="_Mobile_Logo">
+                                <a href="/" title="Main Page"><img src="~/images/Logo.png" class="_Nav_Logo"
+                                        alt="Airport Global Logo"></a>
+                            </li>
+                            <li>
+                                <a href="/" title="item1">item1</a>
+                            </li>
+                            <li>
+                                <a href="/" title="item2">item2</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="_Auth">
+                        <div>
+                            <ul class="_Btns">
+                                <li><a href="/" class="_Register" title="Register">Register</a></li>
+                                <li class="_Active">
+                                    <a href="javascript:;" title="Sign İn" class="Sign_In">Sign İn</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="_Sing_Form_Main">
+                        <h4>
+                            Sign İn
+                        </h4>
+                        <p>
+                            Here you can log in as atransfer <br>
+                            company,affiliate, or a user
+                        </p>
+                        <form id="_Sing_Form">
+                            <div class="_Sing_Form_Flex">
+                                <div class="_Form_Input_Div">
+                                    <label for="_Mail">Email</label>
+                                    <input type="text" id="_Mail" name="mail">
+                                </div>
+                                <div class="_Form_Input_Div">
+                                    <label for="_Password">Password</label>
+                                    <input type="password" id="_Password" name="password">
+                                </div>
+                                <div class="_Form_Inputs_Div">
+                                    <div class="_Check_Div">
+                                        <input type="checkbox"> <label>Remember Me</label>
+                                    </div>
+                                    <div>
+                                        <a href="/">Forgot Password</a>
+                                    </div>
+                                </div>
+                                <div class="_Form_Submit_Div">
+                                    <button type="submit">
+                                        Login
+                                    </button>
+                                    <a href="/" title="Don't have an account yet? Register">
+                                        Don't have an account yet? Register
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="header-burger out-check">
+                    <div class="menuToggle">
+                        <input type="checkbox" />
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </div>
-        </nav>
+        </div>
+    </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -40,9 +107,18 @@
             &copy; 2023 - Airport.UI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"
+        integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"
+        integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="~/js/app.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

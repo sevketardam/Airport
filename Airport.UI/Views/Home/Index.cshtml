@@ -2,7 +2,85 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about.<a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- Banner -->
+<section>
+        <div class="container">
+            <div>
+                <h2 class="_Banner_Title">
+                    Book airport services all over the world
+                    in just a few clicks
+                </h2>
+                <div class="_Banner_Flex">
+                    <div class="_Banner_Left">
+                        <div class="_Banner_Form">
+                            <form>
+                                <div class="_Form_Cat">
+                                    <div>
+                                        <button>
+                                            One Way
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button>
+                                            Roundtrip
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="_Form_Inputs">
+                                    <div class="_Pos_Rel">
+                                        <div>
+                                            <img src="img/location.png" class="_Locaiton_Icon" alt="Location icon">
+                                            <label for="">Pick Up</label>
+                                            <select class="_Pick_Up" name="state">
+                                                <option value="null" disabled selected>Search Location</option>
+                                                <option value="AL">Alabama</option>
+                                                <option value="WY">Wyoming</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="_Pos_Rel">
+                                        <div>
+                                            <img src="img/location.png" class="_Locaiton_Icon" alt="Location icon">
+                                            <label for="">Drop off</label>
+                                            <select class="_Drop_Off" name="state">
+                                                <option value="null" disabled selected>Search Location</option>
+                                                <option value="AL">Alabama</option>
+                                                <option value="WY">Wyoming</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="_Pos_Rel">
+                                        <label for="">Flight Arrival</label>
+                                        <input type="datetime-local">
+                                    </div>
+                                    <div class="_Pos_Rel">
+                                        <div class="d-none">
+                                            <label for="">Flight Arrival</label>
+                                            <input type="datetime-local">
+                                        </div>
+                                        <div>
+                                            <button class="_Add_Return">
+                                                <i class="fa-sharp fa-solid fa-plus"></i> Add Return
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="_Pos_Rel _User_Div">
+                                        <span class="_User"><i class="fa-solid fa-user-ninja"></i></span>
+                                        <input type="text" value="1" onkeydown="return numControl(event)">
+                                    </div>
+                                    <div class="_Pos_Rel">
+                                        <button class="_Search_Booking">
+                                            Search Booking
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="_Banner_Right">
+                        <img src="img/phones.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
