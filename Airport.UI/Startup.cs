@@ -31,7 +31,7 @@ namespace Airport.UI
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
             {
-                opt.LoginPath = "/login";
+                //opt.LoginPath = "/";
             });
 
         }

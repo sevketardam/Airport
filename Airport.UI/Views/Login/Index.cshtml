@@ -23,45 +23,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-   <script>
-        $('#loginForm').on("submit",function(e){
-            e.preventDefault();
-            var formData = $(this).serialize()
-            $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.LoginController.Login))',
-                type: "POST",
-                data: formData,
-                success: function (data) {
-                   if(data.status == 200){
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Successfully logged in',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-
-                        setTimeout(function(){
-                            location.href = "/";
-                        },1500)
-
-                   }else if(data.status == 404){
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'No Data',
-                            text: 'Check eposta and password please',
-                        })
-                    } else if (data.status == 404) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Something went wrong!',
-                        })
-                    }
-                }
-            });
-        })
-    </script>
+  
 </body>
 </html>
