@@ -1,5 +1,6 @@
 using Airport.DBEntitiesDAL.Concrete;
 using Airport.DBEntitiesDAL.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,8 +26,13 @@ namespace Airport.UI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddScoped<IUsersDAL, UsersDAL>();
+            services.AddScoped<IUserDatasDAL, UserDatasDAL>();
+
             services.AddControllersWithViews();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
+            {
+                opt.LoginPath = "/login";
+            });
 
         }
 

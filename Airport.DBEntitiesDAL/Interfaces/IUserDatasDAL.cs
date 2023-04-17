@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Airport.DBEntitiesDAL.Interfaces
 {
-    public interface IUsersDAL : ISelectableRepo<Users>, IEInsertableRepo<Users>, IUpdatetableRepo<Users>, IDeletableRepo<Users>, IDisposable
+    public interface IUserDatasDAL : ISelectableRepo<UserDatas>, IEInsertableRepo<UserDatas>, IUpdatetableRepo<UserDatas>, IDeletableRepo<UserDatas>, IDisposable
     {
         void KullaniciRaporuGetir();
     }

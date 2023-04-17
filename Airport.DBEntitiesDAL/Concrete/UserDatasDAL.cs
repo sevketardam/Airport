@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace Airport.DBEntitiesDAL.Concrete
 {
-    public class UsersDAL : EfRepo<SporSepetiContext, Users>, IUsersDAL
+    public class UserDatasDAL : EfRepo<SporSepetiContext, UserDatas>, IUserDatasDAL
     {
-        public UsersDAL()
+        public UserDatasDAL()
         {
 
         }

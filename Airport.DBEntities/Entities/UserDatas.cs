@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Airport.DBEntities.Entities
 {
-    public class Users : IEntity
+    public class UserDatas : IEntity
     {
         [Key]
         public int Id { get; set; }
-        [StringLength(100)]
-        public string Name { get; set; }
+        public string Eposta { get; set; }
+        public string Password { get; set; }
     }
 }
