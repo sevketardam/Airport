@@ -27,6 +27,9 @@ namespace Airport.UI
         {
 
             services.AddScoped<IUserDatasDAL, UserDatasDAL>();
+            services.AddScoped<IServicesDAL, ServicesDAL>();
+            services.AddScoped<IServicePropertiesDAL, ServicePropertiesDAL>();
+            services.AddScoped<IServiceItemsDAL, ServiceItemsDAL>();
 
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>

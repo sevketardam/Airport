@@ -5,29 +5,16 @@ using Airport.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Airport.DBEntitiesDAL.Concrete
 {
-    public class UserDatasDAL : EfRepo<AirportContext, UserDatas>, IUserDatasDAL
+    public class ServiceItemsDAL : EfRepo<AirportContext, ServiceItems>, IServiceItemsDAL
     {
-        public UserDatasDAL()
-        {
-
-        }
-
-
-        public void KullaniciRaporuGetir()
-        {
-
-        }
-
         public void Dispose()
         {
 
         }
- 
     }
 }

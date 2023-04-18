@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Airport.DBEntities.Context
 {
-    public class SporSepetiContext : DbContext
+    public class AirportContext : DbContext
     {
-        public SporSepetiContext()
+        public AirportContext()
         {
 
         }
@@ -45,6 +45,8 @@ namespace Airport.DBEntities.Context
         }
 
         public DbSet<UserDatas> UserDatas { get; set; }
+        public DbSet<Services> Services { get; set; }
+        public DbSet<ServiceProperties> ServiceProperties { get; set; }
       
     }
 }

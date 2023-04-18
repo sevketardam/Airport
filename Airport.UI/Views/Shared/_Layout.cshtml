@@ -40,53 +40,56 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="_Auth">
-                            <div>
-                                <ul class="_Btns">
-                                    <li><a href="/" class="_Register" title="Register">Register</a></li>
-                                    <li class="_Active">
-                                        <a href="javascript:;" title="Sign İn" class="Sign_In">Sign İn</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="_Sing_Form_Main">
-                            <h4>
-                                Sign İn
-                            </h4>
-                            <p>
-                                Here you can log in as transfer <br>
-                                company,affiliate, or a user
-                            </p>
-                            <form id="_Sign_Form">
-                                <div class="_Sing_Form_Flex">
-                                    <div class="_Form_Input_Div">
-                                        <label for="_Mail">Email</label>
-                                        <input type="text" id="_Mail" name="UserEposta">
-                                    </div>
-                                    <div class="_Form_Input_Div">
-                                        <label for="_Password">Password</label>
-                                        <input type="password" id="_Password" name="UserPassword">
-                                    </div>
-                                    <div class="_Form_Inputs_Div">
-                                        <div class="_Check_Div">
-                                            <input type="checkbox"> <label>Remember Me</label>
-                                        </div>
-                                        <div>
-                                            <a href="/">Forgot Password</a>
-                                        </div>
-                                    </div>
-                                    <div class="_Form_Submit_Div">
-                                        <button type="submit">
-                                            Login
-                                        </button>
-                                        <a href="/" title="Don't have an account yet? Register">
-                                            Don't have an account yet? Register
-                                        </a>
-                                    </div>
+                        @if (!Context.User.Identity.IsAuthenticated)
+                        {
+                            <div class="_Auth">
+                                <div>
+                                    <ul class="_Btns">
+                                        <li><a href="/" class="_Register" title="Register">Register</a></li>
+                                        <li class="_Active">
+                                            <a href="javascript:;" title="Sign İn" class="Sign_In">Sign İn</a>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                            <div class="_Sing_Form_Main">
+                                <h4>
+                                    Sign İn
+                                </h4>
+                                <p>
+                                    Here you can log in as transfer <br>
+                                    company,affiliate, or a user
+                                </p>
+                                <form id="_Sign_Form">
+                                    <div class="_Sing_Form_Flex">
+                                        <div class="_Form_Input_Div">
+                                            <label for="_Mail">Email</label>
+                                            <input type="text" id="_Mail" name="UserEposta">
+                                        </div>
+                                        <div class="_Form_Input_Div">
+                                            <label for="_Password">Password</label>
+                                            <input type="password" id="_Password" name="UserPassword">
+                                        </div>
+                                        <div class="_Form_Inputs_Div">
+                                            <div class="_Check_Div">
+                                                <input type="checkbox"> <label>Remember Me</label>
+                                            </div>
+                                            <div>
+                                                <a href="/">Forgot Password</a>
+                                            </div>
+                                        </div>
+                                        <div class="_Form_Submit_Div">
+                                            <button type="submit">
+                                                Login
+                                            </button>
+                                            <a href="/" title="Don't have an account yet? Register">
+                                                Don't have an account yet? Register
+                                            </a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        }
                     </div>
                     <div class="header-burger out-check">
                         <div class="menuToggle">
