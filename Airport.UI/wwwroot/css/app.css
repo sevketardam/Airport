@@ -10,7 +10,12 @@
   ._Module_Margin {
     margin: 5rem auto;
   }
-  
+.logo {
+    background: url(/images/Logo.png) no-repeat !important;
+    background-size: contain !important;
+    width: 185px !important;
+    height: 50px !important;
+}
   ._Nav_Flex {
     display: flex;
     flex-wrap: wrap;
