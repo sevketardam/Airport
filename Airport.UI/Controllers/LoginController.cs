@@ -71,7 +71,7 @@ namespace Airport.UI.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            return Redirect("login");
+            return RedirectToAction("Index","Home");
         }
 
         public static string GetMD5(string value)
