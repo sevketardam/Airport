@@ -4,83 +4,730 @@
 
 <!-- Banner -->
 <section>
-        <div class="container">
-            <div>
-                <h2 class="_Banner_Title">
-                    Book airport services all over the world
-                    in just a few clicks
-                </h2>
-                <div class="_Banner_Flex">
-                    <div class="_Banner_Left">
-                        <div class="_Banner_Form">
-                            <form>
-                                <div class="_Form_Cat">
+    <div class="container">
+        <div>
+            <h2 class="_Banner_Title">
+                Book airport services all over the world
+                in just a few clicks
+            </h2>
+            <div class="_Banner_Flex">
+                <div class="_Banner_Left">
+                    <div class="_Banner_Form">
+                        <form>
+                            <div class="_Form_Cat">
+                                <div>
+                                    <button>
+                                        One Way
+                                    </button>
+                                </div>
+                                <div>
+                                    <button>
+                                        Roundtrip
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="_Form_Inputs">
+                                <div class="_Pos_Rel">
                                     <div>
-                                        <button>
-                                            One Way
-                                        </button>
-                                    </div>
-                                    <div>
-                                        <button>
-                                            Roundtrip
-                                        </button>
+                                        <img src="~/img/location.png" class="_Locaiton_Icon" alt="Location icon">
+                                        <label for="">Pick Up</label>
+                                        <select class="_Pick_Up" name="state">
+                                            <option value="null" disabled selected>Search Location</option>
+                                            <option value="AL">Alabama</option>
+                                            <option value="WY">Wyoming</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="_Form_Inputs">
-                                    <div class="_Pos_Rel">
-                                        <div>
-                                            <img src="~/images/location.png" class="_Locaiton_Icon" alt="Location icon">
-                                            <label for="">Pick Up</label>
-                                            <select class="_Pick_Up" name="state">
-                                                <option value="null" disabled selected>Search Location</option>
-                                                <option value="AL">Alabama</option>
-                                                <option value="WY">Wyoming</option>
-                                            </select>
-                                        </div>
+                                <div class="_Pos_Rel">
+                                    <div>
+                                        <img src="~/img/location.png" class="_Locaiton_Icon" alt="Location icon">
+                                        <label for="">Drop off</label>
+                                        <select class="_Drop_Off" name="state">
+                                            <option value="null" disabled selected>Search Location</option>
+                                            <option value="AL">Alabama</option>
+                                            <option value="WY">Wyoming</option>
+                                        </select>
                                     </div>
-                                    <div class="_Pos_Rel">
-                                        <div>
-                                            <img src="~/images/location.png" class="_Locaiton_Icon" alt="Location icon">
-                                            <label for="">Drop off</label>
-                                            <select class="_Drop_Off" name="state">
-                                                <option value="null" disabled selected>Search Location</option>
-                                                <option value="AL">Alabama</option>
-                                                <option value="WY">Wyoming</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="_Pos_Rel">
+                                </div>
+                                <div class="_Pos_Rel">
+                                    <label for="">Flight Arrival</label>
+                                    <input type="datetime-local">
+                                </div>
+                                <div class="_Pos_Rel">
+                                    <div class="d-none">
                                         <label for="">Flight Arrival</label>
                                         <input type="datetime-local">
                                     </div>
-                                    <div class="_Pos_Rel">
-                                        <div class="d-none">
-                                            <label for="">Flight Arrival</label>
-                                            <input type="datetime-local">
-                                        </div>
-                                        <div>
-                                            <button class="_Add_Return">
-                                                <i class="fa-sharp fa-solid fa-plus"></i> Add Return
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="_Pos_Rel _User_Div">
-                                        <span class="_User"><i class="fa-solid fa-user-ninja"></i></span>
-                                        <input type="text" value="1" onkeydown="return numControl(event)">
-                                    </div>
-                                    <div class="_Pos_Rel">
-                                        <button class="_Search_Booking">
-                                            Search Booking
+                                    <div>
+                                        <button class="_Add_Return">
+                                            <i class="fa-sharp fa-solid fa-plus"></i> Add Return
                                         </button>
                                     </div>
                                 </div>
-                            </form>
+                                <div class="_Pos_Rel _User_Div">
+                                    <span class="_User"><i class="fa-solid fa-user-ninja"></i></span>
+                                    <input type="text" value="1" onkeydown="return numControl(event)">
+                                </div>
+                                <div class="_Pos_Rel">
+                                    <button class="_Search_Booking">
+                                        Search Booking
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="_Banner_Right">
+                    <img src="~/img/phones.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Neden Airpot Global? -->
+<section class="_Module_Margin">
+    <div class="container">
+        <div>
+            <h2 class="_Orange_Title">
+                Why join Airport Global Transfer Service?
+            </h2>
+
+            <div class="_Module_Inner_Pad">
+                <div class="_Why_Module_Flex">
+                    <div class="_Why_Module_Item">
+                        <div>
+                            <img src="~/img/ucak.png" alt="Plane Icon">
+
+                        </div>
+                        <div>
+                            <p>
+                                Boost your revenue per client
+                            </p>
                         </div>
                     </div>
-                    <div class="_Banner_Right">
-                        <img src="~/images/phones.png" alt="Banner Phone">
+                    <div class="_Why_Module_Item">
+                        <div>
+                            <img src="~/img/ucak.png" alt="Plane Icon">
+
+                        </div>
+                        <div>
+                            <p>
+                                Book services at official or lower rates
+                            </p>
+                        </div>
+                    </div>
+                    <div class="_Why_Module_Item">
+                        <div>
+                            <img src="~/img/ucak.png" alt="Plane Icon">
+
+                        </div>
+                        <div>
+                            <p>
+                                Benefit from timesaving and cost-efficiency
+                            </p>
+                        </div>
+                    </div>
+                    <div class="_Why_Module_Item">
+                        <div>
+                            <img src="~/img/ucak.png" alt="Plane Icon">
+
+                        </div>
+                        <div>
+                            <p>
+                                Reduce the risks and get instant confirmation
+                            </p>
+                        </div>
+                    </div>
+                    <div class="_Why_Module_Item">
+                        <div>
+                            <img src="~/img/ucak.png" alt="Plane Icon">
+
+                        </div>
+                        <div>
+                            <p>
+                                Expand the variety of services provided
+                                by your agency
+                            </p>
+                        </div>
+                    </div>
+                    <div class="_Why_Module_Item">
+                        <div>
+                            <img src="~/img/ucak.png" alt="Plane Icon">
+
+                        </div>
+                        <div>
+                            <p>
+                                Access personal account, API and
+                                White label solutions
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="_Why_Btns">
+                    <div><a href="/" class="_Why_Btn _Active">Become A Partner</a></div>
+                    <div><a href="/" class="_Why_Btn">Contact Sales</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--  1.000.000+ happy riders every year -->
+<section class="_Module_Margin">
+    <div class="container">
+        <div class="_Module_Inner_Pad">
+            <h2 class="_Orange_Title">
+                1.000.000+ happy riders every year
+            </h2>
+            <div class="_Module_Inner_Pad">
+                <div class="_Happy_Flex">
+                    <div class="_Happy_Item">
+                        <img src="~/img/trustpilot.png" alt="trustpilot">
+                        <div class="_Happy_Detail">
+                            <div>
+                                <img src="~/img/star.png" alt="star">
+                            </div>
+                            <div>
+                                <p>
+                                    4.9<span>/5</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="_Happy_Item">
+                        <img src="~/img/tripadvisor.png" alt="tripadvisor">
+                        <div class="_Happy_Detail">
+                            <div>
+                                <img src="~/img/star.png" alt="star">
+                            </div>
+                            <div>
+                                <p>
+                                    4.9<span>/5</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="_Happy_Item">
+                        <img src="~/img/reviews.png" alt="reviews">
+                        <div class="_Happy_Detail">
+                            <div>
+                                <img src="~/img/star.png" alt="star">
+                            </div>
+                            <div>
+                                <p>
+                                    4.9<span>/5</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="_Happy_Item">
+                        <img src="~/img/google.png" alt="google">
+                        <div class="_Happy_Detail">
+                            <div>
+                                <img src="~/img/star.png" alt="star">
+                            </div>
+                            <div>
+                                <p>
+                                    4.9<span>/5</span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- Maddeler -->
+<section class="_Module_Margin">
+    <div class="container">
+        <div class="_Module_Inner_Pad">
+            <div>
+                <div class="_List_Flex">
+                    <div class="_List_Item">
+                        <div>
+                            <img src="~/img/madde1.png" alt="">
+                        </div>
+                        <div>
+                            <h3 class="_Orange_Title">
+                                Fast Track
+                            </h3>
+                            <p>
+                                Queue-less passage through security control
+                                via dedicated lane
+                            </p>
+                            <br>
+                            <p>
+                                Dedicated express lane
+                                Queue-less security and passport control
+                            </p>
+                        </div>
+                    </div>
+                    <div class="_List_Item">
+                        <div>
+                            <img src="~/img/madde2.png" alt="">
+                        </div>
+                        <div>
+                            <h3 class="_Orange_Title">
+                                Business Lounge
+                            </h3>
+                            <p>
+                                Comfortable premium class waiting areas
+                                at the departure halls
+                            </p>
+                            <br>
+                            <p>
+                                Dedicated premium class facility
+
+                            </p>
+                            <p>
+                                Complimentary snacks and drinks
+                            </p>
+                            <p>
+                                Wi-Fi
+                            </p>
+                            <p>
+                                Business corner
+                            </p>
+                        </div>
+                    </div>
+                    <div class="_List_Item">
+                        <div>
+                            <img src="~/img/madde3.png" alt="">
+                        </div>
+                        <div>
+                            <h3 class="_Orange_Title">
+                                VIP Transfer
+                            </h3>
+                            <p>
+                                VIP transfer is for those who values high quality and high level of service.
+                                Wherever you are in the world Airport Global Transfer Service provides VIP transfer
+                                just in time at the address you specified in your request.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="_List_Item">
+                        <div>
+                            <img src="~/img/madde4.png" alt="">
+                        </div>
+                        <div>
+                            <h3 class="_Orange_Title">
+                                Ciyt Tour
+                            </h3>
+                            <p>
+                                Convenient and flexible cancellation
+                                without question up to 24 hours before
+                                your tour. Book, download, store and
+                                access your tickets conveniently. Free cancellation. Expert guides. Skip-the-line
+                                tickets. No cancellation fee.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="_List_Item">
+                        <div>
+                            <img src="~/img/madde5.png" alt="">
+                        </div>
+                        <div>
+                            <h3 class="_Orange_Title">
+                                e SIM
+                            </h3>
+                            <p>
+                                Stay connected while travelling
+                            </p>
+                            <br>
+                            <p>
+                                Available in 190+ countries
+                                Instant purchase and activation
+                                The cheapest high speed data plans
+                            </p>
+                        </div>
+                    </div>
+                    <div class="_List_Item">
+                        <div>
+                            <img src="~/img/madde6.png" alt="">
+                        </div>
+                        <div>
+                            <h3 class="_Orange_Title">
+                                Upcoming services
+                            </h3>
+                            <p> Upcoming services</p>
+                            <p> Airport parking</p>
+                            <p> Airport transfers</p>
+                            <p> Baggage services</p>
+                        </div>
+                    </div>
+                    <div class="_List_Item">
+                        <div>
+                            <img src="~/img/madde7.png" alt="">
+                        </div>
+                        <div>
+                            <h3 class="_Orange_Title">
+                                Meet & Greet
+                            </h3>
+                            <p>
+                                Queue-less passage through all pre-flight
+                                formalities. Personal escort from the terminal
+                                entrance to the aircraft
+                            </p>
+                            <br>
+                            <p>Personal assistant</p>
+                            <p>Queue-less check-in, security and passport control</p>
+                            <p>Porter service</p>
+
+                        </div>
+                    </div>
+                    <div class="_List_Item">
+                        <div>
+                            <img src="~/img/madde8.png" alt="">
+                        </div>
+                        <div>
+                            <h3 class="_Orange_Title">
+                                VIP Service
+                            </h3>
+                            <p>
+                                All-inclusive airport Service
+                            </p>
+                            <br>
+                            <p>Dedicated VIP terminal</p>
+                            <p>Free parking space</p>
+                            <p>Personal assistant</p>
+                            <p>Individual check-in, security and</p>
+                            <p>passport control</p>
+                            <p>Porter service</p>
+                            <p>VIP transfer to an aircraft</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Travel Agents -->
+<section class="_Module_Margin">
+    <div class="container">
+        <div class="_Module_Inner_Pad">
+            <div class="_Travel_Agents_Main">
+                <div class="_Travel_Flex">
+                    <div class="Travel_Left">
+                        <div class="">
+                            <h2>
+                                Airport Global Transfer Service
+                                for Travel Agents
+                            </h2>
+                            <p>
+                                The easiest way to stand out, boost your profits and increase
+                                customer loyalty is to offer airport services in addition to the
+                                well-known “flight-transfer-hotel” package.
+                            </p>
+                            <div class="_Why_Btns justify-content-start">
+                                <div><a href="/" class="_Why_Btn _Active">Join for free now</a></div>
+                                <div><a href="/" class="_Why_Btn">Learn more</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="_Travel_Right">
+                        <img src="~/img/grafik.png " alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="_Car_Types">
+                <h2>
+                    Car Types
+                </h2>
+                <p>
+                    Enjoy reliable travel with our many vehicle types. <br>
+                    Browse the vehicle models you want to travel with.
+                </p>
+                <div class="swiper _Car_Slider">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img src="~/img/car.png" alt="car">
+                            <p>
+                                Standart People
+                                Carrier
+                            </p>
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="~/img/car2.png" alt="car">
+                            <p>
+                                Executive People
+                                Carrier
+                            </p>
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="~/img/car3.png" alt="car">
+                            <p>
+                                Standart People
+                                Carrier
+                            </p>
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="~/img/car4.png" alt="car">
+                            <p>
+                                Executive Sedan
+                                (Limousine)
+                            </p>
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="~/img/car5.png" alt="car">
+                            <p>
+                                Standart Sedan
+                            </p>
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="~/img/car.png" alt="car">
+                            <p>
+                                Standart People
+                                Carrier
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Business Agents -->
+<section class="_Module_Margin">
+    <div class="container">
+        <div class="_Module_Inner_Pad">
+            <div class="_Travel_Agents_Main">
+                <div class="_Business_Flex">
+                    <div class="_Business_Left">
+                        <div class="">
+                            <h2>
+                                Less time on booking airport services.
+                                More benefits for your travel business
+                            </h2>
+                            <div class="_Business_Items">
+                                <div class="_Business_Item">
+                                    <div>
+                                        <img src="~/img/ucak.png" alt="Plane Icon">
+
+                                    </div>
+                                    <div>
+                                        <p>
+                                            0$ registration & subscription fee
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="_Business_Item">
+                                    <div>
+                                        <img src="~/img/ucak.png" alt="Plane Icon">
+
+                                    </div>
+                                    <div>
+                                        <p>
+                                            Reward for each service sold
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="_Business_Item">
+                                    <div>
+                                        <img src="~/img/ucak.png" alt="Plane Icon">
+
+                                    </div>
+                                    <div>
+                                        <p>
+                                            The prices equal to those at the airports
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="_Business_Item">
+                                    <div>
+                                        <img src="~/img/ucak.png" alt="Plane Icon">
+
+                                    </div>
+                                    <div>
+                                        <p>
+                                            Instant service booking & confirmation
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="_Business_Item">
+                                    <div>
+                                        <img src="~/img/ucak.png" alt="Plane Icon">
+
+                                    </div>
+                                    <div>
+                                        <p>
+                                            CRM system for bookings management
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="_Business_Item">
+                                    <div>
+                                        <img src="~/img/ucak.png" alt="Plane Icon">
+
+                                    </div>
+                                    <div>
+                                        <p>
+                                            Flexible cancellation & rebooking policy
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="_Business_Item">
+                                    <div>
+                                        <img src="~/img/ucak.png" alt="Plane Icon">
+
+                                    </div>
+                                    <div>
+                                        <p>
+                                            Reduction of transaction & handling costs
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="_Business_Item">
+                                    <div>
+                                        <img src="~/img/ucak.png" alt="Plane Icon">
+
+                                    </div>
+                                    <div>
+                                        <p>
+                                            Line of credit for all Agents
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="_Business_Item">
+                                    <div>
+                                        <img src="~/img/ucak.png" alt="Plane Icon">
+
+                                    </div>
+                                    <div>
+                                        <p>
+                                            24/7 multilingual support line
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="_Business_Right">
+                        <img src="~/img/pc.png " alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Partnerler -->
+<section class="_Module_Margin">
+    <div class="container">
+        <div>
+            <h2 class="_Orange_Title">
+                Get access to services in 300+ airports
+            </h2>
+
+            <div class="_Module_Inner_Pad">
+                <div class="_Partners_Flex">
+                    <div class="_Partner_Item">
+                        <img src="~/img/partner-0.png" alt="partner">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/partner-1.png" alt="partner">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/partner-2.png" alt="partner">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/partner-3.png" alt="partner">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/partner-4.png" alt="partner">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/partner-5.png" alt="partner">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/partner-6.png" alt="partner">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/partner-7.png" alt="partner">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/partner-8.png" alt="partner">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/partner-9.png" alt="partner">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/partner-10.png" alt="partner">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/partner-11.png" alt="partner">
+                    </div>
+                </div>
+            </div>
+            <p class="text-center">
+                Are you a service provider?
+            </p>
+            <div class="_Why_Btns">
+                <div><a href="/" class="_Why_Btn _Active">Join for free now</a></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Partnerler -->
+<section class="_Module_Margin">
+    <div class="container">
+        <div>
+            <h2 class="_Module_Title_h2">
+                Partners powered by Airport Global Transfer Service
+            </h2>
+            <p class="_Module_p _Center">
+                Big brands, small travel businesses and 100 000+ passengers worldwide.
+            </p>
+            <div class="_Module_Inner_Pad">
+                <div class="_Partners_Flex justify-content-center">
+                    <div class="_Partner_Item">
+                        <img src="~/img/visa.png" alt="visa">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/skyup.png" alt="skyup">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/tui.png" alt="tui">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/ttn.png" alt="ttn">
+                    </div>
+                    <div class="_Partner_Item">
+                        <img src="~/img/parkvia.png" alt="parkvia">
+                    </div>
+                </div>
+                <img src="~/img/lufthansacc.png" class="lufthansacc" alt="lufthansacc">
+                <p class="_Module_p _Center">
+                    Big brands, small travel businesses and 100 000+ passengers worldwide.
+                </p>
+                <div class="_Partners_Flex justify-content-center">
+                    <div class="_Partner_Item">
+                        <img src="~/img/aci.png" alt="aci">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="_Module_Margin _Orange_Bg">
+    <div class="container">
+        <div class="_Module_Inner_Space">
+            <h2 class="_Module_Title_h2 _White">
+                Join Airport Global Transfer Service FOR FREE today
+            </h2>
+            <div class="_Why_Btns pt-4">
+                <div><a href="/" class="_Why_Btn _Active">For Travel Agents</a></div>
+                <div><a href="/" class="_Why_Btn _Active">For Service Providers</a></div>
+            </div>
+        </div>
+    </div>
 </section>

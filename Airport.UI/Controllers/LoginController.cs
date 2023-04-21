@@ -39,6 +39,7 @@ namespace Airport.UI.Controllers
                         var claims = new List<Claim>()
                         {
                             new Claim(ClaimTypes.Sid,userData.Id.ToString()),
+                            new Claim(ClaimTypes.Role,userData.Type.ToString()),
                         };
 
                         var userIdentity = new ClaimsIdentity(claims, "login");
@@ -57,7 +58,6 @@ namespace Airport.UI.Controllers
                 }
                 catch (Exception ex)
                 {
-
                     return new JsonResult(new { status = 400 });
                 }
 

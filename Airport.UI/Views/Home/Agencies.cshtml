@@ -1,0 +1,155 @@
+﻿<!-- Form -->
+<section class="_Module_Margin">
+    <div class="container">
+        <form id="_Agency_Form">
+            <div class="_Agency_Flex">
+                <div class="_Form_Div _Form_Title">
+                    <h3>
+                        Personel Information
+                    </h3>
+                </div>
+                <div class="_Form_Div _Mobile_None"></div>
+                <!-- Yapı bozulması diye eklendi. Silinirse yapı bozulur -->
+
+                <div class="_Form_Div">
+                    <label class="_Form_Label">Title</label>
+                    <input type="text" name="Title">
+                </div>
+                <div class="_Form_Div">
+                    <label class="_Form_Label">E-mail</label>
+                    <input type="text" name="E_mail">
+                </div>
+                <div class="_Form_Div">
+                    <label class="_Form_Label">Name Surname</label>
+                    <input type="text" name="Name_Surname">
+                </div>
+                <div class="_Form_Div">
+                    <label class="_Form_Label">Phone Number</label>
+                    <input type="text" id="_Personel_Number" name="Phone_Number">
+                </div>
+                <div class="_Form_Div">
+                    <label class="_Form_Label">Profession (Optional)</label>
+                    <input type="text">
+                </div>
+                <div class="_Form_Div">
+                    <label class="_Form_Label">Password</label>
+                    <input type="text" name="Password">
+                </div>
+
+                <div class="_Form_Div py-3"></div>
+                <!-- 2 Form arasına boşluk bırakmak için. Yapı bozulmasın diye 2 adet var.  -->
+                <div class="_Form_Div py-3 _Mobile_None"></div>
+                <!-- 2 Form arasına boşluk bırakmak için. Yapı bozulmasın diye 2 adet var.  -->
+
+                <div class="_Form_Div _Form_Title">
+                    <h3>
+                        Agency Information
+                    </h3>
+                </div>
+                <div class="_Form_Div _Mobile_None"></div>
+                <!-- Yapı bozulması diye eklendi. Silinirse yapı bozulur -->
+                <div class="_Form_Div">
+                    <label class="_Form_Label">Company Name</label>
+                    <input type="text" name="Company_Name">
+                </div>
+                <div class="_Form_Div">
+                    <label class="_Form_Label">Adress</label>
+                    <input type="text" name="Adress">
+                </div>
+                <div class="_Form_Div">
+                    <label class="_Form_Label">Company Website ( optional )</label>
+                    <input type="text">
+                </div>
+                <div class="_Form_Div">
+                    <div class="_Down_Flex">
+                        <div>
+                            <label class="_Form_Label">Linkedin (optional)</label>
+                            <input type="text">
+                        </div>
+                        <div>
+                            <label class="_Form_Label">Facebook (optional)</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="_Form_Div">
+                    <div class="_Down_Flex">
+                        <div class="_Pos_Rel">
+                            <label class="_Form_Label">Transfer Request (monthly basis)</label>
+                            <input type="text" name="Transfer_Request">
+                        </div>
+                        <div class="_Pos_Rel">
+                            <label class="_Form_Label">Transfer Requested Locations</label>
+                            <input type="text" name="Transfer_Requested_Locations">
+                        </div>
+                    </div>
+                </div>
+                <div class="_Form_Div">
+                    <label class="_Form_Label">Company Phone Number</label>
+                    <input type="text" id="_Agency_Number" name="Company_Phone_Number">
+                </div>
+                <div class="_Form_Div">
+                    <div class="_Down_Flex">
+                        <div>
+                            <p>Certificate</p>
+                            <p>
+                                Please upload your business registration
+                                certificate.
+                            </p>
+                        </div>
+                        <div class="_Pos_Rel _File_Main">
+                            <label class="_Form_Label">Transfer Requested Locations</label>
+                            <input type="file" name="file" class="_File" accept=".pdf,.jpg,.png">
+                            <div class="_Clone_Input">
+                                <img src="img/file.png" alt="file">
+                                <p>
+                                    Browse
+                                </p>
+                                <span class="_Attr_File">.pdf, .jpg, .png files accepted (max. 4 MB)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="_Form_Div _Last_Input">
+                    <label class="_Form_Label">Tell us Phone Number</label>
+                    <input type="text" name="Tell_Phone_Number">
+                </div>
+                <div class="_Form_Div _Check_Main mt-4">
+                    <div class="_Check_Div">
+                        <input type="checkbox" name="c1"> <label for="">
+                            By clicking “Register”, you indicate that
+                            you have
+                            agreed to all Terms and Conditions. *
+                        </label>
+                    </div>
+                    <div class="_Check_Div">
+                        <input type="checkbox" name="c2"> <label for="">
+                            By clicking “Register”, you indicate that
+                            you have
+                            agreed our Privacy Policy. *
+                        </label>
+                    </div>
+                </div>
+                <div class="_Form_Div">
+                    <button>
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+<script>
+    const phoneInputField = document.querySelector("#_Personel_Number");
+    const phoneInput = window.intlTelInput(phoneInputField, {
+        utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+    const phoneInputField2 = document.querySelector("#_Agency_Number");
+    const phoneInput2 = window.intlTelInput(phoneInputField2, {
+        utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+</script>

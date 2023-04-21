@@ -1,17 +1,20 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Airport.UI</title>
-    <!-- <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anasayfa</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css"
           integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/css/app.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="~/webcss/style.css" asp-append-version="true">
 </head>
+
 <body>
     <header>
         <nav>
@@ -28,15 +31,15 @@
                             <ul>
                                 <li class="_Mobile_Logo">
                                     <a href="/" title="Main Page">
-                                        <img src="~/images/Logo.png" class="_Nav_Logo"
+                                        <img src="~/img/Logo.png" class="_Nav_Logo"
                                              alt="Airport Global Logo">
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/" title="item1">item1</a>
+                                    <a href="/agencies" title="Agencies Register">Agencies Register</a>
                                 </li>
                                 <li>
-                                    <a href="/" title="item2">item2</a>
+                                    <a href="/contact" title="Contact Us">Contact Us</a>
                                 </li>
                             </ul>
                         </div>
@@ -45,7 +48,7 @@
                             <div class="_Auth">
                                 <div>
                                     <ul class="_Btns">
-                                        <li><a href="/" class="_Register" title="Register">Register</a></li>
+                                        <li><a href="/register" class="_Register" title="Register">Register</a></li>
                                         <li class="_Active">
                                             <a href="javascript:;" title="Sign İn" class="Sign_In">Sign İn</a>
                                         </li>
@@ -115,38 +118,131 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+    @RenderBody()
+
+    <footer>
         <div class="container">
-            &copy; 2023 - Airport.UI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div>
+                <p class="_Module_p m-0">
+                    Let us help you if you haven’t found the service or
+                </p>
+                <p class="_Module_p m-0">
+                    airport you need, or in case youhave any other questions.
+                </p>
+            </div>
+            <div class="_Pay_Flex">
+                <div>
+                    <img src="~/logo/paypal.png" alt="paypal">
+                </div>
+                <div>
+                    <img src="~/logo/mastercard.png" alt="mastercard">
+                </div>
+                <div>
+                    <img src="~/logo/visa.png" alt="visa">
+                </div>
+                <div>
+                    <img src="~/logo/americanexpress.png" alt="americanexpress">
+                </div>
+                <div>
+                    <img src="~/logo/jcb.png" alt="jcb">
+                </div>
+                <div>
+                    <img src="~/logo/discover.png" alt="discover">
+                </div>
+                <div>
+                    <img src="~/logo/sofort.png" alt="sofort">
+                </div>
+                <div>
+                    <img src="~/logo/klama.png" alt="klama">
+                </div>
+                <div>
+                    <img src="~/logo/gpay.png" alt="gpay">
+                </div>
+                <div>
+                    <img src="~/logo/pay.png" alt="pay">
+                </div>
+                <div>
+                    <img src="~/logo/maestro.png" alt="maestro">
+                </div>
+                <div>
+                    <img src="~/logo/bancontact.png" alt="bancontact">
+                </div>
+                <div>
+                    <img src="~/logo/koronapay.png" alt="koronapay">
+                </div>
+            </div>
+
+            <div class="_Footer_Contact_Links">
+                <div>
+                    <h3>
+                        Contact Us:
+                    </h3>
+                    <div class="_Sm_Flex">
+                        <div><a href="/"><i class="fa-brands fa-whatsapp"></i></a></div>
+                        <div><a href="/"><i class="fa-brands fa-telegram"></i></a></div>
+                        <div><a href="/"><i class="fa-solid fa-envelope"></i></a></div>
+                    </div>
+                </div>
+                <div>
+                    <h3>
+                        Follow Us:
+                    </h3>
+                    <div class="_Sm_Flex">
+                        <div><a href="/"><i class="fa-brands fa-instagram"></i></a></div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <p class="_Module_p m-0">
+                    © 2023 Airport Global Transfer Service.
+                </p>
+                <p class="_Module_p m-0">
+                    All rights reserved
+                </p>
+            </div>
+            <div class="_Footer_Flex">
+                <div>
+                    <a href="/about">About Company</a>
+                </div>
+                <div>
+                    <a href="/">FAQ</a>
+                </div>
+                <div>
+                    <a href="/terms">Terms and Conditions</a>
+                </div>
+                <div>
+                    <a href="/privacy">Privacy Policy</a>
+                </div>
+                <div>
+                    <a href="/contact">Contacts</a>
+                </div>
+                <div>
+                    <a href="/agencies">Agencies</a>
+                </div>
+            </div>
         </div>
     </footer>
-    <<<<<<< HEAD
-    <!-- <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"
             integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"
             integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="~/js/app.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-    =======
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
-    >>>>>>> 2c1990e0364b721db45c3db17532b241f94e3f71
+
+    <script src="~/webjs/app.js" asp-append-version="true"></script>
 
     <script>
         $('#_Sign_Form').on("submit", function (e) {

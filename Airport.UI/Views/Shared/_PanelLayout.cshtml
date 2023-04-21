@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims;
+@{
+    var userRole = User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,11 +11,11 @@
     <title>Dore jQuery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <link rel="stylesheet" href="~/font/iconsmind-s/css/iconsminds.css"  />
+    <link rel="stylesheet" href="~/font/iconsmind-s/css/iconsminds.css" />
     <link rel="stylesheet" href="~/font/simple-line-icons/css/simple-line-icons.css" />
 
     <link rel="stylesheet" href="~/css/vendor/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/vendor/bootstrap.rtl.only.min.css"/>
+    <link rel="stylesheet" href="~/css/vendor/bootstrap.rtl.only.min.css" />
     <!-- Inputs -->
     <link rel="stylesheet" href="~/css/vendor/bootstrap-float-label.min.css" />
     <link rel="stylesheet" href="~/css/vendor/select2.min.css" />
@@ -40,11 +45,15 @@
         <div class="main-menu">
             <div class="scroll">
                 <ul class="list-unstyled">
-                    <li class="active">
-                        <a href="#panelManagement">
-                            <i class="iconsminds-three-arrow-fork"></i> Menu
-                        </a>
-                    </li>
+                    @if (userRole == "0")
+                    {
+                        <li class="active">
+                            <a href="#panelManagement">
+                                <i class="iconsminds-three-arrow-fork"></i> Management
+                            </a>
+                        </li>
+                    }
+
 
                     <li>
                         <a href="/panel">
@@ -80,14 +89,14 @@
 
                     @*
                     <li>
-                        <a href="Blank.Page.html">
-                            <i class="iconsminds-bucket"></i> Blank Page
-                        </a>
+                    <a href="Blank.Page.html">
+                    <i class="iconsminds-bucket"></i> Blank Page
+                    </a>
                     </li>
                     <li>
-                        <a href="https://dore-jquery-docs.coloredstrategies.com" target="_blank">
-                            <i class="iconsminds-library"></i> Docs
-                        </a>
+                    <a href="https://dore-jquery-docs.coloredstrategies.com" target="_blank">
+                    <i class="iconsminds-library"></i> Docs
+                    </a>
                     </li>*@
                 </ul>
             </div>
@@ -481,99 +490,102 @@
                         </div>
                     </li>
                 </ul>
-
-                <ul class="list-unstyled" data-link="panelManagement" id="menuTypes">
-                    <li>
-                        <a href="#" data-toggle="collapse" data-target="#collapseMenuTypes" aria-expanded="true"
-                           aria-controls="collapseMenuTypes" class="rotate-arrow-icon">
-                            <i class="simple-icon-arrow-down"></i> <span class="d-inline-block">Services</span>
-                        </a>
-                        <div id="collapseMenuTypes" class="collapse show" data-parent="#menuTypes">
-                            <ul class="list-unstyled inner-level-menu">
-                                <li class="active">
-                                    <a href="/panel/servicemanagament">
-                                        <i class="simple-icon-control-pause"></i> <span class="d-inline-block">Service Managament</span>
-                                    </a>
-                                </li>
-                                @*<li>
-                                    <a href="Menu.Subhidden.html">
-                                        <i class="simple-icon-arrow-left mi-subhidden"></i> <span class="d-inline-block">Subhidden</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="Menu.Hidden.html">
-                                        <i class="simple-icon-control-start mi-hidden"></i> <span class="d-inline-block">Hidden</span>
-                                    </a>
+                @if (userRole == "0")
+                {
+                    <ul class="list-unstyled" data-link="panelManagement" id="menuTypes">
+                        <li>
+                            <a href="#" data-toggle="collapse" data-target="#collapseMenuTypes" aria-expanded="true"
+                               aria-controls="collapseMenuTypes" class="rotate-arrow-icon">
+                                <i class="simple-icon-arrow-down"></i> <span class="d-inline-block">Services</span>
+                            </a>
+                            <div id="collapseMenuTypes" class="collapse show" data-parent="#menuTypes">
+                                <ul class="list-unstyled inner-level-menu">
+                                    <li class="active">
+                                        <a href="/panel/servicemanagament">
+                                            <i class="simple-icon-control-pause"></i> <span class="d-inline-block">Service Managament</span>
+                                        </a>
+                                    </li>
+                                    @*<li>
+                                <a href="Menu.Subhidden.html">
+                                <i class="simple-icon-arrow-left mi-subhidden"></i> <span class="d-inline-block">Subhidden</span>
+                                </a>
                                 </li>
                                 <li>
-                                    <a href="Menu.Mainhidden.html">
-                                        <i class="simple-icon-control-rewind mi-hidden"></i> <span class="d-inline-block">Mainhidden</span>
-                                    </a>
+                                <a href="Menu.Hidden.html">
+                                <i class="simple-icon-control-start mi-hidden"></i> <span class="d-inline-block">Hidden</span>
+                                </a>
+                                </li>
+                                <li>
+                                <a href="Menu.Mainhidden.html">
+                                <i class="simple-icon-control-rewind mi-hidden"></i> <span class="d-inline-block">Mainhidden</span>
+                                </a>
                                 </li>*@
-                            </ul>
-                        </div>
-                    </li>
+                                </ul>
+                            </div>
+                        </li>
 
-                    <li>
-                        <a href="#" data-toggle="collapse" data-target="#collapseMenuLevel" aria-expanded="true"
-                           aria-controls="collapseMenuLevel" class="rotate-arrow-icon collapsed">
-                            <i class="simple-icon-arrow-down"></i> <span class="d-inline-block">Menu Levels</span>
-                        </a>
-                        <div id="collapseMenuLevel" class="collapse" data-parent="#menuTypes">
-                            <ul class="list-unstyled inner-level-menu">
-                                <li>
-                                    <a href="#">
-                                        <i class="simple-icon-layers"></i> <span class="d-inline-block">
-                                            Sub
-                                            Level
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" data-toggle="collapse" data-target="#collapseMenuLevel2"
-                                       aria-expanded="true" aria-controls="collapseMenuLevel2"
-                                       class="rotate-arrow-icon collapsed">
-                                        <i class="simple-icon-arrow-down"></i> <span class="d-inline-block">
-                                            Another
-                                            Level
-                                        </span>
-                                    </a>
-                                    <div id="collapseMenuLevel2" class="collapse">
-                                        <ul class="list-unstyled inner-level-menu">
-                                            <li>
-                                                <a href="#">
-                                                    <i class="simple-icon-layers"></i> <span class="d-inline-block">
-                                                        Sub
-                                                        Level
-                                                    </span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#" data-toggle="collapse" data-target="#collapseMenuDetached" aria-expanded="true"
-                           aria-controls="collapseMenuDetached" class="rotate-arrow-icon collapsed">
-                            <i class="simple-icon-arrow-down"></i> <span class="d-inline-block">Detached</span>
-                        </a>
-                        <div id="collapseMenuDetached" class="collapse">
-                            <ul class="list-unstyled inner-level-menu">
-                                <li>
-                                    <a href="#">
-                                        <i class="simple-icon-layers"></i> <span class="d-inline-block">
-                                            Sub
-                                            Level
-                                        </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
+                        <li>
+                            <a href="#" data-toggle="collapse" data-target="#collapseMenuLevel" aria-expanded="true"
+                               aria-controls="collapseMenuLevel" class="rotate-arrow-icon collapsed">
+                                <i class="simple-icon-arrow-down"></i> <span class="d-inline-block">Menu Levels</span>
+                            </a>
+                            <div id="collapseMenuLevel" class="collapse" data-parent="#menuTypes">
+                                <ul class="list-unstyled inner-level-menu">
+                                    <li>
+                                        <a href="#">
+                                            <i class="simple-icon-layers"></i> <span class="d-inline-block">
+                                                Sub
+                                                Level
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="collapse" data-target="#collapseMenuLevel2"
+                                           aria-expanded="true" aria-controls="collapseMenuLevel2"
+                                           class="rotate-arrow-icon collapsed">
+                                            <i class="simple-icon-arrow-down"></i> <span class="d-inline-block">
+                                                Another
+                                                Level
+                                            </span>
+                                        </a>
+                                        <div id="collapseMenuLevel2" class="collapse">
+                                            <ul class="list-unstyled inner-level-menu">
+                                                <li>
+                                                    <a href="#">
+                                                        <i class="simple-icon-layers"></i> <span class="d-inline-block">
+                                                            Sub
+                                                            Level
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="collapse" data-target="#collapseMenuDetached" aria-expanded="true"
+                               aria-controls="collapseMenuDetached" class="rotate-arrow-icon collapsed">
+                                <i class="simple-icon-arrow-down"></i> <span class="d-inline-block">Detached</span>
+                            </a>
+                            <div id="collapseMenuDetached" class="collapse">
+                                <ul class="list-unstyled inner-level-menu">
+                                    <li>
+                                        <a href="#">
+                                            <i class="simple-icon-layers"></i> <span class="d-inline-block">
+                                                Sub
+                                                Level
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
 
+                }
+              
             </div>
         </div>
     </div>
@@ -584,9 +596,9 @@
         </div>
     </main>
 
-    <script src="~/js/vendor/jquery-3.3.1.min.js" ></script>
+    <script src="~/js/vendor/jquery-3.3.1.min.js"></script>
 
-   
+
     <script src="~/js/vendor/bootstrap.bundle.min.js"></script>
     <script src="~/js/vendor/perfect-scrollbar.min.js"></script>
     <script src="~/js/vendor/moment.min.js"></script>
@@ -601,7 +613,7 @@
     <script src="~/js/vendor/cropper.min.js"></script>
     <script src="~/js/vendor/typeahead.bundle.js"></script>
     <script src="~/js/dore-plugins/select.from.library.js"></script>
-    <script src="~/js/vendor/mousetrap.min.js" ></script>
+    <script src="~/js/vendor/mousetrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/dore.script.js" asp-append-version="true"></script>
     <script src="~/js/scripts.js" asp-append-version="true"></script>

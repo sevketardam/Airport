@@ -158,7 +158,7 @@
         <div class="user d-inline-block">
             <button class="btn btn-empty p-0" type="button" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
-                <span class="name">@Model.Name @(Model.Lastname[0]).</span>
+                <span class="name">@Model.Name @(Model.Lastname != null ? Model.Lastname[0] + "." : "")</span>
                 <span>
                     <img alt="Profile Picture" src="~/img/profiles/l-1.jpg" />
                 </span>
