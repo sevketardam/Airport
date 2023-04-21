@@ -19,5 +19,8 @@ namespace Airport.DBEntities.Entities
         public string Password { get; set; }
         public string Name { get; set; }
         public string Lastname { get; set; }
+
+
+        public List<Services> Services { get; set; }
     }
 }

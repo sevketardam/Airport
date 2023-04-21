@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "_PanelLayout";
 }
+@model List<Services>
 
 <div class="d-flex justify-content-end">
     <a href="/panel/addservice" class="btn" style="
@@ -11,20 +12,39 @@
 </div>
 
 <div class="row">
-    <div class="col-md-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12">
-                        <a href="Pages.Product.Detail.html">
-                            <p class="list-item-heading mb-4 pt-1">Cheesecake</p>
-                        </a>
-                        <footer>
-                            <p class="text-muted text-small mb-0 font-weight-light">18.08.2018</p>
-                        </footer>
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <a href="/panel/updateservice/@item.Id" class="serviceItems" data-value="@item.Id">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="list-item-heading mb-0 pt-1">@item.ServiceName</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
-    </div>
+    }
 </div>
+
+
+@*
+@section pageJs{
+    <script>
+        $('.serviceItems').on("click",function(){
+            var serviceId = $(this).attr("data-value")
+
+            $.ajax({
+                url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.UpdateServicePage))',
+                type: "POST",
+                data: { id: serviceId },
+                success: function (response) {
+                    location.href = "/panel/updateservice";
+                }
+            });
+        })
+    </script>
+}*@

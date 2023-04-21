@@ -13,8 +13,10 @@ namespace Airport.DBEntities.Entities
         [Key]
         public int Id { get; set; }
         public string ServicePropertyName { get; set; }
-        public string ServicePropertyCategory { get; set; }
+        public int ServiceCategoryId { get; set; }
+        public string ServicePropertyDescription { get; set; }
 
         public List<ServiceItems> ServiceItems { get; set; }
+        public ServiceCategories ServiceCategory { get; set; }
     }
 }

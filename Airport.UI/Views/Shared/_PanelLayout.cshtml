@@ -40,6 +40,12 @@
         <div class="main-menu">
             <div class="scroll">
                 <ul class="list-unstyled">
+                    <li class="active">
+                        <a href="#panelManagement">
+                            <i class="iconsminds-three-arrow-fork"></i> Menu
+                        </a>
+                    </li>
+
                     <li>
                         <a href="/panel">
                             <i class="iconsminds-shop-4"></i>
@@ -47,35 +53,32 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#layouts">
+                        <a href="#">
                             <i class="iconsminds-digital-drawing"></i> Pages
                         </a>
                     </li>
                     <li>
-                        <a href="#applications">
+                        <a href="#">
                             <i class="iconsminds-car"></i> My Cars
                         </a>
                     </li>
                     <li>
-                        <a href="#ui">
+                        <a href="#">
                             <i class="iconsminds-doctor"></i> Drivers
                         </a>
                     </li>
                     <li>
-                        <a href="panel/service">
+                        <a href="/panel/service">
                             <i class="iconsminds-pantone"></i> Services
                         </a>
                     </li>
                     <li>
-                        <a href="#ui">
+                        <a href="#">
                             <i class="iconsminds-equalizer d-block"></i> Settings
                         </a>
                     </li>
-                    @*<li class="active">
-                        <a href="#menu">
-                            <i class="iconsminds-three-arrow-fork"></i> Menu
-                        </a>
-                    </li>
+
+                    @*
                     <li>
                         <a href="Blank.Page.html">
                             <i class="iconsminds-bucket"></i> Blank Page
@@ -479,20 +482,20 @@
                     </li>
                 </ul>
 
-                <ul class="list-unstyled" data-link="menu" id="menuTypes">
+                <ul class="list-unstyled" data-link="panelManagement" id="menuTypes">
                     <li>
                         <a href="#" data-toggle="collapse" data-target="#collapseMenuTypes" aria-expanded="true"
                            aria-controls="collapseMenuTypes" class="rotate-arrow-icon">
-                            <i class="simple-icon-arrow-down"></i> <span class="d-inline-block">Menu Types</span>
+                            <i class="simple-icon-arrow-down"></i> <span class="d-inline-block">Services</span>
                         </a>
                         <div id="collapseMenuTypes" class="collapse show" data-parent="#menuTypes">
                             <ul class="list-unstyled inner-level-menu">
                                 <li class="active">
-                                    <a href="Menu.Default.html">
-                                        <i class="simple-icon-control-pause"></i> <span class="d-inline-block">Default</span>
+                                    <a href="/panel/servicemanagament">
+                                        <i class="simple-icon-control-pause"></i> <span class="d-inline-block">Service Managament</span>
                                     </a>
                                 </li>
-                                <li>
+                                @*<li>
                                     <a href="Menu.Subhidden.html">
                                         <i class="simple-icon-arrow-left mi-subhidden"></i> <span class="d-inline-block">Subhidden</span>
                                     </a>
@@ -506,10 +509,11 @@
                                     <a href="Menu.Mainhidden.html">
                                         <i class="simple-icon-control-rewind mi-hidden"></i> <span class="d-inline-block">Mainhidden</span>
                                     </a>
-                                </li>
+                                </li>*@
                             </ul>
                         </div>
                     </li>
+
                     <li>
                         <a href="#" data-toggle="collapse" data-target="#collapseMenuLevel" aria-expanded="true"
                            aria-controls="collapseMenuLevel" class="rotate-arrow-icon collapsed">
@@ -598,8 +602,12 @@
     <script src="~/js/vendor/typeahead.bundle.js"></script>
     <script src="~/js/dore-plugins/select.from.library.js"></script>
     <script src="~/js/vendor/mousetrap.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/dore.script.js" asp-append-version="true"></script>
     <script src="~/js/scripts.js" asp-append-version="true"></script>
+
+
+    @RenderSection("pageJs", required: false)
 </body>
 
 </html>

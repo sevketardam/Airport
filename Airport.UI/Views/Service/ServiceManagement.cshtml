@@ -1,0 +1,199 @@
+﻿@{
+    Layout = "_PanelLayout";
+    int i = 0;
+}
+
+@model ServiceManagementVM
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="text-right">
+            <button class="btn btn-secondary mb-3" type="button" data-toggle="modal" data-target="#addServiceCategoryModal">
+                Add Service Category
+            </button>
+        </div>
+        <table id="serviceCategoryTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Category Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ServiceCategories)
+                {
+                    i++;
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.ServiceCategoryName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="text-right">
+            <button class="btn btn-secondary mb-3" type="button" data-toggle="modal" data-target="#addServicePropertyModal">
+                Add Service Property
+            </button>
+        </div>
+
+        <table id="servicePropertyTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Category Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ServiceProperties)
+                {
+                    i++;
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.ServicePropertyName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="addServiceCategoryModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Service Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addServiceCategoryForm">
+                    <div class="form-group position-relative error-l-50">
+                        <label>Service List Name</label>
+                        <input type="text" class="form-control" name="categoryName" required="" placeholder="Enter Your Service Category Name">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" id="addServiceCategory">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="addServicePropertyModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Service Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addServicePropertyForm">
+                    <div class="form-group position-relative error-l-50">
+                        <label>Service Category</label>
+                        <select class="custom-select" name="ServiceCategoryId" required="">
+                            <option value="null" selected>Seçiniz</option>
+                            @foreach (var item in Model.ServiceCategories)
+                            {
+                                <option value="@item.Id">@item.ServiceCategoryName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group position-relative error-l-50">
+                        <label>Service Property Name</label>
+                        <input type="text" class="form-control" name="PropertyName" required="" placeholder="Enter Your Service Property Name">
+                    </div>
+
+                    <div class="form-group position-relative error-l-50">
+                        <label>Service Property Description</label>
+                        <input type="text" class="form-control" name="PropertyDescription" required="" placeholder="Enter Your Service Property Description">
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" id="addServiceProperty">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section pageJs{
+    <script>
+        $('#addServiceProperty').on("click", function () {
+            $('#addServicePropertyForm').submit();
+        })
+
+        $('#addServiceCategory').on("click", function () {
+            $('#addServiceCategoryForm').submit();
+        })
+
+        $('#addServicePropertyForm').on("submit", function (e) {
+            e.preventDefault();
+            var formData = $(this).serialize()
+            $.ajax({
+                url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.AddServiceProperty))',
+                type: "POST",
+                data: formData,
+                success: function (response) {
+                    if (response.result == 1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Successfully Added Service Property',
+                        }).then(() => {
+                            location.reload();
+                        })
+                    }
+                }
+            });
+        })
+
+        $('#addServiceCategoryForm').on("submit", function (e) {
+            e.preventDefault();
+            var formData = $(this).serialize()
+            $.ajax({
+                url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.AddServiceCategory))',
+                type: "POST",
+                data: formData,
+                success: function (response) {
+                    if (response.result == 1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Successfully Added Service Category',
+                        }).then(() => {
+                            location.reload();
+                        })
+                    }
+                }
+            });
+        })
+    </script>
+}

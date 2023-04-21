@@ -34,11 +34,25 @@ namespace Airport.DBEntities.Context
          Foreign Key İçin Gün2 part2 17:00 dk*/
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Services>()
+                .HasOne<UserDatas>(a => a.User)
+                .WithMany(a => a.Services)
+                .HasForeignKey(a => a.UserId);
 
-            //modelBuilder.Entity<Members>()
-            //    .HasOne<Users>(a => a.User)
-            //    .WithMany(a => a.Members)
-            //    .HasForeignKey(a => a.Adminid);
+            modelBuilder.Entity<ServiceItems>()
+                .HasOne<Services>(a => a.Service)
+                .WithMany(a => a.ServiceItems)
+                .HasForeignKey(a => a.ServiceId);
+
+            modelBuilder.Entity<ServiceItems>()
+                .HasOne<ServiceProperties>(a => a.ServiceProperty)
+                .WithMany(a => a.ServiceItems)
+                .HasForeignKey(a => a.ServicePropertyId);
+
+            modelBuilder.Entity<ServiceProperties>()
+                .HasOne<ServiceCategories>(a => a.ServiceCategory)
+                .WithMany(a => a.ServiceProperties)
+                .HasForeignKey(a => a.ServiceCategoryId);
 
 
             base.OnModelCreating(modelBuilder);
@@ -47,6 +61,7 @@ namespace Airport.DBEntities.Context
         public DbSet<UserDatas> UserDatas { get; set; }
         public DbSet<Services> Services { get; set; }
         public DbSet<ServiceProperties> ServiceProperties { get; set; }
+        public DbSet<ServiceCategories> ServiceCategories { get; set; }
       
     }
 }
