@@ -18,10 +18,10 @@ namespace Airport.DBEntities.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //var connectionString = "server=94.73.149.221;port=3306;database=db55A;user=user55A;password=:3:_ejQz@Q6RfK43;Allow Zero Datetime=True;Convert Zero Datetime=True";
+            //var connectionString = "server=93.89.225.59;database=pairpoX3_db1234;user=pairpoX3_db1234;password=Zw6Gzx9B;Allow Zero Datetime=True;Convert Zero Datetime=True";
             //optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
-            //var connectionString = "Server =.\\SQLEXPRESS; Database = spor_sepeti; Trusted_Connection = True; MultipleActiveResultSets = true";
+            //var connectionString = "Server=.\\SQLEXPRESS;Database=pairpoX3_db1234;User Id=pairpoX3_db1234;Password=Ur3nedCS; Trusted_Connection = True; MultipleActiveResultSets = true";
             //optionsBuilder.UseSqlServer(connectionString);
 
             var connectionString = "Server =.\\SQLEXPRESS01; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
@@ -62,6 +62,12 @@ namespace Airport.DBEntities.Context
         public DbSet<Services> Services { get; set; }
         public DbSet<ServiceProperties> ServiceProperties { get; set; }
         public DbSet<ServiceCategories> ServiceCategories { get; set; }
+        public DbSet<CarBrands> CarBrands { get; set; }
+        public DbSet<CarModels> CarModels { get; set; }
+        public DbSet<CarSeries> CarSeries { get; set; }
+        public DbSet<CarTrims> CarTrims { get; set; }
+        public DbSet<CarTypes> CarTypes { get; set; }
+        public DbSet<CarClasses> CarClasses { get; set; }
       
     }
 }

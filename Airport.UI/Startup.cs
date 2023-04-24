@@ -1,3 +1,4 @@
+using Airport.DBEntities.Entities;
 using Airport.DBEntitiesDAL.Concrete;
 using Airport.DBEntitiesDAL.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -30,7 +31,13 @@ namespace Airport.UI
             services.AddScoped<IServicesDAL, ServicesDAL>();
             services.AddScoped<IServicePropertiesDAL, ServicePropertiesDAL>();
             services.AddScoped<IServiceItemsDAL, ServiceItemsDAL>();
-            services.AddScoped<IServiceCategoriesDAL,ServiceCategoriesDAL>();
+            services.AddScoped<IServiceCategoriesDAL, ServiceCategoriesDAL>();
+            services.AddScoped<ICarBrandsDAL, CarBrandsDAL>();
+            services.AddScoped<ICarModelsDAL, CarModelDAL>();
+            services.AddScoped<ICarSeriesDAL, CarSeriesDAL>();
+            services.AddScoped<ICarTrimsDAL, CarTrimsDAL>();
+            services.AddScoped<ICarTypesDAL, CarTypesDAL>();
+            services.AddScoped<ICarClassesDAL, CarClassesDAL>();
 
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
