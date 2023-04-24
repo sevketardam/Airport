@@ -24,5 +24,7 @@ namespace Airport.DBEntities.Entities
 
 
         public List<Services> Services { get; set; }
+        public List<MyCars> MyCars { get; set; }
+        public List<Drivers> Drivers { get; set; }
     }
 }

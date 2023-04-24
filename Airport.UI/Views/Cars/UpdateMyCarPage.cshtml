@@ -1,18 +1,25 @@
 ﻿@{
     Layout = "_PanelLayout";
 }
-@model AddMyCarsVM
+@model UpdateMyCarVM
 
-<form id="addMyCarForm">
+<form id="updateMyCarForm">
     <div class="row">
 
         <div class="col-sm-4 mb-3">
             <label>Brands</label>
             <select class="form-control select2-multiple" id="carBrands" name="Brand" data-width="100%">
                 <option disabled selected>Select Brand</option>
-                @foreach (var item in Model.CarBrands)
+                @foreach (var item in Model.Brands)
                 {
-                    <option value="@item.Id">@item.CarBrandName</option>
+                    if (item.Id == Model.BrandId)
+                    {
+                        <option value="@item.Id" selected>@item.CarBrandName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.CarBrandName</option>
+                    }
                 }
             </select>
         </div>
@@ -20,59 +27,120 @@
             <label>Model</label>
             <select class="form-control select2-multiple" id="carModels" name="Model" data-width="100%">
                 <option disabled selected>Select Model</option>
-
+                @foreach (var item in Model.Models)
+                {
+                    if (item.Id == Model.ModelId)
+                    {
+                        <option value="@item.Id" selected>@item.CarModelName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.CarModelName</option>
+                    }
+                }
             </select>
         </div>
         <div class="col-sm-4 mb-3">
             <label>Series</label>
             <select class="form-control select2-multiple" id="carSeries" name="Series" data-width="100%">
                 <option disabled selected>Select Series</option>
+                @foreach (var item in Model.Series)
+                {
+                    if (item.Id == Model.SeriesId)
+                    {
+                        <option value="@item.Id" selected>@item.CarSeriesName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.CarSeriesName</option>
+                    }
+                }
             </select>
         </div>
         <div class="col-sm-4 mb-3">
             <label>Trim</label>
             <select class="form-control select2-multiple" id="carTrims" name="Trim" data-width="100%">
                 <option disabled selected>Select Trim</option>
-
+                @foreach (var item in Model.Trims)
+                {
+                    if (item.Id == Model.TrimId)
+                    {
+                        <option value="@item.Id" selected>@item.CarTrimName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.CarTrimName</option>
+                    }
+                }
             </select>
         </div>
         <div class="col-sm-4 mb-3">
             <label>Class</label>
             <select class="form-control select2-multiple" id="carClasses" name="Class" data-width="100%">
                 <option disabled selected>Select Class</option>
+                @foreach (var item in Model.Classes)
+                {
+                    if (item.Id == Model.ClassId)
+                    {
+                        <option value="@item.Id" selected>@item.CarClassName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.CarClassName</option>
+                    }
+                }
             </select>
         </div>
         <div class="col-sm-4 mb-3">
             <label>Type</label>
             <select class="form-control select2-multiple" id="carTypes" name="Type" data-width="100%">
                 <option disabled selected>Select Type</option>
+                @foreach (var item in Model.Types)
+                {
+                    if (item.Id == Model.TypeId)
+                    {
+                        <option value="@item.Id" selected>@item.CarTypeName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.CarTypeName</option>
+                    }
+
+                }
             </select>
         </div>
         <div class="col-sm-4 mb-3">
             <div class="form-group position-relative error-l-50">
                 <label>Max. Passengers</label>
-                <input type="number" class="form-control" value="0" name="MaxPassenger" required="">
+                <input type="number" class="form-control" value="@Model.MaxPassenger" name="MaxPassenger" required="">
             </div>
         </div>
         <div class="col-sm-2 mb-3">
             <div class="form-group position-relative error-l-50">
                 <label>Suitcase</label>
-                <input type="number" class="form-control" value="0" name="SuitCase" required="">
+                <input type="number" class="form-control" value="@Model.SuitCase" name="SuitCase" required="">
             </div>
         </div>
         <div class="col-sm-2 mb-3">
             <div class="form-group position-relative error-l-50">
                 <label>Small Bags</label>
-                <input type="number" class="form-control" value="0" name="SmallBags" required="">
+                <input type="number" class="form-control" value="@Model.SmallBags" name="SmallBags" required="">
             </div>
         </div>
         <div class="col-sm-4 mb-3">
             <label>Service List</label>
             <select class="form-control select2-multiple" name="Service" data-width="100%">
                 <option disabled selected>Select Service List</option>
-                @foreach (var item in Model.ServiceItems)
+                @foreach (var item in Model.Services)
                 {
-                    <option value="@item.Id">@item.ServiceName</option>
+                    if (item.Id == Model.ServiceId)
+                    {
+                        <option value="@item.Id" selected>@item.ServiceName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.ServiceName</option>
+                    }            
                 }
             </select>
         </div>
@@ -80,7 +148,7 @@
         <div class="col-md-12">
             <div class="text-right">
                 <button class="btn btn-secondary" type="submit">
-                    Add My Car
+                    Update My Car
                 </button>
             </div>
         </div>
@@ -94,12 +162,12 @@
             $.ajax({
                 url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController.GetModels))',
                 type: "POST",
-                data: {id:value},
+                data: { id: value },
                 success: function (response) {
-                    if(response.result == 200){
+                    if (response.result == 200) {
                         $('#carModels').html("");
                         $('#carModels').append(`<option disabled selected>Select Model</option>`)
-                        $.each(response.models,function(key,value){
+                        $.each(response.models, function (key, value) {
                             $('#carModels').append(`<option value="${value.id}">${value.carModelName}</option>`)
                         })
                     }
@@ -167,19 +235,19 @@
             });
         })
 
-        $('#addMyCarForm').on("submit", function (e) {
+        $('#updateMyCarForm').on("submit", function (e) {
             e.preventDefault();
             var formData = $(this).serialize()
             $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController.CreateMyCar))',
+                url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController.UpdateService))',
                 type: "POST",
-                data: formData,
+                data: formData + "&id=" + @Model.Id,
                 success: function (response) {
                     if (response.result == 1) {
                         Swal.fire({
                             icon: 'success',
                             title: 'Success',
-                            text: 'Successfully Added Car',
+                            text: 'Successfully Update Service',
                         }).then(() => {
                             location.href = "/panel/mycars";
                         })

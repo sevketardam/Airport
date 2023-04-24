@@ -1,26 +1,27 @@
 ﻿@{
     Layout = "_PanelLayout";
 }
-@model IEnumerable<MyCars>
 
+@model List<Drivers>
 <div class="d-flex justify-content-end">
-    <a href="/panel/addcar" class="btn" style="
+    <a href="/panel/add-driver" class="btn" style="
     background: #EC681E;
     color: white;">
-        Add My Car
+        Add Drivers
     </a>
 </div>
+
 
 <div class="row">
     @foreach (var item in Model)
     {
         <div class="col-md-4">
-            <a href="/panel/updatemycar/@item.Id" class="serviceItems" data-value="@item.Id">
+            <a href="/panel/update-driver/@item.Id" class="serviceItems" data-value="@item.Id">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <p class="list-item-heading mb-0 pt-1">@item.Brand.CarBrandName</p>
+                                <p class="list-item-heading mb-0 pt-1">@item.Name</p>
                             </div>
                         </div>
                     </div>
@@ -29,3 +30,4 @@
         </div>
     }
 </div>
+

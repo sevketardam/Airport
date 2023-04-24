@@ -38,6 +38,8 @@ namespace Airport.UI
             services.AddScoped<ICarTrimsDAL, CarTrimsDAL>();
             services.AddScoped<ICarTypesDAL, CarTypesDAL>();
             services.AddScoped<ICarClassesDAL, CarClassesDAL>();
+            services.AddScoped<IMyCarsDAL, MyCarsDAL>();
+            services.AddScoped<IDriversDAL, DriversDAL>();
 
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>

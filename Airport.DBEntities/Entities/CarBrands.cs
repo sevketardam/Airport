@@ -15,5 +15,6 @@ namespace Airport.DBEntities.Entities
         public string CarBrandName { get; set; }
 
         public List<CarModels> CarModels { get; set; }
+        public List<MyCars> MyCars { get; set; }
     }
 }

@@ -55,6 +55,52 @@ namespace Airport.DBEntities.Context
                 .HasForeignKey(a => a.ServiceCategoryId);
 
 
+            modelBuilder.Entity<MyCars>()
+                .HasOne<CarBrands>(a => a.Brand)
+                .WithMany(a => a.MyCars)
+                .HasForeignKey(a => a.BrandId);
+
+            modelBuilder.Entity<MyCars>()
+                .HasOne<CarClasses>(a => a.Class)
+                .WithMany(a => a.MyCars)
+                .HasForeignKey(a => a.ClassId);
+
+            modelBuilder.Entity<MyCars>()
+                .HasOne<CarModels>(a => a.Model)
+                .WithMany(a => a.MyCars)
+                .HasForeignKey(a => a.ModelId);
+
+            modelBuilder.Entity<MyCars>()
+                .HasOne<CarSeries>(a => a.Series)
+                .WithMany(a => a.MyCars)
+                .HasForeignKey(a => a.SeriesId);
+
+            modelBuilder.Entity<MyCars>()
+                .HasOne<CarTrims>(a => a.Trim)
+                .WithMany(a => a.MyCars)
+                .HasForeignKey(a => a.TrimId);
+
+            modelBuilder.Entity<MyCars>()
+                .HasOne<CarTypes>(a => a.Type)
+                .WithMany(a => a.MyCars)
+                .HasForeignKey(a => a.TypeId);
+
+            modelBuilder.Entity<MyCars>()
+                .HasOne<Services>(a => a.Service)
+                .WithMany(a => a.MyCars)
+                .HasForeignKey(a => a.ServiceId);
+
+            modelBuilder.Entity<MyCars>()
+                .HasOne<UserDatas>(a => a.User)
+                .WithMany(a => a.MyCars)
+                .HasForeignKey(a => a.UserId);
+
+            modelBuilder.Entity<Drivers>()
+                .HasOne<UserDatas>(a => a.User)
+                .WithMany(a => a.Drivers)
+                .HasForeignKey(a => a.UserId);
+
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -68,6 +114,8 @@ namespace Airport.DBEntities.Context
         public DbSet<CarTrims> CarTrims { get; set; }
         public DbSet<CarTypes> CarTypes { get; set; }
         public DbSet<CarClasses> CarClasses { get; set; }
+        public DbSet<MyCars> MyCars { get; set; }
+        public DbSet<Drivers> Drivers { get; set; }
       
     }
 }
