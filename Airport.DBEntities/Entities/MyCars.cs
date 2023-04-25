@@ -32,6 +32,7 @@ namespace Airport.DBEntities.Entities
         public CarTypes Type { get; set; }
         public Services Service { get; set; }
         public UserDatas User { get; set; }
+        public List<LocationCars> LocationCars { get; set; }
 
     }
 }

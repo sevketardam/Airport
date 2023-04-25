@@ -18,20 +18,21 @@ namespace Airport.DBEntities.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //var connectionString = "server=93.89.225.59;database=pairpoX3_db1234;user=pairpoX3_db1234;password=Zw6Gzx9B;Allow Zero Datetime=True;Convert Zero Datetime=True";
-            //optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            var connectionString = "server=93.89.225.59;database=pairpoX3_db1234;user=pairpoX3_db1234;password=Zw6Gzx9B;Allow Zero Datetime=True;Convert Zero Datetime=True";
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
             //var connectionString = "Server=.\\SQLEXPRESS;Database=pairpoX3_db1234;User Id=pairpoX3_db1234;Password=Ur3nedCS; Trusted_Connection = True; MultipleActiveResultSets = true";
             //optionsBuilder.UseSqlServer(connectionString);
 
-            var connectionString = "Server =.\\SQLEXPRESS01; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
-            optionsBuilder.UseSqlServer(connectionString);
+            //var connectionString = "Server =.\\SQLEXPRESS01; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
+            //optionsBuilder.UseSqlServer(connectionString);
 
+            //var connectionString = "Server =.\\SQLEXPRESS; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
+            //optionsBuilder.UseSqlServer(connectionString);
 
             base.OnConfiguring(optionsBuilder);
         }
-        /*
-         Foreign Key İçin Gün2 part2 17:00 dk*/
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Services>()
@@ -100,6 +101,20 @@ namespace Airport.DBEntities.Context
                 .WithMany(a => a.Drivers)
                 .HasForeignKey(a => a.UserId);
 
+            modelBuilder.Entity<Locations>()
+                .HasOne<UserDatas>(a => a.User)
+                .WithMany(a => a.Locations)
+                .HasForeignKey(a => a.UserId);
+
+            modelBuilder.Entity<LocationCars>()
+                .HasOne<Locations>(a => a.Location)
+                .WithMany(a => a.LocationCars)
+                .HasForeignKey(a => a.LocationId);
+
+            modelBuilder.Entity<LocationCars>()
+                .HasOne<MyCars>(a => a.Car)
+                .WithMany(a => a.LocationCars)
+                .HasForeignKey(a => a.CarId);
 
             base.OnModelCreating(modelBuilder);
         }
