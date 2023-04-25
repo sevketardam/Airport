@@ -30,12 +30,13 @@
                                 <div class="_Pos_Rel">
                                     <div>
                                         <img src="~/img/location.png" class="_Locaiton_Icon" alt="Location icon">
-                                        <label for="">Pick Up</label>
-                                        <select class="_Pick_Up" name="state">
+                                        <label for="_Pick_Up">Pick Up</label>
+                                        <input id="_Pick_Up" type="text" />
+@*                                        <select class="_Pick_Up" id="" name="state">
                                             <option value="null" disabled selected>Search Location</option>
                                             <option value="AL">Alabama</option>
                                             <option value="WY">Wyoming</option>
-                                        </select>
+                                        </select>*@
                                     </div>
                                 </div>
                                 <div class="_Pos_Rel">
@@ -717,7 +718,11 @@
         </div>
     </div>
 </section>
-
+<input id="pac-input"
+       class="controls"
+       type="text"
+       placeholder="Search Box" />
+       <div id="map"></div>
 <section class="_Module_Margin _Orange_Bg">
     <div class="container">
         <div class="_Module_Inner_Space">
@@ -731,3 +736,79 @@
         </div>
     </div>
 </section>
+
+
+@section pageJs{
+    <script>
+
+        let map, circle, placesService;
+        let infoWindow = new google.maps.InfoWindow();
+
+        function initMap() {
+            // Harita oluştur
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 41.0812087, lng: 28.9730151 },
+                zoom: 13,
+            });
+
+
+
+            // Haritaya tıklanınca daire ekle
+            map.addListener("click", addCircle);
+
+            // Butona tıklanınca daire içindeki yerleri listele
+            //document.getElementById("btn").addEventListener("click", listPlaces);
+
+        }
+
+        function addCircle(event) {
+            // Daha önce oluşturulmuş daire varsa sil
+            if (circle) {
+                circle.setMap(null);
+            }
+
+            // Yeni daire oluştur
+            circle = new google.maps.Circle({
+                center: event.latLng,
+                radius: 500,
+                map: map,
+                draggable: true,
+                editable: true,
+            });
+
+            // Daire üzerine tıklandığında bilgileri göster
+            circle.addListener("click", showInfo);
+
+            // Daire boyutu veya konumu değiştirildiğinde bilgileri güncelle
+            circle.addListener("radius_changed", showInfo);
+            circle.addListener("center_changed", showInfo);
+        }
+
+        // Daire hakkındaki bilgileri gösterme işlemi
+        function showInfo() {
+            const radius = circle.getRadius() / 1000;
+            const center = circle.getCenter().toJSON();
+            infoWindow.setContent(`<div>Merkez: ${JSON.stringify(center)}, Yarıçap: ${radius.toFixed(2)} km</div>`);
+            infoWindow.setPosition(circle.getCenter());
+            infoWindow.open(map);
+        }
+
+        // Daire içindeki yerleri listeleme işlemi
+        function listPlaces() {
+            // PlacesService oluştur
+            placesService = new google.maps.places.PlacesService(map);
+
+            const request = {
+                location: circle.getCenter(),
+                radius: circle.getRadius(),
+            };
+
+            placesService.nearbySearch(request, (results, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    console.log(JSON.stringify(results));
+                }
+            });
+        }
+
+    </script>
+}

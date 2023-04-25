@@ -18,14 +18,14 @@ namespace Airport.DBEntities.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = "server=93.89.225.59;database=pairpoX3_db1234;user=pairpoX3_db1234;password=Zw6Gzx9B;Allow Zero Datetime=True;Convert Zero Datetime=True";
-            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            //var connectionString = "server=93.89.225.59;database=pairpoX3_db1234;user=pairpoX3_db1234;password=Zw6Gzx9B;Allow Zero Datetime=True;Convert Zero Datetime=True";
+            //optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
             //var connectionString = "Server=.\\SQLEXPRESS;Database=pairpoX3_db1234;User Id=pairpoX3_db1234;Password=Ur3nedCS; Trusted_Connection = True; MultipleActiveResultSets = true";
             //optionsBuilder.UseSqlServer(connectionString);
 
-            //var connectionString = "Server =.\\SQLEXPRESS01; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
-            //optionsBuilder.UseSqlServer(connectionString);
+            var connectionString = "Server =.\\SQLEXPRESS01; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
+            optionsBuilder.UseSqlServer(connectionString);
 
             //var connectionString = "Server =.\\SQLEXPRESS; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
             //optionsBuilder.UseSqlServer(connectionString);
