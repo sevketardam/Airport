@@ -2,15 +2,59 @@
     Layout = "_PanelLayout";
 }
 
- 
 
+<div class="col-12 mb-4">
+    <h5 class="mb-4">Validation</h5>
+    <div class="card mb-4">
+        <div id="smartWizardValidation">
+            <ul class="card-header">
+                <li><a href="#step-0">Step 1<br /><small>First step description</small></a></li>
+                <li><a href="#step-1">Step 2<br /><small>Second step description</small></a></li>
+                <li><a href="#step-2">Step 3<br /><small>Third step description</small></a></li>
+            </ul>
 
+            <div class="card-body">
+                <div id="step-0">
+                    <form id="form-step-0" class="tooltip-label-right" novalidate>
+                        <input type="text" class="form-control" placeholder="Search Location" id="searchLocation" />
+                    </form>
+                </div>
+                <div id="step-1">
+                    <form id="form-step-1" class="tooltip-label-right" novalidate>
+                        <div class="form-group position-relative error-l-75">
+                            <label for="name">First Name</label>
+                            <input type="text" class="form-control" name="nameValidation"
+                                   id="nameValidation" placeholder="Your first name" required>
+                        </div>
+                        <div class="form-group position-relative error-l-75">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" class="form-control" name="lastNameValidation"
+                                   id="lastNameValidation" placeholder="Your last name" required>
+                        </div>
+                    </form>
+                </div>
+                <div id="step-2">
+                    <h4 class="text-center">Thank you for your feedback!</h4>
+                    <p class="muted text-center p-4">
+                        Podcasting operational change management inside of workflows to establish a
+                        framework. Taking seamless key performance indicators offline to maximise the
+                        long tail. Keeping your eye on the ball while performing a deep dive on the
+                        start-up mentality.
+                    </p>
+                </div>
+            </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <input type="text" class="form-control" placeholder="Search Location" id="searchLocation" />
+            <div class="btn-toolbar custom-toolbar text-center card-body pt-0">
+                <button class="btn btn-secondary prev-btn" type="button">Previous</button>
+                <button class="btn btn-secondary next-btn" type="button">Next</button>
+                <button class="btn btn-secondary finish-btn" type="submit">Finish</button>
+            </div>
+        </div>
     </div>
 </div>
+
+
+
 
 
 
