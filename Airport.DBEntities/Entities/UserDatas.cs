@@ -18,10 +18,16 @@ namespace Airport.DBEntities.Entities
         public string Eposta { get; set; }
         public string Password { get; set; }
         public string Name { get; set; }
-        public string? Lastname { get; set; }
         public string PhoneNumber { get; set; }
         public byte Type { get; set; }
-
+        public string? Profession { get; set; }
+        public string? Address { get; set; }
+        public string? CompanyWebsite { get; set; }
+        public string? Linkedin { get; set; }
+        public string? Facebook { get; set; }
+        public string? TransferRequest { get; set; }
+        public string? TransferRequestLocation { get; set; }
+        public string? CompanyPhoneNumber { get; set; }
 
         public List<Services> Services { get; set; }
         public List<MyCars> MyCars { get; set; }

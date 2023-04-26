@@ -18,6 +18,6 @@ namespace Airport.DBEntities.Entities
         public int UserId { get; set; }
 
         public UserDatas User { get; set; }
-        public List<LocationCars> LocationCars{ get; set; }
+        public List<LocationCars> LocationCars { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Airport.DBEntities.Entities;
 using Airport.DBEntitiesDAL.Interfaces;
 using Airport.UI.Models;
+using Airport.UI.Models.IM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -53,13 +54,33 @@ namespace Airport.UI.Controllers
         [Route("register")]
         public IActionResult Register()
         {
-            return View();
+            if (!User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            return NotFound();
         }
 
         [Route("terms")]
         public IActionResult Terms()
         {
             return View();
+        }
+
+
+        [HttpPost("getLocation",Name = "getLocationValue")]
+        public IActionResult GetReservasionValue(GetResevationIM reservation)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            return RedirectToAction("Contact","Home");
         }
 
 

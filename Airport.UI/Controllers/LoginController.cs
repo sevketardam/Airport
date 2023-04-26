@@ -26,7 +26,8 @@ namespace Airport.UI.Controllers
             return View();
         }
 
-        public async Task<JsonResult> Login(LoginVM loginValues)
+        [HttpPost]
+        public async Task<JsonResult> Login(LoginVM loginValues,bool rememberMe)
         {
             if (loginValues != null)
             {
@@ -46,12 +47,26 @@ namespace Airport.UI.Controllers
 
                         ClaimsPrincipal pri = new ClaimsPrincipal(userIdentity);
 
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, pri, new AuthenticationProperties
+                        if (rememberMe)
                         {
-                            IsPersistent = true,
-                            AllowRefresh = true,
-                            RedirectUri = "/"
-                        });
+                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, pri, new AuthenticationProperties
+                            {
+                                IsPersistent = true,
+                                AllowRefresh = true,
+                                RedirectUri = "/"
+                            });
+                        }
+                        else
+                        {
+                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, pri, new AuthenticationProperties
+                            {
+                                ExpiresUtc = DateTime.UtcNow.AddHours(2),
+                                IsPersistent = true,
+                                AllowRefresh = true,
+                                RedirectUri = "/"
+                            });
+                        }
+
 
                         return new JsonResult(new { status = 200 });
                     }

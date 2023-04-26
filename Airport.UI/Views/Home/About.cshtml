@@ -1,4 +1,4 @@
-﻿<section class="_Module_Margin _About_Module">
+﻿@*<section class="_Module_Margin _About_Module">
     <div class="container">
         <h3>About Company</h3>
         <p>
@@ -46,3 +46,126 @@
 </section>
 
 
+*@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Daireyi Özelleştirme Örneği</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+        #map {
+            height: 500px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+    <script>
+        let map, circle, placesService;
+        let infoWindow = new google.maps.InfoWindow();
+
+        function initMap() {
+            // Harita oluştur
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 41.0812087, lng: 28.9730151 },
+                zoom: 13,
+            });
+
+
+
+            // Haritaya tıklanınca daire ekle
+            map.addListener("click", addCircle);
+
+            // Butona tıklanınca daire içindeki yerleri listele
+            document.getElementById("btn").addEventListener("click", listPlaces);
+
+        }
+
+        // Daire ekleme işlemi
+        function addCircle(event) {
+            // Daha önce oluşturulmuş daire varsa sil
+            if (circle) {
+                circle.setMap(null);
+            }
+
+            // Yeni daire oluştur
+            circle = new google.maps.Circle({
+                center: event.latLng,
+                radius: 500,
+                map: map,
+                draggable: true,
+                editable: true,
+            });
+
+            // Daire üzerine tıklandığında bilgileri göster
+            circle.addListener("click", showInfo);
+
+            // Daire boyutu veya konumu değiştirildiğinde bilgileri güncelle
+            circle.addListener("radius_changed", showInfo);
+            circle.addListener("center_changed", showInfo);
+        }
+
+        // Daire hakkındaki bilgileri gösterme işlemi
+        function showInfo() {
+            const radius = circle.getRadius() / 1000;
+            const center = circle.getCenter().toJSON();
+            infoWindow.setContent(`<div>Merkez: ${JSON.stringify(center)}, Yarıçap: ${radius.toFixed(2)} km</div>`);
+            infoWindow.setPosition(circle.getCenter());
+            infoWindow.open(map);
+        }
+
+        // Daire içindeki yerleri listeleme işlemi
+        function listPlaces() {
+
+
+            // PlacesService oluştur
+            placesService = new google.maps.places.PlacesService(map);
+
+            const request = {
+                location: circle.getCenter(),
+                radius: circle.getRadius(),
+            };
+
+            placesService.nearbySearch(request, (results, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    console.log(JSON.parse(JSON.stringify(results)));
+                }
+            });
+        }
+
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+        function initialize() {
+            var input = document.getElementById('autocomplete_search');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.addListener('place_changed', function () {
+                var place = autocomplete.getPlace();
+                console.log(place)
+                // place variable will have all the information you are looking for.
+                $('#lat').val(place.geometry['location'].lat());
+                $('#long').val(place.geometry['location'].lng());
+            });
+        }
+
+    </script>
+
+    <script>
+
+    </script>
+</head>
+
+<body onload="initMap()">
+    <div id="map"></div>
+    <button id="btn">listele</button>
+
+    <input type="text" id="autocomplete_search">
+    <input type="text" id="lat">
+    <input type="text" id="long">
+</body>
+
+</html>

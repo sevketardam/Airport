@@ -75,7 +75,7 @@
                                         </div>
                                         <div class="_Form_Inputs_Div">
                                             <div class="_Check_Div">
-                                                <input type="checkbox"> <label>Remember Me</label>
+                                                <input type="checkbox" name="rememberMe" value="true"> <label>Remember Me</label>
                                             </div>
                                             <div>
                                                 <a href="/">Forgot Password</a>
@@ -85,7 +85,7 @@
                                             <button type="submit">
                                                 Login
                                             </button>
-                                            <a href="/" title="Don't have an account yet? Register">
+                                            <a href="/register" title="Don't have an account yet? Register">
                                                 Don't have an account yet? Register
                                             </a>
                                         </div>
@@ -230,6 +230,8 @@
             integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&libraries=places&callback=initMap"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"
             integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -245,6 +247,7 @@
     <script src="~/webjs/app.js" asp-append-version="true"></script>
 
     <script>
+
         $('#_Sign_Form').on("submit", function (e) {
             e.preventDefault();
             var formData = $(this).serialize()
@@ -253,6 +256,7 @@
                 type: "POST",
                 data: formData,
                 success: function (data) {
+                    console.log(data)
                     if (data.status == 200) {
                         Swal.fire({
                             position: 'top-end',
@@ -278,10 +282,13 @@
                             title: 'Oops...',
                             text: 'Something went wrong!',
                         })
-                    }
+                    } 
                 }
             });
         })
     </script>
+
+
+    @RenderSection("pageJs", required: false)
 </body>
 </html>
