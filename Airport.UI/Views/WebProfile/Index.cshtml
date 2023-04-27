@@ -1,0 +1,57 @@
+﻿<section class="_Module_Margin">
+    <div class="container">
+        <div class="_Profile_Flex">
+
+            @await Component.InvokeAsync("ProfileSidebar")
+
+            <div class="_Profile_Right">
+                <div>
+                    <h2 class="_Simple_Orange_Title">
+                        Your Profile
+                    </h2>
+                    <div class="_Simple_Div">
+                        <p class="_Simple_P">
+                            Details about your profile information
+                        </p>
+                    </div>
+                    <div>
+                        <form id="_Profile_Form">
+                            <div class="_Form_Flex_Style">
+                                <div class="_Form_Div">
+                                    <label class="_Form_Label">Title</label>
+                                    <input type="text" name="Title">
+                                </div>
+                                <div class="_Form_Div">
+                                    <label class="_Form_Label">Name</label>
+                                    <input type="text" name="Name">
+                                </div>
+                                <div class="_Form_Div _Two">
+                                    <label class="_Form_Label">Profession</label>
+                                    <input type="text" name="Profession">
+                                </div>
+                                <div class="_Form_Div _Two">
+                                    <label class="_Form_Label">Mobile Phone</label>
+                                    <input type="text" name="Mobile_Phone">
+                                </div>
+                                <div class="_Form_Div _Two">
+                                    <button class="_Verify_Number">
+                                        Verify Number
+                                    </button>
+                                </div>
+                                <div class="_Form_Div _Two">
+                                    <label class="_Form_Label">E-mail</label>
+                                    <input type="text" name="E_mail">
+                                </div>
+                                <div class="_Form_Div _Two">
+                                    <button class="_Form_Button">
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

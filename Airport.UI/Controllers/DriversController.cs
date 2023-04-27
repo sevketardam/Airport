@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace Airport.UI.Controllers
 {
-    public class DriversController : Controller
+    public class DriversController : BaseController
     {
         IDriversDAL _drivers;
         public DriversController(IDriversDAL drivers)

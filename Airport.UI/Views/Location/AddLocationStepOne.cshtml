@@ -2,13 +2,21 @@
     Layout = "_PanelLayout";
 }
 
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Error
+    </div>
+}
+
+
 <div class="row">
     <div class="col-12 mb-4">
         <form asp-route="AddLocationStepOne" novalidate>
-            <input type="text" class="form-control" placeholder="Search Location" id="searchLocation" />
+            <input type="text" class="form-control mb-3" placeholder="Search Location" id="searchLocation" />
             <input type="hidden" id="placeId" name="placeId" />
 
-            <button class="btn btn-secondary next-btn" type="submit">Next</button>
+            <button class="btn btn-secondary next-btn" style="float:right;" type="submit">Next</button>
         </form>
     </div>
 </div>
