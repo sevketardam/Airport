@@ -5,11 +5,19 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Airport.UI.Models.VM;
 using Microsoft.AspNetCore.Routing;
+using Airport.DBEntitiesDAL.Interfaces;
 
 namespace Airport.UI.Controllers
 {
     public class LocationController : Controller
     {
+        IMyCarsDAL _myCars;
+        public LocationController(IMyCarsDAL myCars)
+        {
+            _myCars = myCars;
+        }
+
+
         [HttpGet("panel/location")]
         public IActionResult Index()
         {
@@ -52,6 +60,9 @@ namespace Airport.UI.Controllers
                 Geometry = convertResult.Geometry,
             };
             ViewBag.Location = "{ lat: " + model.Result.Geometry.Location.lat + ", lng:" + model.Result.Geometry.Location.lng + "}";
+
+
+
 
             return View();
         }
