@@ -24,6 +24,8 @@
 
                 .service-Card .service-info-group p {
                     width: 60%;
+                    font-size:12px;
+                    margin-bottom:0;
                 }
 
 
@@ -31,12 +33,12 @@
             .service-Card .serviceNumberInput {
                 display: grid;
                 grid-template-columns: 70% 30%;
+                grid-template-rows: 15px 15px;
                 width: 100px;
                 border-radius: 8px;
                 outline: solid 2px #808080cf;
                 background: #808080cf;
                 gap: 2px;
-                grid-template-rows: 20px 20px;
                 height: fit-content;
             }
 
@@ -59,16 +61,15 @@
                     outline: none;
                     background: #ffffffa1;
                     padding: 5px;
-                    font-size: 10px;
+                    font-size: 7px;
                 }
 
             .service-Card .serviceCard-remove {
                 background: #EC681E;
                 font-size: 20px;
-                padding: 10px;
                 border-radius: 10px;
-                width: 45px;
-                height: 40px;
+                    width: 40px;
+    height: 35px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -80,7 +81,7 @@
             background: #EC681E;
             padding: 10px;
             text-align: center;
-            font-size: 25px;
+            font-size: 16px;
             color: white;
             width:fit-content;
             height: fit-content;
@@ -284,9 +285,13 @@
                                 
 
                                 serviceCard.dataset.id = item.id;
-
+                                
                                 serviceCard.innerHTML = `
+                                                
+                                                
                                                     <p>
+                                                                <b>${item.serviceName}</b>
+                                                                <br>
                                                         ${item.serviceDescripton}
                                                     </p>
 
@@ -321,7 +326,9 @@
                                 serviceCard.dataset.id = item.id;
 
                                 serviceCard.innerHTML = `
-                                                            <p>
+                                                                    <p>
+                                                                        <b>${item.serviceName}</b>
+                                                                        <br>
                                                                 ${item.serviceDescripton}
                                                             </p>
 
