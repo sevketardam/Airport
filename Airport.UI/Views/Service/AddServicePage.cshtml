@@ -27,7 +27,7 @@
         </div>
         <div class="col-sm-6">
             <label>Service List</label>
-            <select class="form-control select2-multiple" name="serviceItems" multiple="multiple" data-width="100%">
+            <select class="form-control select2-multiple" name="serviceItems" multiple="multiple" id="serviceList" data-width="100%">
 
                 @foreach (var category in Model)
                 {
@@ -70,6 +70,20 @@
                         }).then(() => {
                             location.href = "/panel/service";
                         })
+                    }
+                }
+            });
+        })
+
+        $('#serviceList').on("change", function () {
+            var propId = $(this).val()
+            $.ajax({
+                url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.GetServiceItem))',
+                type: "POST",
+                data: { serviceProId:propId },
+                success: function (response) {
+                    if(response.result==1){
+
                     }
                 }
             });

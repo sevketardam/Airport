@@ -227,5 +227,37 @@ namespace Airport.UI.Controllers
                 return new JsonResult(new { });
             }
         }
+
+
+        [HttpPost]
+        public JsonResult GetServiceItem(int[] serviceProId)
+        {
+            try
+            {
+                var serviceVM = new List<GetServiceItemDetailVM>();
+                foreach (var item in serviceProId)
+                {
+                    var serviceProp = _serviceProperties.SelectByID(item);
+
+                    if (serviceProp != null)
+                    {
+                        serviceProp.ServiceCategory = _serviceCategory.SelectByID(serviceProp?.ServiceCategoryId);
+                        serviceVM.Add(new GetServiceItemDetailVM()
+                        {
+                            Id = serviceProp.Id,
+                            ServiceCategoryName = serviceProp.ServiceCategory?.ServiceCategoryName,
+                            ServiceDescripton = serviceProp.ServicePropertyDescription,
+                            ServiceName = serviceProp.ServicePropertyName
+                        });
+                    }
+                }
+
+                return new JsonResult(new { result = 1, data = serviceVM });
+            }
+            catch (System.Exception)
+            {
+                return new JsonResult(new { });
+            }
+        }
     }
 }
