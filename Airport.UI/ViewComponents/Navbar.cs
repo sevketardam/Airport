@@ -18,7 +18,11 @@ namespace Airport.UI.ViewComponents
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
             var user = _user.SelectByID(userId);
-            return View(user);
+            if (user != null)
+            {
+                return View(user);
+            }
+            return null;
         }
     }
 }

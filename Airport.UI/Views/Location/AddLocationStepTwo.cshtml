@@ -88,7 +88,8 @@
 
             // Haritaya tıklanınca daire ekle
             map.addListener("click", function (event) {
-                mapEvent = event;
+                firstEvent = event;
+                checkPost = "ADD";
                 $('#locationMarker #locationName').val("")
                 $('#locationMarker #locationRadius').val("")
                 $('#carSelect').val("")
@@ -100,13 +101,16 @@
             // document.getElementById("btn").addEventListener("click", listPlaces);
         }
         var mapEvent;
+        var firstEvent;
+        var checkPost;
+
         // Daire ekleme işlemi
         function addCircle(event, km) {
             // Daha önce oluşturulmuş daire varsa sil
             if (circle) {
                 circle.setMap(null);
             }
-
+            console.log(event)
             // Yeni daire oluştur
             circle = new google.maps.Circle({
                 center: event.latLng,
@@ -132,7 +136,7 @@
             $('#locationMarker #locationRadius').val(locationJson.locationRadius)
             $('#locationMarker #carSelect').val(locationJson.locationCars)
             $('#locationMarker #carSelect').trigger("change")
-
+            checkPost = "UPDATE";
             $('#getCircle').modal()
 
             //const radius = circle.getRadius() / 1000;
@@ -173,6 +177,12 @@
             locationJson.locationName = $('#locationName').val();
             locationJson.locationRadius = parseInt($('#locationRadius').val());
             locationJson.locationCars = $('#carSelect').val();
+
+            if (checkPost == "ADD"){
+                mapEvent = firstEvent;
+            }
+
+
             addCircle(mapEvent, locationJson.locationRadius);
 
             $('#getCircle').modal("hide")

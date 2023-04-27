@@ -23,11 +23,14 @@
     justify-content: space-between;
     gap: 1rem;
   }
-  
-  html,
-  body {
+
+.navbar .user img{
+    height:40px;
+}
+html,
+body {
     overflow-x: hidden;
-  }
+}
   
   :root {
     --nav-gap: 1rem;

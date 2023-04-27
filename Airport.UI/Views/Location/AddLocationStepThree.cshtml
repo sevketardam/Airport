@@ -1,3 +1,40 @@
 ﻿@{
     Layout = "_PanelLayout";
 }
+
+
+
+<div class="row">
+    <div class="col-10 mb-4">
+        <form class="mb-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <label id="airDropCharge">Airdrop Drop Charge</label>
+                    <input type="text" class="form-control" id="airDropCharge" />
+                </div>
+            </div>
+        </form>
+
+        <div class="row mb-2">
+            <div class="col-md-3">
+                <label>Starting From</label>
+                <input type="text" class="form-control" placeholder="0km" />
+            </div>
+            <div class="col-md-3">
+                <label>Up To</label>
+                <input type="text" class="form-control" value="10km" />
+            </div>
+            <div class="col-md-3">
+                <label>Fare</label>
+                <input type="text" class="form-control" value="$10" />
+            </div>
+@*            <div class="col-md-2">
+                <label>Fare For Minivan</label>
+                <input type="text" class="form-control" value="$10" />
+            </div>*@
+            
+        </div>
+        <button class="btn btn-secondary next-btn w-100" style="border-radius:0px;" type="submit">Add New Distance</button>
+    </div>
+</div>
+

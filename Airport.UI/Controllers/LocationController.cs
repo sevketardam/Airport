@@ -9,6 +9,8 @@ using Airport.DBEntitiesDAL.Interfaces;
 using System.Linq;
 using System.Security.Claims;
 using Airport.UI.Models.IM;
+using System.Collections.Generic;
+using Airport.DBEntities.Entities;
 
 namespace Airport.UI.Controllers
 {
@@ -80,6 +82,8 @@ namespace Airport.UI.Controllers
                 };
                 ViewBag.Location = "{ lat: " + model.Result.Geometry.Location.lat + ", lng:" + model.Result.Geometry.Location.lng + "}";
 
+                TempData["modelresult"] = JsonConvert.SerializeObject(model);
+
                 var myCarsList = _myCars.SelectByFunc(a => a.UserId == userId);
                 myCarsList.ForEach(a =>
                 {
@@ -95,12 +99,19 @@ namespace Airport.UI.Controllers
 
         }
 
-
-
         [HttpPost("panel/add-location/step-three", Name = "getMapLocation")]
         public async Task<IActionResult> AddLocationStepThree(string mapValues)
         {
             var convertMapValues = JsonConvert.DeserializeObject<GetMapValuesIM>(mapValues);
+
+            var result = JsonConvert.DeserializeObject<GetGoogleAPIVM>((string)TempData["modelresult"]);
+
+            var carList = new List<MyCars>();
+            foreach (var item in convertMapValues.LocationCars)
+            {
+                carList.Add(_myCars.SelectByID(item));
+            }
+
 
             return View();
         }

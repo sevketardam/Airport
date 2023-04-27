@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Airport.DBEntitiesDAL.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Airport.UI.Controllers
 {
     public class WebProfileController : BaseController
     {
-        public WebProfileController()
+        IUserDatasDAL _user;
+        public WebProfileController(IUserDatasDAL user)
         {
-            
+            _user = user;
         }
 
         [HttpGet("profile")]
