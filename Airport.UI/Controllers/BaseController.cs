@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Airport.UI.Controllers
 {
-    public class PanelController : BaseController
+    [Authorize]
+    public class BaseController : Controller
     {
-        public IActionResult Index()
+        public BaseController()
         {
-            return View();
+            
         }
     }
 }

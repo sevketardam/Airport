@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace Airport.UI.Controllers
 {
-    public class CarsController : Controller
+    public class CarsController : BaseController
     {
         IServicesDAL _services;
         IServiceItemsDAL _serviceItems;

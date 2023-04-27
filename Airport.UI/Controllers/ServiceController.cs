@@ -11,7 +11,7 @@ using System.Security.Claims;
 namespace Airport.UI.Controllers
 {
     [Authorize]
-    public class ServiceController : Controller
+    public class ServiceController : BaseController
     {
         IServiceCategoriesDAL _serviceCategory;
         IServicePropertiesDAL _serviceProperties;

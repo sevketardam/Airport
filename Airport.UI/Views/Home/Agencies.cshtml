@@ -1,8 +1,12 @@
 ﻿<!-- Form -->
+@section pageCSSLink{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+}
+
 <section class="_Module_Margin">
     <div class="container">
         <form id="_Agency_Form">
-            <div class="_Agency_Flex">
+            <div class="_Agency_Flex _Form_Flex_Style">
                 <div class="_Form_Div _Form_Title">
                     <h3>
                         Personel Information
@@ -141,15 +145,22 @@
 </section>
 
 
-<script>
-    const phoneInputField = document.querySelector("#_Personel_Number");
-    const phoneInput = window.intlTelInput(phoneInputField, {
-        utilsScript:
-            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-    });
-    const phoneInputField2 = document.querySelector("#_Agency_Number");
-    const phoneInput2 = window.intlTelInput(phoneInputField2, {
-        utilsScript:
-            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-    });
-</script>
+@section pageJsScript{
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+}
+@section pageJs{
+
+    <script>
+        const phoneInputField = document.querySelector("#_Personel_Number");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+        const phoneInputField2 = document.querySelector("#_Agency_Number");
+        const phoneInput2 = window.intlTelInput(phoneInputField2, {
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+    </script>
+}

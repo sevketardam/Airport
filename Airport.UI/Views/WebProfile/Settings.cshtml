@@ -1,0 +1,66 @@
+﻿<section class="_Module_Margin">
+    <div class="container">
+        <div class="_Profile_Flex">
+
+            @await Component.InvokeAsync("ProfileSidebar")
+
+            <div class="_Profile_Right">
+                <div>
+                    <h2 class="_Simple_Orange_Title">
+                        Settings
+                    </h2>
+                    <div class="_Simple_Div">
+                        <p class="_Simple_P">
+                            Manage your settings
+                        </p>
+                    </div>
+                    <div>
+                        <form id="_Profile_Form">
+                            <div class="_Form_Flex_Style">
+                                <div class="_Form_Div">
+                                    <label class="_Form_Label">Latest Booking</label>
+                                    <select name="Latest_Booking">
+                                        <option value="1 hours">1 hours</option>
+                                        <option value="4 hours">4 hours</option>
+                                        <option value="6 hours">6 hours</option>
+                                        <option value="12 hours">12 hours</option>
+                                        <option value="24 hours">24 hours</option>
+                                        <option value="48 hours">48 hours</option>
+                                    </select>
+                                </div>
+                                <div class="_Form_Div">
+                                    <label class="_Form_Label">Cancellation Time</label>
+                                    <select name="Cancellation_Time">
+                                        <option value="1 hours">1 hours</option>
+                                        <option value="4 hours">4 hours</option>
+                                        <option value="6 hours">6 hours</option>
+                                        <option value="12 hours">12 hours</option>
+                                        <option value="24 hours">24 hours</option>
+                                        <option value="48 hours">48 hours</option>
+                                    </select>
+                                </div>
+                                <div class="_Form_Div">
+                                    <label class="_Form_Label">Timezone</label>
+                                    <input type="text" name="Timezone">
+                                </div>
+                                <div class="_Form_Div">
+                                    <label class="_Form_Label">Currency</label>
+                                    <select name="Currency">
+                                        <option value="Dollar (USD)">Dollar (USD)</option>
+                                        <option value="Euro (EUR)">Euro (EUR)</option>
+                                        <option value="pOUND (GB)">pOUND (GB)</option>
+                                    </select>
+                                </div>
+                                <div class="_Form_Div _Two">
+                                    <button class="_Form_Button">
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

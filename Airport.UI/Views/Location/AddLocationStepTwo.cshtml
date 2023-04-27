@@ -1,38 +1,58 @@
 ﻿@{
     Layout = "_PanelLayout";
 }
+@model List<MyCars>
+
 <style>
     #map {
         height: 500px;
     }
 </style>
 
-<div id="map"></div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form id="mapLocationForm" asp-route="getMapLocation" method="post">
+            <div id="map" class="mb-3"></div>
+            <input id="mapValues" type="hidden" name="mapValues" />
+            <button class="btn btn-secondary" style="float:right;" id="nextBtn" type="button">Next</button>
+        </form>
+    </div>
+</div>
+
+
+
 @*<button id="btn">listele</button>*@
 
 <div class="modal fade" id="getCircle" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Location Marker</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="locationMarker">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-3">
                             <label for="locationName">Location Name</label>
-                            <input class="form-conrol" id="locationName" placeholder="Enter a location name" type="text"/>
+                            <input class="form-control" id="locationName" placeholder="Enter a location name" type="text" />
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-3">
                             <label for="locationRadius">Radius</label>
-                            <input class="form-conrol" id="locationRadius" type="text" />
+                            <input class="form-control" id="locationRadius" type="number" />
                         </div>
-                        <div>
+                        <div class="col-md-12">
                             <label>Car on this point</label>
+                            <select class="form-control select2-multiple" id="carSelect" multiple="multiple" data-width="100%">
+                                @foreach (var car in Model)
+                                {
+                                    <option value="@car.Id">@(car.Brand?.CarBrandName)</option>
+                                }
+                            </select>
                         </div>
                     </div>
                 </form>
@@ -42,7 +62,7 @@
                         data-dismiss="modal">
                     Close
                 </button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" id="saveLocation">Save changes</button>
             </div>
         </div>
     </div>
@@ -53,6 +73,7 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&libraries=places&callback=initMap"></script>
     <script>
+
         let map, circle, placesService;
         let infoWindow = new google.maps.InfoWindow();
 
@@ -61,18 +82,26 @@
             map = new google.maps.Map(document.getElementById("map"), {
                 center: @ViewBag.Location,
                 zoom: 13,
+                mapTypeControl: false,
+                streetViewControl: false,
             });
 
             // Haritaya tıklanınca daire ekle
-            map.addListener("click", addCircle);
+            map.addListener("click", function (event) {
+                mapEvent = event;
+                $('#locationMarker #locationName').val("")
+                $('#locationMarker #locationRadius').val("")
+                $('#carSelect').val("")
+                $('#carSelect').trigger("change")
+
+                $('#getCircle').modal()
+            });
             // Butona tıklanınca daire içindeki yerleri listele
-            document.getElementById("btn").addEventListener("click", listPlaces);
+            // document.getElementById("btn").addEventListener("click", listPlaces);
         }
-
+        var mapEvent;
         // Daire ekleme işlemi
-        function addCircle(event) {
-
-            $('#getCircle').modal()
+        function addCircle(event, km) {
             // Daha önce oluşturulmuş daire varsa sil
             if (circle) {
                 circle.setMap(null);
@@ -81,7 +110,7 @@
             // Yeni daire oluştur
             circle = new google.maps.Circle({
                 center: event.latLng,
-                radius: 500,
+                radius: km * 100,
                 map: map,
                 //draggable: true,
                 //editable: true,
@@ -95,13 +124,22 @@
             circle.addListener("center_changed", showInfo);
         }
 
+
+
         // Daire hakkındaki bilgileri gösterme işlemi
         function showInfo() {
-            const radius = circle.getRadius() / 1000;
-            const center = circle.getCenter().toJSON();
-            infoWindow.setContent(`<div>Merkez: ${JSON.stringify(center)}, Yarıçap: ${radius.toFixed(2)} km</div>`);
-            infoWindow.setPosition(circle.getCenter());
-            infoWindow.open(map);
+            $('#locationMarker #locationName').val(locationJson.locationName)
+            $('#locationMarker #locationRadius').val(locationJson.locationRadius)
+            $('#locationMarker #carSelect').val(locationJson.locationCars)
+            $('#locationMarker #carSelect').trigger("change")
+
+            $('#getCircle').modal()
+
+            //const radius = circle.getRadius() / 1000;
+            //const center = circle.getCenter().toJSON();
+            //infoWindow.setContent(`<div>Merkez: ${JSON.stringify(center)}, Yarıçap: ${radius.toFixed(2)} km</div>`);
+            //infoWindow.setPosition(circle.getCenter());
+            //infoWindow.open(map);
         }
 
         // Daire içindeki yerleri listeleme işlemi
@@ -121,8 +159,29 @@
             });
         }
 
-        window.onload = ()=>{
+        window.onload = () => {
             initMap();
         }
+
+        var locationJson = {
+            locationName: "",
+            locationRadius: 0,
+            locationCars: ""
+        };
+
+        $('#saveLocation').on("click", function () {
+            locationJson.locationName = $('#locationName').val();
+            locationJson.locationRadius = parseInt($('#locationRadius').val());
+            locationJson.locationCars = $('#carSelect').val();
+            addCircle(mapEvent, locationJson.locationRadius);
+
+            $('#getCircle').modal("hide")
+        })
+
+
+        $('#nextBtn').on("click", function () {
+            $('#mapValues').val(JSON.stringify(locationJson))
+            $('#mapLocationForm').submit()
+        })
     </script>
 }

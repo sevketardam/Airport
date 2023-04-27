@@ -12,10 +12,13 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+
+    @RenderSection("pageCSSLink", required: false)
+
     <link rel="stylesheet" href="~/webcss/style.css" asp-append-version="true">
 </head>
 
-<body onload="initMap()">
+<body>
     <header>
         <nav>
             <div class="container">
@@ -231,7 +234,6 @@
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&libraries=places&callback=initMap"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"
             integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA=="
@@ -244,6 +246,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
+    @RenderSection("pageJsScript", required: false)
 
     <script src="~/js/site.js" asp-append-version="true"></script>
 
