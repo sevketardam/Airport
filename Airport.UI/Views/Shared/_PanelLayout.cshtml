@@ -33,11 +33,14 @@
     <link rel="stylesheet" href="~/css/vendor/perfect-scrollbar.css" />
     <link rel="stylesheet" href="~/css/vendor/smart_wizard.min.css" />
     <link rel="stylesheet" href="~/css/vendor/bootstrap-tagsinput.css" />
-
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css">
 
 
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+
+
+    @RenderSection("pageCSS", required: false)
 
 
 </head>
@@ -559,6 +562,7 @@
     <script src="~/js/dore-plugins/select.from.library.js"></script>
     <script src="~/js/vendor/mousetrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.0.2/cleave.min.js" integrity="sha512-SvgzybymTn9KvnNGu0HxXiGoNeOi0TTK7viiG0EGn2Qbeu/NFi3JdWrJs2JHiGA1Lph+dxiDv5F9gDlcgBzjfA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="~/js/dore.script.js" asp-append-version="true"></script>
     <script src="~/js/scripts.js" asp-append-version="true"></script>
 

@@ -34,7 +34,7 @@ namespace Airport.UI.Controllers
             return View(serviceList);
         }
 
-        [Route("panel/addservice")]
+        [Route("panel/add-service")]
         public IActionResult AddServicePage()
         {
             var serviceCategories = _serviceCategory.Select();
