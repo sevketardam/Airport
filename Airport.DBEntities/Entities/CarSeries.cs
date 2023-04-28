@@ -14,6 +14,10 @@ namespace Airport.DBEntities.Entities
         public int Id { get; set; }
         public string CarSeriesName { get; set; }
         public int CarModelId { get; set; }
+        public string CarSeriesFullName { get; set; }
+        public string GenerationName { get; set; }
+        public string? GenerationYearBegin { get; set; }
+        public string? GenerationYearEnd { get; set; }
 
         public CarModels CarModel { get; set; }
         public List<CarTrims> CarTrims { get; set; }

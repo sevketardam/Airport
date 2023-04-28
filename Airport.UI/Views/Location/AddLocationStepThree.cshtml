@@ -1,43 +1,128 @@
-﻿@{
+﻿@using Airport.UI.Models.IM;
+@{
     Layout = "_PanelLayout";
 }
+@model GetMapValuesIM
+
+
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mb-4">Out of Zone</h4>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="outZoneDropCharge">Drop Charge</label>
+                        <input type="number" class="form-control" id="outZoneDropCharge" value="0" />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="outZonePerKmPrice">Price Per KM</label>
+                        <input type="number" class="form-control" id="outZonePerKmPrice" value="0" />
+                    </div>
+                    <form id="getValueForm" asp-route="getLocationValues">
+                        <input type="hidden" name="jsonValues"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 
 <div class="row">
-    <div class="col-10 mb-4">
-        <form class="mb-3">
-            <div class="row">
-                <div class="col-md-12">
-                    <label id="airDropCharge">Airdrop Drop Charge</label>
-                    <input type="text" class="form-control" id="airDropCharge" />
+    @foreach (var item in Model.Cars)
+    {
+        <div class="col-md-6 mb-3 carCard" data-id="@item.Id">
+            <div class="card">
+                <div class="card-body">
+                    <div>
+                        @item.Brand.CarBrandName
+                        @item.Model.CarModelName
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label>Drop Price</label>
+                            <input type="number" class="form-control" value="0" />
+                        </div>
+                    </div>
+
+                    <div class="row carFareCard">
+                        <div class="col-md-4 mb-3">
+                            <label>Starting From</label>
+                            <input type="text" class="form-control" id="startingFrom" placeholder="0km" value="0" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>Up To</label>
+                            <input type="text" class="form-control" id="upTo" value="10" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>Fare</label>
+                            <input type="text" class="form-control" id="fare" value="10" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-secondary next-btn w-100" style="border-radius:0px;" type="submit">Add New Distance</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </form>
-
-        <div class="row mb-2">
-            <div class="col-md-3">
-                <label>Starting From</label>
-                <input type="text" class="form-control" placeholder="0km" />
-            </div>
-            <div class="col-md-3">
-                <label>Up To</label>
-                <input type="text" class="form-control" value="10km" />
-            </div>
-            <div class="col-md-3">
-                <label>Fare</label>
-                <input type="text" class="form-control" value="$10" />
-            </div>
-            <div class="col-md-3">
-                <i></i>
-            </div>
-@*            <div class="col-md-2">
-                <label>Fare For Minivan</label>
-                <input type="text" class="form-control" value="$10" />
-            </div>*@
-            
         </div>
-        <button class="btn btn-secondary next-btn w-100" style="border-radius:0px;" type="submit">Add New Distance</button>
+    }
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <button class="btn btn-secondary next-btn w-100" style="border-radius:0px;" type="button" id="addLocationBtn">Add Location</button>
     </div>
 </div>
 
+
+
+@section pageJs{
+    <script>
+
+        $('#addLocationBtn').on("click", function () {
+            var outZonePrice = $('#outZoneDropCharge').val()
+            var outZonePerKmPrice = $('#outZonePerKmPrice').val()
+
+            var locationJson = {
+                outZonePrice: outZonePrice,
+                outZonePerKmPrice: outZonePerKmPrice,
+                carsPrice: []
+            }
+
+            $.each($('.carCard'), function (key, value) {
+                locationJson.carsPrice.push({
+                    carId: $(value).attr("data-id"),
+                    carsPricePerKm: []
+                });
+            })
+
+            $.each(locationJson.carsPrice, function (key, value) {
+                $.each($('.carCard[data-id="' + value.carId + '"] .carFareCard'),function (key2,value2) {
+                    var startingfromVal = $(value2).find("#startingFrom").val()
+                    var upToKmVal = $(value2).find("#upTo").val()
+                    var priceVal = $(value2).find("#fare").val()
+                    value.carsPricePerKm.push({
+                        startKm: startingfromVal,
+                        upToKm: upToKmVal,
+                        price: priceVal
+                    })
+                })
+            })
+
+            $('#getValueForm input[name="jsonValues"]').val(JSON.stringify(locationJson))
+            $('#getValueForm').submit()
+
+        })
+    </script>
+}
