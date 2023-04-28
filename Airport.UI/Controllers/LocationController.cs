@@ -11,6 +11,7 @@ using System.Security.Claims;
 using Airport.UI.Models.IM;
 using System.Collections.Generic;
 using Airport.DBEntities.Entities;
+using Airport.UI.Models.Interface;
 
 namespace Airport.UI.Controllers
 {
@@ -18,10 +19,12 @@ namespace Airport.UI.Controllers
     {
         IMyCarsDAL _myCars;
         ICarBrandsDAL _myBrands;
-        public LocationController(IMyCarsDAL myCars,ICarBrandsDAL carBrands)
+        IGetCarDetail _carDetail;
+        public LocationController(IMyCarsDAL myCars, ICarBrandsDAL carBrands, IGetCarDetail carDetail)
         {
             _myCars = myCars;
             _myBrands = carBrands;
+            _carDetail = carDetail;
         }
 
 
@@ -94,7 +97,7 @@ namespace Airport.UI.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("AddLocationStepOne","Location");
+                return RedirectToAction("AddLocationStepOne", "Location");
             }
 
         }
@@ -102,16 +105,27 @@ namespace Airport.UI.Controllers
         [HttpPost("panel/add-location/step-three", Name = "getMapLocation")]
         public async Task<IActionResult> AddLocationStepThree(string mapValues)
         {
-            var convertMapValues = JsonConvert.DeserializeObject<GetMapValuesIM>(mapValues);
-
-            var result = JsonConvert.DeserializeObject<GetGoogleAPIVM>((string)TempData["modelresult"]);
-
-            var carList = new List<MyCars>();
-            foreach (var item in convertMapValues.LocationCars)
+            try
             {
-                carList.Add(_myCars.SelectByID(item));
-            }
+                var convertMapValues = JsonConvert.DeserializeObject<GetMapValuesIM>(mapValues);
 
+                var result = JsonConvert.DeserializeObject<GetGoogleAPIVM>((string)TempData["modelresult"]);
+
+                convertMapValues.Cars = _carDetail.GetCarsDetail(convertMapValues.LocationCars);
+
+                return View(convertMapValues);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("AddLocationStepTwo", "Location");
+            }
+        }
+
+        [HttpPost("panel/add-location/step-four", Name = "getLocationValues")]
+        public async Task<IActionResult> GetLocationValues(string jsonValues)
+        {
+
+            var convertData = JsonConvert.DeserializeObject<GetLocationDataVM>(jsonValues);
 
             return View();
         }

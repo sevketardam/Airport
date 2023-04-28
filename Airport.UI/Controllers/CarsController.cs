@@ -3,8 +3,10 @@ using Airport.DBEntitiesDAL.Interfaces;
 using Airport.UI.Models.IM;
 using Airport.UI.Models.VM;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 
@@ -49,7 +51,7 @@ namespace Airport.UI.Controllers
         }
 
 
-        [HttpGet("panel/addcar")]
+        [HttpGet("panel/add-car")]
         public IActionResult AddMyCar()
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
@@ -87,7 +89,8 @@ namespace Airport.UI.Controllers
             return Json(new { result = 200, classes = carClass, types = carTypes });
         }
 
-        public IActionResult CreateMyCar(AddMyCarIM myCar)
+        [HttpPost("panel/add-car", Name = "AddCar")]
+        public IActionResult AddMyCar(AddMyCarIM myCar)
         {
             try
             {
@@ -108,7 +111,7 @@ namespace Airport.UI.Controllers
                     UserId = userId
                 });
 
-                return View();
+                return RedirectToAction("Index", "Cars");
             }
             catch (System.Exception)
             {
@@ -188,6 +191,59 @@ namespace Airport.UI.Controllers
                 return BadRequest();
             }
         }
+
+
+
+
+        [HttpGet("panel/car-management")]
+        public IActionResult CarManagement()
+        {
+            try
+            {
+
+                return View();
+            }
+            catch (System.Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        //[HttpPost]
+        //public IActionResult AddFirstData()
+        //{
+        //    try
+        //    {
+        //        //string line = "";
+
+
+        //        string jsonText = System.IO.File.ReadAllText("wwwroot/trims.json");
+
+        //        var list = System.Text.Json.JsonSerializer.Deserialize<List<TableEntry>>(jsonText);
+        //        var list2 = new List<CarTrims>();
+        //        list.ForEach(a =>
+        //        {
+        //            list2.Add(new CarTrims
+        //            {
+        //                CarSeriesId = a.serie_id,
+        //                CarTrimName = a.name,
+        //                Id = a.id,
+        //                CarModelId = a.model_id
+        //            });
+        //        });
+
+        //        _carTrims.InsertRage(list2);
+                
+        //        //_carBrands.InsertRage(list);
+
+
+        //        return new JsonResult(new { result = 1 });
+        //    }
+        //    catch (System.Exception)
+        //    {
+        //        return BadRequest();
+        //    }
+        //}
 
     }
 }

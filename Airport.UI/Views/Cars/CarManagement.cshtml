@@ -1,0 +1,35 @@
+﻿@*@{
+    Layout = "_PanelLayout";
+}
+
+<input type="button" value="Ekle" class="btn btn-warning" id="AddFirstCar"/>
+
+
+
+@section pageJs{
+        <script>
+            $('#AddFirstCar').on("click",function(){
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController.AddFirstData))',
+                    type: "POST",
+                    success: function (response) {
+                        if (response.result == 1) {
+                             Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully Created Driver',
+                            }).then(() => {
+                                location.href = "/panel/my-drivers";
+                            })
+                        }else{
+                             Swal.fire({
+                                icon: 'error',
+                                title: 'Error!!',
+                                text: 'Error!!:'+response,
+                            })
+                        }
+                    }
+                });
+            })
+        </script>
+}*@
