@@ -87,26 +87,27 @@ namespace Airport.UI.Controllers
             return Json(new { result = 200, classes = carClass, types = carTypes });
         }
 
+        [HttpPost]
         public IActionResult CreateMyCar(AddMyCarIM myCar)
         {
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
 
-                _myCars.Insert(new MyCars
-                {
-                    BrandId = myCar.Brand,
-                    ClassId = myCar.Class,
-                    ModelId = myCar.Model,
-                    MaxPassenger = myCar.MaxPassenger,
-                    SeriesId = myCar.Series,
-                    ServiceId = myCar.Service,
-                    SmallBags = myCar.SmallBags,
-                    SuitCase = myCar.SuitCase,
-                    TrimId = myCar.Trim,
-                    TypeId = myCar.Type,
-                    UserId = userId
-                });
+                //_myCars.Insert(new MyCars
+                //{
+                //    BrandId = myCar.Brand,
+                //    ClassId = myCar.Class,
+                //    ModelId = myCar.Model,
+                //    MaxPassenger = myCar.MaxPassenger,
+                //    SeriesId = myCar.Series,
+                //    ServiceId = myCar.Service,
+                //    SmallBags = myCar.SmallBags,
+                //    SuitCase = myCar.SuitCase,
+                //    TrimId = myCar.Trim,
+                //    TypeId = myCar.Type,
+                //    UserId = userId
+                //});
 
                 return View();
             }
