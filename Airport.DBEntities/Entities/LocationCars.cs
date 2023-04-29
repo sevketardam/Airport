@@ -13,10 +13,12 @@ namespace Airport.DBEntities.Entities
         [Key]
         public int Id { get; set; }
         public int LocationId { get; set; }
-        public string Price { get; set; }
+        public double Price { get; set; }
         public int CarId { get; set; }
+        public double DropPrice { get; set; }
 
         public Locations Location { get; set; }
+        public List<LocationCarsFare> LocationCarsFares { get; set; }
         public MyCars Car { get; set; }
     }
 }

@@ -110,7 +110,7 @@
             if (circle) {
                 circle.setMap(null);
             }
-            console.log(event)
+
             // Yeni daire oluştur
             circle = new google.maps.Circle({
                 center: event.latLng,
@@ -119,7 +119,7 @@
                 //draggable: true,
                 //editable: true,
             });
-
+            console.log(circle)
             // Daire üzerine tıklandığında bilgileri göster
             circle.addListener("click", showInfo);
 

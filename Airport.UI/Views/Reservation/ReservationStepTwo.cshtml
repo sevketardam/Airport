@@ -1,0 +1,382 @@
+﻿@using Airport.UI.Models.IM;
+@model GetResevationIM
+<style>
+    #map {
+        height: 500px;
+    }
+</style>
+
+<section class="_Module_Margin">
+    <div class="container">
+        <div class="_Step_Flex">
+            <div class="_Step_Left">
+                <div class="_Step_Travel_Info_Style">
+                    <div class="_Step_Travel_Flex">
+                        <div>
+                            <h3>Distance: </h3>
+                            <p><span>47.54</span> km</p>
+                        </div>
+                        <div>
+                            <h3>Estimated Duration:</h3>
+                            <p><span>59</span> mins</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="_Step_Map_Area"></div>
+                <div class="_Step_Travel_Form_Style">
+                    <div class="_Step_Travel_Buttons">
+                        <div>
+                            <button>One Way</button>
+                        </div>
+                        <div>
+                            <button>Roundtrip</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="_Step_Travel_Form">
+                            <form>
+                                <div class="_Form_Inputs">
+                                    <div class="_Pos_Rel">
+                                        <div>
+                                            <label for="">Pick Up</label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="_Pos_Rel">
+                                        <div>
+                                            <label for="">Drop off</label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="_Pos_Rel">
+                                        <label for="">Flight Arrival</label>
+                                        <input type="datetime-local">
+                                    </div>
+                                    <div class="_Pos_Rel">
+                                        <div class="d-none">
+                                            <label for="">Flight Arrival</label>
+                                            <input type="datetime-local">
+                                        </div>
+                                        <div>
+                                            <button class="_Add_Return">
+                                                <i class="fa-sharp fa-solid fa-plus"></i> Add Return
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="_Peoples_Div">
+                                        <div class="_Pos_Rel">
+                                            <label for="">Adults</label>
+                                            <input type="number" value="1" min="0">
+                                            <div class="_user_btns">
+                                                <div class="_up_number">
+                                                    <i class="fa-sharp fa-solid fa-caret-up"></i>
+                                                </div>
+                                                <div class="_down_number">
+                                                    <i class="fa-sharp fa-solid fa-caret-down"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="_Pos_Rel">
+                                            <label for="">Children</label>
+                                            <input type="number" value="1" min="0">
+                                            <div class="_user_btns">
+                                                <div class="_up_number">
+                                                    <i class="fa-sharp fa-solid fa-caret-up"></i>
+                                                </div>
+                                                <div class="_down_number">
+                                                    <i class="fa-sharp fa-solid fa-caret-down"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="_Pos_Rel">
+                                            <label for="">Infant</label>
+                                            <input type="number" value="1" min="0">
+                                            <div class="_user_btns">
+                                                <div class="_up_number">
+                                                    <i class="fa-sharp fa-solid fa-caret-up"></i>
+                                                </div>
+                                                <div class="_down_number">
+                                                    <i class="fa-sharp fa-solid fa-caret-down"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="_Pos_Rel">
+                                        <button class="_Search_Booking">
+                                            Search Booking
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="_Step_Right">
+                <div class="_Cars_Flex">
+                    <div class="_Car_Item">
+                        <div class="_Card_Item_Flex">
+                            <div class="_Card_Item_Left">
+                                <div class="_Card_Item_Left_Inner_Flex">
+                                    <div class="_Card_Item_Left_Inner_Left">
+                                        <img src="img/car.png" alt="">
+                                    </div>
+                                    <div class="_Card_Item_Left_Inner_Right">
+                                        <h3 class="_Car_Name">
+                                            Standart Sedan
+                                        </h3>
+                                        <p>
+                                            <i class="fa-solid fa-user"></i> <span>1-4</span>
+                                        </p>
+                                        <p>
+                                            <i class="fa-light fa-handshake"></i> <span>
+                                                Meet and Greet
+                                                Service
+                                            </span>
+                                        </p>
+                                        <div class="_Car_Attrs_Flex">
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i4.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i1.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i3.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i2.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i5.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i6.png" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="_Card_Item_Right">
+                                <h3>
+                                    Total one-way price
+                                </h3>
+                                <h4>
+                                    €<span>60.45</span>
+                                </h4>
+                                <p class="_Green">
+                                    Free Cancellation
+                                </p>
+                                <p>
+                                    Taxes included
+                                </p>
+                                <button>Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="_Car_Item">
+                        <div class="_Card_Item_Flex">
+                            <div class="_Card_Item_Left">
+                                <div class="_Card_Item_Left_Inner_Flex">
+                                    <div class="_Card_Item_Left_Inner_Left">
+                                        <img src="img/car.png" alt="">
+                                    </div>
+                                    <div class="_Card_Item_Left_Inner_Right">
+                                        <h3 class="_Car_Name">
+                                            Standart Sedan
+                                        </h3>
+                                        <p>
+                                            <i class="fa-solid fa-user"></i> <span>1-4</span>
+                                        </p>
+                                        <p>
+                                            <i class="fa-light fa-handshake"></i> <span>
+                                                Meet and Greet
+                                                Service
+                                            </span>
+                                        </p>
+                                        <div class="_Car_Attrs_Flex">
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i4.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i1.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i3.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i2.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i5.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i6.png" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="_Card_Item_Right">
+                                <h3>
+                                    Total one-way price
+                                </h3>
+                                <h4>
+                                    €<span>60.45</span>
+                                </h4>
+                                <p class="_Green">
+                                    Free Cancellation
+                                </p>
+                                <p>
+                                    Taxes included
+                                </p>
+                                <button>Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="_Car_Item">
+                        <div class="_Card_Item_Flex">
+                            <div class="_Card_Item_Left">
+                                <div class="_Card_Item_Left_Inner_Flex">
+                                    <div class="_Card_Item_Left_Inner_Left">
+                                        <img src="img/car2.png" alt="">
+                                    </div>
+                                    <div class="_Card_Item_Left_Inner_Right">
+                                        <h3 class="_Car_Name">
+                                            Standart Sedan
+                                        </h3>
+                                        <p>
+                                            <i class="fa-solid fa-user"></i> <span>1-4</span>
+                                        </p>
+                                        <p>
+                                            <i class="fa-light fa-handshake"></i> <span>
+                                                Meet and Greet
+                                                Service
+                                            </span>
+                                        </p>
+                                        <div class="_Car_Attrs_Flex">
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i4.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i1.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i3.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i2.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i5.png" alt="">
+                                            </div>
+                                            <div class="_Car_Attr_Item">
+                                                <img src="img/i6.png" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="_Card_Item_Right">
+                                <h3>
+                                    Total one-way price
+                                </h3>
+                                <h4>
+                                    €<span>60.45</span>
+                                </h4>
+                                <p class="_Green">
+                                    Free Cancellation
+                                </p>
+                                <p>
+                                    Taxes included
+                                </p>
+                                <button>Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="map"></div>
+@section pageJsScript{
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&libraries=places&callback=initMap"></script>
+}
+
+@section pageJs{
+    <script>
+        let map, circle, placesService;
+        let infoWindow = new google.maps.InfoWindow();
+
+
+        function initMap() {
+            // Harita oluştur
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 41.0812087, lng: 28.9730151 },
+                zoom: 13,
+            });
+
+            addCircle()
+
+
+            // Butona tıklanınca daire içindeki yerleri listele
+            //document.getElementById("btn").addEventListener("click", listPlaces);
+        }
+
+        function addCircle() {
+            // Daha önce oluşturulmuş daire varsa sil
+            if (circle) {
+                circle.setMap(null);
+            }
+
+            // Yeni daire oluştur
+            circle = new google.maps.Circle({
+                center: { lat: 41.0812087, lng: 28.9730151 },
+                radius: 2000,
+                map: map,
+                draggable: true,
+                editable: true,
+            });
+
+            // Daire üzerine tıklandığında bilgileri göster
+            //circle.addListener("click", showInfo);
+
+            //// Daire boyutu veya konumu değiştirildiğinde bilgileri güncelle
+            //circle.addListener("radius_changed", showInfo);
+            //circle.addListener("center_changed", showInfo);
+        }
+
+
+        function listPlaces() {
+
+            //circle = new google.maps.Circle({
+            //    center: event.latLng,
+            //    radius: 500,
+            //    map: map,
+            //    draggable: true,
+            //    editable: true,
+            //});
+
+            // PlacesService oluştur
+            placesService = new google.maps.places.PlacesService(map);
+
+            const request = {
+                location: circle.getCenter(),
+                radius: circle.getRadius(),
+            };
+
+            placesService.nearbySearch(request, (results, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    console.log(JSON.parse(JSON.stringify(results)));
+                }
+            });
+        }
+
+
+        window.onload = () => {
+            initMap();
+        }
+    </script>
+}

@@ -13,15 +13,17 @@
             <div class="_Banner_Flex">
                 <div class="_Banner_Left">
                     <div class="_Banner_Form">
-                        <form asp-route="getLocationValue" method="post">
+                        <form asp-route="getLocationValue" method="post" id="reservationForm">
+                            
                             <div class="_Form_Cat">
                                 <div>
-                                    <button>
+                                    <input id="reservationDatas" name="reservationDatas" type="hidden" />
+                                    <button type="button">
                                         One Way
                                     </button>
                                 </div>
                                 <div>
-                                    <button>
+                                    <button type="button">
                                         Roundtrip
                                     </button>
                                 </div>
@@ -65,7 +67,7 @@
                                     <input type="text" value="1" name="PeopleCount" onkeydown="return numControl(event)">
                                 </div>
                                 <div class="_Pos_Rel">
-                                    <button class="_Search_Booking">
+                                    <button type="button" class="_Search_Booking" id="_Search_Booking">
                                         Search Booking
                                     </button>
                                 </div>
@@ -757,25 +759,25 @@
             });
 
             var autocomplete2 = new google.maps.places.Autocomplete(input2);
+
             autocomplete2.addListener('place_changed', function () {
                 var place = autocomplete2.getPlace();
+                console.log(place.geometry.location)
                 dropPlaceId = place.place_id
                 $('#_Drop_Off_Value').val(dropPlaceId)
             });
-
         }
 
-        $('#getReservationForm').on("submit", function (e) {
-            e.preventDefault();
-            var formData = $(this).serialize();
-            $.ajax({
-                url: '/Home/GetReservasionValue',
-                type: "POST",
-                data: formData + "&PickValue=" + pickPlaceId + "&DropValue=" + dropPlaceId,
-                success: function (data) {
-                    window.location.href = data;
-                }
-            });
+
+        $('#_Search_Booking').on("click",function(){
+            let datas = {
+                pickValue: pickPlaceId,
+                dropValue: dropPlaceId
+            }
+
+            $('#reservationDatas').val(JSON.stringify(datas))
+
+            $('#reservationForm').submit()
         })
 
     </script>

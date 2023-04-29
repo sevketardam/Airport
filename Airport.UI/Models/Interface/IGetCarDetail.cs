@@ -8,5 +8,8 @@ namespace Airport.UI.Models.Interface
     public interface IGetCarDetail 
     {
         List<MyCars> GetCarsDetail(int[] myCarsId);
+
+        MyCars CarDetail(int CarId);
+
     }
 }

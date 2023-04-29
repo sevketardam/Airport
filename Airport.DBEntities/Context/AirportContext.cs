@@ -120,6 +120,11 @@ namespace Airport.DBEntities.Context
                 .WithMany(a => a.CarTrims)
                 .HasForeignKey(a => a.CarModelId);
 
+            modelBuilder.Entity<LocationCarsFare>()
+                .HasOne<LocationCars>(a => a.LocationCar)
+                .WithMany(a => a.LocationCarsFares)
+                .HasForeignKey(a => a.LocationCarId);
+
             base.OnModelCreating(modelBuilder);
         }
 

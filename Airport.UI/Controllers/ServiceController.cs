@@ -25,7 +25,7 @@ namespace Airport.UI.Controllers
             _items = items;
         }
 
-        [Route("panel/service")]
+        [HttpGet("panel/service")]
         public IActionResult Index()
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
@@ -34,7 +34,7 @@ namespace Airport.UI.Controllers
             return View(serviceList);
         }
 
-        [Route("panel/add-service")]
+        [HttpGet("panel/add-service")]
         public IActionResult AddServicePage()
         {
             var serviceCategories = _serviceCategory.Select();
@@ -47,7 +47,8 @@ namespace Airport.UI.Controllers
             return View(serviceCategories);
         }
 
-        [Route("panel/servicemanagament")]
+        [Authorize(Roles = "0")]
+        [HttpGet("panel/servicemanagament")]
         public IActionResult ServiceManagement()
         {
             var serviceCategories = _serviceCategory.Select();
@@ -63,7 +64,7 @@ namespace Airport.UI.Controllers
             return View(ServiceItems);
         }
 
-        [Route("panel/updateservice/{id}")]
+        [HttpGet("panel/updateservice/{id}")]
         public IActionResult UpdateServicePage(int id)
         {
             try
@@ -103,6 +104,7 @@ namespace Airport.UI.Controllers
             }
         }
 
+        [HttpPost]
         public JsonResult UpdateService(UpdateServiceVM updateService, int id)
         {
             try
@@ -160,7 +162,7 @@ namespace Airport.UI.Controllers
             return new JsonResult(new { });
         }
 
-
+        [HttpPost]
         public JsonResult AddServiceCategory(string categoryName)
         {
             try
@@ -174,6 +176,7 @@ namespace Airport.UI.Controllers
             }
         }
 
+        [HttpPost]
         public JsonResult AddServiceProperty(AddServicePropertyVM serviceProperty)
         {
             try
@@ -227,7 +230,6 @@ namespace Airport.UI.Controllers
                 return new JsonResult(new { });
             }
         }
-
 
         [HttpPost]
         public JsonResult GetServiceItem(int[] serviceProId)

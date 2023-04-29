@@ -1,9 +1,30 @@
 ﻿@{
     Layout = "_PanelLayout";
 }
+@model List<Locations>
 
 <div class="d-flex justify-content-end">
     <a href="/panel/add-location/step-one" class="btn" style="background: #EC681E;color: white;">
         Add Location
     </a>
+</div>
+
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <a href="/panel/update-location/@item.Id" class="serviceItems" data-value="@item.Id">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="list-item-heading mb-0 pt-1">@item.LocationName</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
 </div>

@@ -27,31 +27,31 @@ namespace Airport.UI.Controllers
             return View();
         }
 
-        [Route("about")]
+        [HttpGet("about")]
         public IActionResult About()
         {
             return View();
         }
 
-        [Route("contact")]
+        [HttpGet("contact")]
         public IActionResult Contact()
         {
             return View();
         }
 
-        [Route("agencies")]
+        [HttpGet("agencies")]
         public IActionResult Agencies()
         {
             return View();
         }
 
-        [Route("privacy")]
+        [HttpGet("privacy")]
         public IActionResult Privacy()
         {
             return View();
         }
 
-        [Route("register")]
+        [HttpGet("register")]
         public IActionResult Register()
         {
             if (!User.Identity.IsAuthenticated)
@@ -61,31 +61,29 @@ namespace Airport.UI.Controllers
             return NotFound();
         }
 
-        [Route("terms")]
+        [HttpGet("terms")]
         public IActionResult Terms()
         {
             return View();
         }
 
 
-        [HttpPost("getLocation",Name = "getLocationValue")]
-        public IActionResult GetReservasionValue(GetResevationIM reservation)
-        {
-            try
-            {
+        //[HttpPost("getLocation")]
+        //public IActionResult GetReservasionValue(GetResevationIM reservation,string reservationDatas)
+        //{
+        //    try
+        //    {
 
-            }
-            catch (Exception ex)
-            {
+        //        return RedirectToAction("ReservationStepTwo", "Reservation");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
-                throw;
-            }
-            return RedirectToAction("Contact","Home");
-        }
 
-
-        [Route("register")]
-        [HttpPost]
+        [HttpPost("register")]
         public IActionResult Register(UserDatas user)
         {
             var checkUser = _userdata.SelectByFunc(a=>a.Eposta == user.Eposta).FirstOrDefault();

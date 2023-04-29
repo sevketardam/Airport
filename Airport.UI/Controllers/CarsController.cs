@@ -2,6 +2,7 @@
 using Airport.DBEntitiesDAL.Interfaces;
 using Airport.UI.Models.IM;
 using Airport.UI.Models.VM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -84,8 +85,8 @@ namespace Airport.UI.Controllers
 
         public IActionResult GetClassAndTypes(int id)
         {
-            var carClass = _carClasses.SelectByFunc(a => a.CarTrimId == id);
-            var carTypes = _carTypes.SelectByFunc(a => a.CarTrimId == id);
+            var carClass = _carClasses.Select();
+            var carTypes = _carTypes.Select();
             return Json(new { result = 200, classes = carClass, types = carTypes });
         }
 
@@ -151,7 +152,7 @@ namespace Airport.UI.Controllers
             return new JsonResult(new { });
         }
 
-        [Route("panel/updatemycar/{id}")]
+        [HttpGet("panel/updatemycar/{id}")]
         public IActionResult UpdateMyCarPage(int id)
         {
             try
@@ -169,11 +170,11 @@ namespace Airport.UI.Controllers
                         ModelId = myCar.ModelId,
                         Series = _carSeries.SelectByFunc(a => a.CarModelId == myCar.ModelId),
                         SeriesId = myCar.SeriesId,
-                        Trims = _carTrims.SelectByFunc(a => a.CarSeriesId == myCar.TrimId),
+                        Trims = _carTrims.SelectByFunc(a => a.CarSeriesId == myCar.SeriesId),
                         TrimId = myCar.TrimId,
-                        Types = _carTypes.SelectByFunc(a => a.CarTrimId == myCar.TrimId),
+                        Types = _carTypes.Select(),
                         TypeId = myCar.TypeId,
-                        Classes = _carClasses.SelectByFunc(a => a.CarTrimId == myCar.TrimId),
+                        Classes = _carClasses.Select(),
                         ClassId = myCar.ClassId,
                         MaxPassenger = myCar.MaxPassenger,
                         SmallBags = myCar.SmallBags,
@@ -192,9 +193,7 @@ namespace Airport.UI.Controllers
             }
         }
 
-
-
-
+        [Authorize(Roles = "0")]
         [HttpGet("panel/car-management")]
         public IActionResult CarManagement()
         {

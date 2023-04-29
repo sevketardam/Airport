@@ -8,11 +8,15 @@ using System.Threading.Tasks;
 
 namespace Airport.DBEntities.Entities
 {
-    public class CarClasses : IEntity
+    public class LocationCarsFare : IEntity
     {
         [Key]
         public int Id { get; set; }
-        public string CarClassName { get; set; }
-        public List<MyCars> MyCars { get; set; }
+        public int StartFrom { get; set; }
+        public int UpTo { get; set; }
+        public double Fare { get; set; }
+        public int LocationCarId { get; set; }
+
+        public LocationCars LocationCar { get; set; }
     }
 }

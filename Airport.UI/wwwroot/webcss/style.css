@@ -1,6 +1,6 @@
 @font-face {
     font-family: "gothic";
-    src: url(../font/GOTHIC.TTF);
+    src: url(font/GOTHIC.TTF);
 }
 
 * {
@@ -31,6 +31,7 @@ body {
 :root {
     --nav-gap: 1rem;
     --orange: #ff6709;
+    --green: #00f421;
 }
 
 ._Orange_Bg {
@@ -181,7 +182,6 @@ label.error {
     ._Sing_Form_Main._Active {
         opacity: 1;
         visibility: visible;
-        z-index: 10;
     }
 
     ._Sing_Form_Main h4 {
@@ -496,13 +496,12 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 
 ._Form_Inputs input {
     width: 100%;
+    height: 3.2rem;
     border-radius: 0.6rem;
     border: none;
     outline: none;
     padding: 1.4rem 1rem 0.3rem 0.5rem;
     font-size: 1.05rem;
-    padding-left: 2rem;
-    padding-bottom: 0.6rem;
 }
 
 ._Form_Inputs label {
@@ -1423,7 +1422,7 @@ label._Down_Label {
         margin: 0;
     }
 
-    ._Profile_Item ._Logout_Btn {
+    ._Profile_Item button {
         height: 100%;
         background-color: var(--orange);
         color: white;
@@ -1495,31 +1494,28 @@ label._Down_Label {
 
 ._Agreements_Item {
     padding: 1rem;
-    border-radius: .6rem;
-    font-size: .75rem;
+    border-radius: 0.6rem;
+    font-size: 0.75rem;
     box-shadow: 0 2px 5px rgb(0, 0, 0, 0.2);
     display: flex;
     justify-content: space-between;
 }
 
 ._Agreements_State._Ok {
-    background-color: #C6F073;
-    color: #22B427;
-    border-radius: .5rem;
-    padding: .3rem .6rem;
-    font-size: .55rem;
+    background-color: #c6f073;
+    color: #22b427;
+    border-radius: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.55rem;
 }
 
 ._Agreements_State._No {
     background-color: #f07373;
     color: #b42222;
-    border-radius: .5rem;
-    padding: .3rem .6rem;
-    font-size: .55rem;
+    border-radius: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.55rem;
 }
-
-
-
 
 ._Dash_Flex {
     display: flex;
@@ -1528,25 +1524,492 @@ label._Down_Label {
 }
 
 ._Dash_Left {
-    width: calc(55% - .5rem);
-    height: 20rem;
-    border: 1px solid black;
+    width: calc(58% - 0.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 ._Dash_Right {
-    width: calc(45% - .5rem);
-    height: 20rem;
-    border: 1px solid black;
+    width: calc(42% - 0.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
+._Profil_Trailer_Style {
+    width: 100%;
+    /* height: 20rem; */
+    border-radius: 15px;
+    display: flex;
+    padding: 2rem;
+    background-color: var(--orange);
+}
 
+._Profil_Image {
+    width: 8.5rem;
+    height: 8.5rem;
+    background-color: white;
+    border-radius: 50%;
+}
 
+._Profil_Trailer_Style h2 {
+    color: black;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
 
+._Profil_Trailer_Style p {
+    color: black;
+    font-size: 0.85rem;
+    font-weight: 400;
+}
 
+._Profile_Padding {
+    padding: 0.5rem 1rem;
+}
 
+._Profile_Attrs_Style {
+    width: 100%;
+    border-radius: 15px;
+}
 
+._Profile_Attrs_Flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
 
+    ._Profile_Attrs_Flex > div {
+        width: calc(25% - 0.75rem);
+        height: 5rem;
+        /* border: 1px solid; */
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: inset 0 0 3px rgb(0, 0, 0, 0.16);
+    }
 
+._Profile_Attr_Item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+._Profile_Attr_Left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 55%;
+    height: 100%;
+    padding: 0.4rem;
+}
+
+._Profile_Attr_Right {
+    width: 45%;
+    height: 100%;
+}
+
+._Profile_Attr_Left h4 {
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+._Profile_Attr_Left p {
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 0;
+}
+
+._Profile_Attr_Right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ==================== */
+
+._Step_Flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+._Step_Left {
+    width: calc(30% - 0.5rem);
+    /* height: 30rem; */
+}
+
+._Step_Right {
+    width: calc(70% - 0.5rem);
+    height: 100%;
+}
+
+._Step_Travel_Info_Style {
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 3px 6px rgb(0, 0, 0, 0.16);
+}
+
+._Step_Travel_Flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+}
+
+    ._Step_Travel_Flex > div {
+        width: calc(50% - 0.5rem);
+    }
+
+    ._Step_Travel_Flex h3 {
+        color: var(--orange);
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    ._Step_Travel_Flex p {
+        font-size: 0.95rem;
+        font-weight: 400;
+    }
+
+._Step_Map_Area {
+    width: 100%;
+    height: 25rem;
+    border: 1px solid black;
+    border-radius: 20px;
+    margin-top: 1rem;
+}
+
+._Step_Travel_Buttons {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+    ._Step_Travel_Buttons > div {
+        width: 100%;
+    }
+
+._Step_Travel_Form_Style {
+    margin-top: 3rem;
+}
+
+._Step_Travel_Buttons button {
+    width: 100%;
+    height: 2.5rem;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    background-color: var(--orange);
+    color: white;
+    font-size: 1.1rem;
+}
+
+._Cars_Flex {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+._Car_Item {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    box-shadow: 0 0px 6px rgb(0, 0, 0, 0.5);
+}
+
+._Card_Item_Flex,
+._Card_Item_Left_Inner_Flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+._Card_Item_Left {
+    width: 70%;
+    height: 100%;
+    border-right: 1px solid rgba(0, 0, 0, 0.502);
+}
+
+._Card_Item_Right {
+    width: 30%;
+    height: 100%;
+}
+
+._Card_Item_Left_Inner_Left,
+._Card_Item_Left_Inner_Right {
+    width: 50%;
+    height: 12rem;
+    padding: 1rem;
+}
+
+    ._Card_Item_Left_Inner_Left img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 0 6px rgb(0, 0, 0, 0.25);
+        background-color: #f7f7f7;
+    }
+
+._Card_Item_Left_Inner_Right {
+    padding: 1.2rem 1rem;
+}
+
+    ._Card_Item_Left_Inner_Right h3 {
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+
+    ._Card_Item_Left_Inner_Right i {
+        color: var(--orange);
+        font-size: 1.2rem;
+        width: 1.5rem;
+    }
+
+    ._Card_Item_Left_Inner_Right p {
+        font-weight: 500;
+        color: #000000;
+        margin: 0;
+    }
+
+._Car_Attrs_Flex {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+    ._Car_Attrs_Flex img {
+        width: 2rem;
+        height: 2rem;
+        object-fit: contain;
+    }
+
+._Card_Item_Right {
+    padding: 1rem;
+    text-align: center;
+}
+
+    ._Card_Item_Right h3,
+    ._Card_Item_Right h4 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    ._Card_Item_Right p {
+        font-weight: 500;
+        margin: 0;
+    }
+
+._Green {
+    color: var(--green);
+}
+
+._Card_Item_Right button {
+    margin-top: 1rem;
+    width: 100%;
+    max-width: 12rem;
+    height: 2.5rem;
+    border-radius: 12px;
+    background-color: var(--green);
+    color: white;
+    border: none;
+    outline: none;
+    font-size: 1.2rem;
+    transition: background-color 250ms;
+}
+
+    ._Card_Item_Right button:hover {
+        background-color: #0dc326;
+    }
+
+._Step_Travel_Form {
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: var(--orange);
+    overflow: hidden;
+}
+
+._Form_Inputs input {
+    height: 2.5rem;
+    padding: 1.4rem 1rem 0.6rem 0.5rem;
+    font-size: 1rem;
+}
+
+._Form_Inputs label {
+    font-size: 0.65rem;
+}
+
+._Form_Inputs ._Add_Return {
+    height: 2.5rem;
+    font-size: 1.2rem;
+}
+
+._Search_Booking {
+    height: 2.8rem;
+    font-size: 1.2rem;
+}
+
+._User_Div input {
+    padding: 1rem;
+    text-align: start;
+    position: relative;
+}
+
+._Peoples_Div {
+    display: flex;
+    gap: 0.7rem;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none !important;
+}
+
+._user_btns {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+}
+
+    ._user_btns div {
+        border: 1px solid rgba(0, 0, 0, 0.367);
+        width: 2rem;
+        height: calc(2.5rem / 2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+        ._user_btns div:first-child {
+            border-top-right-radius: 10px;
+        }
+
+        ._user_btns div:last-child {
+            border-bottom-right-radius: 10px;
+        }
+
+        ._user_btns div:hover {
+            background-color: rgba(128, 128, 128, 0.209);
+        }
+
+._Page_Title {
+    color: var(--orange);
+    font-weight: bold;
+}
+
+._Reservatiton_Style {
+    width: 100%;
+    /* height: 20rem; */
+    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    border-radius: 15px;
+    padding: 2rem;
+}
+
+._Reservatiton_Form_Flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+    ._Reservatiton_Form_Flex > div {
+        width: calc(50% - 0.5rem);
+    }
+
+    ._Reservatiton_Form_Flex input {
+        width: 100%;
+        border-radius: 10px;
+        height: 2.5rem;
+        padding: 1rem;
+        outline: none;
+        border: none;
+        box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    }
+
+._Reservatiton_Style button {
+    width: 100%;
+    height: 2.5rem;
+    max-width: 12rem;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    border: none;
+    outline: none;
+    background-color: var(--orange);
+    color: white;
+    font-size: 1rem;
+    transition: background-color 250ms;
+}
+
+    ._Reservatiton_Style button:hover {
+        background-color: #d95f14;
+    }
+
+._Reservatiton_Style label {
+    font-size: 1.2rem;
+    margin-bottom: 0.4rem;
+}
+
+._Page_Flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+._Page_Left {
+    height: 100%;
+    width: calc(40% - 1rem);
+}
+
+._Page_Right {
+    width: calc(60% - 1rem);
+}
+
+._Page_Left img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 15px;
+    filter: drop-shadow(0 0 5px rgb(0, 0, 0, 0.16));
+    overflow: hidden;
+}
+
+._Page_Right_Style {
+    width: 80%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    padding: 2rem;
+}
+
+    ._Page_Right_Style h2 {
+        font-weight: 600;
+    }
+
+    ._Page_Right_Style p {
+        margin: 0;
+    }
+
+._Page_Right h4 {
+    color: var(--orange);
+    font-weight: 600;
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+._Page_Right h5 {
+    font-weight: 400;
+    font-size: 1rem;
+    margin: 0.3rem 0 0 0;
+}
 
 @media only screen and (max-width: 768px) {
     ._Profile_Left {
@@ -1558,9 +2021,364 @@ label._Down_Label {
     }
 }
 
-/**/
+._History_Style {
+    width: 100%;
+    /* height: 10rem; */
+    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    border-radius: 12px;
+    padding: 0.5rem;
+}
 
+._Top_History {
+    height: 5rem;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+}
+
+    ._Top_History button {
+        width: 1.5rem;
+        height: 100%;
+        border: none;
+        outline: none;
+        background-color: var(--orange);
+        border-radius: 5px;
+        color: white;
+        transition: background-color 250ms;
+    }
+
+        ._Top_History button:hover {
+            background-color: #d15508;
+        }
+
+._Center_History_Area {
+    width: 100%;
+}
+
+    ._Center_History_Area .slick-track {
+        margin-left: 0;
+    }
+
+._History_Item {
+    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    width: 100%;
+    padding: 0.5rem;
+    height: 100%;
+    border-radius: 5px;
+}
+
+    /* ._Center_History_Area .swiper-slide{
+  margin: 0 !important;
+} */
+
+    ._History_Item p {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 500;
+        line-height: 1.4rem;
+        color: var(--orange);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+._Center_History_Area {
+    padding: 0.25rem 0.15rem !important;
+}
+
+._History_Input {
+    width: 100%;
+    height: 1.5rem;
+    font-size: 0.75rem;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    margin: 0.65rem 0;
+    padding: 0.8rem 1rem;
+    box-shadow: 0 0 4px rgb(0, 0, 0, 0.16);
+}
+
+._Table_Top {
+    width: 100%;
+    height: 3rem;
+    background-color: #dfdfdf;
+    border-radius: 5px;
+    display: flex;
+}
+
+    ._Table_Top > div {
+        width: calc(100% / 6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 0.75rem;
+    }
+
+._Table_Content {
+    width: 100%;
+    height: 3rem;
+    background-color: #ffffff;
+    display: flex;
+}
+
+    ._Table_Content > div:not(._No_Data) {
+        width: calc(100% / 6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 0.75rem;
+        border-bottom: 1px solid rgb(141, 141, 141, 0.5);
+    }
+
+._No_Data {
+    width: 100%;
+    height: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+}
+
+._Wallet_Body {
+    margin: 1rem 0 0 0;
+}
+
+._Wallet_Style {
+    width: 100%;
+    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    border-radius: 15px;
+    padding: 1rem;
+}
+
+    ._Wallet_Style h2 {
+        color: var(--orange);
+        font-size: 1.7rem;
+        font-weight: 600;
+    }
+
+._Wallet_Head {
+    display: flex;
+}
+
+._Wallet_Head_Left {
+    width: 40%;
+}
+
+._Wallet_Head_Right {
+    width: 60%;
+    display: flex;
+    gap: 1rem;
+}
+
+    ._Wallet_Head_Right button {
+        width: calc(50% - 0.5rem);
+        height: 2.25rem;
+        font-size: 0.75rem;
+    }
+
+._bank_account {
+    border: 2px solid var(--orange);
+    border-radius: 5px;
+    color: var(--orange);
+    background-color: white;
+    outline: none;
+    transition: color 250ms, background-color 250ms;
+}
+
+    ._bank_account:hover {
+        color: white;
+        background-color: var(--orange);
+    }
+
+._Btn_Style {
+    border-radius: 5px;
+    color: white;
+    background-color: var(--orange);
+    border: none;
+    outline: none;
+    transition: background-color 250ms;
+}
+
+    ._Btn_Style:hover {
+        background-color: #e35a05;
+    }
+
+._Wallet_Body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+    ._Wallet_Body > div {
+        width: calc((100% / 3) - 0.67rem);
+        background-color: #d1ffb3;
+        border-radius: 5px;
+        padding: 0.5rem;
+        display: flex;
+    }
+
+._Price_Icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #46a138;
+    border-radius: 5px;
+}
+
+._Price_Text {
+    width: 70%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+._Cars_Style {
+    width: 100%;
+    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    border-radius: 15px;
+    padding: 1rem;
+}
+
+    ._Cars_Style h2 {
+        color: var(--orange);
+        font-size: 1.7rem;
+        font-weight: 600;
+    }
+
+._Cars_Head {
+    display: flex;
+}
+
+._Cars_Head_Left {
+    width: 40%;
+}
+
+._Cars_Head_Right {
+    width: 60%;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+    ._Cars_Head_Right button {
+        width: calc(50% - 0.5rem);
+        height: 2.25rem;
+        font-size: 0.75rem;
+    }
+
+._Cars_Body {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+    ._Cars_Body p {
+        margin: 0;
+        font-size: .9rem;
+        font-weight: 600;
+        letter-spacing: .5px;
+    }
+
+    ._Cars_Body > div {
+        width: calc(50% - 0.5rem);
+    }
+
+._Car_Block {
+    width: 100%;
+    height: 8.5rem;
+    position: relative;
+    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+    ._Car_Block img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+._Car_Btns {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    justify-content: flex-end;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+
+    ._Car_Btns > button {
+        width: 1.5rem;
+        height: 1.5rem;
+        font-size: .75rem;
+    }
+
+._Pencil {
+    border: none;
+    background-color: var(--orange);
+    color: white;
+    border-radius: 5px;
+    width: 1rem;
+}
+
+._Trash {
+    border: none;
+    background-color: transparent;
+    width: 1rem;
+}
+
+._Car_Pad {
+    padding: 1.5rem .75rem;
+    display: flex;
+    flex-direction: column;
+}
+
+    ._Car_Pad p {
+        font-size: .75rem;
+        font-weight: 400;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**/
 @media only screen and (max-width: 1400px) {
+    ._Card_Item_Right h3,
+    ._Card_Item_Right h4 {
+        font-size: 1.3rem;
+    }
+
+    ._Card_Item_Right {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    ._Profile_Attr_Left h4 {
+        font-size: 0.75rem;
+    }
+
+    ._Profile_Attr_Left p {
+        font-size: 1.2rem;
+    }
 }
 
 @media only screen and (max-width: 1200px) {
@@ -1598,6 +2416,43 @@ label._Down_Label {
 
     ._Down_Flex p {
         font-size: 10px;
+    }
+
+    ._Card_Item_Left_Inner_Right h3 {
+        font-size: 1.15rem;
+    }
+
+    ._Card_Item_Left_Inner_Right span {
+        font-size: 0.75rem;
+    }
+
+    ._Car_Attrs_Flex img {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    ._Card_Item_Right h3 {
+        font-size: 1.05rem;
+    }
+
+    ._Card_Item_Right h4 {
+        font-size: 1.25rem;
+    }
+
+    ._Page_Left {
+        width: calc(50% - 1rem);
+    }
+
+    ._Page_Right {
+        width: calc(50% - 1rem);
+    }
+
+    ._Page_Right_Style {
+        width: 90%;
+    }
+
+    ._Profile_Attrs_Flex > div {
+        width: calc(33.5% - -5rem);
     }
 }
 
@@ -1737,6 +2592,40 @@ label._Down_Label {
     ._Mobile_None {
         display: none !important;
     }
+
+    ._Step_Left,
+    ._Step_Right {
+        width: 100%;
+    }
+
+    ._Step_Flex {
+        flex-direction: column-reverse;
+    }
+
+    ._Page_Left {
+        width: 100%;
+        height: 15rem;
+    }
+
+    ._Page_Right {
+        width: 100%;
+    }
+
+    ._Page_Right_Style {
+        width: 100%;
+    }
+
+    ._Dash_Left {
+        width: 100%;
+    }
+
+    ._Dash_Right {
+        width: 100%;
+    }
+
+    ._Profile_Attrs_Flex > div {
+        width: calc(25% - 0.75rem);
+    }
 }
 
 @media only screen and (max-width: 768px) {
@@ -1795,6 +2684,54 @@ label._Down_Label {
     ._Contact_Left,
     ._Contact_Right {
         width: 100%;
+    }
+
+    ._Card_Item_Flex {
+        flex-direction: column;
+    }
+
+    ._Card_Item_Left {
+        width: 100%;
+    }
+
+    ._Card_Item_Left_Inner_Left {
+        width: 100%;
+    }
+
+    ._Card_Item_Left_Inner_Right {
+        width: 100%;
+    }
+
+    ._Card_Item_Left_Inner_Left,
+    ._Card_Item_Left_Inner_Right {
+        height: auto;
+    }
+
+    ._Card_Item_Right {
+        width: 100%;
+    }
+
+        ._Card_Item_Right button {
+            margin: 1rem auto 0 auto;
+        }
+
+    ._Cars_Flex {
+        gap: 1.5rem 1rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    ._Car_Item {
+        width: calc(50% - 0.5rem);
+    }
+
+    ._Card_Item_Left {
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.502);
+    }
+
+    ._Profile_Attrs_Flex > div {
+        width: calc(50% - 0.5rem);
     }
 }
 
@@ -1915,6 +2852,24 @@ label._Down_Label {
 
     ._Last_Input {
         margin-top: 1rem;
+    }
+}
+
+@media only screen and (max-width: 446px) {
+    ._Car_Item {
+        width: 100%;
+    }
+
+    ._Card_Item_Left_Inner_Right {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    ._Card_Item_Left_Inner_Left {
+        height: 10rem;
     }
 }
 

@@ -1,10 +1,8 @@
-﻿@using Airport.UI.Models.IM;
-@{
+﻿@{
     Layout = "_PanelLayout";
 }
 
-@model GetMapValuesIM
-
+@model UpdateLocationVM
 
 <div class="row">
     <div class="col-12 mb-4">
@@ -15,17 +13,17 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="outZoneDropCharge">Drop Charge</label>
-                        <input type="number" class="form-control" id="outZoneDropCharge" value="0" />
+                        <input type="number" class="form-control" id="outZoneDropCharge" value="@Model.Location.OutZoneDropCharge" />
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="outZonePerKmPrice">Price Per KM</label>
-                        <input type="number" class="form-control" id="outZonePerKmPrice" value="0" />
+                        <input type="number" class="form-control" id="outZonePerKmPrice" value="@Model.Location.OutZonePricePerKM" />
                     </div>
-                    <form id="getValueForm" asp-route="getLocationValues">
-                        <input type="hidden" name="jsonValues"/>
+                    <form id="getValueForm" asp-route="updateLocationValues">
+                        <input type="hidden" name="jsonValues" />
                     </form>
                 </div>
             </div>
@@ -37,37 +35,40 @@
 
 
 <div class="row">
-    @foreach (var item in Model.Cars)
+    @foreach (var item in Model.locationCars)
     {
-        <div class="col-md-6 mb-3 carCard" data-id="@item.Id">
+        <div class="col-md-6 mb-3 carCard" data-id="@item.CarId">
             <div class="card">
                 <div class="card-body">
                     <div>
-                        @item.Brand.CarBrandName
-                        @item.Model.CarModelName
+                        @item.Car.Brand.CarBrandName
+                        @item.Car.Model.CarModelName
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label>Drop Price</label>
-                            <input type="number" class="form-control" id="carDropPrice" value="0" />
+                            <input type="number" class="form-control" id="carDropPrice" value="@item.DropPrice" />
                         </div>
                     </div>
+                    @foreach (var item2 in item.LocationCarsFares)
+                    {
+                        <div class="row carFareCard">
+                            <div class="col-md-4 mb-3">
+                                <label>Starting From</label>
+                                <input type="text" class="form-control" id="startingFrom" placeholder="0km" value="@item2.StartFrom" />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Up To</label>
+                                <input type="text" class="form-control" id="upTo" value="@item2.UpTo" />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Fare</label>
+                                <input type="text" class="form-control" id="fare" value="@item2.Fare" />
+                            </div>
+                        </div>
+                    }
 
-                    <div class="row carFareCard">
-                        <div class="col-md-4 mb-3">
-                            <label>Starting From</label>
-                            <input type="text" class="form-control" id="startingFrom" placeholder="0km" value="0" />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label>Up To</label>
-                            <input type="text" class="form-control" id="upTo" value="10" />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label>Fare</label>
-                            <input type="text" class="form-control" id="fare" value="10" />
-                        </div>
-                    </div>
 
                     <div class="row">
                         <div class="col-md-12">
@@ -82,7 +83,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <button class="btn btn-secondary next-btn w-100" style="border-radius:0px;" type="button" id="addLocationBtn">Add Location</button>
+        <button class="btn btn-secondary next-btn w-100" style="border-radius:0px;" type="button" id="updateLocationBtn">Update Location</button>
     </div>
 </div>
 
@@ -91,11 +92,12 @@
 @section pageJs{
     <script>
 
-        $('#addLocationBtn').on("click", function () {
+        $('#updateLocationBtn').on("click", function () {
             var outZonePrice = $('#outZoneDropCharge').val()
             var outZonePerKmPrice = $('#outZonePerKmPrice').val()
 
             let locationJson = {
+                locationId:@Model.Location.Id,
                 outZonePrice: outZonePrice,
                 outZonePerKmPrice: outZonePerKmPrice,
                 carsPrice: []
@@ -110,7 +112,7 @@
             })
 
             $.each(locationJson.carsPrice, function (key, value) {
-                $.each($('.carCard[data-id="' + value.carId + '"] .carFareCard'),function (key2,value2) {
+                $.each($('.carCard[data-id="' + value.carId + '"] .carFareCard'), function (key2, value2) {
                     var startingfromVal = $(value2).find("#startingFrom").val()
                     var upToKmVal = $(value2).find("#upTo").val()
                     var priceVal = $(value2).find("#fare").val()

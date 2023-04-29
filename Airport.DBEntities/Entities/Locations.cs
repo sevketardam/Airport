@@ -16,6 +16,10 @@ namespace Airport.DBEntities.Entities
         public string LocationRadius { get; set; }
         public string LocationMapId { get; set; }
         public int UserId { get; set; }
+        public double OutZoneDropCharge { get; set; }
+        public double OutZonePricePerKM { get; set; }
+        public string Lat { get; set; }
+        public string Lng { get; set; }
 
         public UserDatas User { get; set; }
         public List<LocationCars> LocationCars { get; set; }

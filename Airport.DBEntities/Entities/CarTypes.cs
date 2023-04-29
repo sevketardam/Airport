@@ -13,9 +13,8 @@ namespace Airport.DBEntities.Entities
         [Key]
         public int Id { get; set; }
         public string CarTypeName { get; set; }
-        public int CarTrimId { get; set; }
+        public string CarImageURL { get; set; }
 
-        public CarTrims CarTrim { get; set; }
         public List<MyCars> MyCars { get; set; }
     }
 }

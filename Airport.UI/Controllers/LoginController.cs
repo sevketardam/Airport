@@ -20,7 +20,7 @@ namespace Airport.UI.Controllers
             _user = user;
         }
 
-        [Route("login")]
+        [HttpGet("login")]
         public IActionResult Index()
         {
             return View();
@@ -82,7 +82,7 @@ namespace Airport.UI.Controllers
             return new JsonResult(new { status = 404 });
         }
 
-        [Route("logout")]
+        [HttpGet("logout")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
