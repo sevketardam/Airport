@@ -51,28 +51,32 @@
                             <input type="number" class="form-control" id="carDropPrice" value="@item.DropPrice" />
                         </div>
                     </div>
+                    <div class="carFareContainer">
                     @foreach (var item2 in item.LocationCarsFares)
                     {
-                        <div class="row carFareCard">
-                            <div class="col-md-4 mb-3">
-                                <label>Starting From</label>
-                                <input type="text" class="form-control" id="startingFrom" placeholder="0km" value="@item2.StartFrom" />
+                        
+                            <div class="row carFareCard">
+                                <div class="col-md-4 mb-3">
+                                    <label>Starting From</label>
+                                    <input type="text" class="form-control startingFrom" id="startingFrom" placeholder="0km" value="@item2.StartFrom" />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label>Up To</label>
+                                    <input type="text" class="form-control upTo" id="upTo" value="@item2.UpTo" />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label>Fare</label>
+                                    <input type="text" class="form-control fare" id="fare" value="@item2.Fare" />
+                                </div>
                             </div>
-                            <div class="col-md-4 mb-3">
-                                <label>Up To</label>
-                                <input type="text" class="form-control" id="upTo" value="@item2.UpTo" />
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label>Fare</label>
-                                <input type="text" class="form-control" id="fare" value="@item2.Fare" />
-                            </div>
-                        </div>
+                        
+                        
                     }
-
+                        </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <button class="btn btn-secondary next-btn w-100" style="border-radius:0px;" type="submit">Add New Distance</button>
+                            <button class="btn btn-secondary next-btn w-100 addCarFare" style="border-radius:0px;" type="submit">Add New Distance</button>
                         </div>
                     </div>
                 </div>
@@ -91,6 +95,68 @@
 
 @section pageJs{
     <script>
+
+        
+
+        let container = document.querySelector('.carFareContainer');
+
+        function initCards(){
+
+            let startFrom = 0;
+
+            container.querySelectorAll('.carFareCard').forEach(el => {
+
+                let startFromInput = el.querySelector('.startingFrom');
+
+                startFromInput.value = startFrom;
+                startFromInput.disabled = true;
+
+                if (el.querySelector('.upTo').value.trim() != ''){
+                    startFrom = el.querySelector('.upTo').value;
+                }
+
+                
+
+
+            })
+
+            container.querySelectorAll('.upTo').forEach(el => {
+                el.oninput = () => {
+                    initCards();
+                }
+            })
+
+        }
+
+        initCards();
+
+        document.querySelector('.addCarFare').onclick = () => {
+
+            
+
+            container.innerHTML+=`
+                    <div class="row carFareCard">
+                                        <div class="col-md-4 mb-3">
+                                            <label>Starting From</label>
+                                                    <input type="text" class="form-control startingFrom" id="startingFrom" placeholder="0km" disabled />
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label>Up To</label>
+                                            <input type="text" class="form-control upTo" id="upTo" />
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label>Fare</label>
+                                                    <input type="text" class="form-control fare" id="fare" />
+                                        </div>
+                                    </div>
+            `
+
+            initCards();
+
+        }
+
+
+
 
         $('#updateLocationBtn').on("click", function () {
             var outZonePrice = $('#outZoneDropCharge').val()
@@ -128,5 +194,6 @@
             $('#getValueForm').submit()
 
         })
+
     </script>
 }

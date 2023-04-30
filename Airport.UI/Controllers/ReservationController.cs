@@ -35,13 +35,12 @@ namespace Airport.UI.Controllers
         {
             var api_key = "AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg";
 
-            var httpClient = new HttpClient();
+             var httpClient = new HttpClient();
 
             var apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + reservation.PickValue + "&key=" + api_key;
             var response2 = await httpClient.GetAsync(apiUrl);
             var content2 = await response2.Content.ReadAsStringAsync();
             var contentJsonResult = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content2);
-
 
             var s = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric";
 
@@ -61,35 +60,36 @@ namespace Airport.UI.Controllers
                     var data = JObject.Parse(content);
                     if (data["status"].ToString() == "OK")
                     {
-                        var km = data["rows"][0]["elements"][0]["distance"]["value"].ToString().Replace("{", "").Replace("}", "");
-                        var lastKm = Math.Ceiling(Convert.ToDouble(km) / 1000) * 1000;
-                        var minKm = lastKm / 1000;
-
-                        var lastKm2 = lastKm;
-                        foreach (var item1 in item.LocationCars)
+                        if (data["rows"][0]["elements"][0]["status"].ToString() == "OK")
                         {
-                            var price = item1.DropPrice;
-                            item1.Car = _carDetail.CarDetail(item1.CarId);
-                            item1.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == item1.Id);
-                            item1.LocationCarsFares.ForEach(a =>
+                            var km = data["rows"][0]["elements"][0]["distance"]["value"].ToString().Replace("{", "").Replace("}", "");
+                            var lastKm = Math.Ceiling(Convert.ToDouble(km) / 1000) * 1000;
+                            var minKm = lastKm / 1000;
+
+                            var lastKm2 = lastKm;
+                            foreach (var item1 in item.LocationCars)
                             {
-                                if(minKm <= a.UpTo)
+                                var price = item1.DropPrice;
+                                item1.Car = _carDetail.CarDetail(item1.CarId);
+                                item1.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == item1.Id);
+                                item1.LocationCarsFares.ForEach(a =>
                                 {
-                                    price += a.Fare;
-                                }
-                            });
+                                    if (minKm <= a.UpTo)
+                                    {
+                                        price += a.Fare;
+                                    }
+                                });
 
-
-                            getreservation.Add(new GetReservationValues
-                            {
-                                LocationCars = item1,
-                                LastPrice = price
-                            });
+                                getreservation.Add(new GetReservationValues
+                                {
+                                    LocationCars = item1,
+                                    LastPrice = price
+                                });
+                            }
                         }
                     }
                 }
             }
-
 
             return View(getreservation);
         }

@@ -255,41 +255,6 @@ $(".active_lang").on("click", function () {
 })
 
 
-$('form#reservationForm').validate({
-    rules: {
-        _Pick_Up: {
-            required: true,
-        },
-        _Drop_Off: {
-            required: true,
-        },
-        FlightTime: {
-            required: true,
-        },
-        PeopleCount: {
-            required: true,
-        },
-    },
-    messages: {
-        _Pick_Up: {
-            required: "!"
-        },
-        _Drop_Off: {
-            required: "!"
-        },
-        FlightTime: {
-            required: "!"
-        },
-        PeopleCount: {
-            required: "!"
-        }
-    },
-    submitHandler: function (form) {
-        form.submit();
-    },
-});
-
-
 
 $('._Reservatiton_Style form').validate({
     rules: {
