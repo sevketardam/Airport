@@ -26,7 +26,7 @@ namespace Airport.UI.Controllers
         IUserDatasDAL _userDatas;
         IReservationsDAL _reservations;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail,IUserDatasDAL userDatas, IReservationsDAL reservations)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations)
         {
             _location = location;
             _locationCar = locationCar;
@@ -88,10 +88,7 @@ namespace Airport.UI.Controllers
 
                                     item1.LocationCarsFares.ForEach(a =>
                                     {
-                                        if (a.UpTo <= minKm)
-                                        {
-                                            price += a.Fare * minKm;
-                                        }
+                                        price += a.Fare * minKm;
                                     });
 
                                     getreservation.Add(new GetReservationValues
@@ -105,7 +102,7 @@ namespace Airport.UI.Controllers
                                         DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
                                         PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
                                         DropLocationPlaceId = reservation.DropValue,
-                                        PickLocationPlaceId =  reservation.PickValue,
+                                        PickLocationPlaceId = reservation.PickValue,
                                     });
                                 }
                             }
@@ -120,9 +117,9 @@ namespace Airport.UI.Controllers
             catch (Exception)
             {
                 ViewBag.Error = "Error";
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
-           
+
         }
 
         [HttpGet("reservation-step-three/{id}")]
@@ -188,6 +185,28 @@ namespace Airport.UI.Controllers
 
 
                 return View(item);
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "Error";
+                return RedirectToAction("Index", "Home");
+            }
+
+        }
+
+
+        [HttpPost(Name = "checkReservation")]
+        public async Task<IActionResult> GetReservation(string reservationCode, string email)
+        {
+            try
+            {
+                var reservation = _reservations.SelectByFunc(a => a.Email == email && a.ReservationCode == reservationCode).FirstOrDefault();
+                if (reservation == null)
+                {
+                    ViewBag.Warning = "Warning";
+                    return View();
+                }
+                return View();
             }
             catch (Exception)
             {
