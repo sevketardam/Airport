@@ -278,27 +278,6 @@
     <script src="~/webjs/app.js" asp-append-version="true"></script>
 
     <script>
-        $('form#_Sign_Form').validate({
-            rules: {
-                UserEposta: {
-                    required: true,
-                    email: true,
-                },
-                UserPassword: {
-                    required: true,
-                }
-
-            },
-            messages: {
-                UserEposta: {
-                    required: "This Field is Required"
-                },
-                UserPassword: {
-                    required: "This Field is Required",
-                },
-            },
-        });
-
 
 
         $('#_Sign_Form').on("submit", function (e) {
