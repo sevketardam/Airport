@@ -752,7 +752,20 @@
 }
 
 @section pageJs{
+
     <script>
+                    @if(ViewBag.Error != null)
+            {
+                <text>
+                     Swal.fire({
+                    icon: 'error',
+                    title: 'Error!!',
+                    text: 'Something went wrong!! Try again ',
+                    })
+                </text>
+            }
+
+
         var pickPlaceId;
         var dropPlaceId;
 

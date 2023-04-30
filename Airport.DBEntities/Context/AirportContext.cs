@@ -27,7 +27,7 @@ namespace Airport.DBEntities.Context
             //var connectionString = "Server =.\\SQLEXPRESS01; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
             //optionsBuilder.UseSqlServer(connectionString);
 
-            var connectionString = "Server =.\\SQLEXPRESS; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
+            var connectionString = "Server =.\\SQLEXPRESS01; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
             optionsBuilder.UseSqlServer(connectionString);
 
             base.OnConfiguring(optionsBuilder);
@@ -123,6 +123,11 @@ namespace Airport.DBEntities.Context
             modelBuilder.Entity<LocationCarsFare>()
                 .HasOne<LocationCars>(a => a.LocationCar)
                 .WithMany(a => a.LocationCarsFares)
+                .HasForeignKey(a => a.LocationCarId);
+
+            modelBuilder.Entity<Reservations>()
+                .HasOne<LocationCars>(a => a.LocationCars)
+                .WithMany(a => a.Reservations)
                 .HasForeignKey(a => a.LocationCarId);
 
             base.OnModelCreating(modelBuilder);

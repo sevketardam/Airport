@@ -46,6 +46,7 @@ namespace Airport.UI
             services.AddScoped<ILocationCarsDAL, LocationCarsDAL>();
             services.AddScoped<IGetCarDetail, GetCarDetail>();
             services.AddScoped<ILocationCarsFareDAL, LocationCarsFareDAL>();
+            services.AddScoped<IReservationsDAL, ReservationsDAL>();
 
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>

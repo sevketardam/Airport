@@ -49,21 +49,13 @@ namespace Airport.UI.Controllers
 
                         if (rememberMe)
                         {
-                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, pri, new AuthenticationProperties
-                            {
-                                IsPersistent = true,
-                                AllowRefresh = true,
-                                RedirectUri = "/"
-                            });
+                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, pri);
                         }
                         else
                         {
                             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, pri, new AuthenticationProperties
                             {
-                                ExpiresUtc = DateTime.UtcNow.AddHours(2),
-                                IsPersistent = true,
-                                AllowRefresh = true,
-                                RedirectUri = "/"
+                                ExpiresUtc = DateTime.UtcNow.AddHours(2)
                             });
                         }
 

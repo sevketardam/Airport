@@ -1820,7 +1820,7 @@ label._Down_Label {
     color: var(--green);
 }
 
-._Card_Item_Right button {
+._Card_Item_Right a {
     margin-top: 1rem;
     width: 100%;
     max-width: 12rem;
@@ -1834,7 +1834,7 @@ label._Down_Label {
     transition: background-color 250ms;
 }
 
-    ._Card_Item_Right button:hover {
+    ._Card_Item_Right a:hover {
         background-color: #0dc326;
     }
 
