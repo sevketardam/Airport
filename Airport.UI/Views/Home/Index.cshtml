@@ -13,6 +13,16 @@
             <div class="_Banner_Flex">
                 <div class="_Banner_Left">
                     <div class="_Banner_Form">
+                        <style>
+                            #reservationForm label.error {
+                                font-weight: 800;
+                                font-size: 1.5rem !important;
+                                right: 6px;
+                                top: 3px;
+                                position: absolute;
+                                left: auto !important;
+                            }
+                        </style>
                         <form asp-route="getLocationValue" method="post" id="reservationForm">
                             
                             <div class="_Form_Cat">
@@ -33,7 +43,7 @@
                                     <div>
                                         <img src="~/img/location.png" class="_Locaiton_Icon" alt="Location icon">
                                         <label for="">Pick Up</label>
-                                        <input class="get-location" id="_Pick_Up" placeholder="Search Location" type="text" />
+                                        <input class="get-location" id="_Pick_Up" name="_Pick_Up" placeholder="Search Location" type="text" />
 
                                         <input id="_Pick_Up_Value" name="PickValue" type="hidden" />
                                     </div>
@@ -42,7 +52,7 @@
                                     <div>
                                         <img src="~/img/location.png" class="_Locaiton_Icon" alt="Location icon">
                                         <label for="">Drop off</label>
-                                        <input class="get-location" id="_Drop_Off" placeholder="Search Location" type="text" />
+                                        <input class="get-location" id="_Drop_Off" name="_Drop_Off" placeholder="Search Location" type="text" />
 
                                         <input id="_Drop_Off_Value" name="DropValue" type="hidden" />
                                     </div>

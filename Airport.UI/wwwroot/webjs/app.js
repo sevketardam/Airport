@@ -253,3 +253,88 @@ $("._File").on("change", function () {
 $(".active_lang").on("click", function () {
     $(this).toggleClass("active")
 })
+
+
+$('form#reservationForm').validate({
+    rules: {
+        _Pick_Up: {
+            required: true,
+        },
+        _Drop_Off: {
+            required: true,
+        },
+        FlightTime: {
+            required: true,
+        },
+        PeopleCount: {
+            required: true,
+        },
+    },
+    messages: {
+        _Pick_Up: {
+            required: "!"
+        },
+        _Drop_Off: {
+            required: "!"
+        },
+        FlightTime: {
+            required: "!"
+        },
+        PeopleCount: {
+            required: "!"
+        }
+    },
+    submitHandler: function (form) {
+        form.submit();
+    },
+});
+
+
+
+$('._Reservatiton_Style form').validate({
+    rules: {
+        reservation_code: {
+            required: true,
+        },
+        email: {
+            required: true,
+            email: true,
+        } 
+    },
+    messages: {
+        reservation_code: {
+            required: "This Field is Required",
+            email: "Invalid Email"
+        },
+        email: {
+            required: "This Field is Required"
+        }
+    },
+    submitHandler: function (form) {
+        form.submit();
+    },
+});
+
+$('form#_Sign_Form').validate({
+    rules: {
+        UserEposta: {
+            required: true,
+            email: true,
+        },
+        UserPassword: {
+            required: true,
+        }
+        
+    },
+    messages: {
+        UserEposta: {
+            required: "This Field is Required"
+        },
+        UserPassword: {
+            required: "This Field is Required",
+        },
+    },
+    submitHandler: function (form) {
+        form.submit();
+    },
+});

@@ -1,6 +1,7 @@
 ﻿using Airport.DBEntities.Entities;
 using Airport.DBEntitiesDAL.Interfaces;
 using Airport.UI.Models.IM;
+using Airport.UI.Models.Interface;
 using Airport.UI.Models.VM;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -19,17 +20,19 @@ namespace Airport.UI.Controllers
         ILocationsDAL _location;
         ILocationCarsDAL _locationCar;
         ILocationCarsFareDAL _locationCarsFare;
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare)
+        IGetCarDetail _carDetail;
+
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare,IGetCarDetail carDetail)
         {
             _location = location;
             _locationCar = locationCar;
             _locationCarsFare = locationCarsFare;
+            _carDetail = carDetail;
         }
 
         [HttpPost("reservation", Name = "getLocationValue")]
         public async Task<IActionResult> ReservationStepTwo(GetResevationIM reservation)
         {
-
             var api_key = "AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg";
 
             var httpClient = new HttpClient();
@@ -66,6 +69,7 @@ namespace Airport.UI.Controllers
                         foreach (var item1 in item.LocationCars)
                         {
                             var price = item1.DropPrice;
+                            item1.Car = _carDetail.CarDetail(item1.CarId);
                             item1.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == item1.Id);
                             item1.LocationCarsFares.ForEach(a =>
                             {
@@ -74,6 +78,7 @@ namespace Airport.UI.Controllers
                                     price += a.Fare;
                                 }
                             });
+
 
                             getreservation.Add(new GetReservationValues
                             {
@@ -86,7 +91,7 @@ namespace Airport.UI.Controllers
             }
 
 
-            return View(contentJsonResult);
+            return View(getreservation);
         }
     }
 }

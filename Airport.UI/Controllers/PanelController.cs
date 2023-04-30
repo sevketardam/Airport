@@ -9,5 +9,10 @@ namespace Airport.UI.Controllers
         {
             return View();
         }
+
+        public IActionResult Dashbord()
+        {
+            return View();
+        }
     }
 }
