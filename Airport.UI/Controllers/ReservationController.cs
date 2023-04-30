@@ -73,7 +73,6 @@ namespace Airport.UI.Controllers
                                 {
                                     price += a.Fare;
                                 }
-
                             });
 
                             getreservation.Add(new GetReservationValues
