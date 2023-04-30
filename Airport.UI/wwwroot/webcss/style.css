@@ -8,7 +8,7 @@
 }
 
 ._Module_Margin {
-    margin: 6rem auto;
+    margin: 7rem auto;
 }
 
 ._Nav_Flex {
@@ -46,6 +46,7 @@ body {
     position: relative;
     border-radius: 0.6rem;
     overflow: hidden;
+    width: 100%;
 }
 
 ._Logo {
@@ -62,16 +63,18 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0rem;
     position: relative;
 }
 
 ._Nav_List {
-    width: calc(50% - var(--nav-gap));
+    width: calc(60% - var(--nav-gap));
+    display:flex;
+    justify-content: space-between;
 }
 
 ._Auth {
-    width: calc(50% - var(--nav-gap));
+    width: calc(40% - var(--nav-gap));
 }
 
 nav {
@@ -123,12 +126,15 @@ nav {
 
         ._Auth ul._Btns > li > a {
             border: 0px solid;
-            padding: 0.8rem 1.2rem;
-            font-size: 1.2rem;
+            padding: 0.9rem 1.2rem;
+            font-size: .9rem;
             font-weight: 600;
             color: var(--orange);
             transition: border-radius 250ms;
         }
+._Nav_List a{
+    font-size: .8rem;
+}
 
 label.error {
     color: red !important;
@@ -332,6 +338,7 @@ label.error {
 
         ._Nav_Content._Active {
             left: 0%;
+            z-index: 3;
         }
 
     ._Nav_List ul {
@@ -349,6 +356,7 @@ label.error {
         height: 100%;
         max-width: 70%;
         justify-content: flex-end;
+        z-index: 4;
     }
 
     .menuToggle {
@@ -446,7 +454,7 @@ label.error {
     }
 
 ._Banner_Form {
-    width: 80%;
+    width: 90%;
     height: auto;
     padding: 1rem;
     border-radius: 1rem;
@@ -466,7 +474,7 @@ label.error {
 
     ._Form_Cat button {
         width: 100%;
-        height: 3rem;
+        height: 2.5rem;
         border-radius: 0.6rem;
         background-color: #ffffff;
         border: none;
@@ -483,7 +491,8 @@ label.error {
 
 ._Form_Inputs {
     display: flex;
-    flex-direction: column;
+    /*flex-direction: column;*/
+    flex-wrap: wrap;
     margin-top: 0.75rem;
     gap: 0.75rem;
 }
@@ -620,14 +629,17 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     flex-wrap: wrap;
     gap: 1rem;
     margin: 2rem 0;
+    justify-content: center;
 }
 
     ._Why_Module_Flex > div {
-        width: calc(50% - 0.5rem);
+        /*width: calc(50% - 0.5rem);*/
+        width: calc(42% - .5rem);
         height: auto;
         /**/
         display: flex;
-        justify-content: center;
+        /**/
+        /*justify-content: center;*/
     }
 
 ._Why_Module_Item {
@@ -725,12 +737,12 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     ._List_Flex ._List_Item {
         width: calc(50% - 1.25rem);
         display: flex;
-        gap: 3rem;
+        gap: .5rem;
     }
 
 ._List_Item img {
-    width: 15rem;
-    height: 15rem;
+    width: 12rem;
+    height: 12rem;
     object-fit: scale-down;
 }
 
@@ -745,6 +757,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 ._List_Item h3 {
     text-align: start;
     margin: 0 0 1rem 0;
+    font-size: 1.3rem;
 }
 
 ._List_Item p {
@@ -2393,7 +2406,7 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
     ._List_Flex ._List_Item {
-        gap: 1rem;
+        gap: .5rem;
     }
 
     ._List_Item img {
@@ -2895,3 +2908,124 @@ input[type="number"]::-webkit-outer-spin-button {
         width: 100%;
     }
 }
+
+
+
+/* 30.04.2023 - 12:47 Düzenlemeler */
+
+#reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(1) input {
+    padding-left: 2rem;
+}
+
+#reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(2) input {
+    padding-left: 2rem;
+}
+
+#reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(1) label {
+    left: 2rem;
+}
+
+#reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(2) label {
+    left: 2rem;
+}
+
+#reservationForm > ._Form_Inputs > ._Pos_Rel._User_Div input {
+    text-align: end;
+}
+
+._Banner_Right img {
+    width: 75%;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(1),
+#reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(2),
+#reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(3),
+#reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(4) {
+    width: calc(50% - .5rem)
+}
+
+._Pos_Phone {
+    position: relative;
+    z-index: 3 !important;
+}
+
+    ._Pos_Phone input {
+        padding-left: 3rem !important;
+    }
+
+.languages {
+    position: relative;
+}
+
+    .languages img {
+        width: 2rem;
+        height: 2rem;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+.active_lang {
+    cursor: pointer;
+}
+
+.other_lang {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    /* border: 1px solid; */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 5rem;
+    background: white;
+    top: 2.6rem;
+    left: -0.4rem;
+    padding: 0.4rem;
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    border-radius: 10px;
+    transition: opacity 250ms, visibility 250ms;
+}
+
+.active_lang.active .other_lang {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile_lang{
+    display: none;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .mobile_lang {
+        display: block;
+    }
+
+    up_lang {
+        display: none;
+    }
+    .mobile_none{
+        display:none !important;
+    }
+    ._Nav_List {
+        justify-content: center !important;
+    }
+}
+
+.register_banner{
+    background: var(--orange);
+}
+
+.register_banner p{
+        padding: 8rem 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: white;
+}
+
+    .register_banner a {
+        color: white;
+    }
