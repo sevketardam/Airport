@@ -53,58 +53,38 @@ namespace Airport.UI.Controllers
 
 
             var fullUrl2 = s + $"&origins={contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}&destinations={contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}&key=" + api_key;
-
+            var getreservation = new List<GetReservationValues>();
             using (var client = new HttpClient())
             {
                 HttpResponseMessage response4 = await client.GetAsync(fullUrl2);
                 var content4 = await response4.Content.ReadAsStringAsync();
-                var data2 = JObject.Parse(content4);
+                var data = JObject.Parse(content4);
 
-                if (data2["status"].ToString() == "OK")
+                if (data["status"].ToString() == "OK")
                 {
-                    if (data2["rows"][0]["elements"][0]["status"].ToString() == "OK")
+                    if (data["rows"][0]["elements"][0]["status"].ToString() == "OK")
                     {
-                    }
-                }
-                else
-                {
+                        var km = data["rows"][0]["elements"][0]["distance"]["value"].ToString().Replace("{", "").Replace("}", "");
+                        var lastKm = Math.Ceiling(Convert.ToDouble(km) / 1000) * 1000;
+                        var minKm = lastKm / 1000;
 
-                }
-            }
-
-            var carLocation = _location.Select();
-            var getreservation = new List<GetReservationValues>();
-            using (var client = new HttpClient())
-            {
-                var destinationLocation = $"{contentJsonResult.Result.Geometry.Location.lat}%2C{contentJsonResult.Result.Geometry.Location.lng}";
-
-                foreach (var item in carLocation)
-                {
-                    item.LocationCars = _locationCar.SelectByFunc(a => a.LocationId == item.Id);
-                    var originLocation = $"{item.Lat},{item.Lng}";
-                    var fullUrl = s + "&origins=" + originLocation + "&destinations=" + destinationLocation + "&key=" + api_key;
-                    HttpResponseMessage response = await client.GetAsync(fullUrl);
-                    var content = await response.Content.ReadAsStringAsync();
-                    var data = JObject.Parse(content);
-                    if (data["status"].ToString() == "OK")
-                    {
-                        if (data["rows"][0]["elements"][0]["status"].ToString() == "OK")
+                        var carLocation = _location.Select();
+                        foreach (var item in carLocation)
                         {
-                            var km = data["rows"][0]["elements"][0]["distance"]["value"].ToString().Replace("{", "").Replace("}", "");
-                            var lastKm = Math.Ceiling(Convert.ToDouble(km) / 1000) * 1000;
-                            var minKm = lastKm / 1000;
+                            item.LocationCars = _locationCar.SelectByFunc(a => a.LocationId == item.Id);
 
-                            var lastKm2 = lastKm;
                             foreach (var item1 in item.LocationCars)
                             {
                                 var price = item1.DropPrice;
                                 item1.Car = _carDetail.CarDetail(item1.CarId);
+
                                 item1.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == item1.Id);
+
                                 item1.LocationCarsFares.ForEach(a =>
                                 {
-                                    if (minKm <= a.UpTo)
+                                    if (a.UpTo <= minKm)
                                     {
-                                        price += a.Fare;
+                                        price += a.Fare * minKm;
                                     }
                                 });
 
