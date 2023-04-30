@@ -278,44 +278,71 @@
     <script src="~/webjs/app.js" asp-append-version="true"></script>
 
     <script>
+        $('form#_Sign_Form').validate({
+            rules: {
+                UserEposta: {
+                    required: true,
+                    email: true,
+                },
+                UserPassword: {
+                    required: true,
+                }
+
+            },
+            messages: {
+                UserEposta: {
+                    required: "This Field is Required"
+                },
+                UserPassword: {
+                    required: "This Field is Required",
+                },
+            },
+        });
+
+
+
         $('#_Sign_Form').on("submit", function (e) {
             e.preventDefault();
-            var formData = $(this).serialize()
-            $.ajax({
-                url: '/Login/Login',
-                type: "POST",
-                data: formData,
-                success: function (data) {
-                    console.log(data)
-                    if (data.status == 200) {
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Successfully logged in',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
+            if ($('#_Sign_Form').valid()){
+                var formData = $(this).serialize()
+                $.ajax({
+                    url: '/Login/Login',
+                    type: "POST",
+                    data: formData,
+                    success: function (data) {
+                        console.log(data)
+                        if (data.status == 200) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Successfully logged in',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
 
-                        setTimeout(function () {
-                            location.href = "/";
-                        }, 1500)
+                            setTimeout(function () {
+                                location.href = "/";
+                            }, 1500)
 
-                    } else if (data.status == 404) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'No Data',
-                            text: 'Check eposta and password please',
-                        })
-                    } else if (data.status == 404) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Something went wrong!',
-                        })
+                        } else if (data.status == 404) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'No Data',
+                                text: 'Check eposta and password please',
+                            })
+                        } else if (data.status == 404) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                            })
+                        }
                     }
-                }
-            });
+                });
+            }
+           
         })
+
     </script>
 
 

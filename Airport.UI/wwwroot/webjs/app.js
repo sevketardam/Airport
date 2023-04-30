@@ -280,26 +280,3 @@ $('._Reservatiton_Style form').validate({
     },
 });
 
-$('form#_Sign_Form').validate({
-    rules: {
-        UserEposta: {
-            required: true,
-            email: true,
-        },
-        UserPassword: {
-            required: true,
-        }
-        
-    },
-    messages: {
-        UserEposta: {
-            required: "This Field is Required"
-        },
-        UserPassword: {
-            required: "This Field is Required",
-        },
-    },
-    submitHandler: function (form) {
-        form.submit();
-    },
-});
