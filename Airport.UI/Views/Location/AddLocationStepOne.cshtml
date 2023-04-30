@@ -12,8 +12,13 @@
 
 <div class="row">
     <div class="col-12 mb-4">
-        <form asp-route="AddLocationStepOne" novalidate>
-            <input type="text" class="form-control mb-3" placeholder="Search Location" id="searchLocation" />
+        <style>
+            label.error {
+                left: 0.3rem;
+            }
+        </style>
+        <form id="location_step1" class="_Pos_Rel" asp-route="AddLocationStepOne" novalidate>
+            <input type="text" class="form-control mb-3" name="place_Id" placeholder="Search Location" id="searchLocation" />
             <input type="hidden" id="placeId" name="placeId" />
 
             <button class="btn btn-secondary next-btn" style="float:right;" type="submit">Next</button>
