@@ -14,5 +14,11 @@ namespace Airport.UI.Controllers
         {
             return View();
         }
+
+        [HttpGet("panel/reservation-step-three")]
+        public IActionResult ReservationStepThree()
+        {
+            return View();
+        }
     }
 }

@@ -1,0 +1,65 @@
+﻿
+._Steps_Style {
+    width: 100%;
+    border-radius: 10px;
+    background-color: var(--orange);
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 1rem;
+}
+
+._Steps_Flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+._Line {
+    width: 32%;
+    height: 1.5px;
+    background-color: rgba(255, 255, 255, 0.652);
+}
+
+._Step_Text {
+    color: white;
+    text-align: center;
+}
+
+    ._Step_Text._Active {
+        color: black;
+    }
+
+._Steps_Btns {
+    display: flex;
+    align-content: center;
+    width: 90%;
+    margin-left: auto;
+    gap: 1rem;
+}
+
+    ._Steps_Btns > div, ._Steps_Btns button {
+        width: 100%;
+    }
+
+    ._Steps_Btns button {
+        background-color: white;
+        border: none;
+        outline: none;
+        height: 2.5rem;
+        border-radius: 10px;
+        color: var(--orange);
+        transition: background-color 250ms;
+    }
+
+        ._Steps_Btns button:hover {
+            background-color: rgb(213, 213, 213);
+        }
+
+@media only screen and (max-width: 768px) {
+    ._Steps_Btns {
+        width: 100%;
+        margin-top: 1rem;
+    }
+}
