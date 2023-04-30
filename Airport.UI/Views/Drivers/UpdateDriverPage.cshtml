@@ -5,21 +5,21 @@
 
 <form id="updateDriverForm">
     <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Name</label>
                 <input type="text" class="form-control" placeholder="Name" name="Name" value="@Model.Name" required="">
             </div>
         </div>
 
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Email</label>
                 <input type="text" class="form-control" placeholder="Email" name="Email" value="@Model.Email" required="">
             </div>
         </div>
 
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Phone</label>
                 <input type="text" class="form-control" placeholder="Phone" name="Phone" value="@Model.Phone" required="">
@@ -27,7 +27,7 @@
         </div>
 
         <div class="col-md-12">
-            <div class="custom-control custom-checkbox mb-4">
+            <div class="custom-control custom-checkbox mb-4" _Pos_Rel>
                 <input type="checkbox" class="custom-control-input" id="bookingCheckbox" name="Booking" value="true" @(Model.Booking == true ? "checked" : "")>
                 <label class="custom-control-label" for="bookingCheckbox">
                     Show all bookings
@@ -36,7 +36,7 @@
         </div>
 
         <div class="col-md-12">
-            <div class="custom-control custom-checkbox mb-4">
+            <div class="custom-control custom-checkbox mb-4 _Pos_Rel">
                 <input type="checkbox" class="custom-control-input" id="financialCheckbox" name="Financial" value="true" @(Model.Financial == true ? "checked" : "")>
                 <label class="custom-control-label" for="financialCheckbox">
                     Show financial info
@@ -60,24 +60,25 @@
     <script>
         $('#updateDriverForm').on("submit", function (e) {
             e.preventDefault();
-
-            var formData = $(this).serialize()
-            $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.DriversController.UpdateDriver))',
-                type: "POST",
-                data: formData + "&id=" + @Model.Id,
-                success: function (response) {
-                    if (response.result == 1) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Successfully Update Driver',
-                        }).then(() => {
-                            location.href = "/panel/my-drivers";
-                        })
+            if ($("#updateDriverForm").valid()) {
+                var formData = $(this).serialize()
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.DriversController.UpdateDriver))',
+                    type: "POST",
+                    data: formData + "&id=" + @Model.Id,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully Update Driver',
+                            }).then(() => {
+                                location.href = "/panel/my-drivers";
+                            })
+                        }
                     }
-                }
-            });
+                });
+            }
         })
     </script>
 }

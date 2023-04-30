@@ -5,6 +5,12 @@
 
 @model ServiceManagementVM
 
+<style>
+    label.error {
+        left: 0.3rem;
+    }
+</style>
+
 <div class="row">
     <div class="col-md-6">
         <div class="text-right">
@@ -76,9 +82,9 @@
             </div>
             <div class="modal-body">
                 <form id="addServiceCategoryForm">
-                    <div class="form-group position-relative error-l-50">
+                    <div class="form-group position-relative error-l-50 _Pos_Rel">
                         <label>Service List Name</label>
-                        <input type="text" class="form-control" name="categoryName" required="" placeholder="Enter Your Service Category Name">
+                        <input type="text" class="form-control" name="categoryName" placeholder="Enter Your Service Category Name">
                     </div>
 
                 </form>
@@ -109,8 +115,8 @@
                 <form id="addServicePropertyForm">
                     <div class="form-group position-relative error-l-50">
                         <label>Service Category</label>
-                        <select class="custom-select" name="ServiceCategoryId" required="">
-                            <option value="null" selected>Seçiniz</option>
+                        <select class="custom-select" name="ServiceCategoryId">
+                            <option value="" disabled selected>Seçiniz</option>
                             @foreach (var item in Model.ServiceCategories)
                             {
                                 <option value="@item.Id">@item.ServiceCategoryName</option>
@@ -120,12 +126,12 @@
 
                     <div class="form-group position-relative error-l-50">
                         <label>Service Property Name</label>
-                        <input type="text" class="form-control" name="PropertyName" required="" placeholder="Enter Your Service Property Name">
+                        <input type="text" class="form-control" name="PropertyName" placeholder="Enter Your Service Property Name">
                     </div>
 
                     <div class="form-group position-relative error-l-50">
                         <label>Service Property Description</label>
-                        <input type="text" class="form-control" name="PropertyDescription" required="" placeholder="Enter Your Service Property Description">
+                        <input type="text" class="form-control" name="PropertyDescription" placeholder="Enter Your Service Property Description">
                     </div>
                 </form>
             </div>
@@ -156,44 +162,49 @@
 
         $('#addServicePropertyForm').on("submit", function (e) {
             e.preventDefault();
-            var formData = $(this).serialize()
-            $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.AddServiceProperty))',
-                type: "POST",
-                data: formData,
-                success: function (response) {
-                    if (response.result == 1) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Successfully Added Service Property',
-                        }).then(() => {
-                            location.reload();
-                        })
+            if ($('#addServicePropertyForm').valid()) {
+                var formData = $(this).serialize()
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.AddServiceProperty))',
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully Added Service Property',
+                            }).then(() => {
+                                location.reload();
+                            })
+                        }
                     }
-                }
-            });
+                });
+            }
         })
 
         $('#addServiceCategoryForm').on("submit", function (e) {
             e.preventDefault();
-            var formData = $(this).serialize()
-            $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.AddServiceCategory))',
-                type: "POST",
-                data: formData,
-                success: function (response) {
-                    if (response.result == 1) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Successfully Added Service Category',
-                        }).then(() => {
-                            location.reload();
-                        })
+            if ($('#addServiceCategoryForm').valid()) {
+                var formData = $(this).serialize()
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.AddServiceCategory))',
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully Added Service Category',
+                            }).then(() => {
+                                location.reload();
+                            })
+                        }
                     }
-                }
-            });
+                });
+            }
+            
         })
     </script>
 }

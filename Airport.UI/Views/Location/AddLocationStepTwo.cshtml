@@ -15,7 +15,7 @@
         <form id="mapLocationForm" asp-route="getMapLocation" method="post">
             <div id="map" class="mb-3"></div>
             <input id="mapValues" type="hidden" name="mapValues" />
-            <button class="btn btn-secondary" style="float:right;" id="nextBtn" type="button">Next</button>
+            <button class="btn btn-secondary" style="float:right;" id="nextBtn" disabled type="button">Next</button>
         </form>
     </div>
 </div>
@@ -36,18 +36,18 @@
             <div class="modal-body">
                 <form id="locationMarker">
                     <div class="row">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-6 mb-3 _Pos_Rel">
                             <label for="locationName">Location Name</label>
-                            <input class="form-control" id="locationName" placeholder="Enter a location name" type="text" />
+                            <input class="form-control" id="locationName" name="Location_Name" placeholder="Enter a location name" type="text" />
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-6 mb-3 _Pos_Rel">
                             <label for="locationRadius">Radius</label>
-                            <input class="form-control" id="locationRadius" type="number" />
+                            <input class="form-control" id="locationRadius" name="Radius" type="number" />
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12 _Pos_Rel">
                             <label>Car on this point</label>
-                            <select class="form-control select2-multiple" id="carSelect" multiple="multiple" data-width="100%">
+                            <select class="form-control select2-multiple" id="carSelect" name="Cars" multiple="multiple" data-width="100%">
                                 @foreach (var car in Model)
                                 {
                                     <option value="@car.Id">@(car.Brand?.CarBrandName)</option>
@@ -174,24 +174,33 @@
         };
 
         $('#saveLocation').on("click", function () {
-            locationJson.locationName = $('#locationName').val();
-            locationJson.locationRadius = parseInt($('#locationRadius').val());
-            locationJson.locationCars = $('#carSelect').val();
+            var input1 = document.getElementsByName("Location_Name")[0].value;
+            var input2 = document.getElementsByName("Radius")[0].value;
+            var input3 = document.getElementsByName("Cars")[0].value;
 
-            if (checkPost == "ADD"){
-                mapEvent = firstEvent;
-            }
+            if (input1 != "" && input2 != "" && input3 != "") {
+                locationJson.locationName = $('#locationName').val();
+                locationJson.locationRadius = parseInt($('#locationRadius').val());
+                locationJson.locationCars = $('#carSelect').val();
+
+                if (checkPost == "ADD") {
+                    mapEvent = firstEvent;
+                }
 
 
-            addCircle(mapEvent, locationJson.locationRadius);
+                addCircle(mapEvent, locationJson.locationRadius);
 
-            $('#getCircle').modal("hide")
+                $('#getCircle').modal("hide")
+                $("#nextBtn").attr("disabled", false)
+           }
         })
 
 
         $('#nextBtn').on("click", function () {
-            $('#mapValues').val(JSON.stringify(locationJson))
-            $('#mapLocationForm').submit()
+            if (locationJson != null && locationJson.locationName != "") {
+                $('#mapValues').val(JSON.stringify(locationJson))
+                $('#mapLocationForm').submit()
+            }
         })
     </script>
 }
