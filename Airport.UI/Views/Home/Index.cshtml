@@ -77,7 +77,7 @@
                                     <input type="text" value="1" name="PeopleCount" onkeydown="return numControl(event)">
                                 </div>
                                 <div class="_Pos_Rel">
-                                    <button type="button" class="_Search_Booking" id="_Search_Booking">
+                                    <button type="submit" class="_Search_Booking" id="_Search_Booking">
                                         Search Booking
                                     </button>
                                 </div>
@@ -781,16 +781,50 @@
         }
 
 
-        $('#_Search_Booking').on("click",function(){
-            let datas = {
+        
+$('form#reservationForm').validate({
+    rules: {
+        _Pick_Up: {
+            required: true,
+        },
+        _Drop_Off: {
+            required: true,
+        },
+        FlightTime: {
+            required: true,
+        },
+        PeopleCount: {
+            required: true,
+        },
+    },
+    messages: {
+        _Pick_Up: {
+            required: "!"
+        },
+        _Drop_Off: {
+            required: "!"
+        },
+        FlightTime: {
+            required: "!"
+        },
+        PeopleCount: {
+            required: "!"
+        }
+    },
+    submitHandler: function (form) {
+                    let datas = {
                 pickValue: pickPlaceId,
                 dropValue: dropPlaceId
             }
 
             $('#reservationDatas').val(JSON.stringify(datas))
 
-            $('#reservationForm').submit()
-        })
+            form.submit()
+    },
+});
+
+
+
 
     </script>
 }
