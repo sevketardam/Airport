@@ -2,36 +2,41 @@
     Layout = "_PanelLayout";
 }
 
+<style>
+    label.error {
+        left: 0.3rem;
+    }
+</style>
 
 <form id="addDriverForm">
     <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Name</label>
                 <input type="text" class="form-control" placeholder="Name" name="Name" required="">
             </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Email</label>
                 <input type="text" class="form-control" placeholder="Email" name="Email" required="">
             </div>
         </div>
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Password</label>
                 <input type="password" class="form-control" placeholder="Password" name="Password" required="">
             </div>
         </div>
 
-        <div class="col-md-6 mb-3">
+        <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Phone</label>
                 <input type="text" class="form-control" placeholder="Phone" name="Phone" required="">
             </div>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-12 _Pos_Rel">
             <div class="custom-control custom-checkbox mb-4">
                 <input type="checkbox" class="custom-control-input" id="bookingCheckbox" name="Booking" value="true">
                 <label class="custom-control-label" for="bookingCheckbox">
@@ -40,9 +45,9 @@
             </div>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-12 _Pos_Rel">
             <div class="custom-control custom-checkbox mb-4">
-                <input type="checkbox" class="custom-control-input" id="financialCheckbox" name="" value="true">
+                <input type="checkbox" class="custom-control-input" id="financialCheckbox" name="Financial" value="true">
                 <label class="custom-control-label" for="financialCheckbox">
                     Show financial info
                 </label>

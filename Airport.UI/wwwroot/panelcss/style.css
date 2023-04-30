@@ -1,4 +1,13 @@
 ﻿
+@font-face {
+    font-family: "gothic";
+    src: url(../font/GOTHIC.TTF);
+}
+
+*:not(i,svg,img){
+    font-family: gothic !important;
+}
+
 ._Steps_Style {
     width: 100%;
     border-radius: 10px;
@@ -57,10 +66,27 @@
             background-color: rgb(213, 213, 213);
         }
 
+
+
+
+.panel_sevice_flex{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.panel_sevice_item {
+    width: calc((100% / 3) - 1rem);
+}
+
 @media only screen and (max-width: 768px) {
     ._Steps_Btns {
         width: 100%;
         margin-top: 1rem;
+    }
+    .panel_sevice_item {
+        width: 100%;
     }
 }
  

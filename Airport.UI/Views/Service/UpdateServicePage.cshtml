@@ -4,22 +4,28 @@
 
 @model UpdatePageServiceVM
 
+<style>
+    label.error {
+        left: .3rem;
+    }
+</style>
+
 <form id="updateServiceForm" class="mt-3">
     <div class="row">
 
-        <div class="col-md-6">
+        <div class="col-md-6 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Service List Name</label>
-                <input type="text" class="form-control" name="serviceName" required="" value="@Model.Service.ServiceName" placeholder="Enter Your Service List Name">
+                <input type="text" class="form-control" name="serviceName" value="@Model.Service.ServiceName" placeholder="Enter Your Service List Name">
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>List Description</label>
                 <input type="text" class="form-control" name="ServiceDescription" value="@Model.Service.ServiceDescription" placeholder="Enter a description for your service list (optional)">
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6 _Pos_Rel">
             <label>Service List</label>
             <select class="form-control select2-multiple" name="serviceItems" multiple="multiple" data-width="100%">
                 @foreach (var category in Model.ServiceCategories)
@@ -56,23 +62,25 @@
     <script>
         $('#updateServiceForm').on("submit", function (e) {
             e.preventDefault();
-            var formData = $(this).serialize()
-            $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.UpdateService))',
-                type: "POST",
-                data: formData+"&id="+@Model.Service.Id,
-                success: function (response) {
-                    if (response.result == 1) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Successfully Added Service',
-                        }).then(() => {
-                            location.href = "/panel/service";
-                        })
+            if ($('#updateServiceForm').valid()) {
+                var formData = $(this).serialize()
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.UpdateService))',
+                    type: "POST",
+                    data: formData + "&id=" + @Model.Service.Id,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully Added Service',
+                            }).then(() => {
+                                location.href = "/panel/service";
+                            })
+                        }
                     }
-                }
-            });
+                });
+            }
         })
     </script>
 }
