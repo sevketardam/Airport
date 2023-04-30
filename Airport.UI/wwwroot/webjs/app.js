@@ -249,3 +249,7 @@ $("._Clone_Input").on("click", function () {
 $("._File").on("change", function () {
     console.log($(this).val());
 });
+
+$(".active_lang").on("click", function () {
+    $(this).toggleClass("active")
+})
