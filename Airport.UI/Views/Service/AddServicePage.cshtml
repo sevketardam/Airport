@@ -32,9 +32,9 @@
 
             .service-Card .serviceNumberInput {
                 display: grid;
-                grid-template-columns: 70% 30%;
+                grid-template-columns: 80% 20%;
                 grid-template-rows: 15px 15px;
-                width: 100px;
+                width: 130px;
                 border-radius: 8px;
                 outline: solid 2px #808080cf;
                 background: #808080cf;
@@ -61,7 +61,7 @@
                     outline: none;
                     background: #ffffffa1;
                     padding: 5px;
-                    font-size: 7px;
+                    font-size: 5px;
                 }
 
             .service-Card .serviceCard-remove {
@@ -149,6 +149,7 @@
 
         let serviceCards = {};
 
+
         function initServiceCards() {
 
             document.querySelectorAll('.service-info-group').forEach(group => {
@@ -215,8 +216,9 @@
             })
         }
 
-
         initServiceCards()
+
+
 
 
         $('#addServiceForm').on("submit", function (e) {
@@ -240,7 +242,19 @@
             });
         })
 
+        $('#serviceList').on("select2:unselect", (e) => {
 
+
+            let target = document.querySelector('.service-info-group[data-id="'+e.params.data.id+'"]');
+
+            if (target.parentElement.querySelectorAll('.service-info-group').length != 1)
+            {
+                target.remove();
+            } else {
+                target.parentElement.parentElement.remove()
+            }
+
+        })
 
         $('#serviceList').on("change", function () {
             var propId = $(this).val()
@@ -291,7 +305,7 @@
 
                             } else {
 
-                                serviceCardContainer.innerHTML += `<div class="col-md-6"><div class="service-Card" data-category="${item.serviceCategoryName}">
+                                serviceCardContainer.innerHTML += `<div class="col-lg-4"><div class="service-Card" data-category="${item.serviceCategoryName}">
 
                                                 <div class="service-info-name">
                                                     ${item.serviceCategoryName}
