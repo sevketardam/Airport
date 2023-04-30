@@ -1,34 +1,94 @@
-﻿
+﻿@model ReservationStepThreeVM
+@section pageCss{
+    <style>
+        ._Step3_Item {
+            padding: 1.5rem;
+        }
+
+            ._Step3_Item p,
+            ._Step3_Item h2 {
+                margin: 0;
+                font-weight: 600;
+            }
+
+            ._Step3_Item h4 {
+                color: var(--orange);
+                font-size: 1.25rem;
+                font-weight: 600;
+            }
+
+            ._Step3_Item h3 {
+                color: var(--orange);
+                font-size: 2rem;
+                font-weight: 600;
+            }
+
+            ._Step3_Item h5 {
+                font-size: .9rem;
+                font-weight: 400;
+            }
+
+            ._Step3_Item img {
+                width: 100%;
+                border-radius: 15px;
+                overflow: hidden;
+                height: 15rem;
+                margin: auto;
+                display: flex;
+                object-fit: cover;
+                box-shadow: 0 0 5px rgb(0, 0, 0, .16);
+            }
+
+        ._Total_Flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+            ._Total_Flex p {
+                font-size: 2rem;
+            }
+
+        #_Passenger_Form span {
+            font-size: 12px;
+        }
+
+        ._Profile_Right._None_Shodow {
+            box-shadow: none !important;
+        }
+    </style>
+}
+
 <section class="_Module_Margin">
     <div class="container">
         <div class="_Profile_Flex">
             <div class="_Profile_Left">
                 <div class="_Profile_Items_Flex">
                     <div class="_Step3_Item">
-                        <img src="tede/car.png" alt="">
+                        <img src="@Model.SelectedData.LocationCars.Car.Type.CarImageURL">
                         <h2>
-                            Standard Sedan
+                            @Model.SelectedData.LocationCars.Car.Brand.CarBrandName
                         </h2>
                         <div class="my-4">
                             <p>TRANSFER-INN-PERA VIP TRAVEL</p>
-                            <p>Min 1 Max 4 Passengers</p>
-                            <p>Max 4 Suitcase+ 2 Small Bags</p>
+                            <p>Min 1 Max @Model.SelectedData.PassangerCount Passengers</p>
+                            <p>Max @Model.SelectedData.LocationCars.Car.SuitCase Suitcase+ @Model.SelectedData.LocationCars.Car.SmallBags Small Bags</p>
                         </div>
                         <div class="my-2">
                             <h4>Pick Up</h4>
-                            <h5>Sabiha Gokcen International Airport</h5>
+                            <h5>@Model.SelectedData.PickLocationName</h5>
                         </div>
                         <div class="my-2">
                             <h4>Drop Off</h4>
-                            <h5>İstanbul, Türkiye</h5>
+                            <h5>@Model.SelectedData.DropLocationName</h5>
                         </div>
                         <div class="my-2">
                             <h4>Passengers</h4>
-                            <h5>1 Adult</h5>
+                            <h5>@Model.SelectedData.PassangerCount</h5>
                         </div>
                         <div class="my-2">
                             <h4>Date</h4>
-                            <h5>27 Apr 2023, 12:00</h5>
+                            <h5>@Model.SelectedData.ReservationDate</h5>
                         </div>
                         <div class="my-2">
                             <div class="_Total_Flex">
@@ -36,7 +96,7 @@
                                     Total
                                 </h3>
                                 <p>
-                                    €30.23
+                                    €@Model.SelectedData.LastPrice
                                 </p>
                             </div>
                             <p>
@@ -45,63 +105,7 @@
                             </p>
                         </div>
                     </div>
-                    <style>
-                        ._Step3_Item {
-                            padding: 1.5rem;
-                        }
 
-                            ._Step3_Item p,
-                            ._Step3_Item h2 {
-                                margin: 0;
-                                font-weight: 600;
-                            }
-
-                            ._Step3_Item h4 {
-                                color: var(--orange);
-                                font-size: 1.25rem;
-                                font-weight: 600;
-                            }
-
-                            ._Step3_Item h3 {
-                                color: var(--orange);
-                                font-size: 2rem;
-                                font-weight: 600;
-                            }
-
-                            ._Step3_Item h5 {
-                                font-size: .9rem;
-                                font-weight: 400;
-                            }
-
-                            ._Step3_Item img {
-                                width: 100%;
-                                border-radius: 15px;
-                                overflow: hidden;
-                                height: 15rem;
-                                margin: auto;
-                                display: flex;
-                                object-fit: cover;
-                                box-shadow: 0 0 5px rgb(0, 0, 0, .16);
-                            }
-
-                        ._Total_Flex {
-                            display: flex;
-                            align-items: center;
-                            justify-content: space-between;
-                        }
-
-                            ._Total_Flex p {
-                                font-size: 2rem;
-                            }
-
-                        #_Passenger_Form span {
-                            font-size: 12px;
-                        }
-
-                        ._Profile_Right._None_Shodow {
-                            box-shadow: none !important;
-                        }
-                    </style>
                 </div>
             </div>
             <div class="_Profile_Right _None_Shodow">
@@ -117,11 +121,11 @@
                         </p>
                     </div>
                     <div>
-                        <form id="_Passenger_Form">
+                        <form id="_Passenger_Form" asp-route="getBookValues">
                             <div class="_Form_Flex_Style">
                                 <div class="_Form_Div">
                                     <label class="_Form_Label">Name</label>
-                                    <input type="text" name="Name">
+                                    <input type="text" value="@Model.User?.Name" name="Name">
                                 </div>
                                 <div class="_Form_Div">
                                     <label class="_Form_Label">Surname</label>
@@ -129,26 +133,32 @@
                                 </div>
                                 <div class="_Form_Div _Info_Div">
                                     <label class="_Form_Label">E-mail</label>
-                                    <input type="text" name="E-mail">
+                                    <input type="text" value="@Model.User?.Eposta" name="Email">
                                     <span>
                                         Your invoice will be sent to this e-mail address
                                     </span>
                                 </div>
                                 <div class="_Form_Div _Info_Div">
                                     <label class="_Form_Label">Phone</label>
-                                    <input type="text" name="Phone">
+                                    <input type="text" value="@Model.User?.PhoneNumber" name="Phone">
                                     <span>
                                         You will be receiving both text and phone calls from
                                         the driver at this number.
                                     </span>
                                 </div>
+                                <div class="_Form_Div">
+                                    <button>
+                                        CREATE RESERVATİON
+                                    </button>
+                                </div>
+
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-
+@*
         <div class="_Steps_Style">
             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
                 <div class="_Steps_Flex">
@@ -171,5 +181,5 @@
             </div>
         </div>
     </div>
-
+*@
 </section>

@@ -19,6 +19,7 @@ namespace Airport.DBEntities.Entities
 
         public Locations Location { get; set; }
         public List<LocationCarsFare> LocationCarsFares { get; set; }
+        public List<Reservations> Reservations { get; set; }
         public MyCars Car { get; set; }
     }
 }

@@ -17,6 +17,8 @@
 
     <link rel="stylesheet" href="~/webcss/style.css" asp-append-version="true">
     <link rel="stylesheet" href="~/panelcss/style.css" asp-append-version="true">
+
+    @RenderSection("pageCss", required: false)
 </head>
 
 <body>
@@ -24,12 +26,14 @@
         <nav>
             <div class="container">
                 <div class="_Nav_Flex">
+
                     <div class="_Logo">
                         <a href="/" title="Main Page">
                             <img src="~/images/Logo.png" class="_Nav_Logo"
                                  alt="Airport Global Logo">
                         </a>
                     </div>
+
                     <div class="mobile_lang languages">
                         <div class="active_lang">
                             <img src="~/img/en-flag.png" /> En <span><i class="fa-sharp fa-solid fa-angle-down"></i></span>
@@ -279,8 +283,6 @@
     <script src="~/webjs/app.js" asp-append-version="true"></script>
 
     <script>
-
-
         $('#_Sign_Form').on("submit", function (e) {
             e.preventDefault();
             if ($('#_Sign_Form').valid()){
@@ -319,12 +321,9 @@
                         }
                     }
                 });
-            }
-           
+            }        
         })
-
     </script>
-
 
     @RenderSection("pageJs", required: false)
 </body>

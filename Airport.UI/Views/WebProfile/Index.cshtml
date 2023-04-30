@@ -1,4 +1,6 @@
-﻿<section class="_Module_Margin">
+﻿@model UserDatas
+
+<section class="_Module_Margin">
     <div class="container">
         <div class="_Profile_Flex">
 
@@ -15,35 +17,42 @@
                         </p>
                     </div>
                     <div>
-                        <form id="_Profile_Form">
+                        <form id="_Profile_Form" asp-route="updateUserDatas">
                             <div class="_Form_Flex_Style">
-                                <div class="_Form_Div">
+                              @*<div class="_Form_Div">
                                     <label class="_Form_Label">Title</label>
                                     <input type="text" name="Title">
+                                </div>*@
+
+                                <div class="_Form_Div _Two">
+                                    <label class="_Form_Label">E-mail</label>
+                                    <input type="text" value="@Model.Eposta" disabled>
                                 </div>
-                                <div class="_Form_Div">
+
+                                <div class="_Form_Div _Two">
                                     <label class="_Form_Label">Name</label>
-                                    <input type="text" name="Name">
+                                    <input type="text" name="Name" value="@Model.Name">
                                 </div>
+
                                 <div class="_Form_Div _Two">
                                     <label class="_Form_Label">Profession</label>
-                                    <input type="text" name="Profession">
+                                    <input type="text" value="@Model.Profession" name="Profession">
                                 </div>
+
                                 <div class="_Form_Div _Two">
                                     <label class="_Form_Label">Mobile Phone</label>
-                                    <input type="text" name="Mobile_Phone">
+                                    <input type="text" value="@Model.PhoneNumber" name="PhoneNumber">
                                 </div>
+@*
                                 <div class="_Form_Div _Two">
                                     <button class="_Verify_Number">
                                         Verify Number
                                     </button>
                                 </div>
+*@
+
                                 <div class="_Form_Div _Two">
-                                    <label class="_Form_Label">E-mail</label>
-                                    <input type="text" name="E_mail">
-                                </div>
-                                <div class="_Form_Div _Two">
-                                    <button class="_Form_Button">
+                                    <button class="_Form_Button" type="submit">
                                         Save
                                     </button>
                                 </div>
@@ -55,3 +64,33 @@
         </div>
     </div>
 </section>
+
+
+@section pageJs{
+    @if (ViewBag.Message != null)
+    {
+        <script>
+            @if(ViewBag.Message == "success")
+            {
+                <text>
+                    Swal.fire({
+                    icon: 'success',
+                    title: 'Succesful',
+                    text: 'Successfully changed your information',
+                    })
+                </text>
+            }
+            else
+            {
+                               <text>
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Error!!',
+                    text: 'Something went wrong!! Try again ',
+                    })
+                </text> 
+            }
+
+        </script>
+    }
+}
