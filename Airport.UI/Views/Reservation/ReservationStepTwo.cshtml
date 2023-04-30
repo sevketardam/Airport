@@ -1,5 +1,5 @@
 ﻿@using Airport.UI.Models.IM;
-@model GetGoogleAPIVM
+@model List<GetReservationValues>
 <style>
     #map {
         height: 500px;
@@ -10,7 +10,7 @@
     <div class="container">
         <div class="_Step_Flex">
             <div class="_Step_Left">
-                <div class="_Step_Travel_Info_Style">
+@*                <div class="_Step_Travel_Info_Style">
                     <div class="_Step_Travel_Flex">
                         <div>
                             <h3>Distance: </h3>
@@ -21,9 +21,9 @@
                             <p><span>59</span> mins</p>
                         </div>
                     </div>
-                </div>
+                </div>*@
                 <div class="_Step_Map_Area"></div>
-                <div class="_Step_Travel_Form_Style">
+@*                <div class="_Step_Travel_Form_Style">
                     <div class="_Step_Travel_Buttons">
                         <div>
                             <button>One Way</button>
@@ -110,190 +110,75 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                </div>*@
             </div>
             <div class="_Step_Right">
                 <div class="_Cars_Flex">
-                    <div class="_Car_Item">
-                        <div class="_Card_Item_Flex">
-                            <div class="_Card_Item_Left">
-                                <div class="_Card_Item_Left_Inner_Flex">
-                                    <div class="_Card_Item_Left_Inner_Left">
-                                        <img src="img/car.png" alt="">
-                                    </div>
-                                    <div class="_Card_Item_Left_Inner_Right">
-                                        <h3 class="_Car_Name">
-                                            Standart Sedan
-                                        </h3>
-                                        <p>
-                                            <i class="fa-solid fa-user"></i> <span>1-4</span>
-                                        </p>
-                                        <p>
-                                            <i class="fa-light fa-handshake"></i> <span>
-                                                Meet and Greet
-                                                Service
-                                            </span>
-                                        </p>
-                                        <div class="_Car_Attrs_Flex">
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i4.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i1.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i3.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i2.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i5.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i6.png" alt="">
+                    @foreach (var item in Model)
+                    {
+                        <div class="_Car_Item">
+                            <div class="_Card_Item_Flex">
+                                <div class="_Card_Item_Left">
+                                    <div class="_Card_Item_Left_Inner_Flex">
+                                        <div class="_Card_Item_Left_Inner_Left">
+                                            <img src="@item.LocationCars.Car.Type.CarImageURL" alt="">
+                                        </div>
+                                        <div class="_Card_Item_Left_Inner_Right">
+                                            <h3 class="_Car_Name">
+                                                @item.LocationCars.Car.Brand.CarBrandName
+                                            </h3>
+                                            <p>
+                                                <i class="fa-solid fa-user"></i> <span>@item.LocationCars.Car.SmallBags - @item.LocationCars.Car.SuitCase</span>
+                                            </p>
+@*                                            <p>
+                                                <i class="fa-light fa-handshake"></i> <span>
+                                                    Meet and Greet
+                                                    Service
+                                                </span>
+                                            </p>*@
+                                            <div class="_Car_Attrs_Flex">
+                                                <div class="_Car_Attr_Item">
+                                                    <img src="img/i4.png" alt="">
+                                                </div>
+                                                <div class="_Car_Attr_Item">
+                                                    <img src="img/i1.png" alt="">
+                                                </div>
+                                                <div class="_Car_Attr_Item">
+                                                    <img src="img/i3.png" alt="">
+                                                </div>
+                                                <div class="_Car_Attr_Item">
+                                                    <img src="img/i2.png" alt="">
+                                                </div>
+                                                <div class="_Car_Attr_Item">
+                                                    <img src="img/i5.png" alt="">
+                                                </div>
+                                                <div class="_Car_Attr_Item">
+                                                    <img src="img/i6.png" alt="">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="_Card_Item_Right">
-                                <h3>
-                                    Total one-way price
-                                </h3>
-                                <h4>
-                                    €<span>60.45</span>
-                                </h4>
-                                <p class="_Green">
-                                    Free Cancellation
-                                </p>
-                                <p>
-                                    Taxes included
-                                </p>
-                                <button>Book Now</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="_Car_Item">
-                        <div class="_Card_Item_Flex">
-                            <div class="_Card_Item_Left">
-                                <div class="_Card_Item_Left_Inner_Flex">
-                                    <div class="_Card_Item_Left_Inner_Left">
-                                        <img src="img/car.png" alt="">
-                                    </div>
-                                    <div class="_Card_Item_Left_Inner_Right">
-                                        <h3 class="_Car_Name">
-                                            Standart Sedan
-                                        </h3>
-                                        <p>
-                                            <i class="fa-solid fa-user"></i> <span>1-4</span>
-                                        </p>
-                                        <p>
-                                            <i class="fa-light fa-handshake"></i> <span>
-                                                Meet and Greet
-                                                Service
-                                            </span>
-                                        </p>
-                                        <div class="_Car_Attrs_Flex">
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i4.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i1.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i3.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i2.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i5.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i6.png" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="_Card_Item_Right">
+                                    <h3>
+                                        Total one-way price
+                                    </h3>
+                                    <h4>
+                                        €<span>@item.LastPrice</span>
+                                    </h4>
+                                    <p class="_Green">
+                                        Free Cancellation
+                                    </p>
+                                    <p>
+                                        Taxes included
+                                    </p>
+                                    <button>Book Now</button>
                                 </div>
                             </div>
-                            <div class="_Card_Item_Right">
-                                <h3>
-                                    Total one-way price
-                                </h3>
-                                <h4>
-                                    €<span>60.45</span>
-                                </h4>
-                                <p class="_Green">
-                                    Free Cancellation
-                                </p>
-                                <p>
-                                    Taxes included
-                                </p>
-                                <button>Book Now</button>
-                            </div>
                         </div>
-                    </div>
-                    <div class="_Car_Item">
-                        <div class="_Card_Item_Flex">
-                            <div class="_Card_Item_Left">
-                                <div class="_Card_Item_Left_Inner_Flex">
-                                    <div class="_Card_Item_Left_Inner_Left">
-                                        <img src="img/car2.png" alt="">
-                                    </div>
-                                    <div class="_Card_Item_Left_Inner_Right">
-                                        <h3 class="_Car_Name">
-                                            Standart Sedan
-                                        </h3>
-                                        <p>
-                                            <i class="fa-solid fa-user"></i> <span>1-4</span>
-                                        </p>
-                                        <p>
-                                            <i class="fa-light fa-handshake"></i> <span>
-                                                Meet and Greet
-                                                Service
-                                            </span>
-                                        </p>
-                                        <div class="_Car_Attrs_Flex">
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i4.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i1.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i3.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i2.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i5.png" alt="">
-                                            </div>
-                                            <div class="_Car_Attr_Item">
-                                                <img src="img/i6.png" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="_Card_Item_Right">
-                                <h3>
-                                    Total one-way price
-                                </h3>
-                                <h4>
-                                    €<span>60.45</span>
-                                </h4>
-                                <p class="_Green">
-                                    Free Cancellation
-                                </p>
-                                <p>
-                                    Taxes included
-                                </p>
-                                <button>Book Now</button>
-                            </div>
-                        </div>
-                    </div>
+                    }
+
+
                 </div>
             </div>
         </div>
@@ -305,105 +190,3 @@
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&libraries=places&callback=initMap"></script>
 }
 
-@section pageJs{
-        <script>
-            //let map, circle, placesService;
-            //let infoWindow = new google.maps.InfoWindow();
-
-            //function initMap() {
-            //    // Harita oluştur
-            //    map = new google.maps.Map(document.getElementById("map"), {
-
-            //        zoom: 13,
-            //    });
-
-            //    addCircle()
-            //    showInfo()
-
-            //    console.log(circle)
-
-            //    listPlaces()
-            //    // Butona tıklanınca daire içindeki yerleri listele
-            //    //document.getElementById("btn").addEventListener("click", listPlaces);
-            //}
-
-
-            var API_KEY = 'AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg';
-            var mekan = '@Model.Result.Geometry.Location.lat, @Model.Result.Geometry.Location.lng';
-            var radius = '1000';
-
-
-
-
-             $.ajax({
-                    url: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=" + API_KEY + "&location=" + mekan + "&radius=" + radius,
-                    type: "GET",
-                    success: function (response) {
-                        console.log(response)
-                    }
-                });
-
-
-
-            //function addCircle() {
-            //    // Daha önce oluşturulmuş daire varsa sil
-            //    if (circle) {
-            //        circle.setMap(null);
-            //    }
-
-            //    // Yeni daire oluştur
-            //    circle = new google.maps.Circle({
-
-            //        radius: 4000,
-            //        map: map,
-            //        draggable: true,
-            //        editable: true,
-            //    });
-
-            //    // Daire üzerine tıklandığında bilgileri göster
-            //    //circle.addListener("click", showInfo);
-
-            //    //// Daire boyutu veya konumu değiştirildiğinde bilgileri güncelle
-            //    //circle.addListener("radius_changed", showInfo);
-            //    //circle.addListener("center_changed", showInfo);
-            //}
-
-            //function showInfo() {
-            //    const radius = circle.getRadius() / 1000;
-            //    const center = circle.getCenter().toJSON();
-            //    //infoWindow.setContent(`<div>Merkez: ${JSON.stringify(center)}, Yarıçap: ${radius.toFixed(2)} km</div>`);
-            //    //infoWindow.setPosition(circle.getCenter());
-            //    //infoWindow.open(map);
-            //}
-
-
-            //function listPlaces() {
-
-            //    //circle = new google.maps.Circle({
-            //    //    center: event.latLng,
-            //    //    radius: 500,
-            //    //    map: map,
-            //    //    draggable: true,
-            //    //    editable: true,
-            //    //});
-
-            //    // PlacesService oluştur
-            //    placesService = new google.maps.places.PlacesService(map);
-
-            //    const request = {
-            //        location: circle.getCenter(),
-            //        radius: circle.getRadius(),
-            //    };
-
-            //    placesService.nearbySearch(request, (results, status) => {
-            //        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            //            console.log(JSON.parse(JSON.stringify(results)));
-            //        }
-            //    });
-            //}
-
-            //window.onload = () => {
-            //    initMap();
-            //}
-        </script>
-}
