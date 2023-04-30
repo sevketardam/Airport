@@ -719,6 +719,7 @@
        class="controls"
        type="text"
        placeholder="Search Box" />
+
 <div id="map"></div>
 
 <section class="_Module_Margin _Orange_Bg">
@@ -763,6 +764,7 @@
             autocomplete2.addListener('place_changed', function () {
                 var place = autocomplete2.getPlace();
                 console.log(place.geometry.location)
+                console.log(place.geometry.location.lat)
                 dropPlaceId = place.place_id
                 $('#_Drop_Off_Value').val(dropPlaceId)
             });

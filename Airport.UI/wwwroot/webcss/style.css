@@ -1,6 +1,6 @@
 @font-face {
     font-family: "gothic";
-    src: url(font/GOTHIC.TTF);
+    src: url(../font/GOTHIC.TTF);
 }
 
 * {
