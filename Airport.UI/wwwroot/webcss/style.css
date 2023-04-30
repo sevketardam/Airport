@@ -69,7 +69,7 @@ body {
 
 ._Nav_List {
     width: calc(60% - var(--nav-gap));
-    display:flex;
+    display: flex;
     justify-content: space-between;
 }
 
@@ -132,7 +132,8 @@ nav {
             color: var(--orange);
             transition: border-radius 250ms;
         }
-._Nav_List a{
+
+._Nav_List a {
     font-size: .8rem;
 }
 
@@ -499,7 +500,7 @@ label.error {
 
 input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     color: transparent;
-    background: url(img/calendar.png) !important;
+    background: url(../img/calendar.png) !important;
     background-size: 100% !important;
 }
 
@@ -2994,7 +2995,7 @@ input[type="number"]::-webkit-outer-spin-button {
     visibility: visible;
 }
 
-.mobile_lang{
+.mobile_lang {
     display: none;
 }
 
@@ -3007,25 +3008,42 @@ input[type="number"]::-webkit-outer-spin-button {
     up_lang {
         display: none;
     }
-    .mobile_none{
-        display:none !important;
+
+    .mobile_none {
+        display: none !important;
     }
+
     ._Nav_List {
         justify-content: center !important;
     }
 }
 
-.register_banner{
+.register_banner {
     background: var(--orange);
 }
 
-.register_banner p{
+    .register_banner p {
         padding: 8rem 0;
-    font-size: 1.2rem;
-    font-weight: 400;
-    color: white;
-}
+        font-size: 1.2rem;
+        font-weight: 400;
+        color: white;
+    }
 
     .register_banner a {
         color: white;
     }
+
+label.error {
+    font-weight: 400;
+    font-size: .85rem !important;
+    right: auto;
+    top: auto;
+    bottom: -1.7rem;
+    position: absolute;
+    left: 0 !important;
+}
+
+#_Sign_Form label.error {
+    font-size: .75rem !important;
+    bottom: -1.2rem;
+}

@@ -114,8 +114,22 @@ namespace Airport.UI.Controllers
             return md5Str;
         }
 
+        [HttpGet("manage-reservation")]
+        public IActionResult ManageReseration()
+        {
+            return View();
+        }
 
+        [HttpGet("reservation-information")]
+        public IActionResult ReservationInformation()
+        {
+            return View();
+        }
 
+        public IActionResult Dashbord()
+        {
+            return View();
+        }
 
     }
 
