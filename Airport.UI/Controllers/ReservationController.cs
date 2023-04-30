@@ -22,7 +22,7 @@ namespace Airport.UI.Controllers
         ILocationCarsFareDAL _locationCarsFare;
         IGetCarDetail _carDetail;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare,IGetCarDetail carDetail)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail)
         {
             _location = location;
             _locationCar = locationCar;
@@ -35,14 +35,42 @@ namespace Airport.UI.Controllers
         {
             var api_key = "AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg";
 
-             var httpClient = new HttpClient();
+            var httpClient = new HttpClient();
 
             var apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + reservation.PickValue + "&key=" + api_key;
             var response2 = await httpClient.GetAsync(apiUrl);
             var content2 = await response2.Content.ReadAsStringAsync();
             var contentJsonResult = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content2);
 
+
+            var apiUrl2 = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + reservation.DropValue + "&key=" + api_key;
+            var response3 = await httpClient.GetAsync(apiUrl2);
+            var content3 = await response3.Content.ReadAsStringAsync();
+            var contentJsonResult2 = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content3);
+
             var s = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric";
+
+
+
+            var fullUrl2 = s + $"&origins={contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}&destinations={contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}&key=" + api_key;
+
+            using (var client = new HttpClient())
+            {
+                HttpResponseMessage response4 = await client.GetAsync(fullUrl2);
+                var content4 = await response4.Content.ReadAsStringAsync();
+                var data2 = JObject.Parse(content4);
+
+                if (data2["status"].ToString() == "OK")
+                {
+                    if (data2["rows"][0]["elements"][0]["status"].ToString() == "OK")
+                    {
+                    }
+                }
+                else
+                {
+
+                }
+            }
 
             var carLocation = _location.Select();
             var getreservation = new List<GetReservationValues>();
