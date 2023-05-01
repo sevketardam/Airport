@@ -3009,23 +3009,6 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 
-@media only screen and (max-width: 768px) {
-    .mobile_lang {
-        display: block;
-    }
-
-    up_lang {
-        display: none;
-    }
-
-    .mobile_none {
-        display: none !important;
-    }
-
-    ._Nav_List {
-        justify-content: center !important;
-    }
-}
 
 .register_banner {
     background: var(--orange);
@@ -3072,5 +3055,33 @@ label.error {
 }
 
 .nav_btn {
-color: white;
+color: white !important;
+}
+
+
+
+@media only screen and (max-width: 768px) {
+    .mobile_lang {
+        display: block;
+    }
+
+    up_lang {
+        display: none;
+    }
+
+    .mobile_none {
+        display: none !important;
+    }
+
+    ._Nav_List {
+        justify-content: center !important;
+    }
+
+    ._Auth .btn-group {
+        margin: auto;
+    }
+    .activeNav {
+        left: -1rem;
+    }
+    
 }
