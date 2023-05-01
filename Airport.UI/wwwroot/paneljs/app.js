@@ -29,9 +29,6 @@ $("#addMyCarForm").validate({
         SmallBags: {
             required: true,
         },
-        Service: {
-            required: true,
-        },
     },
     messages: {
         Brand: {
@@ -59,9 +56,6 @@ $("#addMyCarForm").validate({
             required: "This Field is Required",
         },
         SmallBags: {
-            required: "This Field is Required",
-        },
-        Service: {
             required: "This Field is Required",
         },
     },
