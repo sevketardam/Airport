@@ -66,10 +66,15 @@
             background-color: rgb(213, 213, 213);
         }
 
+.col-md-1.mb-3:not(.col-md-1.mb-3.d-none) {
+    display: flex;
+    flex-direction:column;
+    justify-content:end;
+    align-items: end;
+}
 
 
-
-.panel_sevice_flex{
+.panel_sevice_flex {
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
