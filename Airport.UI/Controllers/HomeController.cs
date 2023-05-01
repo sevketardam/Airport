@@ -102,22 +102,6 @@ namespace Airport.UI.Controllers
             return View();
         }
 
-
-        //[HttpPost("getLocation")]
-        //public IActionResult GetReservasionValue(GetResevationIM reservation,string reservationDatas)
-        //{
-        //    try
-        //    {
-
-        //        return RedirectToAction("ReservationStepTwo", "Reservation");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-
-
         [HttpPost("register",Name = "personRegister")]
         public IActionResult Register(UserDatas user)
         {
@@ -133,8 +117,6 @@ namespace Airport.UI.Controllers
 
             return View();
         }
-
-
 
         public static string GetMD5(string value)
         {
