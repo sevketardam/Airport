@@ -28,12 +28,12 @@
                             <div class="_Form_Cat">
                                 <div>
                                     <input id="reservationDatas" name="reservationDatas" type="hidden" />
-                                    <button type="button">
+                                    <button class="One_Way" type="button">
                                         One Way
                                     </button>
                                 </div>
                                 <div>
-                                    <button type="button">
+                                    <button class="Roundtrip_Btn" type="button">
                                         Roundtrip
                                     </button>
                                 </div>
@@ -62,12 +62,13 @@
                                     <input type="datetime-local" name="FlightTime" style="padding-left: 10px;">
                                 </div>
                                 <div class="_Pos_Rel">
-                                    <div class="d-none">
-                                        <label for="">Flight Arrival</label>
+                                    <div class="d-none Return_Arrival">
+                                        <label for="">Return</label>
                                         <input type="datetime-local">
+                                        <input type="checkbox" name="return-controle" style="position:absolute; opacity: 0;visibility: visible; " />
                                     </div>
                                     <div>
-                                        <button class="_Add_Return">
+                                        <button type="button" class="_Add_Return">
                                             <i class="fa-sharp fa-solid fa-plus"></i> Add Return
                                         </button>
                                     </div>
@@ -173,8 +174,8 @@
                     </div>
                 </div>
                 <div class="_Why_Btns">
-                    <div><a href="/" class="_Why_Btn _Active">Become A Partner</a></div>
-                    <div><a href="/" class="_Why_Btn">Contact Sales</a></div>
+                    <div><a href="/agencies" class="_Why_Btn _Active">Become A Partner</a></div>
+                    <div><a href="/contact" class="_Why_Btn">Contact Sales</a></div>
                 </div>
             </div>
         </div>
@@ -322,7 +323,7 @@
                         </div>
                         <div>
                             <h3 class="_Orange_Title">
-                                Ciyt Tour
+                                City Tour
                             </h3>
                             <p>
                                 Convenient and flexible cancellation
@@ -431,8 +432,8 @@
                                 well-known “flight-transfer-hotel” package.
                             </p>
                             <div class="_Why_Btns justify-content-start">
-                                <div><a href="/" class="_Why_Btn _Active">Join for free now</a></div>
-                                <div><a href="/" class="_Why_Btn">Learn more</a></div>
+                                <div><a href="/register" class="_Why_Btn _Active">Join for free now</a></div>
+                                @*<div><a href="/" class="_Why_Btn">Learn more</a></div>*@
                             </div>
                         </div>
                     </div>
@@ -677,7 +678,7 @@
                 Are you a service provider?
             </p>
             <div class="_Why_Btns">
-                <div><a href="/" class="_Why_Btn _Active">Join for free now</a></div>
+                <div><a href="/register" class="_Why_Btn _Active">Join for free now</a></div>
             </div>
         </div>
     </div>
@@ -739,8 +740,8 @@
                 Join Airport Global Transfer Service FOR FREE today
             </h2>
             <div class="_Why_Btns pt-4">
-                <div><a href="/" class="_Why_Btn _Active">For Travel Agents</a></div>
-                <div><a href="/" class="_Why_Btn _Active">For Service Providers</a></div>
+                <div><a href="/agencies" class="_Why_Btn _Active">For Travel Agents</a></div>
+                @*<div><a href="/" class="_Why_Btn _Active">For Service Providers</a></div>*@
             </div>
         </div>
     </div>
