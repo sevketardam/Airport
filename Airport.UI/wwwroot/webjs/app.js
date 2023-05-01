@@ -81,7 +81,7 @@ $('form[id="_Register_Form"]').validate({
             email: "Enter a valid email",
         },
         phoneNumber: {
-             minlength: "Password must be at least 6 characters long",
+            minlength: "Password must be at least 6 characters long",
         },
         password: {
             minlength: "Password must be at least 6 characters long",
@@ -264,7 +264,7 @@ $('._Reservatiton_Style form').validate({
         email: {
             required: true,
             email: true,
-        } 
+        }
     },
     messages: {
         reservationCode: {
@@ -304,10 +304,37 @@ $('form#_Sign_Form').validate({
 
 
 
+
+
+
+//, .Return_Arrival[type = 'datetime-local']
+$("[name='FlightTime']").on("change", function () {
+    setTimeout(() => {
+        $("#-error").text("!")
+        $(`.Return_Arrival [type="datetime-local"]`).prop("min", $(`[name="FlightTime"]`).val())
+        $(`.Return_Arrival [type="datetime-local"]`).prop("value ", $(`[name="FlightTime"]`).val())
+    }, 1);
+})
+
+$(".Return_Arrival input[type='datetime-local']").on("change", function () {
+    setTimeout(() => {
+        $("#-error").text("!")
+    }, 1);
+})
+
+$("#_Search_Booking").on("click", function () {
+    setTimeout(() => {
+        $("#-error").text("!")
+    }, 1);
+})
+
+
+
 $("._Add_Return, .Roundtrip_Btn").on("click", function () {
     $("._Add_Return").closest("div").attr("class", "d-none _DeActive")
     $(".Return_Arrival").attr("class", "Return_Arrival")
     $(`[name="ReturnStatus"]`).prop("checked", true);
+    $(`.Return_Arrival [type="datetime-local"]`).prop("min", $(`[name="FlightTime"]`).val())
 })
 
 
