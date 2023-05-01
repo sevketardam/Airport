@@ -181,6 +181,7 @@ label.error {
     padding: 1rem;
     box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
     border-radius: 15px;
+    z-index: 15;
     opacity: 0;
     visibility: hidden;
     transition: opacity 250ms, visibility 250ms;
@@ -936,7 +937,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 }
 
 ._Partner_Item {
-    width: calc((100% / 6) - 0.833rem);
+    width: calc((100% / 6) - 0.834rem);
 }
 
     ._Partner_Item img {

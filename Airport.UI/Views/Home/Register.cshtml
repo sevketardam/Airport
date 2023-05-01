@@ -25,7 +25,7 @@
                 </div>
                 <div class="_Register_Input_Div">
                     <label class="_Register_Label">Password</label>
-                    <input type="text" name="password">
+                    <input type="password" name="password">
                 </div>
                 <div class="_Check_Main">
                     <div class="_Check_Div">
@@ -50,3 +50,10 @@
         </form>
     </div>
 </section>
+
+<script>
+    var cleave = new Cleave('[name="phoneNumber"]', {
+        numericOnly: true,
+        blocks: [15]
+    });
+</script>

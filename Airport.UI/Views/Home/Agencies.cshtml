@@ -37,7 +37,7 @@
                 </div>
                 <div class="_Form_Div">
                     <label class="_Form_Label">Password</label>
-                    <input type="text" name="Password">
+                    <input type="password" name="Password">
                 </div>
 
                 <div class="_Form_Div py-3"></div>
@@ -76,8 +76,7 @@
                         </div>
                     </div>
                 </div>
-                https://maps.googleapis.com/maps/api/distancematrix/json?origins=KAYNAK_KONUM&destinations=HEDEF_KONUM&key=API_ANAHTARI
-
+               
                 <div class="_Form_Div">
                     <div class="_Down_Flex">
                         <div class="_Pos_Rel">
@@ -164,5 +163,24 @@
             utilsScript:
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
+
+
+
+        var cleave = new Cleave('[name="Company_Phone_Number"]', {
+            numericOnly: true,
+            blocks: [15]
+        });
+
+        var cleave = new Cleave('[name="Phone_Number"]', {
+            numericOnly: true,
+            blocks: [15]
+        });
+
+        var cleave = new Cleave('[name="Tell_Phone_Number"]', {
+            numericOnly: true,
+            blocks: [15]
+        });
+        
+
     </script>
 }
