@@ -133,12 +133,22 @@
                             if (userRole == 0 || userRole == 2)
                             {
                                 <div class="_Auth">
-                                    <div>
+                                    @*<div>
                                         <ul class="_Btns">
                                             <li class="_Active" style="border:none">
                                                 <a href="/panel" title="Dashboard">Dashboard</a>
                                             </li>
                                         </ul>
+                                    </div>*@
+                                    <div class="btn-group">
+                                        <button type="button" style="background-color: var(--orange);" class="btn dropdown-toggle nav_btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Dursun İnel
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a href="/panel" class="dropdown-item" type="button">Dashboard</a>
+                                            <a href="/profile" class="dropdown-item" type="button">Profile</a>
+                                            <a href="/logout" class="dropdown-item" type="button">Logout</a>
+                                        </div>
                                     </div>
                                 </div>
                             }

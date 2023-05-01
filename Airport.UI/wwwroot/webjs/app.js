@@ -343,3 +343,8 @@ $(".One_Way").on("click", function () {
     $(".Return_Arrival").attr("class", "d-none Return_Arrival")
     $(`[name="ReturnStatus"]`).prop("checked", false);
 })
+
+
+$(".nav_btn").on("click", function () {
+    $(this).closest(".btn-group").find(".dropdown-menu").toggleClass("activeNav");
+})
