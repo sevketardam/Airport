@@ -88,9 +88,29 @@ namespace Airport.UI.Controllers
 
                                     item1.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == item1.Id);
 
+
+                                    double lastPrice = 0;
                                     item1.LocationCarsFares.ForEach(a =>
                                     {
-                                        price += a.Fare * minKm;
+                                        if (minKm >= a.UpTo)
+                                        {
+                                            lastPrice = a.Fare;
+                                            price += a.Fare * minKm;
+                                        }
+                                        else
+                                        {
+                                            if (a.StartFrom == 0)
+                                            {
+                                                lastPrice = a.Fare;
+                                                price += a.Fare * minKm;
+                                            }
+                                            else
+                                            {
+                                                price += lastPrice * minKm;
+                                            }
+
+                                        }
+
                                     });
 
                                     getreservation.Add(new GetReservationValues
