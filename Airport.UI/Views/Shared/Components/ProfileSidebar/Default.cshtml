@@ -17,11 +17,15 @@
                 <i class="fa-solid fa-user-vneck"></i><span>Your Profile</span>
             </a>
         </div>
-        <div class="_Profile_Item">
-            <a href="/profile/my-company">
-                <i class="fa-solid fa-house"></i> <span>Your Company</span>
-            </a>
-        </div>
+        @if (Model.Type == 2)
+        {
+            <div class="_Profile_Item">
+                <a href="/profile/my-company">
+                    <i class="fa-solid fa-house"></i> <span>Your Company</span>
+                </a>
+            </div>
+        }
+
         <div class="_Profile_Item">
             <a href="/profile/change-password">
                 <i class="fa-solid fa-lock-keyhole"></i><span>Change Password</span>

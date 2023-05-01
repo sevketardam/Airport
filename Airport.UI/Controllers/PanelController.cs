@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Airport.UI.Controllers
 {
-    public class PanelController : BaseController
+    public class PanelController : PanelAuthController
     {
         public IActionResult Index()
         {

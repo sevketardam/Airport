@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims;
+@{
+    var userRole = Convert.ToInt32(Context.User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault());
+}
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -125,15 +130,31 @@
                         }
                         else
                         {
-                            <div class="_Auth">
-                                <div>
-                                    <ul class="_Btns">
-                                        <li class="_Active" style="border:none">
-                                            <a href="/panel" title="Dashboard">Dashboard</a>
-                                        </li>
-                                    </ul>
+                            if (userRole == 0 || userRole == 2)
+                            {
+                                <div class="_Auth">
+                                    <div>
+                                        <ul class="_Btns">
+                                            <li class="_Active" style="border:none">
+                                                <a href="/panel" title="Dashboard">Dashboard</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
+                            }
+                            else if (userRole == 1)
+                            {
+                                <div class="_Auth">
+                                    <div>
+                                        <ul class="_Btns">
+                                            <li class="_Active" style="border:none">
+                                                <a href="/logout" title="Logout">Logout</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            }
+
                         }
                     </div>
                     <div class="header-burger out-check">
@@ -285,7 +306,7 @@
     <script>
         $('#_Sign_Form').on("submit", function (e) {
             e.preventDefault();
-            if ($('#_Sign_Form').valid()){
+            if ($('#_Sign_Form').valid()) {
                 var formData = $(this).serialize()
                 $.ajax({
                     url: '/Login/Login',
@@ -321,7 +342,7 @@
                         }
                     }
                 });
-            }        
+            }
         })
     </script>
 

@@ -86,8 +86,9 @@
     </div>
 </div>
 
-
-
+@*
+fixed=1
+per=2*@
 @section pageJs{
     <script>
 
@@ -114,6 +115,7 @@
                     var startingfromVal = $(value2).find("#startingFrom").val()
                     var upToKmVal = $(value2).find("#upTo").val()
                     var priceVal = $(value2).find("#fare").val()
+                    var priceVal = $(value2).find("#priceType").val()
                     value.carsPricePerKm.push({
                         startKm: startingfromVal,
                         upToKm: upToKmVal,

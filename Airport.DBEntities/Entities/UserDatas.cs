@@ -32,6 +32,7 @@ namespace Airport.DBEntities.Entities
         public string? CompanyEmail { get; set; }
         public string? Country { get; set; }
         public string? AboutUs { get; set; }
+        public string? Title { get; set; }
 
         public List<Services> Services { get; set; }
         public List<MyCars> MyCars { get; set; }

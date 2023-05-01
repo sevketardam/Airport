@@ -5,6 +5,7 @@ using System;
 using System.Security.Claims;
 using Airport.DBEntities.Entities;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Airport.UI.Controllers
 {
@@ -108,6 +109,7 @@ namespace Airport.UI.Controllers
             return View();
         }
 
+        [Authorize(Roles ="2")]
         [HttpGet("profile/my-company")]
         public IActionResult Company()
         {
@@ -119,6 +121,7 @@ namespace Airport.UI.Controllers
             return View(user);
         }
 
+        [Authorize(Roles = "2")]
         [HttpPost("profile/my-company", Name = "updateCompanyDatas")]
         public IActionResult Company(UserDatas updateUser)
         {

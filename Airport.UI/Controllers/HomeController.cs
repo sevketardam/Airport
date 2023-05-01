@@ -45,6 +45,41 @@ namespace Airport.UI.Controllers
             return View();
         }
 
+        [HttpPost("agencies",Name ="agenciesForm")]
+        public IActionResult Agencies(UserDatas data)
+        {
+            var datas = _userdata.SelectByFunc(a => a.Eposta == data.Eposta).FirstOrDefault();
+            if (datas == null)
+            {
+                var newUser = new UserDatas
+                {
+                    Linkedin = data.Linkedin,
+                    Name = data.Name,
+                    AboutUs = data.AboutUs,
+                    Address = data.Address,
+                    CompanyEmail = data.CompanyEmail,
+                    CompanyName = data.CompanyName,
+                    CompanyPhoneNumber = data.CompanyPhoneNumber,
+                    CompanyWebsite = data.CompanyWebsite,
+                    Eposta = data.Eposta,
+                    Facebook = data.Facebook,
+                    Password = GetMD5(data.Password),
+                    Type = 2,
+                    Profession = data.Profession,
+                    TransferRequest = data.TransferRequest,
+                    TransferRequestLocation = data.TransferRequestLocation,
+                    PhoneNumber = data.PhoneNumber,
+                };
+
+                _userdata.Insert(newUser);
+
+                ViewBag.Message = "success";
+            }
+
+            ViewBag.Message = "have";
+            return View();
+        }
+
         [HttpGet("privacy")]
         public IActionResult Privacy()
         {
@@ -83,7 +118,7 @@ namespace Airport.UI.Controllers
         //}
 
 
-        [HttpPost("register")]
+        [HttpPost("register",Name = "personRegister")]
         public IActionResult Register(UserDatas user)
         {
             var checkUser = _userdata.SelectByFunc(a=>a.Eposta == user.Eposta).FirstOrDefault();

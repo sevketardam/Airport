@@ -8,7 +8,7 @@ namespace Airport.UI.Controllers
     {
         public BaseController()
         {
-            
+
         }
     }
 }

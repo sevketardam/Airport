@@ -16,7 +16,7 @@ using System.Runtime.ConstrainedExecution;
 
 namespace Airport.UI.Controllers
 {
-    public class LocationController : BaseController
+    public class LocationController : PanelAuthController
     {
         IMyCarsDAL _myCars;
         ICarBrandsDAL _myBrands;

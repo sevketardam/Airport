@@ -12,5 +12,11 @@
         public int SuitCase { get; set; }
         public int SmallBags { get; set; }
         public int? Service { get; set; }
+        public bool Wifi { get; set; }
+        public bool Water { get; set; }
+        public bool Charger { get; set; }
+        public bool Disabled { get; set; }
+        public bool Armored { get; set; }
+        public bool Partition { get; set; }
     }
 }
