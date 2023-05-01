@@ -5,6 +5,6 @@
         public int StartKm { get; set; }
         public int UpToKm { get; set; }
         public double Price { get; set; }
-        public int PriceType { get; set; }
+        public byte PriceType { get; set; }
     }
 }

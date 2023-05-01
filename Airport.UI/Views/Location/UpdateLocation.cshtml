@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "_PanelLayout";
+
 }
 
 @model UpdateLocationVM
@@ -15,9 +16,7 @@
                         <label for="outZoneDropCharge">Drop Charge</label>
                         <input type="number" class="form-control" id="outZoneDropCharge" value="@Model.Location.DropCharge" />
                     </div>
-                </div>
 
-                <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="outZonePerKmPrice">Price Per KM</label>
                         <input type="number" class="form-control" id="outZonePerKmPrice" value="@Model.Location.OutZonePricePerKM" />
@@ -37,6 +36,8 @@
 <div class="row">
     @foreach (var item in Model.locationCars)
     {
+        int i = 0;
+
         <div class="col-md-12 mb-3 carCard" data-id="@item.CarId">
             <div class="card">
                 <div class="card-body">
@@ -46,51 +47,89 @@
                     </div>
 
                     <div id="carArea">
+
+
                         @foreach (var item2 in item.LocationCarsFares)
                         {
-
+                            i++;
                             <div class="row carFareCard">
                                 <div class="col-md-3 mb-3">
                                     <label>Price Type</label>
-                                    <select id="priceType" class="form-control">
-                                        @if (item2.PriceType == 1)
-                                        {
-                                            <option value="1" selected>
-                                                Fixed
-                                            </option>
-                                            <option value="2">
-                                                Per KM
-                                            </option>
-                                        }
-                                        else
-                                        {
-                                            <option value="1">
-                                                Fixed
-                                            </option>
-                                            <option value="2" selected>
-                                                Per KM
-                                            </option>
-                                        }
+                                    <select id="priceType" class="form-control" @(i == item.LocationCarsFares.Count ? "":"disabled")>
+
+
+                                            @if (item2.PriceType == 1)
+                                            {
+                                                <option value="1" selected>
+                                                    Fixed
+                                                </option>
+                                                <option value="2">
+                                                    Per KM
+                                                </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="1">
+                                                    Fixed
+                                                </option>
+                                                <option value="2" selected>
+                                                    Per KM
+                                                </option>
+                                            }
 
                                     </select>
                                 </div>
 
-                                <div class="col-md-3 mb-3">
-                                    <label>Starting From</label>
-                                    <input type="text" class="form-control startingFrom" id="startingFrom" placeholder="0km" value="@item2.StartFrom" />
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label>Up To</label>
-                                    <input type="text" class="form-control upTo" id="upTo" value="@item2.UpTo" />
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label>Fare</label>
-                                    <input type="text" class="form-control fare" id="fare" value="@item2.Fare" />
-                                </div>
-                                <div class="col-md-1 mb-3 d-none">
-                                    <label style="opacity: 0; visibility: visible;">Up To</label>
-                                    <button type="button" count="@item.CarId" class="btn btn-warning deletedDistance " style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
-                                </div>
+                                @if (i == item.LocationCarsFares.Count)
+                                {
+
+                                    <div class="col-md-3 mb-3">
+                                        <label>Starting From</label>
+                                        <input type="text" disabled class="form-control startingFrom" id="startingFrom" placeholder="0km" value="@item2.StartFrom" />
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label>Up To</label>
+                                        <input type="text" class="form-control upTo" id="upTo" value="@item2.UpTo" />
+                                    </div>
+
+                                    <div class="col-md-@(i  == item.LocationCarsFares.Count ? "2":"3") mb-3">
+                                        <label>Fare</label>
+                                        <input type="text" class="form-control fare" id="fare" value="@item2.Fare" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3 mb-3">
+                                        <label>Starting From</label>
+                                        <input type="text" class="form-control startingFrom" disabled id="startingFrom" placeholder="0km" value="@item2.StartFrom" />
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label>Up To</label>
+                                        <input type="text" class="form-control upTo" disabled id="upTo" value="@item2.UpTo" />
+                                    </div>
+
+                                    <div class="col-md-@(i  == item.LocationCarsFares.Count ? "2":"3") mb-3">
+                                        <label>Fare</label>
+                                        <input type="text" class="form-control fare" id="fare" value="@item2.Fare" />
+                                    </div>
+                                }
+
+                                @if (i == item.LocationCarsFares.Count)
+                                {
+                                    <div class="col-md-1 mb-3">
+                                        <label style="opacity: 0; visibility: visible;">Up To</label>
+                                        <button type="button" count="@item.CarId" class="btn btn-warning deletedDistance " style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-1 mb-3 d-none">
+                                        <label style="opacity: 0; visibility: visible;">Up To</label>
+                                        <button type="button" count="@item.CarId" class="btn btn-warning deletedDistance " style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
+                                    </div>
+                                }
+
+
 
 
 
@@ -191,7 +230,7 @@
 
             let locationJson = {
                 locationId: @Model.Location.Id,
-                dropCharge: outZonePrice,
+                dropCharge: dropCharge,
                 outZonePerKmPrice: outZonePerKmPrice,
                 carsPrice: []
             }
@@ -199,7 +238,6 @@
             $.each($('.carCard'), function (key, value) {
                 locationJson.carsPrice.push({
                     carId: $(value).attr("data-id"),
-                    carDropPrice: $(value).find('#carDropPrice').val(),
                     carsPricePerKm: []
                 });
             })
@@ -214,7 +252,7 @@
                         startKm: startingfromVal,
                         upToKm: upToKmVal,
                         price: priceVal,
-                                priceType: priceType
+                        priceType: priceType
                     })
                 })
             })
@@ -246,36 +284,36 @@
 
 
                             $(this).closest(".carCard").find("#carArea").append(`
-                                                                                                    <div class="row carFareCard">
-                                                                                                            <div class="col-md-3 mb-3">
-                                                                                                                <label>Price Type</label>
-                                                                                                                <select id="priceType" class="form-control">
-                                                                                                                    <option value="1">
-                                                                                                                        Fixed
-                                                                                                                    </option>
-                                                                                                                            <option value="2" selected>
-                                                                                                                        Per KM
-                                                                                                                    </option>
-                                                                                                                </select>
-                                                                                                            </div>
-                                                                                                            <div class="col-md-3 mb-3">
-                                                                                                                <label>Starting From</label>
-                                                                                                                                                                <input type="number" class="form-control" id="startingFrom" disabled placeholder="0km" value="${$("body .carFareCard:last-child input#upTo").val()}" />
-                                                                                                            </div>
-                                                                                                            <div class="col-md-3 mb-3">
-                                                                                                                <label>Up To</label>
-                                                                                                                                                <input type="number" class="form-control" id="upTo" value="" min="${Number($("body .carFareCard:last-child input#upTo").val()) + 1} " />
-                                                                                                            </div>
-                                                                                                            <div class="col-md-2 mb-3">
-                                                                                                                <label>Fare</label>
-                                                                                                                        <input type="number" class="form-control" id="fare" value="" />
-                                                                                                            </div>
-                                                                                                                            <div class="col-md-1 mb-3">
-                                                                                                                                    <label style="opacity: 0; visibility: visible;">Up To</label>
-                                                                                                                                                    <button type="button" count="${data_id}" class="btn btn-warning deletedDistance " style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
+                                                                                                            <div class="row carFareCard">
+                                                                                                                    <div class="col-md-3 mb-3">
+                                                                                                                        <label>Price Type</label>
+                                                                                                                        <select id="priceType" class="form-control">
+                                                                                                                            <option value="1">
+                                                                                                                                Fixed
+                                                                                                                            </option>
+                                                                                                                                    <option value="2" selected>
+                                                                                                                                Per KM
+                                                                                                                            </option>
+                                                                                                                        </select>
                                                                                                                     </div>
-                                                                                                        </div>
-                                                                                            `);
+                                                                                                                    <div class="col-md-3 mb-3">
+                                                                                                                        <label>Starting From</label>
+                                                                                                                                                                        <input type="number" class="form-control" id="startingFrom" disabled placeholder="0km" value="${$("body .carFareCard:last-child input#upTo").val()}" />
+                                                                                                                    </div>
+                                                                                                                    <div class="col-md-3 mb-3">
+                                                                                                                        <label>Up To</label>
+                                                                                                                                                        <input type="number" class="form-control" id="upTo" value="" min="${Number($("body .carFareCard:last-child input#upTo").val()) + 1} " />
+                                                                                                                    </div>
+                                                                                                                    <div class="col-md-2 mb-3">
+                                                                                                                        <label>Fare</label>
+                                                                                                                                <input type="number" class="form-control" id="fare" value="" />
+                                                                                                                    </div>
+                                                                                                                                    <div class="col-md-1 mb-3">
+                                                                                                                                            <label style="opacity: 0; visibility: visible;">Up To</label>
+                                                                                                                                                            <button type="button" count="${data_id}" class="btn btn-warning deletedDistance " style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
+                                                                                                                            </div>
+                                                                                                                </div>
+                                                                                                    `);
 
 
 

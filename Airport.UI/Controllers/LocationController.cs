@@ -257,7 +257,8 @@ namespace Airport.UI.Controllers
                         LocationCarId = addedLocationCars.Id,
                         StartFrom = car.StartKm,
                         UpTo = car.UpToKm,
-                        Fare = car.Price
+                        Fare = car.Price,
+                        PriceType = car.PriceType
                     });
                 });
             });
