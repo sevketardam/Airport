@@ -24,6 +24,13 @@ namespace Airport.DBEntities.Entities
         public int? ServiceId { get; set; }
         public int UserId { get; set; }
 
+        public bool Wifi { get; set; }
+        public bool Water { get; set; }
+        public bool Charger { get; set; }
+        public bool Disabled { get; set; }
+        public bool Armored { get; set; }
+        public bool Partition { get; set; }
+
         public CarBrands Brand { get; set; }
         public CarModels Model { get; set; }
         public CarSeries Series { get; set; }

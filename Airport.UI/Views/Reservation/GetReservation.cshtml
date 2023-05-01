@@ -1,6 +1,5 @@
 ﻿@model Reservations
 
-
 <section class="mt-5 _Module_Margin">
     <div class="container">
         <h1 class="_Page_Title mb-4">
@@ -8,13 +7,10 @@
         </h1>
         <div class="_Page_Flex">
             <div class="_Page_Left">
-                <img src="img/car2.png" alt="">
+                <img src="@Model.LocationCars.Car.Type.CarImageURL" alt="">
             </div>
             <div class="_Page_Right">
                 <div class="_Page_Right_Style">
-                    <div class="mb-2">
-                        <h1><b>Reservation Code : <span>@Model.ReservationCode</span> </b></h1>
-                    </div>
                     <h2>
                         @Model.LocationCars.Car.Brand.CarBrandName
                     </h2>

@@ -21,6 +21,10 @@ namespace Airport.DBEntities.Entities
         public string PickPlaceId { get; set; }
         public int LocationCarId { get; set; }
         public string ReservationCode { get; set; }
+        public string DropFullName { get; set; }
+        public string PickFullName { get; set; }
+        public int PeopleCount { get; set; }
+        public DateTime ReservationDate { get; set; }
 
 
         public LocationCars LocationCars { get; set; }

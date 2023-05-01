@@ -23,5 +23,12 @@ namespace Airport.UI.Models.VM
         public int SmallBags { get; set; }
         public List<Services> Services { get; set; }
         public int? ServiceId { get; set; }
+
+        public bool Wifi { get; set; }
+        public bool Water { get; set; }
+        public bool Charger { get; set; }
+        public bool Disabled { get; set; }
+        public bool Armored { get; set; }
+        public bool Partition { get; set; }
     }
 }

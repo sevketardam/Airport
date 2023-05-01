@@ -139,6 +139,12 @@ namespace Airport.UI.Controllers
                     myCar.SeriesId = updateMyCar.Series;
                     myCar.SmallBags = updateMyCar.SmallBags;
                     myCar.TrimId = updateMyCar.Trim;
+                    myCar.Wifi = updateMyCar.Wifi;
+                    myCar.Armored = updateMyCar.Armored;
+                    myCar.Water = updateMyCar.Water;
+                    myCar.Charger= updateMyCar.Charger;
+                    myCar.Partition = updateMyCar.Partition;
+                    myCar.Disabled = updateMyCar.Disabled;
 
                     _myCars.Update(myCar);
                     return new JsonResult(new { result = 1 });
@@ -180,7 +186,13 @@ namespace Airport.UI.Controllers
                         SmallBags = myCar.SmallBags,
                         SuitCase = myCar.SuitCase,
                         Services = _services.SelectByFunc(a => a.UserId == userId),
-                        ServiceId = myCar.ServiceId
+                        ServiceId = myCar.ServiceId,
+                        Armored = myCar.Armored,
+                        Charger = myCar.Charger,
+                        Disabled = myCar.Disabled,
+                        Partition = myCar.Partition,
+                        Water = myCar.Water,
+                        Wifi = myCar.Wifi
                     };
 
                     return View(updateBrand);

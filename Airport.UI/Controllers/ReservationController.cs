@@ -25,8 +25,9 @@ namespace Airport.UI.Controllers
         IGetCarDetail _carDetail;
         IUserDatasDAL _userDatas;
         IReservationsDAL _reservations;
+        IGetCarDetail _getCar;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations,IGetCarDetail getCar)
         {
             _location = location;
             _locationCar = locationCar;
@@ -34,6 +35,7 @@ namespace Airport.UI.Controllers
             _carDetail = carDetail;
             _userDatas = userDatas;
             _reservations = reservations;
+            _getCar = getCar;
         }
 
         [HttpPost("reservation", Name = "getLocationValue")]
@@ -110,9 +112,18 @@ namespace Airport.UI.Controllers
                     }
                 }
 
+                var lastVM = new ReservationStepTwoVM()
+                {
+                    ReservationValues = getreservation,
+                    DropLocationLatLng = $"lat:{contentJsonResult.Result.Geometry.Location.lat},lng:{contentJsonResult.Result.Geometry.Location.lng}",
+                    PickLocationLatLng = $"lat:{contentJsonResult2.Result.Geometry.Location.lat},lng:{contentJsonResult2.Result.Geometry.Location.lng}",
+                    DropLocationPlaceId = reservation.DropValue,
+                    PickLocationPlaceId = reservation.PickValue,
+                };
+
                 TempData["datas"] = JsonConvert.SerializeObject(getreservation);
 
-                return View(getreservation);
+                return View(lastVM);
             }
             catch (Exception)
             {
@@ -180,9 +191,15 @@ namespace Airport.UI.Controllers
                     Name = reservation.Name,
                     ReservationCode = kod,
                     Price = createReservation.LastPrice,
-                    Surname = reservation.Surname
+                    Surname = reservation.Surname,
+                    DropFullName = createReservation.DropLocationName,
+                    PickFullName = createReservation.PickLocationName,
+                    PeopleCount = createReservation.PassangerCount,
+                    ReservationDate = createReservation.ReservationDate,
                 });
 
+                item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
+                item.LocationCars.Car = _getCar.CarDetail(item.LocationCars.CarId);
 
                 return View(item);
             }
@@ -195,7 +212,7 @@ namespace Airport.UI.Controllers
         }
 
 
-        [HttpPost(Name = "checkReservation")]
+        [HttpPost("manage-reservation",Name = "checkReservation")]
         public async Task<IActionResult> GetReservation(string reservationCode, string email)
         {
             try
@@ -204,9 +221,13 @@ namespace Airport.UI.Controllers
                 if (reservation == null)
                 {
                     ViewBag.Warning = "Warning";
-                    return View();
+                    return RedirectToAction("ManageReservation","Home");
                 }
-                return View();
+
+                reservation.LocationCars = _locationCar.SelectByID(reservation.LocationCarId);
+                reservation.LocationCars.Car = _getCar.CarDetail(reservation.LocationCars.CarId);
+
+                return View(reservation);
             }
             catch (Exception)
             {

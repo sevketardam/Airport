@@ -115,7 +115,7 @@ namespace Airport.UI.Controllers
         }
 
         [HttpGet("manage-reservation")]
-        public IActionResult ManageReseration()
+        public IActionResult ManageReservation()
         {
             return View();
         }
@@ -132,13 +132,4 @@ namespace Airport.UI.Controllers
         }
 
     }
-
-
-
-
-
-
-
-
-
 }
