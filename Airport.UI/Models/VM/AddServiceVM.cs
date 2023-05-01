@@ -6,6 +6,6 @@ namespace Airport.UI.Models.VM
     {
         public string ServiceName { get; set; }
         public string ServiceDescription { get; set; }
-        public int[] ServiceItems { get; set; }
+        public List<ServicePriceDataVM> PriceData { get; set; }
     }
 }

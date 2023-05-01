@@ -36,13 +36,13 @@
         <div class="col-md-6 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Service List Name</label>
-                <input type="text" class="form-control" name="serviceName" placeholder="Enter Your Service List Name">
+                <input type="text" class="form-control" name="serviceName" id="serviceName" placeholder="Enter Your Service List Name">
             </div>
         </div>
         <div class="col-md-6 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Service Description</label>
-                <input type="text" class="form-control" name="serviceDescription" placeholder="Enter a description for your service list (optional)">
+                <input type="text" class="form-control" name="serviceDescription" id="serviceDescription" placeholder="Enter a description for your service list (optional)">
             </div>
         </div>
         <div class="col-sm-6 _Pos_Rel">
@@ -71,95 +71,124 @@
     </div>
 </form>
 
+@*
+<div class="col-md-3 service-items" data-id="${value.serviceCategoryId}">
+    <div class="card">
+        <div class="card-body">
+            <div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="serviceBoxHead">
+                            <b>${value.serviceCategoryName}</b>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-category-item">
+                    <div class="row mt-2 " data-id="${value.id}">
+                        <div class="col-md-8">
+                            <b class="list-item-heading mb-0 pt-1">${value.serviceName}</b>
+                            <p class="m-0">${value.serviceDescripton}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">$</span>
+                                </div>
+                                <input type="number" id="priceValue" class="form-control" min="0" value="0" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+*@
+
+
+
+
+
 <div class="servicecard-container row">
+
+  @*  <div class="col-md-3 service-items" data-id="${value.serviceCategoryId}">
+        <div class="card">
+            <div class="card-body">
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="serviceBoxHead">
+                                <b>${value.serviceCategoryName}</b>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="service-category-items">
+                        <div class="row mt-2 service-category-item" data-id="${value.categoryItems[0].id}">
+                            <div class="col-md-5">
+                                <b class="list-item-heading mb-0 pt-1">${value.categoryItems[0].serviceName}</b>
+                                <p class="m-0">${value.categoryItems[0].serviceDescripton}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">$</span>
+                                    </div>
+                                    <input type="number" id="priceValue" class="form-control" min="0" value="0" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" id="priceValue" class="btn btn-warning" style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
 </div>
 
 @section pageJs{
     <script>
 
-        //let serviceCards = {};
-
-
-        //function  () {
-
-        //    document.querySelectorAll('.service-info-group').forEach(group => {
-
-        //        group.querySelector('.serviceCard-remove').onclick = () => {
-        //            if (serviceCards[group.parentElement.dataset.category].length == 1) {
-        //                delete serviceCards[group.parentElement.dataset.category];
-        //            } else {
-        //                delete serviceCards[group.parentElement.dataset.category][group.dataset.id];
-        //            }
-
-        //            console.log(serviceCards)
-
-
-        //            if (group.parentElement.querySelectorAll('.service-info-group').length == 1) {
-
-        //                group.parentElement.parentElement.remove();
-
-        //            } else {
-        //                group.remove();
-        //            }
-
-        //            let currentSelects = $('#serviceList').select2('data');
-
-        //            console.log(currentSelects)
-
-        //            let newSelect = [];
-
-        //            currentSelects.forEach(select => {
-
-        //                if (group.dataset.id != select.id) {
-        //                    newSelect.push(select.id);
-        //                }
-
-        //            })
-
-        //            $('#serviceList').val(newSelect);
-
-        //            $('#serviceList').trigger('change');
-        //        }
-
-        //        let input = group.querySelector('input');
-
-        //        let cleave = new Cleave(input, {
-        //            prefix: '$',
-        //            numeral: true,
-        //            numeralPositiveOnly: true,
-        //            numeralDecimalMark: '',
-        //            delimiter: ''
-        //        });
-
-        //        group.querySelector('.input-incrase').onclick = () => {
-        //            console.log()
-        //            cleave.setRawValue(Number(cleave.getRawValue().replace('$', '')) + 1);
-
-        //        }
-
-        //        group.querySelector('.input-decrase').onclick = () => {
-
-        //            if (cleave.getRawValue().replace('$', '') != '0') {
-        //                cleave.setRawValue(Number(cleave.getRawValue().replace('$', '')) - 1)
-        //            }
-        //        }
-        //    })
-        //}
-
-        //initServiceCards()
-
-
-
-
         $('#addServiceForm').on("submit", function (e) {
             e.preventDefault();
+
+
+
             if ($('#addServiceForm').valid()) {
 
+
+                var datas = [];
+
+                $.each($('.service-items'), function (key, value) {
+                    var priceDatas = [];
+                    $.each($(value).find('.service-category-item'), function (key, value) {
+                        priceDatas.push({
+                            propId: $(value).attr("data-id"),
+                            price: $(value).find('#priceValue').val()
+                        })
+                    })
+
+                    datas.push({
+                        categoryId: $(value).attr("data-id"),
+                        priceData: priceDatas
+                    })
+                })
+
                 var formData = $(this).serialize()
+                var formDataJSON = {
+                    serviceName: $('#serviceName').val(),
+                    serviceDescription: $('#serviceDescription').val(),
+                    priceData: datas
+                }
+
                 $.ajax({
                     url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.AddService))',
                     type: "POST",
-                    data: formData,
+                    data: formDataJSON,
                     success: function (response) {
                         if (response.result == 1) {
                             Swal.fire({
@@ -175,19 +204,6 @@
             }
         })
 
-        //$('#serviceList').on("select2:unselect", (e) => {
-
-
-        //    let target = document.querySelector('.service-info-group[data-id="' + e.params.data.id + '"]');
-
-        //    if (target.parentElement.querySelectorAll('.service-info-group').length != 1) {
-        //        target.remove();
-        //    } else {
-        //        target.parentElement.parentElement.remove()
-        //    }
-
-        //})
-
         $('#serviceList').on("change", function () {
             var propId = $(this).val()
             $.ajax({
@@ -195,64 +211,125 @@
                 type: "POST",
                 data: { serviceProId: propId },
                 success: function (response) {
-                    console.log(response)
                     if (response.result == 1) {
-                        var serviceList = [];
+                        let serviceList2 = [];
 
                         $.each($('.servicecard-container .service-items'), function (key, value) {
-                            serviceList.push(parseInt($(value).attr("data-id")))
+                            serviceList2.push(parseInt($(value).attr("data-id")))
                         })
 
                         var thisValues = $('#serviceList').val()
 
+                        var list2 = [];
                         $.each(response.data, function (key, value) {
+                            list2.push(value.serviceCategoryId);
+                        })
 
-                            if (!thisValues.includes('"' + value.id + '"')) {
-                                $('.servicecard-container .service-items[data-id="' + value.id + '"]').remove()
+                        $.each($('.servicecard-container .service-items'), function (key, value) {
+                            var dataId = parseInt($(value).attr("data-id"))
+                            if (!list2.includes(dataId)) {
+                                $(value).remove()
                             }
+                        })
 
-                            if (!serviceList.includes('"' + value.id + '"')) {
 
+                        $.each(response.data, function (key, value) {
+                            if (!serviceList2.includes(value.serviceCategoryId)) {
 
-           
-
-                                $('.servicecard-container').append(`<div class="col-md-3 service-items" data-id="${value.id}">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                        <div class="serviceBoxHead">
-                                                                                    <b>${value.serviceCategoryName}</b>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row mt-2">
-                                                                    <div class="col-md-8">
-                                                                                                <b class="list-item-heading mb-0 pt-1">${value.serviceName}</b>
-                                                                                        <p class="m-0">${value.serviceDescripton}</p>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <div class="input-group">
-                                                                            <div class="input-group-prepend">
-                                                                                <span class="input-group-text" id="basic-addon1">$</span>
+                                $('.servicecard-container').append(`
+                                                        <div class="col-md-3 service-items" data-id="${value.serviceCategoryId}">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <div class="serviceBoxHead">
+                                                                                            <b>${value.serviceCategoryName}</b>
+                                                                                </div>
                                                                             </div>
-                                                                            <input type="number" class="form-control" min="0" value="0" aria-describedby="basic-addon1">
+                                                                        </div>
+
+                                                                        <div class="service-category-items">
+                                                                                                 <div class="row mt-2 service-category-item" data-id="${value.categoryItems[0].id}">
+                                                                                        <div class="col-md-5">
+                                                                                                    <b class="list-item-heading mb-0 pt-1">${value.categoryItems[0].serviceName}</b>
+                                                                                                    <p class="m-0">${value.categoryItems[0].serviceDescripton}</p>
+                                                                                        </div>
+                                                                                        <div class="col-md-4">
+                                                                                            <div class="input-group">
+                                                                                                <div class="input-group-prepend">
+                                                                                                    <span class="input-group-text" id="basic-addon1">$</span>
+                                                                                                </div>
+                                                                                                <input type="number" id="priceValue" class="form-control" min="0" value="0" aria-describedby="basic-addon1">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                                                            <div class="col-md-3">
+                                                        <button type="button" class="btn btn-warning deleteServiceItem" data-id="${value.categoryItems[0].id}" style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
+                                    </div>
+                                                                                    </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>`)
+                                                        </div>`)
 
                             }
 
+                            else {
+                               
+                                if (value.categoryItems.length > $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item').length) {
+
+                                    let serviceList3 = [];
+                                    $.each($('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items'), function (key, value2) {
+                                        serviceList3.push(parseInt($(value2).find('.service-category-item').attr("data-id")))
+                                    })
+
+                                    $.each(value.categoryItems, function (key, value2) {
+                                        if (!serviceList3.includes(value2.id)) {
+                                            $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items').append(`
+                                                                                                                                                        <div class="row mt-2 service-category-item" data-id="${value2.id}">
+                                                                                                <div class="col-md-5">
+                                                                                                            <b class="list-item-heading mb-0 pt-1">${value2.serviceName}</b>
+                                                                                                            <p class="m-0">${value2.serviceDescripton}</p>
+                                                                                                </div>
+                                                                                                <div class="col-md-4">
+                                                                                                    <div class="input-group">
+                                                                                                        <div class="input-group-prepend">
+                                                                                                            <span class="input-group-text" id="basic-addon1">$</span>
+                                                                                                        </div>
+                                                                                                        <input type="number" id="priceValue" class="form-control" min="0" value="0" aria-describedby="basic-addon1">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                                                                                                                    <div class="col-md-3">
+                                                        <button type="button" class="btn btn-warning deleteServiceItem" data-id="${value2.id}" style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
+                                            </div>
+                                                                                            </div>`)
+                                        }
+                                    })
+                                }
+                                else if (value.categoryItems.length < $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item').length) {
 
 
+                                    var list2 = [];
+                                    $.each(value.categoryItems, function (key, value2) {
+                                        list2.push(value2.id);
+                                    })
+
+                                   
+
+                                    $.each($('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item'), function (key, value2) {
+                                        var dataId = parseInt($(value2).attr("data-id"))
+                                        if (!list2.includes(dataId)) {
+                                            $(value2).remove()
+                                        }
+                                    })
+                                }
 
 
-
+                            }
 
                         })
+
 
 
                         if (response.data.length == 0) {
@@ -262,6 +339,26 @@
                     }
                 }
             });
+        })
+
+
+        $('body').on("click", ".deleteServiceItem",function(){
+            var dataId = $(this).attr("data-id")
+
+            let array = $('#serviceList').val();
+
+            let value = dataId;
+
+            let index = array.indexOf(value);
+
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+
+            $('#serviceList').val(array)
+
+            $('#serviceList').trigger('change')
+
         })
 
     </script>

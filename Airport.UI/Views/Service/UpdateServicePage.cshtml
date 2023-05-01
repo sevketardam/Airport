@@ -3,12 +3,24 @@
 }
 
 @model UpdatePageServiceVM
+@section pageCSS{
+    <style>
+        .serviceBoxHead {
+            display: flex;
+        }
 
-<style>
-    label.error {
-        left: .3rem;
-    }
-</style>
+            .serviceBoxHead b {
+                background: orange;
+                color: white;
+                padding: 1rem;
+                border-radius: 8px;
+            }
+
+        label.error {
+            left: .3rem;
+        }
+    </style>
+}
 
 <form id="updateServiceForm" class="mt-3">
     <div class="row">
@@ -16,18 +28,18 @@
         <div class="col-md-6 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Service List Name</label>
-                <input type="text" class="form-control" name="serviceName" value="@Model.Service.ServiceName" placeholder="Enter Your Service List Name">
+                <input type="text" class="form-control" name="serviceName" id="serviceName" value="@Model.Service.ServiceName" placeholder="Enter Your Service List Name">
             </div>
         </div>
         <div class="col-md-6 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>List Description</label>
-                <input type="text" class="form-control" name="ServiceDescription" value="@Model.Service.ServiceDescription" placeholder="Enter a description for your service list (optional)">
+                <input type="text" class="form-control" name="ServiceDescription" id="serviceDescription" value="@Model.Service.ServiceDescription" placeholder="Enter a description for your service list (optional)">
             </div>
         </div>
         <div class="col-sm-6 _Pos_Rel">
             <label>Service List</label>
-            <select class="form-control select2-multiple" name="serviceItems" multiple="multiple" data-width="100%">
+            <select class="form-control select2-multiple" id="serviceList" name="serviceItems" multiple="multiple" data-width="100%">
                 @foreach (var category in Model.ServiceCategories)
                 {
                     <optgroup label="@category.ServiceCategoryName">
@@ -58,16 +70,233 @@
 </form>
 
 
+<div class="servicecard-container row">
+    @foreach (var item in Model.ServicePriceDatas)
+    {
+        <div class="col-md-3 service-items" data-id="@item.CategoryId">
+            <div class="card">
+                <div class="card-body">
+                    <div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="serviceBoxHead">
+                                    <b>@item.CategoryName</b>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="service-category-items">
+                            @foreach (var item2 in item.serviceCategoryPrices)
+                            {
+                                <div class="row mt-2 service-category-item" data-id="@item2.ServiceProperties.Id">
+                                    <div class="col-md-5">
+                                        <b class="list-item-heading mb-0 pt-1">@item2.ServiceProperties.ServicePropertyName</b>
+                                        <p class="m-0">@item2.ServiceProperties.ServicePropertyDescription</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">$</span>
+                                            </div>
+                                            <input type="number" id="priceValue" class="form-control" min="0" value="@item2.Price" aria-describedby="basic-addon1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-warning deleteServiceItem" data-id="@item2.CategoryId" style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+
 @section pageJs{
     <script>
+        $('#serviceList').on("change", function () {
+            var propId = $(this).val()
+            $.ajax({
+                url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.GetServiceItem))',
+                type: "POST",
+                data: { serviceProId: propId },
+                success: function (response) {
+                    if (response.result == 1) {
+                        let serviceList2 = [];
+
+                        $.each($('.servicecard-container .service-items'), function (key, value) {
+                            serviceList2.push(parseInt($(value).attr("data-id")))
+                        })
+
+                        var thisValues = $('#serviceList').val()
+
+                        var list2 = [];
+                        $.each(response.data, function (key, value) {
+                            list2.push(value.serviceCategoryId);
+                        })
+
+                        $.each($('.servicecard-container .service-items'), function (key, value) {
+                            var dataId = parseInt($(value).attr("data-id"))
+                            if (!list2.includes(dataId)) {
+                                $(value).remove()
+                            }
+                        })
+
+                        $.each(response.data, function (key, value) {
+                            if (!serviceList2.includes(value.serviceCategoryId)) {
+
+                                $('.servicecard-container').append(`
+                                                                                <div class="col-md-3 service-items" data-id="${value.serviceCategoryId}">
+                                                                                    <div class="card">
+                                                                                        <div class="card-body">
+                                                                                            <div>
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <div class="serviceBoxHead">
+                                                                                                                    <b>${value.serviceCategoryName}</b>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div class="service-category-items">
+                                                                                                                         <div class="row mt-2 service-category-item" data-id="${value.categoryItems[0].id}">
+                                                                                                                <div class="col-md-5">
+                                                                                                                            <b class="list-item-heading mb-0 pt-1">${value.categoryItems[0].serviceName}</b>
+                                                                                                                            <p class="m-0">${value.categoryItems[0].serviceDescripton}</p>
+                                                                                                                </div>
+                                                                                                                <div class="col-md-4">
+                                                                                                                    <div class="input-group">
+                                                                                                                        <div class="input-group-prepend">
+                                                                                                                            <span class="input-group-text" id="basic-addon1">$</span>
+                                                                                                                        </div>
+                                                                                                                        <input type="number" id="priceValue" class="form-control" min="0" value="0" aria-describedby="basic-addon1">
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                                                    <div class="col-md-3">
+                                                                                <button type="button" class="btn btn-warning deleteServiceItem" data-id="${value.categoryItems[0].id}" style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
+                                                            </div>
+                                                                                                            </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>`)
+
+                            }
+                            else {
+                                if (value.categoryItems.length > $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item').length) {
+
+                                    let serviceList3 = [];
+                                    $.each($('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items'), function (key, value2) {
+                                        serviceList3.push(parseInt($(value2).find('.service-category-item').attr("data-id")))
+                                    })
+
+                                    $.each(value.categoryItems, function (key, value2) {
+                                        if (!serviceList3.includes(value2.id)) {
+                                            $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items').append(`
+                                                                                                                                                                                <div class="row mt-2 service-category-item" data-id="${value2.id}">
+                                                                                                                        <div class="col-md-5">
+                                                                                                                                    <b class="list-item-heading mb-0 pt-1">${value2.serviceName}</b>
+                                                                                                                                    <p class="m-0">${value2.serviceDescripton}</p>
+                                                                                                                        </div>
+                                                                                                                        <div class="col-md-4">
+                                                                                                                            <div class="input-group">
+                                                                                                                                <div class="input-group-prepend">
+                                                                                                                                    <span class="input-group-text" id="basic-addon1">$</span>
+                                                                                                                                </div>
+                                                                                                                                <input type="number" id="priceValue" class="form-control" min="0" value="0" aria-describedby="basic-addon1">
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                                                                                                                            <div class="col-md-3">
+                                                                                <button type="button" class="btn btn-warning deleteServiceItem" data-id="${value2.id}" style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
+                                                                    </div>
+                                                                                                                    </div>`)
+                                        }
+                                    })
+                                }
+                                else if (value.categoryItems.length < $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item').length) {
+
+                                    var list2 = [];
+                                    $.each(value.categoryItems, function (key, value2) {
+                                        list2.push(value2.id);
+                                    })
+
+
+
+                                    $.each($('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item'), function (key, value2) {
+                                        var dataId = parseInt($(value2).attr("data-id"))
+                                        if (!list2.includes(dataId)) {
+                                            $(value2).remove()
+                                        }
+                                    })
+                                }
+                            }
+                        })
+
+                        if (response.data.length == 0) {
+                            $('.servicecard-container').html("")
+                        }
+
+                    }
+                }
+            });
+        })
+
+        $('body').on("click", ".deleteServiceItem", function () {
+            var dataId = $(this).attr("data-id")
+
+            let array = $('#serviceList').val();
+
+            let value = dataId;
+
+            let index = array.indexOf(value);
+
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+
+            $('#serviceList').val(array)
+
+            $('#serviceList').trigger('change')
+        })
+
         $('#updateServiceForm').on("submit", function (e) {
             e.preventDefault();
             if ($('#updateServiceForm').valid()) {
-                var formData = $(this).serialize()
+
+                var datas = [];
+
+                $.each($('.service-items'), function (key, value) {
+                    var priceDatas = [];
+                    $.each($(value).find('.service-category-item'), function (key, value) {
+                        priceDatas.push({
+                            propId: $(value).attr("data-id"),
+                            price: $(value).find('#priceValue').val()
+                        })
+                    })
+
+                    datas.push({
+                        categoryId: $(value).attr("data-id"),
+                        priceData: priceDatas
+                    })
+                })
+
+                var formDataJSON = {
+                    serviceName: $('#serviceName').val(),
+                    serviceDescription: $('#serviceDescription').val(),
+                    priceData: datas,
+                    id:@Model.Service.Id
+                }
+
                 $.ajax({
                     url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.UpdateService))',
                     type: "POST",
-                    data: formData + "&id=" + @Model.Service.Id,
+                    data: formDataJSON,
                     success: function (response) {
                         if (response.result == 1) {
                             Swal.fire({
@@ -82,5 +311,11 @@
                 });
             }
         })
+
+
+
+
+
     </script>
 }
+

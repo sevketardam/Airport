@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Airport.UI.Controllers
 {
@@ -49,7 +50,7 @@ namespace Airport.UI.Controllers
 
         [Authorize(Roles = "0")]
         [HttpGet("panel/servicemanagament")]
-        public IActionResult ServiceManagement()
+        public async Task<IActionResult> ServiceManagement()
         {
             var serviceCategories = _serviceCategory.Select();
             var serviceProperties = _serviceProperties.Select();
@@ -65,7 +66,7 @@ namespace Airport.UI.Controllers
         }
 
         [HttpGet("panel/updateservice/{id}")]
-        public IActionResult UpdateServicePage(int id)
+        public async Task<IActionResult> UpdateServicePage(int id)
         {
             try
             {
@@ -74,11 +75,47 @@ namespace Airport.UI.Controllers
                 if (service != null)
                 {
                     var serviceSelectedProps = new List<ServiceProperties>();
+
                     var serviceItems = _items.SelectByFunc(a => a.ServiceId == id);
 
+                    var ServicePriceDataVM = new List<ServicePriceDataVM>();
+                    var ServiceCategoryPriceVM = new List<ServiceCategoryPriceVM>();
                     serviceItems.ForEach(a =>
                     {
+
+                        a.ServiceProperty = _serviceProperties.SelectByID(a.ServicePropertyId);
+                        ServiceCategoryPriceVM.Add(new ServiceCategoryPriceVM
+                        {
+                            Price = a.Price,
+                            PropId = a.ServicePropertyId,
+                            CategoryId = a.ServiceProperty.ServiceCategoryId,
+                            ServiceProperties = _serviceProperties.SelectByID(a.ServicePropertyId)                          
+                        });
+
+                        //ServicePriceDataVM.Add(new ServicePriceDataVM()
+                        //{
+                        //    CategoryId = a.ServiceProperty.ServiceCategoryId,
+                        //    PriceData = ServiceCategoryPriceVM
+                        //});
+
                         serviceSelectedProps.Add(_serviceProperties.SelectByID(a.ServicePropertyId));
+                    });
+
+
+                    var s = ServiceCategoryPriceVM.GroupBy(a => a.CategoryId).ToList();
+
+
+                    var d = new List<ServiceLastCategoryPriceVM>();
+
+
+                    s.ForEach(a => 
+                    {
+                        d.Add(new ServiceLastCategoryPriceVM
+                        {
+                            CategoryId = a.Key,
+                            serviceCategoryPrices = a.Select(b=>b),
+                            CategoryName = _serviceCategory.SelectByID(a.Key).ServiceCategoryName
+                        });
                     });
 
 
@@ -87,7 +124,9 @@ namespace Airport.UI.Controllers
                         ServiceCategories = _serviceCategory.Select(),
                         ServiceSelectedProperties = serviceSelectedProps,
                         Service = service,
+                        ServicePriceDatas = d
                     };
+
                     updateServiceVM.ServiceCategories.ForEach(a =>
                     {
                         a.ServiceProperties = _serviceProperties.SelectByFunc(b => b.ServiceCategoryId == a.Id);
@@ -99,13 +138,12 @@ namespace Airport.UI.Controllers
             }
             catch (System.Exception)
             {
-
                 return BadRequest();
             }
         }
 
         [HttpPost]
-        public JsonResult UpdateService(UpdateServiceVM updateService, int id)
+        public JsonResult UpdateService(AddServiceVM updateService, int id)
         {
             try
             {
@@ -118,38 +156,32 @@ namespace Airport.UI.Controllers
                     service.ServiceName = updateService.ServiceName;
                     service.ServiceDescription = updateService.ServiceDescription;
 
+
                     _services.Update(service);
 
-                    var oldServiceItems = _items.SelectByFunc(a => a.ServiceId == id);
-
-                    foreach (var item in oldServiceItems)
+                    var oldItems = _items.SelectByFunc(a=>a.ServiceId == id);
+                  
+                    oldItems.ForEach(a =>
                     {
-                        if (!updateService.ServiceItems.Contains(item.ServicePropertyId))
-                        {
-                            _items.HardDelete(item);
-                        }
-                    }
+                        _items.HardDelete(a);
+                    });
 
-                    foreach (var item2 in updateService.ServiceItems)
+                    var serviceItemsList = new List<ServiceItems>();
+
+                    foreach (var item in updateService.PriceData)
                     {
-                        var service2 = _items.SelectByFunc(a => a.ServicePropertyId == item2 && a.ServiceId == id);
-                        service2.ForEach(a =>
+                        foreach (var item2 in item.PriceData)
                         {
-                            a.Service = _services.SelectByID(id);
-                        });
-
-                        var thisservice = service2.Where(a => a.Service.UserId == userId && a.ServicePropertyId == item2).FirstOrDefault();
-
-                        if (!oldServiceItems.Contains(thisservice))
-                        {
-                            _items.Insert(new ServiceItems
+                            serviceItemsList.Add(new ServiceItems
                             {
+                                ServicePropertyId = item2.PropId,
                                 ServiceId = id,
-                                ServicePropertyId = item2,
-                                Price = "0"
+                                Price = item2.Price
                             });
                         }
                     }
+
+                    _items.InsertRage(serviceItemsList);
 
                     return new JsonResult(new { result = 1 });
                 }
@@ -211,14 +243,17 @@ namespace Airport.UI.Controllers
 
                 var serviceItemsList = new List<ServiceItems>();
 
-                foreach (var item in service.ServiceItems)
+                foreach (var item in service.PriceData)
                 {
-                    serviceItemsList.Add(new ServiceItems
+                    foreach (var item2 in item.PriceData)
                     {
-                        ServicePropertyId = item,
-                        ServiceId = addedService.Id,
-                        Price = "0"
-                    });
+                        serviceItemsList.Add(new ServiceItems
+                        {
+                            ServicePropertyId = item2.PropId,
+                            ServiceId = addedService.Id,
+                            Price = item2.Price
+                        });
+                    }
                 }
 
                 _items.InsertRage(serviceItemsList);
@@ -236,23 +271,42 @@ namespace Airport.UI.Controllers
         {
             try
             {
+
+                var list = new List<int>();
                 var serviceVM = new List<GetServiceItemDetailVM>();
+                var serviceVM2 = new List<GetServiceCategoryItemVM>();
                 foreach (var item in serviceProId)
                 {
                     var serviceProp = _serviceProperties.SelectByID(item);
 
                     if (serviceProp != null)
                     {
+                        list.Add(serviceProp.ServiceCategoryId);
                         serviceProp.ServiceCategory = _serviceCategory.SelectByID(serviceProp?.ServiceCategoryId);
-                        serviceVM.Add(new GetServiceItemDetailVM()
+                        serviceVM2.Add(new GetServiceCategoryItemVM()
                         {
                             Id = serviceProp.Id,
-                            ServiceCategoryName = serviceProp.ServiceCategory?.ServiceCategoryName,
                             ServiceDescripton = serviceProp.ServicePropertyDescription,
-                            ServiceName = serviceProp.ServicePropertyName
+                            ServiceCategoryName = serviceProp.ServiceCategory.ServiceCategoryName,
+                            ServiceName = serviceProp.ServicePropertyName,
+                            ServiceCategoryId = serviceProp.ServiceCategoryId
                         });
                     }
                 }
+
+                list = list.Distinct().ToList();
+
+                list.ForEach(a =>
+                {
+                    serviceVM.Add(new GetServiceItemDetailVM
+                    {
+                        ServiceCategoryId = a,
+                        ServiceCategoryName = serviceVM2.Where(b => b.ServiceCategoryId == a).FirstOrDefault().ServiceCategoryName,
+                        CategoryItems = serviceVM2.Where(b => b.ServiceCategoryId == a).ToList()
+                    });
+                });
+
+
 
                 return new JsonResult(new { result = 1, data = serviceVM });
             }

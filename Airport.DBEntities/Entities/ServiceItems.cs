@@ -14,7 +14,7 @@ namespace Airport.DBEntities.Entities
         public int Id { get; set; }
         public int ServiceId { get; set; }
         public int ServicePropertyId { get; set; }
-        public string Price { get; set; }
+        public double Price { get; set; }
 
 
         public Services Service { get; set; }
