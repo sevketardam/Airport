@@ -150,7 +150,7 @@ namespace Airport.UI.Controllers
                     LocationName = result.Result.LocationName,
                     LocationRadius = result.Result.LocationRadius,
                     UserId = userId,
-                    OutZoneDropCharge = convertData.OutZonePrice,
+                    DropCharge = convertData.DropCharge,
                     OutZonePricePerKM = convertData.OutZonePerKmPrice,
                     Lat = result.Result.Geometry.Location.lat,
                     Lng = result.Result.Geometry.Location.lng,
@@ -164,7 +164,6 @@ namespace Airport.UI.Controllers
                     {
                         CarId = a.CarId,
                         LocationId = newLocation.Id,
-                        DropPrice = a.CarDropPrice,
                     });
 
                     a.CarsPricePerKm.ForEach(car =>
@@ -249,7 +248,6 @@ namespace Airport.UI.Controllers
                 {
                     CarId = a.CarId,
                     LocationId = location.Id,
-                    DropPrice = a.CarDropPrice,
                 });
 
                 a.CarsPricePerKm.ForEach(car =>

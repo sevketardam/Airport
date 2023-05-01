@@ -15,7 +15,7 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="outZoneDropCharge">Drop Charge</label>
-                        <input type="number" class="form-control" id="outZoneDropCharge" value="0" />
+                        <input type="number" class="form-control" id="DropCharge" value="0" />
                     </div>
                 </div>
 
@@ -107,11 +107,11 @@ per=2*@
     <script>
 
         $('#addLocationBtn').on("click", function () {
-            var outZonePrice = $('#outZoneDropCharge').val()
+            var dropCharge = $('#DropCharge').val()
             var outZonePerKmPrice = $('#outZonePerKmPrice').val()
 
             let locationJson = {
-                outZonePrice: outZonePrice,
+                dropCharge: dropCharge,
                 outZonePerKmPrice: outZonePerKmPrice,
                 carsPrice: []
             }
@@ -119,7 +119,6 @@ per=2*@
             $.each($('.carCard'), function (key, value) {
                 locationJson.carsPrice.push({
                     carId: $(value).attr("data-id"),
-                    carDropPrice: $(value).find('#carDropPrice').val(),
                     carsPricePerKm: []
                 });
             })
@@ -129,15 +128,16 @@ per=2*@
                     var startingfromVal = $(value2).find("#startingFrom").val()
                     var upToKmVal = $(value2).find("#upTo").val()
                     var priceVal = $(value2).find("#fare").val()
-                    var priceVal = $(value2).find("#priceType").val()
+                    var priceType = $(value2).find("#priceType").val()
                     value.carsPricePerKm.push({
                         startKm: startingfromVal,
                         upToKm: upToKmVal,
-                        price: priceVal
+                        price: priceVal,
+                        priceType: priceType
                     })
                 })
             })
-
+            console.log(locationJson)
             $('#getValueForm input[name="jsonValues"]').val(JSON.stringify(locationJson))
             $('#getValueForm').submit()
 
