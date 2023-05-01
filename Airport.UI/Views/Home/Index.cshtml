@@ -2,6 +2,19 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+@section pageCss{
+            <style>
+                            #reservationForm label.error {
+                                font-weight: 800;
+                                font-size: 1.5rem !important;
+                                right: 6px;
+                                top: 3px;
+                                position: absolute;
+                                left: auto !important;
+                            }
+                        </style>
+}
 <!-- Banner -->
 <section>
     <div class="container">
@@ -13,16 +26,7 @@
             <div class="_Banner_Flex">
                 <div class="_Banner_Left">
                     <div class="_Banner_Form">
-                        <style>
-                            #reservationForm label.error {
-                                font-weight: 800;
-                                font-size: 1.5rem !important;
-                                right: 6px;
-                                top: 3px;
-                                position: absolute;
-                                left: auto !important;
-                            }
-                        </style>
+                
                         <form asp-route="getLocationValue" method="post" id="reservationForm">
                             
                             <div class="_Form_Cat">
@@ -64,8 +68,8 @@
                                 <div class="_Pos_Rel">
                                     <div class="d-none Return_Arrival">
                                         <label for="">Return</label>
-                                        <input type="datetime-local">
-                                        <input type="checkbox" name="return-controle" style="position:absolute; opacity: 0;visibility: visible; " />
+                                        <input type="datetime-local" name="ReturnDate">
+                                        <input type="checkbox" name="ReturnStatus" value="true" style="position:absolute; opacity: 0;visibility: visible; " />
                                     </div>
                                     <div>
                                         <button type="button" class="_Add_Return">
@@ -726,10 +730,6 @@
         </div>
     </div>
 </section>
-<input id="pac-input"
-       class="controls"
-       type="hidden"
-       placeholder="Search Box" />
 
 <div id="map"></div>
 
@@ -787,7 +787,6 @@
 
             autocomplete2.addListener('place_changed', function () {
                 var place = autocomplete2.getPlace();
-                console.log(place.geometry.location)
                 console.log(place.geometry.location.lat)
                 dropPlaceId = place.place_id
                 $('#_Drop_Off_Value').val(dropPlaceId)
@@ -826,7 +825,7 @@ $('form#reservationForm').validate({
         }
     },
     submitHandler: function (form) {
-                    let datas = {
+            let datas = {
                 pickValue: pickPlaceId,
                 dropValue: dropPlaceId
             }
@@ -836,9 +835,6 @@ $('form#reservationForm').validate({
             form.submit()
     },
 });
-
-
-
 
     </script>
 }

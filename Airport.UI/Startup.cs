@@ -29,6 +29,13 @@ namespace Airport.UI
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddSession(a =>
+            {
+                a.IdleTimeout = TimeSpan.FromHours(2);
+                a.Cookie.Name = "user";
+                a.Cookie.IsEssential = true;
+            });
+
             services.AddScoped<IUserDatasDAL, UserDatasDAL>();
             services.AddScoped<IServicesDAL, ServicesDAL>();
             services.AddScoped<IServicePropertiesDAL, ServicePropertiesDAL>();
@@ -75,7 +82,7 @@ namespace Airport.UI
             app.UseAuthentication();
 
             app.UseAuthorization();
-            //app.UseSession();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

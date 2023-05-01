@@ -15,6 +15,7 @@ namespace Airport.DBEntities.Entities
         public int StartFrom { get; set; }
         public int UpTo { get; set; }
         public double Fare { get; set; }
+        public byte PriceType { get; set; }
         public int LocationCarId { get; set; }
 
         public LocationCars LocationCar { get; set; }

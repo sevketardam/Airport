@@ -307,12 +307,12 @@ $('form#_Sign_Form').validate({
 $("._Add_Return, .Roundtrip_Btn").on("click", function () {
     $("._Add_Return").closest("div").attr("class", "d-none _DeActive")
     $(".Return_Arrival").attr("class", "Return_Arrival")
-    $(`[name="return-controle"]`).prop("checked", true);
+    $(`[name="ReturnStatus"]`).prop("checked", true);
 })
 
 
 $(".One_Way").on("click", function () {
     $("._Add_Return").closest("div").attr("class", "")
     $(".Return_Arrival").attr("class", "d-none Return_Arrival")
-    $(`[name="return-controle"]`).prop("checked", false);
+    $(`[name="ReturnStatus"]`).prop("checked", false);
 })

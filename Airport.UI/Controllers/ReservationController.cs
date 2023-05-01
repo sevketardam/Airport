@@ -1,5 +1,6 @@
 ﻿using Airport.DBEntities.Entities;
 using Airport.DBEntitiesDAL.Interfaces;
+using Airport.UI.Models.Extendions;
 using Airport.UI.Models.IM;
 using Airport.UI.Models.Interface;
 using Airport.UI.Models.VM;
@@ -8,6 +9,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection.Metadata;
@@ -27,7 +30,7 @@ namespace Airport.UI.Controllers
         IReservationsDAL _reservations;
         IGetCarDetail _getCar;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations,IGetCarDetail getCar)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar)
         {
             _location = location;
             _locationCar = locationCar;
@@ -57,11 +60,13 @@ namespace Airport.UI.Controllers
                 var content3 = await response3.Content.ReadAsStringAsync();
                 var contentJsonResult2 = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content3);
 
-
                 var s = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric";
 
                 var fullUrl2 = s + $"&origins={contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}&destinations={contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}&key=" + api_key;
+
                 var getreservation = new List<GetReservationValues>();
+                int minKm = 0;
+
                 using (var client = new HttpClient())
                 {
                     HttpResponseMessage response4 = await client.GetAsync(fullUrl2);
@@ -74,11 +79,12 @@ namespace Airport.UI.Controllers
                         {
                             var km = data["rows"][0]["elements"][0]["distance"]["value"].ToString().Replace("{", "").Replace("}", "");
                             var lastKm = Math.Ceiling(Convert.ToDouble(km) / 1000) * 1000;
-                            var minKm = lastKm / 1000;
+                            minKm = Convert.ToInt32(lastKm / 1000);
 
                             var carLocation = _location.Select();
                             foreach (var item in carLocation)
                             {
+
                                 item.LocationCars = _locationCar.SelectByFunc(a => a.LocationId == item.Id);
 
                                 foreach (var item1 in item.LocationCars)
@@ -86,46 +92,51 @@ namespace Airport.UI.Controllers
                                     var price = item1.DropPrice;
                                     item1.Car = _carDetail.CarDetail(item1.CarId);
 
-                                    item1.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == item1.Id);
-
-
-                                    double lastPrice = 0;
-                                    item1.LocationCarsFares.ForEach(a =>
+                                    if (item1.Car.MaxPassenger >= reservation.PeopleCount)
                                     {
-                                        if (minKm >= a.UpTo)
+                                        item1.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == item1.Id);
+
+                                        double lastPrice = 0;
+                                        item1.LocationCarsFares.ForEach(a =>
                                         {
-                                            lastPrice = a.Fare;
-                                            price += a.Fare * minKm;
-                                        }
-                                        else
-                                        {
-                                            if (a.StartFrom == 0)
+                                            if (minKm >= a.UpTo)
                                             {
                                                 lastPrice = a.Fare;
                                                 price += a.Fare * minKm;
                                             }
                                             else
                                             {
-                                                price += lastPrice * minKm;
+                                                if (a.StartFrom == 0)
+                                                {
+                                                    lastPrice = a.Fare;
+                                                    price += a.Fare * minKm;
+                                                }
+                                                else
+                                                {
+                                                    price += lastPrice * minKm;
+                                                }
                                             }
-
+                                        });
+                                        
+                                        if (reservation.ReturnStatus)
+                                        {
+                                            price *= 2;
                                         }
 
-                                    });
-
-                                    getreservation.Add(new GetReservationValues
-                                    {
-                                        LocationCars = item1,
-                                        LastPrice = price,
-                                        ReservationDate = reservation.FlightTime,
-                                        PickLocationName = contentJsonResult.Result.formatted_address,
-                                        DropLocationName = contentJsonResult2.Result.formatted_address,
-                                        PassangerCount = reservation.PeopleCount,
-                                        DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
-                                        PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
-                                        DropLocationPlaceId = reservation.DropValue,
-                                        PickLocationPlaceId = reservation.PickValue,
-                                    });
+                                        getreservation.Add(new GetReservationValues
+                                        {
+                                            LocationCars = item1,
+                                            LastPrice = price,
+                                            ReservationDate = reservation.FlightTime,
+                                            PickLocationName = contentJsonResult.Result.formatted_address,
+                                            DropLocationName = contentJsonResult2.Result.formatted_address,
+                                            PassangerCount = reservation.PeopleCount,
+                                            DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
+                                            PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
+                                            DropLocationPlaceId = reservation.DropValue,
+                                            PickLocationPlaceId = reservation.PickValue,
+                                        });
+                                    }
                                 }
                             }
                         }
@@ -141,7 +152,20 @@ namespace Airport.UI.Controllers
                     PickLocationPlaceId = reservation.PickValue,
                 };
 
-                TempData["datas"] = JsonConvert.SerializeObject(getreservation);
+                var reservationDatas = new ReservationDatasVM()
+                {
+                    DropLocationLatLng = $"lat:{contentJsonResult.Result.Geometry.Location.lat},lng:{contentJsonResult.Result.Geometry.Location.lng}",
+                    PickLocationLatLng = $"lat:{contentJsonResult2.Result.Geometry.Location.lat},lng:{contentJsonResult2.Result.Geometry.Location.lng}",
+                    DropLocationPlaceId = reservation.DropValue,
+                    PickLocationPlaceId = reservation.PickValue,
+                    PickLocationName = contentJsonResult.Result.formatted_address,
+                    DropLocationName = contentJsonResult2.Result.formatted_address,
+                    KM = minKm,
+                    ReservationValues = reservation,
+                };
+
+
+                HttpContext.Session.MySet("reservationData", reservationDatas);
 
                 return View(lastVM);
             }
@@ -161,14 +185,50 @@ namespace Airport.UI.Controllers
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
                 var user = _userDatas.SelectByID(userId);
 
-                var datas = JsonConvert.DeserializeObject<List<GetReservationValues>>((string)TempData["datas"]);
-                var selectedData = datas.Where(a => a.LocationCars.Id == id).FirstOrDefault();
+                var datas = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
-                TempData["createReservation"] = JsonConvert.SerializeObject(selectedData);
+                var locationCar = _locationCar.SelectByFunc(a => a.Id == id).FirstOrDefault();
+
+
+                locationCar.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == id);
+                double price = locationCar.DropPrice;
+                locationCar.LocationCarsFares.ForEach(a =>
+                {
+                    double lastPrice = 0;
+                    if (datas.KM >= a.UpTo)
+                    {
+                        lastPrice = a.Fare;
+                        price += a.Fare * datas.KM;
+                    }
+                    else
+                    {
+                        if (a.StartFrom == 0)
+                        {
+                            lastPrice = a.Fare;
+                            price += a.Fare * datas.KM;
+                        }
+                        else
+                        {
+                            price += lastPrice * datas.KM;
+                        }
+                    }
+                });
+
+
+                if (datas.ReservationValues.ReturnStatus)
+                {
+                    price *= 2;
+                }
+
+                datas.LastPrice = price;
+                datas.LocationCar = locationCar;
+                datas.LocationCar.Car = _carDetail.CarDetail(locationCar.CarId);
+
+                HttpContext.Session.MySet("reservationData",datas);
 
                 var reservation = new ReservationStepThreeVM()
                 {
-                    SelectedData = selectedData,
+                    SelectedData = datas,
                     User = user
                 };
 
@@ -183,11 +243,24 @@ namespace Airport.UI.Controllers
         }
 
         [HttpPost("reservation-get-code", Name = "getBookValues")]
-        public async Task<IActionResult> ReservationLastStep(Reservations reservation)
+        public async Task<IActionResult> ReservationLastStep(Reservations reservation,List<string> OthersName, List<string> OthersSurname)
         {
             try
             {
-                var createReservation = JsonConvert.DeserializeObject<GetReservationValues>((string)TempData["createReservation"]);
+                var peopleList = new List<GetOtherPeople>();
+                for (int i = 0; i < OthersName.Count; i++)
+                {
+                    if (OthersName[i].Trim() != "" && OthersName[i] != null)
+                    {
+                        peopleList.Add(new GetOtherPeople
+                        {
+                            OthersName = OthersName[i],
+                            OthersSurname = OthersSurname[i]
+                        });
+                    }
+                }
+               
+                var createReservation = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
                 Random random = new Random();
                 int kodUzunlugu = 6;
@@ -207,15 +280,15 @@ namespace Airport.UI.Controllers
                     DropPlaceId = createReservation.DropLocationPlaceId,
                     PickPlaceId = createReservation.PickLocationPlaceId,
                     Email = reservation.Email,
-                    LocationCarId = createReservation.LocationCars.Id,
+                    LocationCarId = createReservation.LocationCar.Id,
                     Name = reservation.Name,
                     ReservationCode = kod,
                     Price = createReservation.LastPrice,
                     Surname = reservation.Surname,
                     DropFullName = createReservation.DropLocationName,
                     PickFullName = createReservation.PickLocationName,
-                    PeopleCount = createReservation.PassangerCount,
-                    ReservationDate = createReservation.ReservationDate,
+                    PeopleCount = createReservation.ReservationValues.PeopleCount,
+                    ReservationDate = createReservation.ReservationValues.FlightTime,
                 });
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
@@ -232,7 +305,7 @@ namespace Airport.UI.Controllers
         }
 
 
-        [HttpPost("manage-reservation",Name = "checkReservation")]
+        [HttpPost("manage-reservation", Name = "checkReservation")]
         public async Task<IActionResult> GetReservation(string reservationCode, string email)
         {
             try
@@ -241,7 +314,7 @@ namespace Airport.UI.Controllers
                 if (reservation == null)
                 {
                     ViewBag.Warning = "Warning";
-                    return RedirectToAction("ManageReservation","Home");
+                    return RedirectToAction("ManageReservation", "Home");
                 }
 
                 reservation.LocationCars = _locationCar.SelectByID(reservation.LocationCarId);
