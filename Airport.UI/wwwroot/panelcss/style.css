@@ -89,4 +89,7 @@
         width: 100%;
     }
 }
- 
+
+.err_block {
+    border-color: red !important;
+}

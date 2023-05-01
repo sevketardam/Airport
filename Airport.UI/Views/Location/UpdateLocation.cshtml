@@ -100,35 +100,35 @@
 
         let container = document.querySelector('.carFareContainer');
 
-        function initCards(){
+        //function initCards(){
 
-            let startFrom = 0;
+        //    //let startFrom = 0;
 
-            container.querySelectorAll('.carFareCard').forEach(el => {
+        //    //container.querySelectorAll('.carFareCard').forEach(el => {
 
-                let startFromInput = el.querySelector('.startingFrom');
+        //    //    let startFromInput = el.querySelector('.startingFrom');
 
-                startFromInput.value = startFrom;
-                startFromInput.disabled = true;
+        //    //    startFromInput.value = startFrom;
+        //    //    startFromInput.disabled = true;
 
-                if (el.querySelector('.upTo').value.trim() != ''){
-                    startFrom = el.querySelector('.upTo').value;
-                }
+        //    //    if (el.querySelector('.upTo').value.trim() != ''){
+        //    //        startFrom = el.querySelector('.upTo').value;
+        //    //    }
 
                 
 
 
-            })
+        //    //})
 
-            container.querySelectorAll('.upTo').forEach(el => {
-                el.oninput = () => {
-                    initCards();
-                }
-            })
+        //    //container.querySelectorAll('.upTo').forEach(el => {
+        //    //    el.oninput = () => {
+        //    //        initCards();
+        //    //    }
+        //    //})
 
-        }
+        //}
 
-        initCards();
+        //initCards();
 
         document.querySelector('.addCarFare').onclick = () => {
 
@@ -151,7 +151,7 @@
                                     </div>
             `
 
-            initCards();
+            //initCards();
 
         }
 
