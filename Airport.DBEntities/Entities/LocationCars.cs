@@ -15,7 +15,6 @@ namespace Airport.DBEntities.Entities
         public int LocationId { get; set; }
         public double Price { get; set; }
         public int CarId { get; set; }
-        public double DropPrice { get; set; }
 
         public Locations Location { get; set; }
         public List<LocationCarsFare> LocationCarsFares { get; set; }

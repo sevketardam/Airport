@@ -14,6 +14,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection.Metadata;
+using System.Runtime.ConstrainedExecution;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using static System.Net.WebRequestMethods;
@@ -89,35 +90,37 @@ namespace Airport.UI.Controllers
 
                                 foreach (var item1 in item.LocationCars)
                                 {
-                                    var price = item1.DropPrice;
+                                    double price = 0;
                                     item1.Car = _carDetail.CarDetail(item1.CarId);
 
                                     if (item1.Car.MaxPassenger >= reservation.PeopleCount)
                                     {
                                         item1.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == item1.Id);
-
+                                        var lastUp = 0;
                                         double lastPrice = 0;
                                         item1.LocationCarsFares.ForEach(a =>
                                         {
-                                            if (minKm >= a.UpTo)
+                                            if (a.StartFrom < minKm && a.UpTo > minKm)
                                             {
-                                                lastPrice = a.Fare;
-                                                price += a.Fare * minKm;
-                                            }
-                                            else
-                                            {
-                                                if (a.StartFrom == 0)
+                                                if (a.PriceType == 2)
                                                 {
-                                                    lastPrice = a.Fare;
                                                     price += a.Fare * minKm;
                                                 }
                                                 else
                                                 {
-                                                    price += lastPrice * minKm;
+                                                    price += a.Fare;
                                                 }
                                             }
+                                            lastUp = a.UpTo;
+                                            lastPrice = a.Fare;
                                         });
-                                        
+
+                                        if (lastUp < minKm)
+                                        {
+                                            var plusPrice = minKm - lastUp;
+                                            price += lastPrice * plusPrice;
+                                        }
+
                                         if (reservation.ReturnStatus)
                                         {
                                             price *= 2;
@@ -164,9 +167,11 @@ namespace Airport.UI.Controllers
                     ReservationValues = reservation,
                 };
 
-
+                HttpContext.Session.Remove("reservationData");
                 HttpContext.Session.MySet("reservationData", reservationDatas);
 
+
+                lastVM.ReservationValues = lastVM.ReservationValues.OrderBy(a => a.LastPrice).ToList(); 
                 return View(lastVM);
             }
             catch (Exception)
@@ -191,27 +196,32 @@ namespace Airport.UI.Controllers
 
 
                 locationCar.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == id);
-                double price = locationCar.DropPrice;
+                var dropPrice = locationCar.Location = _location.SelectByID(locationCar.LocationId);
+
+                //fixed= 1
+                //per = 2 
+                double price = 0;
                 locationCar.LocationCarsFares.ForEach(a =>
                 {
-                    double lastPrice = 0;
-                    if (datas.KM >= a.UpTo)
+                    if (a.UpTo < datas.KM)
                     {
-                        lastPrice = a.Fare;
-                        price += a.Fare * datas.KM;
-                    }
-                    else
-                    {
-                        if (a.StartFrom == 0)
+                        if (a.PriceType == 2)
                         {
-                            lastPrice = a.Fare;
                             price += a.Fare * datas.KM;
                         }
                         else
                         {
-                            price += lastPrice * datas.KM;
+                            price += a.Fare;
                         }
                     }
+                    else
+                    {
+                        if (a.PriceType == 2)
+                        {
+                            price += a.Fare * datas.KM;
+                        }
+                    }
+
                 });
 
 
@@ -224,7 +234,9 @@ namespace Airport.UI.Controllers
                 datas.LocationCar = locationCar;
                 datas.LocationCar.Car = _carDetail.CarDetail(locationCar.CarId);
 
-                HttpContext.Session.MySet("reservationData",datas);
+                HttpContext.Session.Remove("reservationData");
+
+                HttpContext.Session.MySet("reservationData", datas);
 
                 var reservation = new ReservationStepThreeVM()
                 {
@@ -243,7 +255,7 @@ namespace Airport.UI.Controllers
         }
 
         [HttpPost("reservation-get-code", Name = "getBookValues")]
-        public async Task<IActionResult> ReservationLastStep(Reservations reservation,List<string> OthersName, List<string> OthersSurname)
+        public async Task<IActionResult> ReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname)
         {
             try
             {
@@ -259,7 +271,7 @@ namespace Airport.UI.Controllers
                         });
                     }
                 }
-               
+
                 var createReservation = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
                 Random random = new Random();
