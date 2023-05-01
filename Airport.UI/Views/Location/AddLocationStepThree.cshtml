@@ -25,7 +25,7 @@
                         <input type="number" class="form-control" id="outZonePerKmPrice" value="0" />
                     </div>
                     <form id="getValueForm" asp-route="getLocationValues">
-                        <input type="hidden" name="jsonValues"/>
+                        <input type="hidden" name="jsonValues" />
                     </form>
                 </div>
             </div>
@@ -39,7 +39,7 @@
 <div class="row">
     @foreach (var item in Model.Cars)
     {
-        <div class="col-md-6 mb-3 carCard" data-id="@item.Id">
+        <div class="col-md-12 mb-3 carCard" data-id="@item.Id">
             <div class="card">
                 <div class="card-body">
                     <div>
@@ -47,31 +47,45 @@
                         @item.Model.CarModelName
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label>Drop Price</label>
-                            <input type="number" class="form-control" id="carDropPrice" value="0" />
+                    @* <div class="row mb-3">
+                <div class="col-md-6">
+                <label>Drop Price</label>
+                <input type="number" class="form-control" id="carDropPrice" value="0" />
+                </div>
+                </div>*@
+
+                    <div id="carArea">
+                        <div class="row carFareCard">
+                            <div class="col-md-3 mb-3">
+                                <label>Price Type</label>
+                                <select id="priceType" class="form-control">
+                                    <option value="1" selected>
+                                        Fixed
+                                    </option>
+                                    <option value="2">
+                                        Per KM
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Starting From</label>
+                                <input type="number" class="form-control" id="startingFrom" disabled placeholder="0km" value="0" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Up To</label>
+                                <input type="number" class="form-control" id="upTo" min="1" value="10" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Fare</label>
+                                <input type="number" class="form-control" id="fare" value="10" />
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row carFareCard">
-                        <div class="col-md-4 mb-3">
-                            <label>Starting From</label>
-                            <input type="text" class="form-control" id="startingFrom" placeholder="0km" value="0" />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label>Up To</label>
-                            <input type="text" class="form-control" id="upTo" value="10" />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label>Fare</label>
-                            <input type="text" class="form-control" id="fare" value="10" />
-                        </div>
-                    </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <button class="btn btn-secondary next-btn w-100" style="border-radius:0px;" type="submit">Add New Distance</button>
+                            <button class="btn btn-secondary next-btn w-100" id="addDistance" style="border-radius:0px;" type="submit">Add New Distance</button>
                         </div>
                     </div>
                 </div>
@@ -110,7 +124,7 @@
             })
 
             $.each(locationJson.carsPrice, function (key, value) {
-                $.each($('.carCard[data-id="' + value.carId + '"] .carFareCard'),function (key2,value2) {
+                $.each($('.carCard[data-id="' + value.carId + '"] .carFareCard'), function (key2, value2) {
                     var startingfromVal = $(value2).find("#startingFrom").val()
                     var upToKmVal = $(value2).find("#upTo").val()
                     var priceVal = $(value2).find("#fare").val()
@@ -126,5 +140,82 @@
             $('#getValueForm').submit()
 
         })
+
+        $("body").on("click", "#addDistance", function () {
+            let data_id = $(this).closest(".carCard").attr("data-id");
+            if ($(this).closest(".carCard").find(".carFareCard:last-child input#upTo").val() == "" || Number($(this).closest(".carCard").find(".carFareCard:last-child input#upTo").val()) < Number($(this).closest(".carCard").find(".carFareCard:last-child input#upTo").attr("min"))) {
+                $(this).closest(".carCard").find(".carFareCard:last-child input#upTo").addClass("err_block");
+            }
+            else {
+                $(this).closest(".carCard").find(".carFareCard select").each(function (key, data) {
+                    if (key == $(this).closest(".carCard").find(".carFareCard").length - 1) {
+                        if ($(data).val() == "1" || $(data).val() == "2") {
+                            $(this).closest(".carCard").find(".carFareCard:last-child input#upTo").removeClass("err_block");
+                            $(this).closest(".carCard").find(".carFareCard:last-child input#upTo").prop("disabled", true);
+                            $(this).closest(".carCard").find(".carFareCard:last-child select").prop("disabled", true);
+                            $(this).closest(".carCard").find(".carFareCard:last-child input#upTo").removeClass("err_block");
+                            $(this).closest(".carCard").find(".carFareCard:last-child .deletedDistance").closest("div").addClass("d-none");
+                            $(this).closest(".carCard").find(".carFareCard:last-child #fare").closest("div").attr("class", "col-md-3 mb-3")
+
+
+
+                            $(this).closest(".carCard").find("#carArea").append(`
+                                                            <div class="row carFareCard">
+                                                                    <div class="col-md-3 mb-3">
+                                                                        <label>Price Type</label>
+                                                                        <select id="priceType" class="form-control">
+                                                                            <option value="1">
+                                                                                Fixed
+                                                                            </option>
+                                                                                    <option value="2" selected>
+                                                                                Per KM
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-3 mb-3">
+                                                                        <label>Starting From</label>
+                                                                                                                        <input type="number" class="form-control" id="startingFrom" disabled placeholder="0km" value="${$("body .carFareCard:last-child input#upTo").val()}" />
+                                                                    </div>
+                                                                    <div class="col-md-3 mb-3">
+                                                                        <label>Up To</label>
+                                                                                                        <input type="number" class="form-control" id="upTo" value="" min="${Number($("body .carFareCard:last-child input#upTo").val()) + 1} " />
+                                                                    </div>
+                                                                    <div class="col-md-2 mb-3">
+                                                                        <label>Fare</label>
+                                                                                <input type="number" class="form-control" id="fare" value="" />
+                                                                    </div>
+                                                                                    <div class="col-md-1 mb-3">
+                                                                                            <label style="opacity: 0; visibility: visible;">Up To</label>
+                                                                                                            <button type="button" count="${data_id}" class="btn btn-warning deletedDistance " style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
+                                                                            </div>
+                                                                </div>
+                                                    `);
+
+
+
+                        }
+
+
+
+                    }
+
+                })
+            }
+
+        })
+
+
+        $("body").on("click", ".deletedDistance", function () {
+            let count_id = $(this).attr("count")
+            $(this).closest(".carFareCard").remove();
+            if($(`.carCard[data-id="${count_id}"] .carFareCard`).length != 1){
+                $(`.carCard[data-id="${count_id}"] .carFareCard:last-child .deletedDistance`).closest("div").removeClass("d-none");
+                $(`.carCard[data-id="${count_id}"] .carFareCard:last-child #fare`).closest("div").attr("class", "col-md-2 mb-3")
+            }
+            $(`.carCard[data-id="${count_id}"] .carFareCard:last-child input#upTo`).prop("disabled", false);
+            $(`.carCard[data-id="${count_id}"] .carFareCard:last-child select`).prop("disabled", false);
+        })
+
+
     </script>
 }
