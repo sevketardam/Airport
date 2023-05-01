@@ -1821,6 +1821,12 @@ label._Down_Label {
 }
 
 ._Card_Item_Right a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 1rem;
     width: 100%;
     max-width: 12rem;
@@ -2725,7 +2731,7 @@ input[type="number"]::-webkit-outer-spin-button {
         width: 100%;
     }
 
-        ._Card_Item_Right button {
+        ._Card_Item_Right a {
             margin: 1rem auto 0 auto;
         }
 
