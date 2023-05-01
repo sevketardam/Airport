@@ -104,41 +104,41 @@ $('form[id="_Agency_Form"]').validate({
         Title: {
             required: true,
         },
-        E_mail: {
+        Eposta: {
             required: true,
             email: true,
         },
-        Name_Surname: {
+        Name: {
             required: true,
         },
-        Phone_Number: {
+        PhoneNumber: {
             required: true,
         },
         Password: {
             required: true,
             minlength: 6,
         },
-        Company_Name: {
+        CompanyName: {
             required: true,
         },
-        Adress: {
+        Address: {
             required: true,
         },
-        Transfer_Request: {
+        TransferRequest: {
             required: true,
         },
-        Transfer_Requested_Locations: {
+        TransferRequestLocation: {
             required: true,
         },
-        Company_Phone_Number: {
+        CompanyPhoneNumber: {
             required: true,
         },
-        Tell_Phone_Number: {
+        TellUsPhoneNumber: {
             required: true,
         },
-        file: {
-            required: true,
-        },
+        //file: {
+        //    required: true,
+        //},
         c1: {
             required: true,
         },
@@ -147,7 +147,7 @@ $('form[id="_Agency_Form"]').validate({
         },
     },
     messages: {
-        E_mail: {
+        Eposta: {
             email: "Enter a valid email",
         },
         Password: {
@@ -333,7 +333,7 @@ $("#_Search_Booking").on("click", function () {
 $("._Add_Return, .Roundtrip_Btn").on("click", function () {
     $("._Add_Return").closest("div").attr("class", "d-none _DeActive")
     $(".Return_Arrival").attr("class", "Return_Arrival")
-    $(`[name="return-controle"]`).prop("checked", true);
+    $(`[name="ReturnStatus"]`).prop("checked", true);
     $(`.Return_Arrival [type="datetime-local"]`).prop("min", $(`[name="FlightTime"]`).val())
 })
 
@@ -341,5 +341,5 @@ $("._Add_Return, .Roundtrip_Btn").on("click", function () {
 $(".One_Way").on("click", function () {
     $("._Add_Return").closest("div").attr("class", "")
     $(".Return_Arrival").attr("class", "d-none Return_Arrival")
-    $(`[name="return-controle"]`).prop("checked", false);
+    $(`[name="ReturnStatus"]`).prop("checked", false);
 })

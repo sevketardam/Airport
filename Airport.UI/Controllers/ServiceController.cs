@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 
 namespace Airport.UI.Controllers
 {
-    [Authorize]
-    public class ServiceController : BaseController
+    public class ServiceController : PanelAuthController
     {
         IServiceCategoriesDAL _serviceCategory;
         IServicePropertiesDAL _serviceProperties;

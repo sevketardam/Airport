@@ -13,7 +13,7 @@ using System.Security.Claims;
 
 namespace Airport.UI.Controllers
 {
-    public class CarsController : BaseController
+    public class CarsController : PanelAuthController
     {
         IServicesDAL _services;
         IServiceItemsDAL _serviceItems;
@@ -41,8 +41,8 @@ namespace Airport.UI.Controllers
         [HttpGet("panel/mycars")]
         public IActionResult Index()
         {
-
-            var myCars = _myCars.Select();
+            var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+            var myCars = _myCars.SelectByFunc(a=>a.UserId == userId);
             myCars.ForEach(a =>
             {
                 a.Brand = _carBrands.SelectByID(a.BrandId);
@@ -109,7 +109,13 @@ namespace Airport.UI.Controllers
                     SuitCase = myCar.SuitCase,
                     TrimId = myCar.Trim,
                     TypeId = myCar.Type,
-                    UserId = userId
+                    UserId = userId,
+                    Armored = myCar.Armored,
+                    Charger = myCar.Charger,
+                    Disabled = myCar.Disabled,
+                    Partition = myCar.Partition,
+                    Water = myCar.Water,    
+                    Wifi = myCar.Wifi,
                 });
 
                 return RedirectToAction("Index", "Cars");

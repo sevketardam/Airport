@@ -65,14 +65,14 @@
             <div class="_Profile_Left">
                 <div class="_Profile_Items_Flex">
                     <div class="_Step3_Item">
-                        <img src="@Model.SelectedData.LocationCars.Car.Type.CarImageURL">
+                        <img src="@Model.SelectedData.LocationCar.Car.Type.CarImageURL">
                         <h2>
-                            @Model.SelectedData.LocationCars.Car.Brand.CarBrandName
+                            @Model.SelectedData.LocationCar.Car.Brand.CarBrandName
                         </h2>
                         <div class="my-4">
                             <p>TRANSFER-INN-PERA VIP TRAVEL</p>
-                            <p>Min 1 Max @Model.SelectedData.PassangerCount Passengers</p>
-                            <p>Max @Model.SelectedData.LocationCars.Car.SuitCase Suitcase+ @Model.SelectedData.LocationCars.Car.SmallBags Small Bags</p>
+                            <p>Min 1 Max @Model.SelectedData.LocationCar.Car.MaxPassenger Passengers</p>
+                            <p>Max @Model.SelectedData.LocationCar.Car.SuitCase Suitcase+ @Model.SelectedData.LocationCar.Car.SmallBags Small Bags</p>
                         </div>
                         <div class="my-2">
                             <h4>Pick Up</h4>
@@ -84,11 +84,11 @@
                         </div>
                         <div class="my-2">
                             <h4>Passengers</h4>
-                            <h5>@Model.SelectedData.PassangerCount</h5>
+                            <h5>@Model.SelectedData.ReservationValues.PeopleCount</h5>
                         </div>
                         <div class="my-2">
                             <h4>Date</h4>
-                            <h5>@Model.SelectedData.ReservationDate</h5>
+                            <h5>@Model.SelectedData.ReservationValues.FlightTime</h5>
                         </div>
                         <div class="my-2">
                             <div class="_Total_Flex">
@@ -146,6 +146,19 @@
                                         the driver at this number.
                                     </span>
                                 </div>
+
+                                @for (int i = 0; i < Model.SelectedData.ReservationValues.PeopleCount; i++)
+                                {
+                                    <div class="_Form_Div">
+                                        <label class="_Form_Label">Others Name</label>
+                                        <input type="text" name="OthersName">
+                                    </div>
+                                    <div class="_Form_Div">
+                                        <label class="_Form_Label">Others Surname</label>
+                                        <input type="text" name="OthersSurname">
+                                    </div>
+                                }
+
                                 <div class="_Form_Div">
                                     <button>
                                         CREATE RESERVATİON
@@ -158,28 +171,5 @@
                 </div>
             </div>
         </div>
-@*
-        <div class="_Steps_Style">
-            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
-                <div class="_Steps_Flex">
-                    <div class="_Step_Text">Step 1</div>
-                    <div class="_Line"></div>
-                    <div class="_Step_Text">Step 2</div>
-                    <div class="_Line"></div>
-                    <div class="_Step_Text">Step 3</div>
-                </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                <div class="_Steps_Btns">
-                    <button class="_Steps_Btn">
-                        Prevıous
-                    </button>
-                    <button class="_Steps_Btn">
-                        NEXT
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-*@
+
 </section>

@@ -5,7 +5,7 @@
 
 <section class="_Module_Margin">
     <div class="container">
-        <form id="_Agency_Form">
+        <form id="_Agency_Form" asp-route="agenciesForm">
             <div class="_Agency_Flex _Form_Flex_Style">
                 <div class="_Form_Div _Form_Title">
                     <h3>
@@ -21,19 +21,19 @@
                 </div>
                 <div class="_Form_Div">
                     <label class="_Form_Label">E-mail</label>
-                    <input type="text" name="E_mail">
+                    <input type="text" name="eposta">
                 </div>
                 <div class="_Form_Div">
                     <label class="_Form_Label">Name Surname</label>
-                    <input type="text" name="Name_Surname">
+                    <input type="text" name="name">
                 </div>
                 <div class="_Form_Div _Pos_Phone">
                     <label class="_Form_Label">Phone Number</label>
-                    <input type="text" id="_Personel_Number" name="Phone_Number">
+                    <input type="text" id="_Personel_Number" name="PhoneNumber">
                 </div>
                 <div class="_Form_Div">
                     <label class="_Form_Label">Profession (Optional)</label>
-                    <input type="text">
+                    <input type="text" name="Profession">
                 </div>
                 <div class="_Form_Div">
                     <label class="_Form_Label">Password</label>
@@ -54,25 +54,25 @@
                 <!-- Yapı bozulması diye eklendi. Silinirse yapı bozulur -->
                 <div class="_Form_Div">
                     <label class="_Form_Label">Company Name</label>
-                    <input type="text" name="Company_Name">
+                    <input type="text" name="CompanyName">
                 </div>
                 <div class="_Form_Div">
                     <label class="_Form_Label">Adress</label>
-                    <input type="text" name="Adress">
+                    <input type="text" name="Address">
                 </div>
                 <div class="_Form_Div">
-                    <label class="_Form_Label">Company Website ( optional )</label>
-                    <input type="text">
+                    <label class="_Form_Label">Company Website (optional)</label>
+                    <input type="text" name="CompanyWebsite">
                 </div>
                 <div class="_Form_Div">
                     <div class="_Down_Flex">
                         <div>
                             <label class="_Form_Label">Linkedin (optional)</label>
-                            <input type="text">
+                            <input type="text" name="Linkedin">
                         </div>
                         <div>
                             <label class="_Form_Label">Facebook (optional)</label>
-                            <input type="text">
+                            <input type="text" name="Facebook">
                         </div>
                     </div>
                 </div>
@@ -81,19 +81,19 @@
                     <div class="_Down_Flex">
                         <div class="_Pos_Rel">
                             <label class="_Form_Label">Transfer Request (monthly basis)</label>
-                            <input type="text" name="Transfer_Request">
+                            <input type="text" name="TransferRequest">
                         </div>
                         <div class="_Pos_Rel">
                             <label class="_Form_Label">Transfer Requested Locations</label>
-                            <input type="text" name="Transfer_Requested_Locations">
+                            <input type="text" name="TransferRequestLocation">
                         </div>
                     </div>
                 </div>
                 <div class="_Form_Div _Pos_Phone">
                     <label class="_Form_Label">Company Phone Number</label>
-                    <input type="text" id="_Agency_Number" name="Company_Phone_Number">
+                    <input type="text" id="_Agency_Number" name="CompanyPhoneNumber">
                 </div>
-                <div class="_Form_Div">
+               @* <div class="_Form_Div">
                     <div class="_Down_Flex">
                         <div>
                             <p>Certificate</p>
@@ -114,11 +114,13 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>*@
+
                 <div class="_Form_Div _Last_Input">
                     <label class="_Form_Label">Tell us Phone Number</label>
-                    <input type="text" name="Tell_Phone_Number">
+                    <input type="text" name="TellUsPhoneNumber">
                 </div>
+
                 <div class="_Form_Div _Check_Main mt-4">
                     <div class="_Check_Div">
                         <input type="checkbox" name="c1"> <label for="">
@@ -152,7 +154,34 @@
 }
 @section pageJs{
 
+
+
     <script>
+
+        @if (ViewBag.Message == "success")
+        {
+            <text>
+                Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Successfully Created Your Agency Account',
+                })
+            </text>
+        }
+        else if(ViewBag.Message == "have")
+        {
+                        <text>
+                Swal.fire({
+                icon: 'warning',
+                title: 'Error',
+                text: 'This email is already registered',
+                })
+            </text>
+        }
+
+
+
+
         const phoneInputField = document.querySelector("#_Personel_Number");
         const phoneInput = window.intlTelInput(phoneInputField, {
             utilsScript:
@@ -166,17 +195,17 @@
 
 
 
-        var cleave = new Cleave('[name="Company_Phone_Number"]', {
+        var cleave = new Cleave('[name="CompanyPhoneNumber"]', {
             numericOnly: true,
             blocks: [15]
         });
 
-        var cleave = new Cleave('[name="Phone_Number"]', {
+        var cleave = new Cleave('[name="PhoneNumber"]', {
             numericOnly: true,
             blocks: [15]
         });
 
-        var cleave = new Cleave('[name="Tell_Phone_Number"]', {
+        var cleave = new Cleave('[name="TellUsPhoneNumber"]', {
             numericOnly: true,
             blocks: [15]
         });
