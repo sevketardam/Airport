@@ -21,5 +21,6 @@ namespace Airport.DBEntities.Entities
         public int UserId { get; set; }
 
         public UserDatas User { get; set; }
+        public List<MyCars> MyCars { get; set; }
     }
 }

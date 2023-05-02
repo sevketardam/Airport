@@ -130,6 +130,16 @@ namespace Airport.DBEntities.Context
                 .WithMany(a => a.Reservations)
                 .HasForeignKey(a => a.LocationCarId);
 
+            modelBuilder.Entity<ReservationPeople>()
+                .HasOne<Reservations>(a => a.Reservation)
+                .WithMany(a => a.ReservationPeoples)
+                .HasForeignKey(a => a.ReservationId);
+
+            modelBuilder.Entity<MyCars>()
+                .HasOne<Drivers>(a => a.Driver)
+                .WithMany(a => a.MyCars)
+                .HasForeignKey(a => a.DriverId);
+
             base.OnModelCreating(modelBuilder);
         }
 

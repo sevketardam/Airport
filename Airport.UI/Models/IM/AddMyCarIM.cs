@@ -18,5 +18,6 @@
         public bool Disabled { get; set; }
         public bool Armored { get; set; }
         public bool Partition { get; set; }
+        public int? DriverId { get; set; }
     }
 }

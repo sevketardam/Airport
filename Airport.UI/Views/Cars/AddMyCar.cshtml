@@ -76,6 +76,16 @@
                 }
             </select>
         </div>
+        <div class="col-sm-4 mb-3 _Pos_Rel">
+            <label>Select Driver</label>
+            <select class="form-control select2-multiple" name="DriverId" data-width="100%">
+                <option disabled selected>Select Driver</option>
+                @foreach (var item in Model.Drivers)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </div>
 
         <div class="col-md-2 _Pos_Rel">
             <div class="custom-control custom-checkbox mb-4">

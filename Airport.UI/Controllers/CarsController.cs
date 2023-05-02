@@ -1,12 +1,14 @@
 ﻿using Airport.DBEntities.Entities;
 using Airport.DBEntitiesDAL.Interfaces;
 using Airport.UI.Models.IM;
+using Airport.UI.Models.Interface;
 using Airport.UI.Models.VM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
@@ -24,7 +26,9 @@ namespace Airport.UI.Controllers
         ICarClassesDAL _carClasses;
         ICarTypesDAL _carTypes;
         IMyCarsDAL _myCars;
-        public CarsController(ICarBrandsDAL carBrands, IServicesDAL services, IServiceItemsDAL serviceItems, ICarModelsDAL carModels, ICarSeriesDAL carSeries, ICarTrimsDAL carTrims, ICarClassesDAL carClasses, ICarTypesDAL carTypes, IMyCarsDAL myCars)
+        IDriversDAL _drivers;
+        IGetCarDetail _carDetail;
+        public CarsController(ICarBrandsDAL carBrands, IServicesDAL services, IServiceItemsDAL serviceItems, ICarModelsDAL carModels, ICarSeriesDAL carSeries, ICarTrimsDAL carTrims, ICarClassesDAL carClasses, ICarTypesDAL carTypes, IMyCarsDAL myCars, IDriversDAL drivers, IGetCarDetail getCarDetail)
         {
             _carBrands = carBrands;
             _services = services;
@@ -35,6 +39,8 @@ namespace Airport.UI.Controllers
             _carClasses = carClasses;
             _carTypes = carTypes;
             _myCars = myCars;
+            _drivers = drivers;
+            _carDetail = getCarDetail;
         }
 
 
@@ -42,11 +48,12 @@ namespace Airport.UI.Controllers
         public IActionResult Index()
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-            var myCars = _myCars.SelectByFunc(a=>a.UserId == userId);
+            var myCars = _myCars.SelectByFunc(a => a.UserId == userId);
             myCars.ForEach(a =>
             {
                 a.Brand = _carBrands.SelectByID(a.BrandId);
             });
+
 
             return View(myCars);
         }
@@ -61,7 +68,10 @@ namespace Airport.UI.Controllers
 
             var myService = _services.SelectByFunc(a => a.UserId == userId);
 
+
+            addCarVM.Drivers = _drivers.SelectByFunc(a => a.UserId == userId);
             addCarVM.ServiceItems = myService;
+
             return View(addCarVM);
         }
 
@@ -114,8 +124,9 @@ namespace Airport.UI.Controllers
                     Charger = myCar.Charger,
                     Disabled = myCar.Disabled,
                     Partition = myCar.Partition,
-                    Water = myCar.Water,    
+                    Water = myCar.Water,
                     Wifi = myCar.Wifi,
+                    DriverId = myCar.DriverId
                 });
 
                 return RedirectToAction("Index", "Cars");
@@ -127,7 +138,7 @@ namespace Airport.UI.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateService(UpdateMyCarIM updateMyCar, int id)
+        public JsonResult UpdateMyCar(UpdateMyCarIM updateMyCar, int id)
         {
             try
             {
@@ -148,9 +159,10 @@ namespace Airport.UI.Controllers
                     myCar.Wifi = updateMyCar.Wifi;
                     myCar.Armored = updateMyCar.Armored;
                     myCar.Water = updateMyCar.Water;
-                    myCar.Charger= updateMyCar.Charger;
+                    myCar.Charger = updateMyCar.Charger;
                     myCar.Partition = updateMyCar.Partition;
                     myCar.Disabled = updateMyCar.Disabled;
+                    myCar.DriverId = updateMyCar.DriverId;
 
                     _myCars.Update(myCar);
                     return new JsonResult(new { result = 1 });
@@ -170,36 +182,41 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var myCar = _myCars.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
+                var myCar = _carDetail.CarDetail(id);
                 if (myCar != null)
                 {
+                    var getCarDetails = _carDetail.CarDetail(myCar.Id);
                     var updateBrand = new UpdateMyCarVM()
                     {
                         Id = myCar.Id,
                         Brands = _carBrands.Select(),
                         BrandId = myCar.BrandId,
-                        Models = _carModels.SelectByFunc(a => a.CarBrandId == myCar.BrandId),
+                        Models = _carModels.SelectByFunc(a => a.CarBrandId == myCar.BrandId).ToImmutableList(),
                         ModelId = myCar.ModelId,
-                        Series = _carSeries.SelectByFunc(a => a.CarModelId == myCar.ModelId),
+                        Series = _carSeries.SelectByFunc(a => a.CarModelId == myCar.ModelId).ToImmutableList(),
                         SeriesId = myCar.SeriesId,
-                        Trims = _carTrims.SelectByFunc(a => a.CarSeriesId == myCar.SeriesId),
+                        Trims = _carTrims.SelectByFunc(a => a.CarSeriesId == myCar.SeriesId).ToImmutableList(),
                         TrimId = myCar.TrimId,
-                        Types = _carTypes.Select(),
+                        Types = _carTypes.Select().ToImmutableList(),
                         TypeId = myCar.TypeId,
-                        Classes = _carClasses.Select(),
+                        Classes = _carClasses.Select().ToImmutableList(),
                         ClassId = myCar.ClassId,
                         MaxPassenger = myCar.MaxPassenger,
                         SmallBags = myCar.SmallBags,
                         SuitCase = myCar.SuitCase,
-                        Services = _services.SelectByFunc(a => a.UserId == userId),
+                        Services = _services.SelectByFunc(a => a.UserId == userId).ToImmutableList(),
                         ServiceId = myCar.ServiceId,
                         Armored = myCar.Armored,
                         Charger = myCar.Charger,
                         Disabled = myCar.Disabled,
                         Partition = myCar.Partition,
                         Water = myCar.Water,
-                        Wifi = myCar.Wifi
+                        Wifi = myCar.Wifi,
+                        DriverId = myCar.DriverId,
+                        Drivers = _drivers.SelectByFunc(a => a.UserId == userId).ToImmutableList()
                     };
+
+
 
                     return View(updateBrand);
                 }
@@ -210,6 +227,9 @@ namespace Airport.UI.Controllers
                 return BadRequest();
             }
         }
+
+
+
 
         [Authorize(Roles = "0")]
         [HttpGet("panel/car-management")]
@@ -250,7 +270,7 @@ namespace Airport.UI.Controllers
         //        });
 
         //        _carTrims.InsertRage(list2);
-                
+
         //        //_carBrands.InsertRage(list);
 
 

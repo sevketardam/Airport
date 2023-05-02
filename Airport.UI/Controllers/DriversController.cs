@@ -28,7 +28,7 @@ namespace Airport.UI.Controllers
 
         [HttpGet("panel/add-driver")]
         public IActionResult AddDriverPage()
-        {
+        {        
             return View();
         }
 

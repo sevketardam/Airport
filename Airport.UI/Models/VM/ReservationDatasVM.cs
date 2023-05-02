@@ -13,6 +13,8 @@ namespace Airport.UI.Models.VM
         public string PickLocationName { get; set; }
         public int KM { get; set; }
         public double LastPrice { get; set; }
+        public string Distance { get; set; }
+        public string Duration { get; set; }
         public GetResevationIM ReservationValues{ get; set; }
         public LocationCars LocationCar { get; set; }
     }

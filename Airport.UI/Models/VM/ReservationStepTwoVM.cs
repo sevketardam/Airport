@@ -9,5 +9,7 @@ namespace Airport.UI.Models.VM
         public string DropLocationLatLng { get; set; }
         public string DropLocationPlaceId { get; set; }
         public string PickLocationPlaceId { get; set; }
+        public string Distance { get; set; }
+        public string Duration { get; set; }
     }
 }
