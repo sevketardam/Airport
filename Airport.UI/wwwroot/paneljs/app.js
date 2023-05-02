@@ -238,10 +238,10 @@ $("#addServicePropertyForm").validate({
 $(".extrasItem").on("click", function () {
     if ($(this).find("input").prop("checked")) {
         $(this).find("input").prop("checked", false)
-        $(this).css("border", "1px solid rgb(0,0,0,.16)")
+        $(this).addClass("active")
     }
     else {
         $(this).find("input").prop("checked", true)
-        $(this).css("border", "4px solid orange")
+        $(this).removeClass("active")
     }
 })
