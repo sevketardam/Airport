@@ -145,7 +145,7 @@
             </select>
         </div>
 
-        <div class="col-sm-4 mb-3 _Pos_Rel">
+        <div class="col-sm-6 mb-3 _Pos_Rel">
             <label>Select Driver</label>
             <select class="form-control select2-multiple" name="DriverId" data-width="100%">
                 <option disabled selected>Select Driver</option>
@@ -154,6 +154,37 @@
                     <option value="@item.Id">@item.Name</option>
                 }
             </select>
+        </div>
+
+        <div class="col-md-6">
+            <div class="extrasArea">
+                <div class="extrasFlex">
+                    <div class="extrasItem @(Model.Water ? "active" : "")">
+                        <img src="/img/i1.png">
+                        <input type="checkbox" name="Water" value="true" @(Model.Water ? "checked" : "")>
+                    </div>
+                    <div class="extrasItem @(Model.Disabled ? "active" : "")">
+                        <img src="/img/i2.png">
+                        <input type="checkbox" name="Disabled" value="true" @(Model.Disabled ? "checked" : "")>
+                    </div> 
+                    <div class="extrasItem @(Model.Charger ? "active" : "")">
+                        <img src="/img/i3.png">
+                        <input type="checkbox" name="Charger" value="true" @(Model.Charger ? "checked" : "")>
+                    </div>
+                    <div class="extrasItem @(Model.Wifi ? "active" : "")">
+                        <img src="/img/i4.png">
+                        <input type="checkbox" name="Wifi" value="true" @(Model.Wifi ? "checked" : "")>
+                    </div>
+                    <div class="extrasItem @(Model.Armored ? "active" : "")">
+                        <img src="/img/i5.png">
+                        <input type="checkbox" name="Armored" value="true" @(Model.Armored ? "checked" : "")>
+                    </div>
+                    <div class="extrasItem @(Model.Partition ? "active" : "")">
+                        <img src="/img/i6.png">
+                        <input type="checkbox" name="Partition" value="true" @(Model.Partition ? "checked" : "")>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-2 _Pos_Rel">

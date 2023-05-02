@@ -76,7 +76,7 @@
                 }
             </select>
         </div>
-        <div class="col-sm-4 mb-3 _Pos_Rel">
+        <div class="col-sm-6 mb-3 _Pos_Rel">
             <label>Select Driver</label>
             <select class="form-control select2-multiple" name="DriverId" data-width="100%">
                 <option disabled selected>Select Driver</option>
@@ -86,62 +86,33 @@
                 }
             </select>
         </div>
-
-        <div class="col-md-2 _Pos_Rel">
-            <div class="custom-control custom-checkbox mb-4">
-                <input type="checkbox" class="custom-control-input" id="wifiCheckbox" name="Wifi" value="true">
-                <label class="custom-control-label" for="wifiCheckbox">
-                    Free Wifi
-                </label>
-            </div>
-        </div>
-
-        <div class="col-md-2 _Pos_Rel">
-            <div class="custom-control custom-checkbox mb-4">
-                <input type="checkbox" class="custom-control-input" id="waterCheckbox" name="Water" value="true">
-                <label class="custom-control-label" for="waterCheckbox">
-                    Water
-                </label>
-            </div>
-        </div>
-
-
-        <div class="col-md-2 _Pos_Rel">
-            <div class="custom-control custom-checkbox mb-4">
-                <input type="checkbox" class="custom-control-input" id="chargerChecbox" name="Charger" value="true">
-                <label class="custom-control-label" for="chargerChecbox">
-                    Charger
-                </label>
-            </div>
-        </div>
-
-        
-        <div class="col-md-2 _Pos_Rel">
-            <div class="custom-control custom-checkbox mb-4">
-                <input type="checkbox" class="custom-control-input" id="disabledCheckbox" name="Disabled" value="true">
-                <label class="custom-control-label" for="disabledCheckbox">
-                    Disabled
-                </label>
-            </div>
-        </div>
-
-        
-        <div class="col-md-2 _Pos_Rel">
-            <div class="custom-control custom-checkbox mb-4">
-                <input type="checkbox" class="custom-control-input" id="armoredCheckbox" name="Armored" value="true">
-                <label class="custom-control-label" for="armoredCheckbox">
-                    Armored
-                </label>
-            </div>
-        </div>
-
-
-        <div class="col-md-2 _Pos_Rel">
-            <div class="custom-control custom-checkbox mb-4">
-                <input type="checkbox" class="custom-control-input" id="partitionCheckbox" name="Partition" value="true">
-                <label class="custom-control-label" for="partitionCheckbox">
-                    Partition
-                </label>
+        <div class="col-md-6">
+            <div class="extrasArea">
+                <div class="extrasFlex">
+                    <div class="extrasItem ">
+                        <img src="/img/i1.png">
+                        <input type="checkbox" name="Water" value="true">
+                    </div>
+                    <div class="extrasItem ">
+                        <img src="/img/i2.png">
+                        <input type="checkbox" name="Disabled" value="true">
+                    </div> <div class="extrasItem ">
+                        <img src="/img/i3.png">
+                        <input type="checkbox" name="Charger" value="true">
+                    </div>
+                    <div class="extrasItem ">
+                        <img src="/img/i4.png">
+                        <input type="checkbox" name="Wifi" value="true">
+                    </div>
+                    <div class="extrasItem ">
+                        <img src="/img/i5.png">
+                        <input type="checkbox" name="Armored" value="true">
+                    </div>
+                    <div class="extrasItem ">
+                        <img src="/img/i6.png">
+                        <input type="checkbox" name="Partition" value="true">
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -152,6 +123,7 @@
                 </button>
             </div>
         </div>
+       
     </div>
 </form>
 
@@ -162,12 +134,12 @@
             $.ajax({
                 url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController.GetModels))',
                 type: "POST",
-                data: {id:value},
+                data: { id: value },
                 success: function (response) {
-                    if(response.result == 200){
+                    if (response.result == 200) {
                         $('#carModels').html("");
                         $('#carModels').append(`<option disabled selected>Select Model</option>`)
-                        $.each(response.models,function(key,value){
+                        $.each(response.models, function (key, value) {
                             $('#carModels').append(`<option value="${value.id}">${value.carModelName}</option>`)
                         })
                     }
@@ -235,26 +207,26 @@
             });
         })
 
-        //$('#addMyCarForm').on("submit", function (e) {
-        //    e.preventDefault();
-        //    var formData = $(this).serialize()
-        //    $.ajax({
-        //        url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController))',
-        //        type: "POST",
-        //        data: formData,
-        //        success: function (response) {
-        //            if (response.result == 1) {
-        //                Swal.fire({
-        //                    icon: 'success',
-        //                    title: 'Success',
-        //                    text: 'Successfully Added Car',
-        //                }).then(() => {
-        //                    location.href = "/panel/mycars";
-        //                })
-        //            }
-        //        }
-        //    });
-        //})
+                        //$('#addMyCarForm').on("submit", function (e) {
+                        //    e.preventDefault();
+                        //    var formData = $(this).serialize()
+                        //    $.ajax({
+                        //        url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController))',
+                        //        type: "POST",
+                        //        data: formData,
+                        //        success: function (response) {
+                        //            if (response.result == 1) {
+                        //                Swal.fire({
+                        //                    icon: 'success',
+                        //                    title: 'Success',
+                        //                    text: 'Successfully Added Car',
+                        //                }).then(() => {
+                        //                    location.href = "/panel/mycars";
+                        //                })
+                        //            }
+                        //        }
+                        //    });
+                        //})
 
     </script>
 }
