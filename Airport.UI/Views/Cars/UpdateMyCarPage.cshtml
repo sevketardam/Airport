@@ -145,6 +145,17 @@
             </select>
         </div>
 
+        <div class="col-sm-4 mb-3 _Pos_Rel">
+            <label>Select Driver</label>
+            <select class="form-control select2-multiple" name="DriverId" data-width="100%">
+                <option disabled selected>Select Driver</option>
+                @foreach (var item in Model.Drivers)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </div>
+
         <div class="col-md-2 _Pos_Rel">
             <div class="custom-control custom-checkbox mb-4">
                 <input type="checkbox" class="custom-control-input" id="wifiCheckbox" @(Model.Wifi ? "checked" : "") name="Wifi" value="true">
@@ -297,7 +308,7 @@
             e.preventDefault();
             var formData = $(this).serialize()
             $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController.UpdateService))',
+                url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController.UpdateMyCar))',
                 type: "POST",
                 data: formData + "&id=" + @Model.Id,
                 success: function (response) {

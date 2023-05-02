@@ -30,8 +30,10 @@ namespace Airport.DBEntities.Entities
         public bool Disabled { get; set; }
         public bool Armored { get; set; }
         public bool Partition { get; set; }
+        public int? DriverId { get; set; }
 
         public CarBrands Brand { get; set; }
+        public Drivers Driver { get; set; }
         public CarModels Model { get; set; }
         public CarSeries Series { get; set; }
         public CarTrims Trim { get; set; }

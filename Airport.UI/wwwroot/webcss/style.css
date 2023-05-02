@@ -1693,9 +1693,9 @@ label._Down_Label {
 ._Step_Map_Area {
     width: 100%;
     height: 25rem;
-    border: 1px solid black;
     border-radius: 20px;
     margin-top: 1rem;
+    box-shadow: 0 0 5px #00000073;
 }
 
 ._Step_Travel_Buttons {

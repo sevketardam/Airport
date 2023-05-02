@@ -4,7 +4,20 @@
 <section class="_Module_Margin">
     <div class="container">
         <div class="_Step_Flex">
+     
             <div class="_Step_Left">
+                <div class="_Step_Travel_Info_Style">
+                    <div class="_Step_Travel_Flex">
+                        <div>
+                            <h3>Distance: </h3>
+                            <p>@Model.Distance</p>
+                        </div>
+                        <div>
+                            <h3>Estimated Duration:</h3>
+                            <p>@Model.Duration</p>
+                        </div>
+                    </div>
+                </div>
                 <div class="_Step_Map_Area" id="map"></div>
             </div>
             <div class="_Step_Right">
@@ -23,7 +36,10 @@
                                                 @item.LocationCars.Car.Brand.CarBrandName
                                             </h3>
                                             <p>
-                                                <i class="fa-solid fa-user"></i> <span>@item.LocationCars.Car.SmallBags - @item.LocationCars.Car.SuitCase</span>
+                                                <i class="fa-solid fa-user"></i> <span>@item.LocationCars.Car.MaxPassenger</span>
+                                            </p>
+                                            <p class="mt-2">
+                                                <span title="Small Bag" style="margin-right: 1rem;"><i class="fa-solid fa-suitcase-rolling"></i> <span>@item.LocationCars.Car.SmallBags</span></span>  <span title="Suit Case"><i class="fa-solid fa-briefcase-blank"></i> <span>@item.LocationCars.Car.SuitCase</span></span>
                                             </p>
                                             <div class="_Car_Attrs_Flex">
                                                 @if (item.LocationCars.Car.Wifi)
@@ -114,7 +130,11 @@
 
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 15,
-                center: {@Model.PickLocationLatLng} // Başlangıç noktası için koordinatlar
+                center: {@Model.PickLocationLatLng}, // Başlangıç noktası için koordinatlar
+                mapTypeControl: false,
+            streetViewControl: false,
+                zoomControl: false,
+                    fullscreenControl: false
             });
 
             directionsRenderer.setMap(map);
@@ -135,6 +155,9 @@
             });
         }
 
+        window.onload = () => {
+            initMap();
+        }
 
     </script>
 }

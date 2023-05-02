@@ -27,6 +27,13 @@
                         <h4>Drop Off</h4>
                         <h5>@Model.DropFullName</h5>
                     </div>
+                    @if (Model.ReturnStatus)
+                    {
+                        <div class="my-2">
+                            <h4>Return Date</h4>
+                            <h5>@Model.ReturnDate</h5>
+                        </div>
+                    }
                     <div class="my-2">
                         <h4>Passengers</h4>
                         <h5>@Model.PeopleCount Adult</h5>
