@@ -78,19 +78,19 @@ namespace Airport.UI.Controllers
 
         public IActionResult GetModels(int id)
         {
-            var carModels = _carModels.SelectByFunc(a => a.CarBrandId == id);
+            var carModels = _carModels.SelectByFuncPer(a => a.CarBrandId == id);
             return Json(new { result = 200, models = carModels });
         }
 
         public IActionResult GetSeries(int id)
         {
-            var carSeries = _carSeries.SelectByFunc(a => a.CarModelId == id);
+            var carSeries = _carSeries.SelectByFuncPer(a => a.CarModelId == id);
             return Json(new { result = 200, series = carSeries });
         }
 
         public IActionResult GetTrims(int id)
         {
-            var carTrims = _carTrims.SelectByFunc(a => a.CarSeriesId == id);
+            var carTrims = _carTrims.SelectByFuncPer(a => a.CarSeriesId == id);
             return Json(new { result = 200, trims = carTrims });
         }
 

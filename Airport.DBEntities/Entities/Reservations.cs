@@ -27,8 +27,8 @@ namespace Airport.DBEntities.Entities
         public DateTime ReservationDate { get; set; }
         public bool ReturnStatus { get; set; }
         public DateTime ReturnDate { get; set; }
-        public string Distance { get; set; }
-        public string Duration { get; set; }
+        public string DistanceText { get; set; }
+        public string DurationText { get; set; }
 
 
         public LocationCars LocationCars { get; set; }

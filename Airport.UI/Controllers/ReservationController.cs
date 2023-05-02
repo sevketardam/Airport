@@ -329,8 +329,8 @@ namespace Airport.UI.Controllers
                     ReservationDate = createReservation.ReservationValues.FlightTime,
                     ReturnDate = createReservation.ReservationValues.ReturnDate,
                     ReturnStatus = createReservation.ReservationValues.ReturnStatus,
-                    Distance = createReservation.Distance,
-                    Duration = createReservation.Duration,
+                    DistanceText = createReservation.Distance,
+                    DurationText = createReservation.Duration,
                 });
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);

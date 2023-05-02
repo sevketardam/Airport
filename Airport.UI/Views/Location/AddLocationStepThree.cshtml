@@ -127,8 +127,8 @@
                 $.each($('.carCard[data-id="' + value.carId + '"] .carFareCard'), function (key2, value2) {
                     var startingfromVal = $(value2).find("#startingFrom").val()
                     var upToKmVal = $(value2).find("#upTo").val()
-                    var priceVal = $(value2).find("#fare").val()
-                    var priceType = $(value2).find("#priceType").val()
+                    var priceVal = $(value2).find("#fare").val().trim() == "" || $(value2).find("#fare").val() == null ? 0 : $(value2).find("#fare").val().trim()
+                    var priceType = $(value2).find("#priceType").val();
                     value.carsPricePerKm.push({
                         startKm: startingfromVal,
                         upToKm: upToKmVal,
