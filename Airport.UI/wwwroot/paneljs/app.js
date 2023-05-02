@@ -234,3 +234,14 @@ $("#addServicePropertyForm").validate({
         },
     },
 });
+
+$(".extrasItem").on("click", function () {
+    if ($(this).find("input").prop("checked")) {
+        $(this).find("input").prop("checked", false)
+        $(this).css("border", "1px solid rgb(0,0,0,.16)")
+    }
+    else {
+        $(this).find("input").prop("checked", true)
+        $(this).css("border", "4px solid orange")
+    }
+})
