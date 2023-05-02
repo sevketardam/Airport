@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Airport.DBEntitiesDAL.Interfaces
 {
-    public interface ICarTrimsDAL : ISelectableRepo<CarTrims>, IEInsertableRepo<CarTrims>, IUpdatetableRepo<CarTrims>, IDeletableRepo<CarTrims>, IDisposable
+    public interface ICarTrimsDAL : ISelectableRepo<CarTrims>, SelectableAsyncRepo<CarTrims>, IEInsertableRepo<CarTrims>, IUpdatetableRepo<CarTrims>, IDeletableRepo<CarTrims>, IDisposable
     {
     }
 }

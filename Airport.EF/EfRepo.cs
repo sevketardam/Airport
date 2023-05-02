@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,6 +77,11 @@ namespace Airport.EF
         public List<TEntity> SelectByFunc(Func<TEntity, bool> whereCondition)
         {
             return _context.Set<TEntity>().Where(whereCondition).ToList();
+        }
+
+        public ImmutableList<TEntity> SelectByFuncPer(Func<TEntity, bool> whereCondition)
+        {
+            return _context.Set<TEntity>().Where(whereCondition).ToImmutableList();
         }
 
         public TEntity SelectByID(object Id)

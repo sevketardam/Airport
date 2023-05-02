@@ -12,6 +12,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Airport.UI.Controllers
 {
@@ -177,7 +178,7 @@ namespace Airport.UI.Controllers
         }
 
         [HttpGet("panel/updatemycar/{id}")]
-        public IActionResult UpdateMyCarPage(int id)
+        public async Task<IActionResult> UpdateMyCarPage(int id)
         {
             try
             {
@@ -186,25 +187,36 @@ namespace Airport.UI.Controllers
                 if (myCar != null)
                 {
                     var getCarDetails = _carDetail.CarDetail(myCar.Id);
+
+                    var Brands = _carBrands.Select();
+                    var Models = _carModels.SelectByFuncPer(a => a.CarBrandId == myCar.BrandId);
+                    var Series = _carSeries.SelectByFuncPer(a => a.CarModelId == myCar.ModelId);
+                    var Trims = _carTrims.SelectByFuncPer(a => a.CarSeriesId == myCar.SeriesId);
+                    var Types = _carTypes.Select().ToImmutableList();
+                    var Classes = _carClasses.Select().ToImmutableList();
+                    var Services = _services.SelectByFuncPer(a => a.UserId == userId);
+                    var Drivers = _drivers.SelectByFuncPer(a => a.UserId == userId);
+
+
                     var updateBrand = new UpdateMyCarVM()
                     {
                         Id = myCar.Id,
-                        Brands = _carBrands.Select(),
+                        Brands = Brands,
                         BrandId = myCar.BrandId,
-                        Models = _carModels.SelectByFunc(a => a.CarBrandId == myCar.BrandId).ToImmutableList(),
+                        Models = Models,
                         ModelId = myCar.ModelId,
-                        Series = _carSeries.SelectByFunc(a => a.CarModelId == myCar.ModelId).ToImmutableList(),
+                        Series = Series,
                         SeriesId = myCar.SeriesId,
-                        Trims = _carTrims.SelectByFunc(a => a.CarSeriesId == myCar.SeriesId).ToImmutableList(),
+                        Trims = Trims,
                         TrimId = myCar.TrimId,
-                        Types = _carTypes.Select().ToImmutableList(),
+                        Types = Types,
                         TypeId = myCar.TypeId,
-                        Classes = _carClasses.Select().ToImmutableList(),
+                        Classes = Classes,
                         ClassId = myCar.ClassId,
                         MaxPassenger = myCar.MaxPassenger,
                         SmallBags = myCar.SmallBags,
                         SuitCase = myCar.SuitCase,
-                        Services = _services.SelectByFunc(a => a.UserId == userId).ToImmutableList(),
+                        Services = Services,
                         ServiceId = myCar.ServiceId,
                         Armored = myCar.Armored,
                         Charger = myCar.Charger,
@@ -213,7 +225,7 @@ namespace Airport.UI.Controllers
                         Water = myCar.Water,
                         Wifi = myCar.Wifi,
                         DriverId = myCar.DriverId,
-                        Drivers = _drivers.SelectByFunc(a => a.UserId == userId).ToImmutableList()
+                        Drivers = Drivers
                     };
 
 

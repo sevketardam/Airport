@@ -14,7 +14,7 @@ namespace Airport.DBEntities.Entities
         public int Id { get; set; }
         public string CarTrimName { get; set; }
         public int CarSeriesId { get; set; }
-        public int CarModelId { get; set; }
+        public int? CarModelId { get; set; }
 
         public CarSeries CarSeries { get; set; }
         public CarModels CarModels { get; set; }
