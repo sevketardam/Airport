@@ -51,7 +51,8 @@ namespace Airport.UI.Controllers
                     Phone = newDriver.Phone,
                     UserId = userId,
                     DateOfBirth = newDriver.DateOfBirth,
-                    PhotoFront = newDriver.Photo,
+                    PhotoFront = newDriver.PhotoFront,
+                    PhotoBack = newDriver.PhotoBack,
                     Surname = newDriver.Surname,
                     DriverId = newDriver.DriverId,
                     
@@ -102,6 +103,12 @@ namespace Airport.UI.Controllers
                     myDriver.Name = updatedValue.Name;
                     myDriver.Email = updatedValue.Email;
                     myDriver.Phone = updatedValue.Phone;
+                    myDriver.PhotoBack = updatedValue.PhotoBack;
+                    myDriver.PhotoFront = updatedValue.PhotoFront;
+                    myDriver.DriverId = updatedValue.DriverId;  
+                    myDriver.Surname = updatedValue.Surname;
+                    myDriver.DateOfBirth = updatedValue.DateOfBirth;
+
 
                     _drivers.Update(myDriver);
 

@@ -4,40 +4,46 @@
 }
 @model Drivers
 
+@section pageCSSLink{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.15/css/jquery.Jcrop.min.css" integrity="sha512-bbAsdySYlqC/kxg7Id5vEUVWy3nOfYKzVHCKDFgiT+GsHG/3MD7ywtJnJNSgw++HBc+w4j71MLiaeVm1XY5KDQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+}
+
 <form id="updateDriverForm">
     <div class="row">
 
-        <div class="col-md-6 mb-3 _Pos_Rel">
+        <div class="col-md-4 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Driver ID</label>
                 <input type="text" class="form-control" placeholder="Driver ID" value="@Model.DriverId" name="DriverId" required="">
             </div>
         </div>
-        <div class="col-md-6 mb-3 _Pos_Rel">
+        <div class="col-md-4 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Name</label>
                 <input type="text" class="form-control" placeholder="Name" name="Name" value="@Model.Name" required="">
             </div>
         </div>
-        <div class="col-md-6 mb-3 _Pos_Rel">
+        <div class="col-md-4 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Surname</label>
                 <input type="text" class="form-control" placeholder="Surname" value="@Model.Surname" name="Surname" required="">
             </div>
         </div>
-        <div class="col-md-6 mb-3 _Pos_Rel">
+        <div class="col-md-4 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Email</label>
                 <input type="text" class="form-control" placeholder="Email" value="@Model.Email" name="Email" required="">
             </div>
         </div>
 
-        <div class="col-md-6 mb-3 _Pos_Rel">
+        <div class="col-md-4 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Phone</label>
                 <input type="text" class="form-control" placeholder="Phone" value="@Model.Phone" name="Phone" required="">
             </div>
         </div>
+
 
         <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
@@ -46,8 +52,25 @@
             </div>
         </div>
 
-        <div class="col-md-4">
-            <input id="selectPhoto" type="file" />
+
+        <div class="col-md-6 mb_3 _Pos_Rel">
+            <label>Front Photo</label>
+            <div class="imageDivStyle">
+                <p>Drag</p>
+                <img id="frontPhoto" alt="" src="@(Model.PhotoFront != null ? Model.PhotoFront : "")" border="0" />
+                <input id="selectFrontPhoto" class="selectPhoto" type="file" />
+            </div>
+        </div>
+
+
+        <div class="col-md-6 mb_3 _Pos_Rel">
+            <label>Back Photo</label>
+            <div class="imageDivStyle">
+                <p>Drag</p>
+                <img id="backPhoto" alt="" src="@(Model.PhotoBack != null ? Model.PhotoBack : "")" border="0" />
+                <input id="selectBackPhoto" class="selectPhoto" type="file" />
+            </div>
+
         </div>
 
         <div class="col-md-12">
@@ -82,6 +105,37 @@
 
 
 
+<div class="modal fade" id="photoCropModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width:550px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Photo Crop</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="result">
+                    <img id="targetimg" class="targetimg" height="300" width="500" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" id="getBase64" class="btn btn-primary">Crop</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section pageJsScript{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.15/js/jquery.Jcrop.min.js" integrity="sha512-KKpgpD20ujD3yJ5gIJqfesYNuisuxguvTMcIrSnqGQP767QNHjEP+2s1WONIQ7j6zkdzGD4zgBHUwYmro5vMAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+}
+
+
 @section pageJs{
     <script>
         $('#updateDriverForm').on("submit", function (e) {
@@ -96,6 +150,7 @@
                     Surname: $(this).find("input[name='Surname']").val(),
                     DateOfBirth: $(this).find("input[name='DateOfBirth']").val(),
                     PhotoFront: photoFront,
+                    PhotoBack: photoBack,
                     Financial: $(this).find("input[name='Financial']").is(":checked"),
                     Booking: $(this).find("input[name='Booking']").is(":checked"),
                     DriverId: $(this).find("input[name='DriverId']").val(),
@@ -126,11 +181,12 @@
             $(this).val(null);
         })
 
+        var photoType = 0;
 
         var size;
         var selectedImg;
         var jcrop_api;
-        $('#selectPhoto').on('change', function () {
+        $('#selectFrontPhoto').on('change', function () {
             if (this.files && this.files[0]) {
                 if (this.files[0].type.match(/^image\//)) {
                     var reader = new FileReader();
@@ -154,7 +210,7 @@
                             jcrop_api = this;
                         })
                     };
-
+                    photoType = 0;
                     reader.readAsDataURL(this.files[0]);
 
                     $('#photoCropModal').modal();
@@ -166,7 +222,44 @@
             }
         });
 
-        var photoFront = @Model.PhotoFront;
+        $('#selectBackPhoto').on('change', function () {
+            if (this.files && this.files[0]) {
+                if (this.files[0].type.match(/^image\//)) {
+                    var reader = new FileReader();
+                    selectedImg = $(this)
+                    reader.onload = function (evt) {
+
+                        if (jcrop_api != undefined) {
+                            jcrop_api.destroy()
+                        }
+
+                        $('#targetimg').attr("src", evt.target.result);
+
+                        $('#targetimg').Jcrop({
+                            bgColor: 'white',
+                            bgOpacity: .6,
+                            setSelect: [0, 0, 50, 50],
+                            aspectRatio: 2,
+                            drawImage: false,
+                            allowSelect: false,
+                        }, function () {
+                            jcrop_api = this;
+                        })
+                    };
+                    photoType = 1;
+                    reader.readAsDataURL(this.files[0]);
+
+                    $('#photoCropModal').modal();
+
+                    const fileName = this.files[0].name;
+                    this.textContent = fileName;
+
+                }
+            }
+        });
+
+        var photoFront = "@Model.PhotoFront";
+        var photoBack = "@Model.PhotoBack";
 
         const canvas = document.createElement("canvas");
 
@@ -198,11 +291,17 @@
 
                 const croppedBase64String = canvas.toDataURL("image/png");
 
-                $('#driverphoto').attr("src", croppedBase64String)
+                if (photoType == 0) {
+                    $('#frontPhoto').attr("src", croppedBase64String)
+                    photoFront = croppedBase64String;
 
-                photoFront = croppedBase64String;
+                } else {
+                    $('#backPhoto').attr("src", croppedBase64String)
+                    photoBack = croppedBase64String;
+                }
 
-                $('#photoCropModal .close-modal').click()
+
+                $('#photoCropModal').modal('hide');
             };
         })
     </script>

@@ -12,7 +12,8 @@ namespace Airport.UI.Models.IM
         public bool Financial { get; set; }
         public string Surname { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public string Photo { get; set; }
+        public string PhotoFront { get; set; }
+        public string PhotoBack { get; set; }
         public string DriverId { get; set; }
     }
 }

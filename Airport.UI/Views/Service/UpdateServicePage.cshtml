@@ -155,8 +155,7 @@
             theme: "snow"
         });
 
-        const delta = description.clipboard.convert(@Model.Service.ServiceDescription)
-        description.setContents(delta, 'silent')
+        description.setContents(description.clipboard.convert("@Html.Raw(Model.Service.ServiceDescription)"));
 
         $('#serviceList').on("change", function () {
             var propId = $(this).val()
@@ -327,7 +326,7 @@
 
                 var formDataJSON = {
                     serviceName: $('#serviceName').val(),
-                    serviceDescription: description.root.innerHTML,
+                    serviceDescription: String(description.root.innerHTML),
                     priceData: datas,
                     id: @Model.Service.Id
                                 }

@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "_PanelLayout";
 }
+
 @section pageCSSLink{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.15/css/jquery.Jcrop.min.css" integrity="sha512-bbAsdySYlqC/kxg7Id5vEUVWy3nOfYKzVHCKDFgiT+GsHG/3MD7ywtJnJNSgw++HBc+w4j71MLiaeVm1XY5KDQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -24,7 +25,7 @@
                 <input type="text" class="form-control" placeholder="Driver ID" name="DriverId" required="">
             </div>
         </div>
-        <div class="col-md-6 mb-3 _Pos_Rel">
+        <div class="col-md-4 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Name</label>
                 <input type="text" class="form-control" placeholder="Name" name="Name" required="">
@@ -56,7 +57,7 @@
             </div>
         </div>
 
-        <div class="col-md-4 mb-3 _Pos_Rel">
+        <div class="col-md-12 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Date Of Birth</label>
                 <input type="date" class="form-control" name="DateOfBirth" required="">
@@ -64,22 +65,25 @@
         </div>
 
         <div class="col-md-6 mb_3 _Pos_Rel">
+            <label>Front Photo</label>
             <div class="imageDivStyle">
-                <p>Front Photo</p>
-                <img src="" />
-                <input id="selectPhoto" type="file" />
+                <p>Drag</p>
+                <img id="frontPhoto" alt="" border="0"/>
+                <input id="selectFrontPhoto" class="selectPhoto" type="file" />
             </div>
-            
         </div>
+
+
         <div class="col-md-6 mb_3 _Pos_Rel">
+            <label>Back Photo</label>
             <div class="imageDivStyle">
-                <p>Back Photo</p>
-                <img src="" />
-                <input id="selectPhoto" type="file" />
+                <p>Drag</p>
+                <img id="backPhoto" alt="" border="0" />
+                <input id="selectBackPhoto" class="selectPhoto" type="file" />
             </div>
-            
+
         </div>
-         
+
         <div class="col-md-12 _Pos_Rel">
             <div class="custom-control custom-checkbox mb-2">
                 <input type="checkbox" class="custom-control-input" id="bookingCheckbox" name="Booking" value="true">
@@ -110,7 +114,6 @@
 </form>
 
 
-<img id="driverphoto" />
 
 <div class="modal fade" id="photoCropModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document" style="max-width:550px;">
@@ -191,11 +194,12 @@
             $(this).val(null);
         })
 
+        var photoType = 0;
 
         var size;
         var selectedImg;
         var jcrop_api;
-        $('#selectPhoto').on('change', function () {
+        $('#selectFrontPhoto').on('change', function () {
             if (this.files && this.files[0]) {
                 if (this.files[0].type.match(/^image\//)) {
                     var reader = new FileReader();
@@ -219,7 +223,43 @@
                             jcrop_api = this;
                         })
                     };
+                    photoType = 0;
+                    reader.readAsDataURL(this.files[0]);
 
+                    $('#photoCropModal').modal();
+
+                    const fileName = this.files[0].name;
+                    this.textContent = fileName;
+
+                }
+            }
+        });
+
+        $('#selectBackPhoto').on('change', function () {
+            if (this.files && this.files[0]) {
+                if (this.files[0].type.match(/^image\//)) {
+                    var reader = new FileReader();
+                    selectedImg = $(this)
+                    reader.onload = function (evt) {
+
+                        if (jcrop_api != undefined) {
+                            jcrop_api.destroy()
+                        }
+
+                        $('#targetimg').attr("src", evt.target.result);
+
+                        $('#targetimg').Jcrop({
+                            bgColor: 'white',
+                            bgOpacity: .6,
+                            setSelect: [0, 0, 50, 50],
+                            aspectRatio: 2,
+                            drawImage: false,
+                            allowSelect: false,
+                        }, function () {
+                            jcrop_api = this;
+                        })
+                    };
+                    photoType = 1;
                     reader.readAsDataURL(this.files[0]);
 
                     $('#photoCropModal').modal();
@@ -264,11 +304,17 @@
 
                 const croppedBase64String = canvas.toDataURL("image/png");
 
-                $('#driverphoto').attr("src", croppedBase64String)
+                if (photoType == 0) {
+                    $('#frontPhoto').attr("src", croppedBase64String)
+                    photoFront = croppedBase64String;
 
-                photoFront = croppedBase64String;
+                } else {
+                    $('#backPhoto').attr("src", croppedBase64String)
+                    photoBack = croppedBase64String;
+                }
 
-                $('#photoCropModal .close-modal').click()
+
+                $('#photoCropModal').modal('hide');
             };
         })
 
