@@ -25,6 +25,10 @@ namespace Airport.UI.Controllers
 {
     public class ReservationController : Controller
     {
+
+       
+
+
         ILocationsDAL _location;
         ILocationCarsDAL _locationCar;
         ILocationCarsFareDAL _locationCarsFare;
@@ -557,6 +561,21 @@ namespace Airport.UI.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+        }
+
+        public IActionResult ManualReservationStepOne()
+        {
+            return View();
+        }
+
+        public IActionResult ManualReservationStepTwo()
+        {
+            return View();
+        }
+
+        public IActionResult ManualReservationStepThree()
+        {
+            return View();
         }
 
 
