@@ -1,29 +1,53 @@
-﻿@{
+﻿@using System.Globalization;
+@{
     Layout = "_PanelLayout";
 }
 @model Drivers
 
 <form id="updateDriverForm">
     <div class="row">
+
+        <div class="col-md-6 mb-3 _Pos_Rel">
+            <div class="form-group position-relative error-l-50">
+                <label>Driver ID</label>
+                <input type="text" class="form-control" placeholder="Driver ID" value="@Model.DriverId" name="DriverId" required="">
+            </div>
+        </div>
         <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Name</label>
                 <input type="text" class="form-control" placeholder="Name" name="Name" value="@Model.Name" required="">
             </div>
         </div>
-
+        <div class="col-md-6 mb-3 _Pos_Rel">
+            <div class="form-group position-relative error-l-50">
+                <label>Surname</label>
+                <input type="text" class="form-control" placeholder="Surname" value="@Model.Surname" name="Surname" required="">
+            </div>
+        </div>
         <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Email</label>
-                <input type="text" class="form-control" placeholder="Email" name="Email" value="@Model.Email" required="">
+                <input type="text" class="form-control" placeholder="Email" value="@Model.Email" name="Email" required="">
             </div>
         </div>
 
         <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Phone</label>
-                <input type="text" class="form-control" placeholder="Phone" name="Phone" value="@Model.Phone" required="">
+                <input type="text" class="form-control" placeholder="Phone" value="@Model.Phone" name="Phone" required="">
             </div>
+        </div>
+
+        <div class="col-md-6 mb-3 _Pos_Rel">
+            <div class="form-group position-relative error-l-50">
+                <label>Date Of Birth</label>
+                <input type="date" class="form-control" name="DateOfBirth" value="@(Model.DateOfBirth.ToString("yyyy-MM-dd"))" required="">
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <input id="selectPhoto" type="file" />
         </div>
 
         <div class="col-md-12">
@@ -44,6 +68,8 @@
             </div>
         </div>
 
+     
+
         <div class="col-md-12">
             <div class="text-right">
                 <button class="btn btn-secondary" type="submit">
@@ -60,12 +86,25 @@
     <script>
         $('#updateDriverForm').on("submit", function (e) {
             e.preventDefault();
-            if ($("#updateDriverForm").valid()) {
-                var formData = $(this).serialize()
+            if ($(this).valid()) {
+                var formData = {
+                    Id:@Model.Id,
+                    Name: $(this).find("input[name='Name']").val(),
+                    Email: $(this).find("input[name='Email']").val(),
+                    Password: $(this).find("input[name='Password']").val(),
+                    Phone: $(this).find("input[name='Phone']").val(),
+                    Surname: $(this).find("input[name='Surname']").val(),
+                    DateOfBirth: $(this).find("input[name='DateOfBirth']").val(),
+                    PhotoFront: photoFront,
+                    Financial: $(this).find("input[name='Financial']").is(":checked"),
+                    Booking: $(this).find("input[name='Booking']").is(":checked"),
+                    DriverId: $(this).find("input[name='DriverId']").val(),
+                };
+
                 $.ajax({
                     url: '@Url.Action(nameof(Airport.UI.Controllers.DriversController.UpdateDriver))',
                     type: "POST",
-                    data: formData + "&id=" + @Model.Id,
+                    data: formData,
                     success: function (response) {
                         if (response.result == 1) {
                             Swal.fire({
@@ -79,6 +118,92 @@
                     }
                 });
             }
+        })
+
+        var jscrop_api;
+
+        $('#selectPhoto').on('click', function () {
+            $(this).val(null);
+        })
+
+
+        var size;
+        var selectedImg;
+        var jcrop_api;
+        $('#selectPhoto').on('change', function () {
+            if (this.files && this.files[0]) {
+                if (this.files[0].type.match(/^image\//)) {
+                    var reader = new FileReader();
+                    selectedImg = $(this)
+                    reader.onload = function (evt) {
+
+                        if (jcrop_api != undefined) {
+                            jcrop_api.destroy()
+                        }
+
+                        $('#targetimg').attr("src", evt.target.result);
+
+                        $('#targetimg').Jcrop({
+                            bgColor: 'white',
+                            bgOpacity: .6,
+                            setSelect: [0, 0, 50, 50],
+                            aspectRatio: 2,
+                            drawImage: false,
+                            allowSelect: false,
+                        }, function () {
+                            jcrop_api = this;
+                        })
+                    };
+
+                    reader.readAsDataURL(this.files[0]);
+
+                    $('#photoCropModal').modal();
+
+                    const fileName = this.files[0].name;
+                    this.textContent = fileName;
+
+                }
+            }
+        });
+
+        var photoFront = @Model.PhotoFront;
+
+        const canvas = document.createElement("canvas");
+
+        const context = canvas.getContext("2d");
+
+        $('#getBase64').on("click", function () {
+            const base64String = $("#targetimg").attr('src');
+
+            const img = new Image();
+            img.src = base64String;
+            var imgSizeWidth = img.width / 500;
+            var imgSizeHeight = img.height / 300;
+
+            img.style.objectFit = "contain";
+            const canvas = document.createElement("canvas");
+            canvas.width = 500;
+            canvas.height = 300;
+
+            const context = canvas.getContext("2d");
+
+            img.onload = function () {
+                const croppedWidth = jcrop_api.tellSelect().w * imgSizeWidth;
+                const croppedHeight = jcrop_api.tellSelect().h * imgSizeHeight;
+
+                const croppedX = jcrop_api.tellSelect().x * imgSizeWidth;
+                const croppedY = jcrop_api.tellSelect().y * imgSizeHeight;
+
+                context.drawImage(img, croppedX, croppedY, croppedWidth, croppedHeight, 0, 0, 500, 300);
+
+                const croppedBase64String = canvas.toDataURL("image/png");
+
+                $('#driverphoto').attr("src", croppedBase64String)
+
+                photoFront = croppedBase64String;
+
+                $('#photoCropModal .close-modal').click()
+            };
         })
     </script>
 }

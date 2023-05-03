@@ -112,6 +112,7 @@
     flex-wrap: wrap;
     gap: 1rem;
     cursor: pointer;
+    justify-content: space-between;
 }
 
 .extrasItem {

@@ -17,7 +17,13 @@
 
 <form id="addDriverForm">
     <div class="row">
-
+        
+        <div class="col-md-6 mb-3 _Pos_Rel">
+            <div class="form-group position-relative error-l-50">
+                <label>Driver ID</label>
+                <input type="text" class="form-control" placeholder="Driver ID" name="DriverId" required="">
+            </div>
+        </div>
         <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Name</label>
@@ -137,32 +143,30 @@
                     Phone: $(this).find("input[name='Phone']").val(),
                     Surname: $(this).find("input[name='Surname']").val(),
                     DateOfBirth: $(this).find("input[name='DateOfBirth']").val(),
-                    Photo: photo,
+                    PhotoFront: photoFront,
+                    PhotoBack: photoBack,
                     Financial: $(this).find("input[name='Financial']").is(":checked"),
                     Booking: $(this).find("input[name='Booking']").is(":checked"),
-                    PrivateNumber: $(this).find("input[name='PrivateNumber']").val(),
+                    DriverId: $(this).find("input[name='DriverId']").val(),
 
                 };
 
-                console.log(formData)
-
-
-                //$.ajax({
-                //    url: '@Url.Action(nameof(Airport.UI.Controllers.DriversController.AddDriver))',
-                //    type: "POST",
-                //    data: formData,
-                //    success: function (response) {
-                //        if (response.result == 1) {
-                //            Swal.fire({
-                //                icon: 'success',
-                //                title: 'Success',
-                //                text: 'Successfully Add Driver',
-                //            }).then(() => {
-                //                location.href = "/panel/my-drivers";
-                //            })
-                //        }
-                //    }
-                //});
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.DriversController.AddDriver))',
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully Add Driver',
+                            }).then(() => {
+                                location.href = "/panel/my-drivers";
+                            })
+                        }
+                    }
+                });
             }
 
         })
@@ -214,7 +218,8 @@
             }
         });
 
-        var photo = null;
+        var photoFront = null;
+        var photoBack = null;
 
         const canvas = document.createElement("canvas");
 
@@ -248,7 +253,7 @@
 
                 $('#driverphoto').attr("src", croppedBase64String)
 
-                photo = croppedBase64String;
+                photoFront = croppedBase64String;
 
                 $('#photoCropModal .close-modal').click()
             };

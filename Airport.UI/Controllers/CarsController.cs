@@ -68,7 +68,6 @@ namespace Airport.UI.Controllers
 
 
             addCarVM.ServiceItems = myService;
-
             return View(addCarVM);
         }
 
@@ -108,7 +107,7 @@ namespace Airport.UI.Controllers
                     Partition = myCar.Partition,
                     Water = myCar.Water,
                     Wifi = myCar.Wifi,
-                    DriverId = myCar.Driver
+                    DriverId = myCar.Driver,                  
                 });
 
                 return RedirectToAction("Index", "Cars");

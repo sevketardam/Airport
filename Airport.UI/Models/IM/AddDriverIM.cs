@@ -1,4 +1,6 @@
-﻿namespace Airport.UI.Models.IM
+﻿using System;
+
+namespace Airport.UI.Models.IM
 {
     public class AddDriverIM
     {
@@ -8,5 +10,9 @@
         public string Phone { get; set; }
         public bool Booking { get; set; }
         public bool Financial { get; set; }
+        public string Surname { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string Photo { get; set; }
+        public string DriverId { get; set; }
     }
 }

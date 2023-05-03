@@ -59,16 +59,6 @@
                 <input type="number" class="form-control" value="0" name="SmallBags" required="">
             </div>
         </div>
-        @*        <div class="col-sm-4 mb-3 _Pos_Rel">
-        <label>Service List</label>
-        <select class="form-control select2-multiple" name="Service" data-width="100%">
-        <option disabled selected>Select Service List</option>
-        @foreach (var item in Model.ServiceItems)
-        {
-        <option value="@item.Id">@item.ServiceName</option>
-        }
-        </select>
-        </div>*@
         <div class="col-sm-4 mb-3 _Pos_Rel">
             <label>Select Driver</label>
             <select class="form-control select2-multiple" name="Driver" data-width="100%">
@@ -80,10 +70,20 @@
             </select>
         </div>
 
-        <div class="col-md-6">
+
+        <div class="col-sm-4 mb-3 _Pos_Rel">
+            <label>Service List</label>
+            <select class="form-control select2-multiple" name="Service" data-width="100%">
+                <option disabled selected>Select Service List</option>
+                @foreach (var item in Model.ServiceItems)
+                {
+                    <option value="@item.Id">@item.ServiceName</option>
+                }
+            </select>
         </div>
 
-        <div class="col-md-6">
+
+        <div class="col-md-8">
             <div class="extrasArea">
                 <div class="extrasFlex">
                     <div class="extrasItem ">

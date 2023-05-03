@@ -21,7 +21,9 @@ namespace Airport.DBEntities.Entities
         public int UserId { get; set; }
         public string Surname { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public string? Photo { get; set; }
+        public string? PhotoFront { get; set; }
+        public string? PhotoBack { get; set; }
+        public string? DriverId { get; set; }
 
         public UserDatas User { get; set; }
         public List<MyCars> MyCars { get; set; }

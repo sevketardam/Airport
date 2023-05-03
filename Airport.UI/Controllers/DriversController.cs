@@ -49,7 +49,12 @@ namespace Airport.UI.Controllers
                     Name = newDriver.Name,
                     Password = GetMD5(newDriver.Password),
                     Phone = newDriver.Phone,
-                    UserId = userId
+                    UserId = userId,
+                    DateOfBirth = newDriver.DateOfBirth,
+                    PhotoFront = newDriver.Photo,
+                    Surname = newDriver.Surname,
+                    DriverId = newDriver.DriverId,
+                    
                 };
 
                 _drivers.Insert(driver);

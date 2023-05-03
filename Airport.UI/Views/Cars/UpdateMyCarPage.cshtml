@@ -96,23 +96,6 @@
                 <input type="number" min="0" class="form-control" value="@Model.SmallBags" name="SmallBags" required="">
             </div>
         </div>
-@*        <div class="col-sm-4 mb-3">
-            <label>Service List</label>
-            <select class="form-control select2-multiple" name="Service" data-width="100%">
-                <option disabled selected>Select Service List</option>
-                @foreach (var item in Model.Services)
-                {
-                    if (item.Id == Model.ServiceId)
-                    {
-                        <option value="@item.Id" selected>@item.ServiceName</option>
-                    }
-                    else
-                    {
-                        <option value="@item.Id">@item.ServiceName</option>
-                    }            
-                }
-            </select>
-        </div>*@
 
         <div class="col-sm-4 mb-3 _Pos_Rel">
             <label>Select Driver</label>
@@ -132,8 +115,25 @@
             </select>
         </div>
 
-        <div class="col-md-6"></div>
-        <div class="col-md-6">
+        <div class="col-sm-4 mb-3">
+            <label>Service List</label>
+            <select class="form-control select2-multiple" name="Service" data-width="100%">
+                <option disabled selected>Select Service List</option>
+                @foreach (var item in Model.Services)
+                {
+                    if (item.Id == Model.ServiceId)
+                    {
+                        <option value="@item.Id" selected>@item.ServiceName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.ServiceName</option>
+                    }            
+                }
+            </select>
+        </div>
+
+        <div class="col-md-8">
             <div class="extrasArea">
                 <div class="extrasFlex">
                     <div class="extrasItem @(Model.Water ? "active" : "")">
