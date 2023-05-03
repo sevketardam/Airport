@@ -148,6 +148,7 @@
     <script>
 
 
+
         $('#addDriverForm').on("submit", function (e) {
             e.preventDefault();
 
@@ -190,7 +191,11 @@
 
         var jscrop_api;
 
-        $('#selectPhoto').on('click', function () {
+        $('#selectFrontPhoto').on('click', function () {
+            $(this).val(null);
+        })
+
+        $('#selectBackPhoto').on('click', function () {
             $(this).val(null);
         })
 
