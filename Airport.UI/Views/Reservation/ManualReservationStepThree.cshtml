@@ -47,6 +47,9 @@
 
             ._Total_Flex p {
                 font-size: 2rem;
+                border: 1px solid rgb(0,0,0,.5);
+                border-radius: 5px;
+                padding: 0 1rem;
             }
 
         #_Passenger_Form span {
@@ -103,7 +106,7 @@
                                     Total
                                 </h3>
                                 <p>
-                                    €@Model.SelectedData.LastPrice
+                                    <span>€</span> <span contenteditable="true">@Model.SelectedData.LastPrice</span>
                                 </p>
                             </div>
                             <p>
