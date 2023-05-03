@@ -4496,9 +4496,6 @@ $.dore = function (element, options) {
       $.validator.setDefaults({
         ignore: [],
         errorElement: "div",
-        submitHandler: function () {
-          alert("submitted!");
-        },
         errorPlacement: function (error, element) {
           if (element.attr("class").indexOf("custom-control") != -1) {
             error.insertAfter(element.parent());

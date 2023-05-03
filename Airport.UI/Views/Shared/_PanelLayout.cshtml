@@ -35,10 +35,11 @@
     <link rel="stylesheet" href="~/css/vendor/bootstrap-tagsinput.css" />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css">
 
-
+    @RenderSection("pageCSSLink", required: false)
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/panelcss/style.css" asp-append-version="true" />
+
 
     @RenderSection("pageCSS", required: false)
 
@@ -69,7 +70,7 @@
                     </li>
 
                     <li>
-                        <a href="/panel/mycars">
+                        <a href="/panel/my-cars">
                             <i class="iconsminds-car"></i> My Cars
                         </a>
                     </li>
@@ -584,6 +585,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"
             integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @RenderSection("pageJsScript", required: false)
+
     <script src="~/paneljs/app.js" asp-append-version="true"></script>
     
     

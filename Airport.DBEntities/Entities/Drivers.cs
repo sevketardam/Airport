@@ -19,6 +19,9 @@ namespace Airport.DBEntities.Entities
         public bool Booking { get; set; }
         public bool Financial { get; set; }
         public int UserId { get; set; }
+        public string Surname { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string? Photo { get; set; }
 
         public UserDatas User { get; set; }
         public List<MyCars> MyCars { get; set; }

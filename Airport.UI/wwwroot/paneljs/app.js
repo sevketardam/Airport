@@ -115,10 +115,6 @@ $("#addDriverForm").validate({
             required: "This Field is Required",
         },
     },
-
-    submitHandler: function (form) {
-        form.submit();
-    },
 });
 
 // Sürücü Güncelleme Form Validasyonu

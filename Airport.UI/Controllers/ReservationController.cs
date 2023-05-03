@@ -1,5 +1,6 @@
 ﻿using Airport.DBEntities.Entities;
 using Airport.DBEntitiesDAL.Interfaces;
+using Airport.MessageExtensions.Interfaces;
 using Airport.UI.Models.Extendions;
 using Airport.UI.Models.IM;
 using Airport.UI.Models.Interface;
@@ -10,14 +11,11 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection.Metadata;
-using System.Runtime.ConstrainedExecution;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using static System.Net.WebRequestMethods;
+using Airport.MessageExtension.VM;
 
 namespace Airport.UI.Controllers
 {
@@ -31,8 +29,9 @@ namespace Airport.UI.Controllers
         IReservationsDAL _reservations;
         IGetCarDetail _getCar;
         IReservationPeopleDAL _reservationsPeople;
+        IMail _mail;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople,IMail mail)
         {
             _location = location;
             _locationCar = locationCar;
@@ -42,6 +41,8 @@ namespace Airport.UI.Controllers
             _reservations = reservations;
             _getCar = getCar;
             _reservationsPeople = reservationsPeople;
+            _mail = mail;
+            
         }
 
         [HttpPost("reservation", Name = "getLocationValue")]
@@ -348,6 +349,16 @@ namespace Airport.UI.Controllers
                 });
 
                 _reservationsPeople.InsertRage(reservationPeople);
+
+                _mail.SendReservationMail(new ReservationMailVM
+                {
+                    Name = reservation.Name,
+                    Phone = reservation.Phone,
+                    ReservationCode = kod,
+                    Surname = reservation.Surname,
+                    Email = reservation.Email,
+                    Price = createReservation.LastPrice.ToString()
+                });
 
                 HttpContext.Session.Remove("reservationData");
 

@@ -1,5 +1,6 @@
 ﻿using Airport.DBEntities.Entities;
 using Airport.DBEntitiesDAL.Interfaces;
+using Airport.MessageExtensions.Interfaces;
 using Airport.UI.Models;
 using Airport.UI.Models.IM;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +18,7 @@ namespace Airport.UI.Controllers
     public class HomeController : Controller
     {
         IUserDatasDAL _userdata;
-        public HomeController(IUserDatasDAL userdata)
+        public HomeController(IUserDatasDAL userdata,IMail mail)
         {
             _userdata = userdata;
         }

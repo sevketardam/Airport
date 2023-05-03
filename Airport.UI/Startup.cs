@@ -1,20 +1,17 @@
-using Airport.DBEntities.Entities;
 using Airport.DBEntitiesDAL.Concrete;
 using Airport.DBEntitiesDAL.Interfaces;
+using Airport.MessageExtensions.Interfaces;
+using Airport.MessageExtensions.Repos;
 using Airport.UI.Models.Interface;
 using Airport.UI.Models.VM;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 
 namespace Airport.UI
 {
@@ -46,9 +43,7 @@ namespace Airport.UI
             services.AddScoped<ICarBrandsDAL, CarBrandsDAL>();
             services.AddScoped<ICarModelsDAL, CarModelDAL>();
             services.AddScoped<ICarSeriesDAL, CarSeriesDAL>();
-            services.AddScoped<ICarTrimsDAL, CarTrimsDAL>();
             services.AddScoped<ICarTypesDAL, CarTypesDAL>();
-            services.AddScoped<ICarClassesDAL, CarClassesDAL>();
             services.AddScoped<IMyCarsDAL, MyCarsDAL>();
             services.AddScoped<IDriversDAL, DriversDAL>();
             services.AddScoped<ILocationsDAL, LocationsDAL>();
@@ -57,6 +52,7 @@ namespace Airport.UI
             services.AddScoped<ILocationCarsFareDAL, LocationCarsFareDAL>();
             services.AddScoped<IReservationsDAL, ReservationsDAL>();
             services.AddScoped<IReservationPeopleDAL, ReservationPeopleDAL>();
+            services.AddScoped<IMail, MailRepo>();
 
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>

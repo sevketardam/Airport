@@ -15,8 +15,6 @@ namespace Airport.DBEntities.Entities
         public int BrandId { get; set; }
         public int ModelId { get; set; }
         public int SeriesId { get; set; }
-        public int TrimId { get; set; }
-        public int? ClassId { get; set; }
         public int? TypeId { get; set; }
         public int MaxPassenger { get; set; }
         public int SuitCase { get; set; }
@@ -36,8 +34,6 @@ namespace Airport.DBEntities.Entities
         public Drivers Driver { get; set; }
         public CarModels Model { get; set; }
         public CarSeries Series { get; set; }
-        public CarTrims Trim { get; set; }
-        public CarClasses Class { get; set; }
         public CarTypes Type { get; set; }
         public Services Service { get; set; }
         public UserDatas User { get; set; }

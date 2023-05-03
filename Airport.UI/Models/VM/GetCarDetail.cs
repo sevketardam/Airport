@@ -9,20 +9,16 @@ namespace Airport.UI.Models.VM
     {
         IMyCarsDAL _myCars;
         ICarBrandsDAL _myBrands;
-        ICarClassesDAL _myClasses;
         ICarModelsDAL _myModels;
         ICarSeriesDAL _mySeries;
-        ICarTrimsDAL _myTrims;
         ICarTypesDAL _myTypes;
 
-        public GetCarDetail(IMyCarsDAL myCars, ICarBrandsDAL myBrands, ICarClassesDAL carClasses, ICarModelsDAL carModels, ICarSeriesDAL carSeries, ICarTrimsDAL carTrims, ICarTypesDAL carTypes)
+        public GetCarDetail(IMyCarsDAL myCars, ICarBrandsDAL myBrands,  ICarModelsDAL carModels, ICarSeriesDAL carSeries, ICarTypesDAL carTypes)
         {
             _myCars = myCars;
             _myBrands = myBrands;
-            _myClasses = carClasses;
             _myModels = carModels;
             _mySeries = carSeries;
-            _myTrims = carTrims;
             _myTypes = carTypes;
         }
 
@@ -45,10 +41,7 @@ namespace Airport.UI.Models.VM
                 car.Brand = _myBrands.SelectByID(car.BrandId);
                 car.Model = _myModels.SelectByID(car.ModelId);
                 car.Series = _mySeries.SelectByID(car.SeriesId);
-                car.Trim = _myTrims.SelectByID(car.TrimId);
-                car.Class = _myClasses.SelectByID(car.ClassId);
                 car.Type = _myTypes.SelectByID(car.TypeId);
-
             });
 
 
@@ -64,10 +57,7 @@ namespace Airport.UI.Models.VM
                 MyCar.Brand = _myBrands.SelectByID(MyCar.BrandId);
                 MyCar.Model = _myModels.SelectByID(MyCar.ModelId);
                 MyCar.Series = _mySeries.SelectByID(MyCar.SeriesId);
-                MyCar.Trim = _myTrims.SelectByID(MyCar.TrimId);
-                MyCar.Class = _myClasses.SelectByID(MyCar.ClassId);
                 MyCar.Type = _myTypes.SelectByID(MyCar.TypeId);
-
 
                 return MyCar;
             }

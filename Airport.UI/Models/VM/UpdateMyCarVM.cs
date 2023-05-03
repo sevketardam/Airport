@@ -12,10 +12,6 @@ namespace Airport.UI.Models.VM
         public int ModelId { get; set; }
         public IEnumerable<CarSeries> Series { get; set; }
         public int SeriesId { get; set; }
-        public IEnumerable<CarTrims> Trims { get; set; }
-        public int TrimId { get; set; }
-        public IEnumerable<CarClasses> Classes { get; set; }
-        public int? ClassId { get; set; }
         public IEnumerable<CarTypes> Types { get; set; }
         public int? TypeId { get; set; }
         public int MaxPassenger { get; set; }

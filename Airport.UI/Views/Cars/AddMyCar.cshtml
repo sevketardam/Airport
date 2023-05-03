@@ -5,6 +5,16 @@
 
 <form id="addMyCarForm" method="post" asp-route="AddCar">
     <div class="row">
+        <div class="col-sm-12 mb-3 _Pos_Rel">
+            <label>Type</label>
+            <select class="form-control select2-multiple" id="carTypes" name="Type" data-width="100%">
+                <option disabled selected>Select Type</option>
+                @foreach (var item in Model.CarTypes)
+                {
+                    <option value="@item.Id">@item.CarTypeName</option>
+                }
+            </select>
+        </div>
 
         <div class="col-sm-4 mb-3 _Pos_Rel">
             <label>Brands</label>
@@ -29,25 +39,8 @@
                 <option disabled selected>Select Series</option>
             </select>
         </div>
-        <div class="col-sm-4 mb-3 _Pos_Rel">
-            <label>Trim</label>
-            <select class="form-control select2-multiple" id="carTrims" name="Trim" data-width="100%">
-                <option disabled selected>Select Trim</option>
 
-            </select>
-        </div>
-        <div class="col-sm-4 mb-3 _Pos_Rel">
-            <label>Class</label>
-            <select class="form-control select2-multiple" id="carClasses" name="Class" data-width="100%">
-                <option disabled selected>Select Class</option>
-            </select>
-        </div>
-        <div class="col-sm-4 mb-3 _Pos_Rel">
-            <label>Type</label>
-            <select class="form-control select2-multiple" id="carTypes" name="Type" data-width="100%">
-                <option disabled selected>Select Type</option>
-            </select>
-        </div>
+
         <div class="col-sm-4 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Max. Passengers</label>
@@ -66,19 +59,19 @@
                 <input type="number" class="form-control" value="0" name="SmallBags" required="">
             </div>
         </div>
+        @*        <div class="col-sm-4 mb-3 _Pos_Rel">
+        <label>Service List</label>
+        <select class="form-control select2-multiple" name="Service" data-width="100%">
+        <option disabled selected>Select Service List</option>
+        @foreach (var item in Model.ServiceItems)
+        {
+        <option value="@item.Id">@item.ServiceName</option>
+        }
+        </select>
+        </div>*@
         <div class="col-sm-4 mb-3 _Pos_Rel">
-            <label>Service List</label>
-            <select class="form-control select2-multiple" name="Service" data-width="100%">
-                <option disabled selected>Select Service List</option>
-                @foreach (var item in Model.ServiceItems)
-                {
-                    <option value="@item.Id">@item.ServiceName</option>
-                }
-            </select>
-        </div>
-        <div class="col-sm-6 mb-3 _Pos_Rel">
             <label>Select Driver</label>
-            <select class="form-control select2-multiple" name="DriverId" data-width="100%">
+            <select class="form-control select2-multiple" name="Driver" data-width="100%">
                 <option disabled selected>Select Driver</option>
                 @foreach (var item in Model.Drivers)
                 {
@@ -86,6 +79,10 @@
                 }
             </select>
         </div>
+
+        <div class="col-md-6">
+        </div>
+
         <div class="col-md-6">
             <div class="extrasArea">
                 <div class="extrasFlex">
@@ -123,7 +120,7 @@
                 </button>
             </div>
         </div>
-       
+
     </div>
 </form>
 
@@ -164,69 +161,6 @@
                 }
             });
         })
-
-        $('#carSeries').on("change", function () {
-            var value = $(this).val();
-            $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController.GetTrims))',
-                type: "POST",
-                data: { id: value },
-                success: function (response) {
-                    if (response.result == 200) {
-                        $('#carTrims').html("");
-                        $('#carTrims').append(`<option disabled selected>Select Trim</option>`)
-                        $.each(response.trims, function (key, value) {
-                            $('#carTrims').append(`<option value="${value.id}">${value.carTrimName}</option>`)
-                        })
-                    }
-                }
-            });
-        })
-
-        $('#carTrims').on("change", function () {
-            var value = $(this).val();
-            $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController.GetClassAndTypes))',
-                type: "POST",
-                data: { id: value },
-                success: function (response) {
-                    if (response.result == 200) {
-                        $('#carClasses').html("");
-                        $('#carClasses').append(`<option disabled selected>Select Class</option>`)
-                        $.each(response.classes, function (key, value) {
-                            $('#carClasses').append(`<option value="${value.id}">${value.carClassName}</option>`)
-                        })
-
-                        $('#carTypes').html("");
-                        $('#carTypes').append(`<option disabled selected>Select Type</option>`)
-                        $.each(response.types, function (key, value) {
-                            $('#carTypes').append(`<option value="${value.id}">${value.carTypeName}</option>`)
-                        })
-                    }
-                }
-            });
-        })
-
-                        //$('#addMyCarForm').on("submit", function (e) {
-                        //    e.preventDefault();
-                        //    var formData = $(this).serialize()
-                        //    $.ajax({
-                        //        url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController))',
-                        //        type: "POST",
-                        //        data: formData,
-                        //        success: function (response) {
-                        //            if (response.result == 1) {
-                        //                Swal.fire({
-                        //                    icon: 'success',
-                        //                    title: 'Success',
-                        //                    text: 'Successfully Added Car',
-                        //                }).then(() => {
-                        //                    location.href = "/panel/mycars";
-                        //                })
-                        //            }
-                        //        }
-                        //    });
-                        //})
 
     </script>
 }

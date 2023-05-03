@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Airport.DBEntitiesDAL\Airport.DBEntitiesDAL.csproj" />
+    <ProjectReference Include="..\Airport.MailExtensions\Airport.MessageExtension.csproj" />
   </ItemGroup>
 
   <ItemGroup>

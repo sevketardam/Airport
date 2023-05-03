@@ -61,11 +61,6 @@ namespace Airport.DBEntities.Context
                 .HasForeignKey(a => a.BrandId);
 
             modelBuilder.Entity<MyCars>()
-                .HasOne<CarClasses>(a => a.Class)
-                .WithMany(a => a.MyCars)
-                .HasForeignKey(a => a.ClassId);
-
-            modelBuilder.Entity<MyCars>()
                 .HasOne<CarModels>(a => a.Model)
                 .WithMany(a => a.MyCars)
                 .HasForeignKey(a => a.ModelId);
@@ -74,11 +69,6 @@ namespace Airport.DBEntities.Context
                 .HasOne<CarSeries>(a => a.Series)
                 .WithMany(a => a.MyCars)
                 .HasForeignKey(a => a.SeriesId);
-
-            modelBuilder.Entity<MyCars>()
-                .HasOne<CarTrims>(a => a.Trim)
-                .WithMany(a => a.MyCars)
-                .HasForeignKey(a => a.TrimId);
 
             modelBuilder.Entity<MyCars>()
                 .HasOne<CarTypes>(a => a.Type)
@@ -115,11 +105,6 @@ namespace Airport.DBEntities.Context
                 .WithMany(a => a.LocationCars)
                 .HasForeignKey(a => a.CarId);
 
-            modelBuilder.Entity<CarTrims>()
-                .HasOne<CarModels>(a => a.CarModels)
-                .WithMany(a => a.CarTrims)
-                .HasForeignKey(a => a.CarModelId);
-
             modelBuilder.Entity<LocationCarsFare>()
                 .HasOne<LocationCars>(a => a.LocationCar)
                 .WithMany(a => a.LocationCarsFares)
@@ -150,9 +135,7 @@ namespace Airport.DBEntities.Context
         public DbSet<CarBrands> CarBrands { get; set; }
         public DbSet<CarModels> CarModels { get; set; }
         public DbSet<CarSeries> CarSeries { get; set; }
-        public DbSet<CarTrims> CarTrims { get; set; }
         public DbSet<CarTypes> CarTypes { get; set; }
-        public DbSet<CarClasses> CarClasses { get; set; }
         public DbSet<MyCars> MyCars { get; set; }
         public DbSet<Drivers> Drivers { get; set; }
       

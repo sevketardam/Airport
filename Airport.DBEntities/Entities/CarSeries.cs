@@ -20,7 +20,6 @@ namespace Airport.DBEntities.Entities
         public string? GenerationYearEnd { get; set; }
 
         public CarModels CarModel { get; set; }
-        public List<CarTrims> CarTrims { get; set; }
         public List<MyCars> MyCars { get; set; }
     }
 }

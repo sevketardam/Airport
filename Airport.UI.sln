@@ -5,15 +5,17 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airport.UI", "Airport.UI\Airport.UI.csproj", "{9C46B797-ED5C-43C0-AA8F-5D90FC9BEF28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airport.Core", "Airport.Core\Airport.Core.csproj", "{A08C4825-4EE5-4022-AED1-B1C9881EB1B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airport.Core", "Airport.Core\Airport.Core.csproj", "{A08C4825-4EE5-4022-AED1-B1C9881EB1B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airport.Data", "Airport.Data\Airport.Data.csproj", "{E06D85BE-4127-4F54-8041-6FFC7D8DE6A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airport.Data", "Airport.Data\Airport.Data.csproj", "{E06D85BE-4127-4F54-8041-6FFC7D8DE6A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airport.DBEntities", "Airport.DBEntities\Airport.DBEntities.csproj", "{D225A564-B926-48D7-A24C-7D516D19D6F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airport.DBEntities", "Airport.DBEntities\Airport.DBEntities.csproj", "{D225A564-B926-48D7-A24C-7D516D19D6F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airport.DBEntitiesDAL", "Airport.DBEntitiesDAL\Airport.DBEntitiesDAL.csproj", "{2AE8AD28-8443-410C-BD92-128B61364B3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airport.DBEntitiesDAL", "Airport.DBEntitiesDAL\Airport.DBEntitiesDAL.csproj", "{2AE8AD28-8443-410C-BD92-128B61364B3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airport.EF", "Airport.EF\Airport.EF.csproj", "{F1E9A8B0-172C-4FCB-BC1C-BD075EFD0795}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airport.EF", "Airport.EF\Airport.EF.csproj", "{F1E9A8B0-172C-4FCB-BC1C-BD075EFD0795}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airport.MessageExtension", "Airport.MailExtensions\Airport.MessageExtension.csproj", "{4D29743A-5611-4A7D-AA8D-24E68936CC87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -149,6 +151,26 @@ Global
 		{F1E9A8B0-172C-4FCB-BC1C-BD075EFD0795}.Release|x64.Build.0 = Release|Any CPU
 		{F1E9A8B0-172C-4FCB-BC1C-BD075EFD0795}.Release|x86.ActiveCfg = Release|Any CPU
 		{F1E9A8B0-172C-4FCB-BC1C-BD075EFD0795}.Release|x86.Build.0 = Release|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Debug|ARM.Build.0 = Debug|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Debug|x64.Build.0 = Debug|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Debug|x86.Build.0 = Debug|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Release|ARM.ActiveCfg = Release|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Release|ARM.Build.0 = Release|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Release|ARM64.Build.0 = Release|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Release|x64.ActiveCfg = Release|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Release|x64.Build.0 = Release|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Release|x86.ActiveCfg = Release|Any CPU
+		{4D29743A-5611-4A7D-AA8D-24E68936CC87}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
