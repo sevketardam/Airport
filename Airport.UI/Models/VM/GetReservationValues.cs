@@ -17,4 +17,5 @@ namespace Airport.UI.Models.VM
         public string DropLocationPlaceId { get; set; }
         public string PickLocationPlaceId { get; set; }
     }
+
 }

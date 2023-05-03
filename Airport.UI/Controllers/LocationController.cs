@@ -173,7 +173,8 @@ namespace Airport.UI.Controllers
                             LocationCarId = addedLocationCars.Id,
                             StartFrom = car.StartKm,
                             UpTo = car.UpToKm,
-                            Fare = car.Price
+                            Fare = car.Price,
+                            PriceType  = car.PriceType,
                         });
                     });
                 });
@@ -196,6 +197,8 @@ namespace Airport.UI.Controllers
 
             var location = _locations.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
             if (location == null) { return NotFound(); }
+
+
 
             var VM = new UpdateLocationVM()
             {
@@ -227,6 +230,10 @@ namespace Airport.UI.Controllers
             var location = _locations.SelectByFunc(a => a.Id == convertData.LocationId && a.UserId == userId).FirstOrDefault();
 
             if (location == null) { return BadRequest(); }
+
+            location.OutZonePricePerKM = convertData.OutZonePerKmPrice;
+            location.DropCharge = convertData.DropCharge;
+            _locations.Update(location);
 
             var oldLocationCar = _locationCars.SelectByFunc(a => a.LocationId == location.Id);
             oldLocationCar.ForEach(a =>
