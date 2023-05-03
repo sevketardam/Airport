@@ -649,7 +649,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 
     ._Why_Module_Flex > div {
         /*width: calc(50% - 0.5rem);*/
-        width: calc(42% - .5rem);
+        width: calc((100% / 3) - 0.67rem);
         height: auto;
         /**/
         display: flex;
@@ -2690,7 +2690,7 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
     ._Why_Module_Flex > div {
-        width: 100%;
+        width: calc((100% / 2) - 0.5rem);
         height: auto;
     }
 
@@ -2908,6 +2908,10 @@ input[type="number"]::-webkit-outer-spin-button {
 
     ._Last_Input {
         margin-top: 1rem;
+    }
+    ._Why_Module_Flex > div {
+        width: 100%;
+        height: auto;
     }
 }
 
