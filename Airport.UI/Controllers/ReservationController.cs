@@ -407,7 +407,15 @@ namespace Airport.UI.Controllers
             return View();
         }
 
+        public IActionResult ManualReservationStepTwo()
+        {
+            return View();
+        }
 
+        public IActionResult ManualReservationStepThree()
+        {
+            return View();
+        }
 
     }
 }
