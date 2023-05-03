@@ -18,51 +18,64 @@
 <form id="addDriverForm">
     <div class="row">
 
-        <div class="col-md-6 mb-3 _Pos_Rel">
+        <div class="col-md-4 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Name</label>
                 <input type="text" class="form-control" placeholder="Name" name="Name" required="">
             </div>
         </div>
-        <div class="col-md-6 mb-3 _Pos_Rel">
+        <div class="col-md-4 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Surname</label>
                 <input type="text" class="form-control" placeholder="Surname" name="Surname" required="">
             </div>
         </div>
-        <div class="col-md-6 mb-3 _Pos_Rel">
+        <div class="col-md-4 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Email</label>
                 <input type="text" class="form-control" placeholder="Email" name="Email" required="">
             </div>
         </div>
-        <div class="col-md-6 mb-3 _Pos_Rel">
+        <div class="col-md-4 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Password</label>
                 <input type="password" class="form-control" placeholder="Password" name="Password" required="">
             </div>
         </div>
 
-        <div class="col-md-6 mb-3 _Pos_Rel">
+        <div class="col-md-4 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Phone</label>
                 <input type="text" class="form-control" placeholder="Phone" name="Phone" required="">
             </div>
         </div>
 
-        <div class="col-md-6 mb-3 _Pos_Rel">
+        <div class="col-md-4 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Date Of Birth</label>
                 <input type="date" class="form-control" name="DateOfBirth" required="">
             </div>
         </div>
 
-        <div class="col-md-4">
-            <input id="selectPhoto" type="file" />
+        <div class="col-md-6 mb_3 _Pos_Rel">
+            <div class="imageDivStyle">
+                <p>Front Photo</p>
+                <img src="" />
+                <input id="selectPhoto" type="file" />
+            </div>
+            
         </div>
-
+        <div class="col-md-6 mb_3 _Pos_Rel">
+            <div class="imageDivStyle">
+                <p>Back Photo</p>
+                <img src="" />
+                <input id="selectPhoto" type="file" />
+            </div>
+            
+        </div>
+         
         <div class="col-md-12 _Pos_Rel">
-            <div class="custom-control custom-checkbox mb-4">
+            <div class="custom-control custom-checkbox mb-2">
                 <input type="checkbox" class="custom-control-input" id="bookingCheckbox" name="Booking" value="true">
                 <label class="custom-control-label" for="bookingCheckbox">
                     Show all bookings
@@ -71,7 +84,7 @@
         </div>
 
         <div class="col-md-12 _Pos_Rel">
-            <div class="custom-control custom-checkbox mb-4">
+            <div class="custom-control custom-checkbox mb-2">
                 <input type="checkbox" class="custom-control-input" id="financialCheckbox" name="Financial" value="true">
                 <label class="custom-control-label" for="financialCheckbox">
                     Show financial info

@@ -232,6 +232,7 @@ $("#addServicePropertyForm").validate({
 });
 
 $(".extrasItem").on("click", function () {
+    console.log("asdasd")
     if ($(this).find("input").prop("checked")) {
         $(this).find("input").prop("checked", false)
         $(this).addClass("active")
