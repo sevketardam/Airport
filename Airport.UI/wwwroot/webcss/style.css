@@ -3,8 +3,13 @@
     src: url(../font/GOTHIC.TTF);
 }
 
+@font-face {
+    font-family: "AvertaDemoPE-Regular";
+    src: url(../font/AvertaDemoPE-Regular.otf);
+}
+
 * {
-    font-family: "gothic";
+    font-family: "AvertaDemoPE-Regular";
 }
 
 ._Module_Margin {
@@ -54,7 +59,7 @@ body {
 }
 
     ._Logo img {
-        width: 100%;
+        width: 90%;
     }
 
 ._Nav_Content {
@@ -78,7 +83,7 @@ body {
 }
 
 nav {
-    padding: 1.5rem 0;
+    padding: 1rem 0;
     border-bottom: 1px solid black;
 }
 
@@ -126,7 +131,7 @@ nav {
 
         ._Auth ul._Btns > li > a {
             border: 0px solid;
-            padding: 0.9rem 1.2rem;
+            padding: 0.8rem 1.2rem;
             font-size: .9rem;
             font-weight: 600;
             color: var(--orange);
@@ -194,7 +199,7 @@ label.error {
 
     ._Sing_Form_Main h4 {
         color: var(--orange);
-        font-size: 35px;
+        font-size: 2rem;
         font-weight: 400;
     }
 
@@ -206,7 +211,7 @@ label.error {
 
     ._Sing_Form_Main ._Form_Input_Div label {
         color: #000000;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         font-weight: 400;
     }
 
@@ -261,7 +266,7 @@ label.error {
     border: none;
     background-color: var(--orange);
     color: white;
-    font-size: 30px;
+    font-size: 1.5rem;
     font-weight: 500;
     border-radius: 12px;
     padding: 0.1rem;
@@ -436,11 +441,19 @@ label.error {
 /* Banner */
 
 ._Banner_Title {
-    font-size: 2.3rem;
+    font-size: 1.8rem;
     /* padding: 0 15rem; */
     font-weight: bold;
     margin: 2rem 0;
     text-align: center;
+}
+
+h2._Orange_Title {
+    font-size: 1.5rem;
+}
+
+._Orange_Title {
+    padding: 0.5rem 1.1rem;
 }
 
 ._Banner_Flex {
@@ -629,14 +642,14 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 ._Why_Module_Flex {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.3rem 1rem;
     margin: 2rem 0;
     justify-content: center;
 }
 
     ._Why_Module_Flex > div {
         /*width: calc(50% - 0.5rem);*/
-        width: calc(42% - .5rem);
+        width: calc((100% / 3) - 0.67rem);
         height: auto;
         /**/
         display: flex;
@@ -646,11 +659,11 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 
 ._Why_Module_Item {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.25rem;
 }
 
     ._Why_Module_Item p {
-        font-size: 1.1rem;
+        font-size: .9rem;
         font-weight: 400;
     }
 
@@ -671,7 +684,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 3rem;
+    height: 2.5rem;
     font-size: 1.05rem;
     font-weight: 600;
     transition: color 250ms, background-color 250ms;
@@ -707,8 +720,8 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 }
 
     ._Happy_Item > img {
-        width: 14rem;
-        height: 5rem;
+        width: 12rem;
+        height: 4rem;
         object-fit: scale-down;
     }
 
@@ -719,12 +732,12 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 
     ._Happy_Detail p {
         margin: 0;
-        font-size: 1.7rem;
+        font-size: 1.3rem;
         font-weight: 600;
     }
 
     ._Happy_Detail span {
-        font-size: 1rem;
+        font-size: .9rem;
         font-weight: 400;
     }
 
@@ -733,7 +746,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 ._List_Flex {
     display: flex;
     flex-wrap: wrap;
-    gap: 5rem 2.5rem;
+    gap: 2rem 0.5rem;
 }
 
     ._List_Flex ._List_Item {
@@ -759,18 +772,20 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 ._List_Item h3 {
     text-align: start;
     margin: 0 0 1rem 0;
-    font-size: 1.3rem;
+    font-size: 1.15rem;
 }
 
 ._List_Item p {
     color: #000000;
-    font-size: 1rem;
+    font-size: .8rem;
+    margin: 0 0 .25rem 0;
     font-weight: 400;
-    margin: 0;
 }
 
+._List_Item br {
+    display: none;
+}
 /* Travel Agents */
-
 ._Travel_Flex {
     display: flex;
     flex-wrap: wrap;
@@ -787,13 +802,13 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 }
 
 .Travel_Left h2 {
-    font-size: 2.5rem;
+    font-size: 1.7rem;
     font-weight: 600;
 }
 
 .Travel_Left p {
     margin: 1rem 0;
-    font-size: 1.1rem;
+    font-size: .9rem;
     font-weight: 400;
     padding-right: 2rem;
 }
@@ -814,7 +829,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     }
 
     ._Car_Types p {
-        font-size: 1rem;
+        font-size: .9rem;
     }
 
     ._Car_Types .swiper {
@@ -890,24 +905,29 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 }
 
 ._Business_Left h2 {
-    /* font-size: 2.5rem; */
+    font-size: 1.7rem;
     font-weight: 600;
 }
 
 ._Module_p {
-    font-size: 400;
-    font-size: 1.2rem;
+    font-weight: 400;
+    font-size: 1.1rem;
 }
 
 ._Module_Title_h2 {
     text-align: center;
     font-weight: 600;
+    font-size: 1.6rem;
 }
 
 ._Business_Left p {
-    margin: 0.3rem 0;
-    font-size: 1rem;
+    margin: 0.2rem 0;
+    font-size: .9rem;
     font-weight: 400;
+}
+
+._Business_Item img {
+    width: 1.5rem;
 }
 
 ._Business_Right img {
@@ -917,7 +937,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 ._Business_Items {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.25rem;
 }
 
 ._Business_Item {
@@ -942,11 +962,11 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 
 
 
-._Partner_Item img {
-    width: 100%;
-    height: 7rem;
-    object-fit: scale-down;
-}
+    ._Partner_Item img {
+        width: 100%;
+        height: 7rem;
+        object-fit: scale-down;
+    }
 
 .lufthansacc {
     margin: auto;
@@ -958,7 +978,8 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 ._Orange_Bg ._Why_Btns a {
     background-color: white;
     color: var(--orange) !important;
-    width: 13rem;
+    width: 11rem;
+    font-size: .9rem;
 }
 
 /* Footer */
@@ -1040,6 +1061,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     outline: none;
     box-shadow: 0 2px 5px rgb(0, 0, 0, 0.16);
     padding: 1rem;
+    border:none;
 }
 
 ._Register_Input_Div {
@@ -1047,7 +1069,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 }
 
 ._Register_Label {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
 }
 
 ._Register_Flex ._Check_Div {
@@ -1140,6 +1162,7 @@ button._Verify_Number {
     border: 0.5px solid #232323;
     box-shadow: 0 2px 5px rgb(0, 0, 0, 0.16);
     padding: 1rem;
+    border:none;
 }
 
 ._Form_Flex_Style textarea {
@@ -1211,13 +1234,13 @@ button._Verify_Number {
 ._Agency_Flex button,
 ._Form_Flex_Style button {
     width: 100%;
-    height: 3rem;
+    height: 2.6rem;
     border-radius: 12px;
     border: none;
     outline: none;
     background-color: var(--orange);
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
 }
 
 ._Form_Title h3 {
@@ -1299,6 +1322,7 @@ label._Down_Label {
         outline: none;
         box-shadow: 0 2px 5px rgb(0, 0, 0, 0.16);
         padding: 1rem;
+        border: none;
     }
 
     ._Contact_Form_Flex textarea {
@@ -1307,10 +1331,10 @@ label._Down_Label {
 
     ._Contact_Form_Flex button {
         width: 100%;
-        height: 3rem;
+        height: 2.6rem;
         background-color: var(--orange);
         color: white;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         font-weight: 600;
         border-radius: 12px;
         border: none;
@@ -1347,13 +1371,13 @@ label._Down_Label {
 }
 
 ._Contact_Right p {
-    font-size: 1rem;
+    font-size: .9rem;
 }
 
 /* Hakkımızda */
 
 ._About_Module h3 {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: 600;
 }
 
@@ -1362,6 +1386,9 @@ label._Down_Label {
     text-decoration: none;
 }
 
+._About_Module p {
+    font-size: 0.9rem;
+}
 /**/
 
 /* Panele Eklenmeyen Kısım */
@@ -2370,8 +2397,14 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 
+._Happy_Detail img {
+    width: 2.2rem;
+}
 
 
+._Why_Module_Item img {
+    width: 1.5rem;
+}
 
 
 
@@ -2410,8 +2443,8 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
     ._Happy_Item > img {
-        width: 12rem;
-        height: 5rem;
+        width: 10rem;
+        height: 4rem;
         object-fit: scale-down;
     }
 
@@ -2429,7 +2462,7 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
     ._List_Item h3 {
-        font-size: 1.4rem;
+        font-size: 1.15rem;
     }
 
     ._Attr_File {
@@ -2657,7 +2690,7 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
     ._Why_Module_Flex > div {
-        width: 100%;
+        width: calc((100% / 2) - 0.5rem);
         height: auto;
     }
 
@@ -2666,11 +2699,11 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
     ._List_Item h3 {
-        font-size: 1.2rem;
+        font-size: 1.15rem;
     }
 
     .Travel_Left h2 {
-        font-size: 2rem;
+        font-size: 1.7rem;
     }
 
     .Travel_Left p {
@@ -2686,7 +2719,7 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
     ._Module_Title_h2 {
-        font-size: 2rem;
+        font-size: 1.4rem;
     }
 
     ._Register_Flex > div {
@@ -2776,8 +2809,8 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
         ._Happy_Item > img {
-            width: 14rem;
-            height: 5rem;
+            width: 11rem;
+            height: 4rem;
             object-fit: scale-down;
         }
 
@@ -2797,7 +2830,7 @@ input[type="number"]::-webkit-outer-spin-button {
         }
 
     .Travel_Left h2 {
-        font-size: 1.8rem;
+        font-size: 1.7rem;
     }
 
     .Travel_Left p {
@@ -2809,7 +2842,7 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
     ._Module_Title_h2 {
-        font-size: 1.8rem;
+        font-size: 1.3rem;
     }
 
     ._Business_Left p {
@@ -2853,7 +2886,7 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
     ._Module_Title_h2 {
-        font-size: 1.58rem;
+        font-size: 1.25rem;
     }
 
     ._Business_Left p {
@@ -2875,6 +2908,10 @@ input[type="number"]::-webkit-outer-spin-button {
 
     ._Last_Input {
         margin-top: 1rem;
+    }
+    ._Why_Module_Flex > div {
+        width: 100%;
+        height: auto;
     }
 }
 
@@ -2911,7 +2948,6 @@ input[type="number"]::-webkit-outer-spin-button {
 
     ._Why_Btn {
         width: 100%;
-        height: 3rem;
     }
 
     ._List_Flex ._List_Item {
@@ -2988,16 +3024,32 @@ input[type="number"]::-webkit-outer-spin-button {
     /* border: 1px solid; */
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0rem;
     width: 5rem;
     background: white;
     top: 2.6rem;
     left: -0.4rem;
-    padding: 0.4rem;
     box-shadow: 0 0 5px rgb(0,0,0,.16);
     border-radius: 10px;
     transition: opacity 250ms, visibility 250ms;
 }
+
+    .other_lang > div {
+        padding: 0.4rem;
+        overflow: hidden;
+    }
+
+        .other_lang > div:first-child {
+            border-radius: 10px 10px 0 0;
+        }
+
+        .other_lang > div:last-child {
+            border-radius: 0 0 10px 10px;
+        }
+
+        .other_lang > div:hover {
+            background-color: rgb(0,0,0,.16);
+        }
 
 .active_lang.active .other_lang {
     opacity: 1;
@@ -3015,8 +3067,8 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
     .register_banner p {
-        padding: 8rem 0;
-        font-size: 1.2rem;
+        padding: 6rem 0;
+        font-size: 1.1rem;
         font-weight: 400;
         color: white;
     }
@@ -3055,7 +3107,7 @@ label.error {
 }
 
 .nav_btn {
-color: white !important;
+    color: white !important;
 }
 
 
@@ -3080,8 +3132,8 @@ color: white !important;
     ._Auth .btn-group {
         margin: auto;
     }
+
     .activeNav {
         left: -1rem;
     }
-    
 }

@@ -4,9 +4,14 @@
     src: url(../font/GOTHIC.TTF);
 }
 
-*:not(i,svg,img){
-    font-family: gothic !important;
+@font-face {
+    font-family: "AvertaDemoPE-Regular";
+    src: url(../font/AvertaDemoPE-Regular.otf);
 }
+
+* {
+    font-family: "AvertaDemoPE-Regular";
+}   
 
 ._Steps_Style {
     width: 100%;
