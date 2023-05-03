@@ -315,6 +315,37 @@ input.selectPhoto {
 }
 
 
+._user_btns {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+}
+
+    ._user_btns div {
+        border: 1px solid rgba(0, 0, 0, 0.367);
+        width: 2rem;
+        height: calc(2.5rem / 2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+        ._user_btns div:first-child {
+            border-top-right-radius: 10px;
+        }
+
+        ._user_btns div:last-child {
+            border-bottom-right-radius: 10px;
+        }
+
+        ._user_btns div:hover {
+            background-color: rgba(128, 128, 128, 0.209);
+        }
+
+
+
 @media only screen and (max-width: 1200px) {
     .stepOneForm ._Form_Inputs > div {
         width: calc((100% / 6) - -1rem);

@@ -20,13 +20,14 @@ using static System.Net.WebRequestMethods;
 using Microsoft.CodeAnalysis;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Asn1.Cms;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Airport.UI.Controllers
 {
     public class ReservationController : Controller
     {
 
-       
+
 
 
         ILocationsDAL _location;
@@ -117,8 +118,6 @@ namespace Airport.UI.Controllers
                     {
                         locationCars.Add(listlocation);
                     }
-
-
 
                     var allDatas = new List<AllDatas>();
                     locationCars.ForEach(a =>
@@ -230,7 +229,7 @@ namespace Airport.UI.Controllers
                             }
                             else
                             {
-                                b.LocationCarsFares = _locationCarsFare.SelectByFunc(c=>c.LocationCarId == b.Id);
+                                b.LocationCarsFares = _locationCarsFare.SelectByFunc(c => c.LocationCarId == b.Id);
                                 var lastUp = 0;
                                 double lastPrice = 0;
 
@@ -264,7 +263,7 @@ namespace Airport.UI.Controllers
                                 {
                                     price *= 2;
                                 }
-                            
+
                                 getreservation.Add(new GetReservationValues
                                 {
                                     LocationCars = b,
@@ -348,8 +347,8 @@ namespace Airport.UI.Controllers
                 }
 
 
- 
-                var selectedDatasMini = HttpContext.Session.MyGet<List<LocationIsOutMiniVM>>("selectedLocationMini").Where(a=>a.LocationCarId == id).FirstOrDefault();
+
+                var selectedDatasMini = HttpContext.Session.MyGet<List<LocationIsOutMiniVM>>("selectedLocationMini").Where(a => a.LocationCarId == id).FirstOrDefault();
 
                 if (selectedDatasMini != null)
                 {
@@ -563,16 +562,22 @@ namespace Airport.UI.Controllers
 
         }
 
-        public IActionResult ManualReservationStepOne()
+
+        [Authorize(Roles = "0")]
+        [HttpGet("panel/manual-reservation-one",Name ="getManualLocationValue")]
+        public async Task<IActionResult> ManualReservationStepOne(GetResevationIM reservation)
         {
+
             return View();
         }
-
+        [Authorize(Roles = "0")]
+        [HttpGet("panel/manual-reservation-two")]
         public IActionResult ManualReservationStepTwo()
         {
             return View();
         }
-
+        [Authorize(Roles = "0")]
+        [HttpGet("panel/manual-reservation-three")]
         public IActionResult ManualReservationStepThree()
         {
             return View();
