@@ -11,24 +11,25 @@
             </div>
             <div class="stepOneStyle">
                 <div>
-                    <form class="stepOneForm">
+                    <form class="stepOneForm" asp-route="getManualLocationValue">
                         <div class="_Form_Inputs">
                             <div class="_Pos_Rel">
                                 <label for="">Pick Up</label>
                                 <input type="text">
+                                <input type="text" name="PickValue">
                             </div>
                             <div class="_Pos_Rel">
                                 <label for="">Drop Off</label>
-                                <input type="text">
+                                <input type="text" name="DropValue">
                             </div>
                             <div class="_Pos_Rel">
                                 <label for="">Flight Arrival</label>
-                                <input type="datetime-local">
+                                <input type="datetime-local" name="FlightTime">
                             </div>
                             <div class="_Pos_Rel">
                                 <div class="d-none">
                                     <label for="">Return</label>
-                                    <input type="datetime-local">
+                                    <input type="datetime-local" name="">
                                 </div>
                                 <div>
                                     <button type="button" class="_Add_Return">
@@ -40,7 +41,7 @@
                                 <span class="stepOneNumber">
                                     <i class="fa-solid fa-user"></i>
                                 </span>
-                                <input type="number" value="1" class="numberReser">
+                                <input type="number" value="1" name="PeopleCount" class="numberReser">
                                 <div class="_user_btns">
                                     <div class="_up_number">
                                         <i class="fa-sharp fa-solid fa-caret-up"></i>
@@ -51,7 +52,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="stepOneSubmit">
+                        <button class="stepOneSubmit" type="submit">
                             Search Booking
                         </button>
                     </form>
