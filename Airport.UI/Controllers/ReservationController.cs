@@ -62,26 +62,26 @@ namespace Airport.UI.Controllers
 
 
 
-                var locations = _location.Select();
-                var listlocation = new List<LocationCars>();
-                var s = new List<List<LocationCars>>();
-                int i = 0;
-                locations.ForEach(a => 
-                {
-                    i++;
-                    listlocation.Add(a.);
-                    if (i == 25)
-                    {
-                        s.Add(listlocation);
-                        listlocation = new List<LocationCars>();
-                        i = 0;
-                    }
-                });
+                //var locations = _location.Select();
+                //var listlocation = new List<LocationCars>();
+                //var s = new List<List<LocationCars>>();
+                //int i = 0;
+                //locations.ForEach(a => 
+                //{
+                //    i++;
+                //    listlocation.Add(a);
+                //    if (i == 25)
+                //    {
+                //        s.Add(listlocation);
+                //        listlocation = new List<LocationCars>();
+                //        i = 0;
+                //    }
+                //});
 
-                if (listlocation.Count != 0)
-                {
-                    s.Add(listlocation);
-                }
+                //if (listlocation.Count != 0)
+                //{
+                //    s.Add(listlocation);
+                //}
 
 
 
