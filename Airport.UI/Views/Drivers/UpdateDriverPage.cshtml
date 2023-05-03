@@ -30,14 +30,14 @@
                 <input type="text" class="form-control" placeholder="Surname" value="@Model.Surname" name="Surname" required="">
             </div>
         </div>
-        <div class="col-md-4 mb-3 _Pos_Rel">
+        <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Email</label>
                 <input type="text" class="form-control" placeholder="Email" value="@Model.Email" name="Email" required="">
             </div>
         </div>
 
-        <div class="col-md-4 mb-3 _Pos_Rel">
+        <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Phone</label>
                 <input type="text" class="form-control" placeholder="Phone" value="@Model.Phone" name="Phone" required="">
@@ -45,7 +45,7 @@
         </div>
 
 
-        <div class="col-md-6 mb-3 _Pos_Rel">
+        <div class="col-md-12 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Date Of Birth</label>
                 <input type="date" class="form-control" name="DateOfBirth" value="@(Model.DateOfBirth.ToString("yyyy-MM-dd"))" required="">
@@ -177,7 +177,11 @@
 
         var jscrop_api;
 
-        $('#selectPhoto').on('click', function () {
+        $('#selectFrontPhoto').on('click', function () {
+            $(this).val(null);
+        })
+
+        $('#selectBackPhoto').on('click', function () {
             $(this).val(null);
         })
 

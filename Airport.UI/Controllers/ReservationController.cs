@@ -52,139 +52,173 @@ namespace Airport.UI.Controllers
             {
                 var api_key = "AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg";
 
-                var httpClient = new HttpClient();
+                //var locations = new List<string>();
 
-                var apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + reservation.PickValue + "&key=" + api_key;
-                var response2 = await httpClient.GetAsync(apiUrl);
-                var content2 = await response2.Content.ReadAsStringAsync();
-                var contentJsonResult = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content2);
 
-                var apiUrl2 = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + reservation.DropValue + "&key=" + api_key;
-                var response3 = await httpClient.GetAsync(apiUrl2);
-                var content3 = await response3.Content.ReadAsStringAsync();
-                var contentJsonResult2 = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content3);
+                //for (int i2 = 0; i2 < 250; i2++)
+                //{
+                //    locations.Add("s");
+                //}
 
-                var s = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric";
 
-                var fullUrl2 = s + $"&origins={contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}&destinations={contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}&key=" + api_key;
 
-                var getreservation = new List<GetReservationValues>();
-                int minKm = 0;
-
-                var distance = "";
-                var duration = "";
-
-                using (var client = new HttpClient())
+                var locations = _location.Select();
+                var listlocation = new List<LocationCars>();
+                var s = new List<List<LocationCars>>();
+                int i = 0;
+                locations.ForEach(a => 
                 {
-                    HttpResponseMessage response4 = await client.GetAsync(fullUrl2);
-                    var content4 = await response4.Content.ReadAsStringAsync();
-                    var data = JObject.Parse(content4);
-
-                    if (data["status"].ToString() == "OK")
+                    i++;
+                    listlocation.Add(a.);
+                    if (i == 25)
                     {
-                        if (data["rows"][0]["elements"][0]["status"].ToString() == "OK")
-                        {
-                            var km = data["rows"][0]["elements"][0]["distance"]["value"].ToString().Replace("{", "").Replace("}", "");
-                            distance = data["rows"][0]["elements"][0]["distance"]["text"].ToString().Replace("{", "").Replace("}", "");
-                            duration = data["rows"][0]["elements"][0]["duration"]["text"].ToString().Replace("{", "").Replace("}", "");
-                            var lastKm = Math.Ceiling(Convert.ToDouble(km) / 1000) * 1000;
-                            minKm = Convert.ToInt32(lastKm / 1000);
-
-                            var carLocation = _location.Select();
-                            foreach (var item in carLocation)
-                            {
-
-                                item.LocationCars = _locationCar.SelectByFunc(a => a.LocationId == item.Id);
-
-                                foreach (var item1 in item.LocationCars)
-                                {
-                                    double price = 0;
-                                    item1.Car = _carDetail.CarDetail(item1.CarId);
-
-                                    if (item1.Car.MaxPassenger >= reservation.PeopleCount)
-                                    {
-                                        item1.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == item1.Id);
-                                        var lastUp = 0;
-                                        double lastPrice = 0;
-                                        item1.LocationCarsFares.ForEach(a =>
-                                        {
-                                            if (a.StartFrom < minKm && a.UpTo > minKm)
-                                            {
-                                                if (a.PriceType == 2)
-                                                {
-                                                    price += a.Fare * minKm;
-                                                }
-                                                else
-                                                {
-                                                    price += a.Fare;
-                                                }
-                                            }
-                                            lastUp = a.UpTo;
-                                            lastPrice = a.Fare;
-                                        });
-
-                                        if (lastUp < minKm)
-                                        {
-                                            var plusPrice = minKm - lastUp;
-                                            price += lastPrice * plusPrice;
-                                        }
-
-                                        if (reservation.ReturnStatus)
-                                        {
-                                            price *= 2;
-                                        }
-
-                                        getreservation.Add(new GetReservationValues
-                                        {
-                                            LocationCars = item1,
-                                            LastPrice = price,
-                                            ReservationDate = reservation.FlightTime,
-                                            PickLocationName = contentJsonResult.Result.formatted_address,
-                                            DropLocationName = contentJsonResult2.Result.formatted_address,
-                                            PassangerCount = reservation.PeopleCount,
-                                            DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
-                                            PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
-                                            DropLocationPlaceId = reservation.DropValue,
-                                            PickLocationPlaceId = reservation.PickValue,
-                                        });
-                                    }
-                                }
-                            }
-                        }
+                        s.Add(listlocation);
+                        listlocation = new List<LocationCars>();
+                        i = 0;
                     }
+                });
+
+                if (listlocation.Count != 0)
+                {
+                    s.Add(listlocation);
                 }
 
-                var lastVM = new ReservationStepTwoVM()
-                {
-                    ReservationValues = getreservation,
-                    DropLocationLatLng = $"lat:{contentJsonResult.Result.Geometry.Location.lat},lng:{contentJsonResult.Result.Geometry.Location.lng}",
-                    PickLocationLatLng = $"lat:{contentJsonResult2.Result.Geometry.Location.lat},lng:{contentJsonResult2.Result.Geometry.Location.lng}",
-                    DropLocationPlaceId = reservation.DropValue,
-                    PickLocationPlaceId = reservation.PickValue,
-                    Distance = distance,
-                    Duration = duration
-                };
-
-                var reservationDatas = new ReservationDatasVM()
-                {
-                    DropLocationLatLng = $"lat:{contentJsonResult.Result.Geometry.Location.lat},lng:{contentJsonResult.Result.Geometry.Location.lng}",
-                    PickLocationLatLng = $"lat:{contentJsonResult2.Result.Geometry.Location.lat},lng:{contentJsonResult2.Result.Geometry.Location.lng}",
-                    DropLocationPlaceId = reservation.DropValue,
-                    PickLocationPlaceId = reservation.PickValue,
-                    PickLocationName = contentJsonResult.Result.formatted_address,
-                    DropLocationName = contentJsonResult2.Result.formatted_address,
-                    KM = minKm,
-                    ReservationValues = reservation,
-                    Distance = distance,
-                    Duration = duration
-                };
-
-                HttpContext.Session.Remove("reservationData");
-                HttpContext.Session.MySet("reservationData", reservationDatas);
 
 
-                lastVM.ReservationValues = lastVM.ReservationValues.OrderBy(a => a.LastPrice).ToList(); 
-                return View(lastVM);
+                //var httpClient = new HttpClient();
+
+                //var apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + reservation.PickValue + "&key=" + api_key;
+                //var response2 = await httpClient.GetAsync(apiUrl);
+                //var content2 = await response2.Content.ReadAsStringAsync();
+                //var contentJsonResult = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content2);
+
+                //var apiUrl2 = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + reservation.DropValue + "&key=" + api_key;
+                //var response3 = await httpClient.GetAsync(apiUrl2);
+                //var content3 = await response3.Content.ReadAsStringAsync();
+                //var contentJsonResult2 = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content3);
+
+                //var s = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric";
+
+                //var fullUrl2 = s + $"&origins={contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}&destinations={contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}&key=" + api_key;
+
+                //var getreservation = new List<GetReservationValues>();
+                //int minKm = 0;
+
+                //var distance = "";
+                //var duration = "";
+
+                //using (var client = new HttpClient())
+                //{
+                //    HttpResponseMessage response4 = await client.GetAsync(fullUrl2);
+                //    var content4 = await response4.Content.ReadAsStringAsync();
+                //    var data = JObject.Parse(content4);
+
+                //    if (data["status"].ToString() == "OK")
+                //    {
+                //        if (data["rows"][0]["elements"][0]["status"].ToString() == "OK")
+                //        {
+                //            var km = data["rows"][0]["elements"][0]["distance"]["value"].ToString().Replace("{", "").Replace("}", "");
+                //            distance = data["rows"][0]["elements"][0]["distance"]["text"].ToString().Replace("{", "").Replace("}", "");
+                //            duration = data["rows"][0]["elements"][0]["duration"]["text"].ToString().Replace("{", "").Replace("}", "");
+                //            var lastKm = Math.Ceiling(Convert.ToDouble(km) / 1000) * 1000;
+                //            minKm = Convert.ToInt32(lastKm / 1000);
+
+                //            var carLocation = _location.Select();
+                //            foreach (var item in carLocation)
+                //            {
+
+                //                item.LocationCars = _locationCar.SelectByFunc(a => a.LocationId == item.Id);
+
+                //                foreach (var item1 in item.LocationCars)
+                //                {
+                //                    double price = 0;
+                //                    item1.Car = _carDetail.CarDetail(item1.CarId);
+
+                //                    if (item1.Car.MaxPassenger >= reservation.PeopleCount)
+                //                    {
+                //                        item1.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == item1.Id);
+                //                        var lastUp = 0;
+                //                        double lastPrice = 0;
+                //                        item1.LocationCarsFares.ForEach(a =>
+                //                        {
+                //                            if (a.StartFrom < minKm && a.UpTo > minKm)
+                //                            {
+                //                                if (a.PriceType == 2)
+                //                                {
+                //                                    price += a.Fare * minKm;
+                //                                }
+                //                                else
+                //                                {
+                //                                    price += a.Fare;
+                //                                }
+                //                            }
+                //                            lastUp = a.UpTo;
+                //                            lastPrice = a.Fare;
+                //                        });
+
+                //                        if (lastUp < minKm)
+                //                        {
+                //                            var plusPrice = minKm - lastUp;
+                //                            price += lastPrice * plusPrice;
+                //                        }
+
+                //                        if (reservation.ReturnStatus)
+                //                        {
+                //                            price *= 2;
+                //                        }
+
+                //                        getreservation.Add(new GetReservationValues
+                //                        {
+                //                            LocationCars = item1,
+                //                            LastPrice = price,
+                //                            ReservationDate = reservation.FlightTime,
+                //                            PickLocationName = contentJsonResult.Result.formatted_address,
+                //                            DropLocationName = contentJsonResult2.Result.formatted_address,
+                //                            PassangerCount = reservation.PeopleCount,
+                //                            DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
+                //                            PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
+                //                            DropLocationPlaceId = reservation.DropValue,
+                //                            PickLocationPlaceId = reservation.PickValue,
+                //                        });
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+
+                //var lastVM = new ReservationStepTwoVM()
+                //{
+                //    ReservationValues = getreservation,
+                //    DropLocationLatLng = $"lat:{contentJsonResult.Result.Geometry.Location.lat},lng:{contentJsonResult.Result.Geometry.Location.lng}",
+                //    PickLocationLatLng = $"lat:{contentJsonResult2.Result.Geometry.Location.lat},lng:{contentJsonResult2.Result.Geometry.Location.lng}",
+                //    DropLocationPlaceId = reservation.DropValue,
+                //    PickLocationPlaceId = reservation.PickValue,
+                //    Distance = distance,
+                //    Duration = duration
+                //};
+
+                //var reservationDatas = new ReservationDatasVM()
+                //{
+                //    DropLocationLatLng = $"lat:{contentJsonResult.Result.Geometry.Location.lat},lng:{contentJsonResult.Result.Geometry.Location.lng}",
+                //    PickLocationLatLng = $"lat:{contentJsonResult2.Result.Geometry.Location.lat},lng:{contentJsonResult2.Result.Geometry.Location.lng}",
+                //    DropLocationPlaceId = reservation.DropValue,
+                //    PickLocationPlaceId = reservation.PickValue,
+                //    PickLocationName = contentJsonResult.Result.formatted_address,
+                //    DropLocationName = contentJsonResult2.Result.formatted_address,
+                //    KM = minKm,
+                //    ReservationValues = reservation,
+                //    Distance = distance,
+                //    Duration = duration
+                //};
+
+                //HttpContext.Session.Remove("reservationData");
+                //HttpContext.Session.MySet("reservationData", reservationDatas);
+
+
+                //lastVM.ReservationValues = lastVM.ReservationValues.OrderBy(a => a.LastPrice).ToList(); 
+                return null;
+                //return View(lastVM);
             }
             catch (Exception)
             {
