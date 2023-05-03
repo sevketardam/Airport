@@ -21,6 +21,10 @@ namespace Airport.UI.Controllers
 {
     public class ReservationController : Controller
     {
+
+       
+
+
         ILocationsDAL _location;
         ILocationCarsDAL _locationCar;
         ILocationCarsFareDAL _locationCarsFare;
@@ -397,6 +401,13 @@ namespace Airport.UI.Controllers
             }
 
         }
+
+        public IActionResult ManualReservationStepOne()
+        {
+            return View();
+        }
+
+
 
     }
 }

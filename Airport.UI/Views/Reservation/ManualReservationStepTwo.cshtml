@@ -1,0 +1,163 @@
+﻿@using Airport.UI.Models.IM;
+@model ReservationStepTwoVM
+
+<section class="_Module_Margin">
+    <div class="container">
+        <div class="_Step_Flex">
+
+            <div class="_Step_Left">
+                <div class="_Step_Travel_Info_Style">
+                    <div class="_Step_Travel_Flex">
+                        <div>
+                            <h3>Distance: </h3>
+                            <p>@Model.Distance</p>
+                        </div>
+                        <div>
+                            <h3>Estimated Duration:</h3>
+                            <p>@Model.Duration</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="_Step_Map_Area" id="map"></div>
+            </div>
+            <div class="_Step_Right">
+                <div class="_Cars_Flex">
+                    @foreach (var item in Model.ReservationValues)
+                    {
+                        <div class="_Car_Item">
+                            <div class="_Card_Item_Flex">
+                                <div class="_Card_Item_Left">
+                                    <div class="_Card_Item_Left_Inner_Flex">
+                                        <div class="_Card_Item_Left_Inner_Left">
+                                            <img src="@item.LocationCars.Car.Type.CarImageURL" alt="">
+                                        </div>
+                                        <div class="_Card_Item_Left_Inner_Right">
+                                            <h3 class="_Car_Name">
+                                                @item.LocationCars.Car.Brand.CarBrandName
+                                            </h3>
+                                            <p>
+                                                <i class="fa-solid fa-user"></i> <span>@item.LocationCars.Car.MaxPassenger</span>
+                                            </p>
+                                            <p class="mt-2">
+                                                <span title="Small Bag" style="margin-right: 1rem;"><i class="fa-solid fa-suitcase-rolling"></i> <span>@item.LocationCars.Car.SmallBags</span></span>  <span title="Suit Case"><i class="fa-solid fa-briefcase-blank"></i> <span>@item.LocationCars.Car.SuitCase</span></span>
+                                            </p>
+                                            <div class="_Car_Attrs_Flex">
+                                                @if (item.LocationCars.Car.Wifi)
+                                                {
+                                                    <div class="_Car_Attr_Item">
+                                                        <img src="img/i4.png" alt="">
+                                                    </div>
+                                                }
+
+                                                @if (item.LocationCars.Car.Water)
+                                                {
+                                                    <div class="_Car_Attr_Item">
+                                                        <img src="img/i1.png" alt="">
+                                                    </div>
+                                                }
+
+                                                @if (item.LocationCars.Car.Charger)
+                                                {
+                                                    <div class="_Car_Attr_Item">
+                                                        <img src="img/i3.png" alt="">
+                                                    </div>
+                                                }
+
+                                                @if (item.LocationCars.Car.Disabled)
+                                                {
+                                                    <div class="_Car_Attr_Item">
+                                                        <img src="img/i2.png" alt="">
+                                                    </div>
+                                                }
+
+                                                @if (item.LocationCars.Car.Armored)
+                                                {
+                                                    <div class="_Car_Attr_Item">
+                                                        <img src="img/i5.png" alt="">
+                                                    </div>
+                                                }
+
+                                                @if (item.LocationCars.Car.Partition)
+                                                {
+                                                    <div class="_Car_Attr_Item">
+                                                        <img src="img/i6.png" alt="">
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="_Card_Item_Right">
+                                    <h3>
+                                        Total one-way price
+                                    </h3>
+                                    <h4>
+                                        €<span>@item.LastPrice</span>
+                                    </h4>
+                                    <p class="_Green">
+                                        Free Cancellation
+                                    </p>
+                                    <p>
+                                        Taxes included
+                                    </p>
+                                    <a href="/reservation-step-three/@item.LocationCars.Id">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="map"></div>
+
+@section pageJsScript{
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&libraries=places&callback=initMap"></script>
+}
+
+@section pageJs{
+    <script>
+
+        function initMap() {
+            var directionsService = new google.maps.DirectionsService();
+            var directionsRenderer = new google.maps.DirectionsRenderer({
+                polylineOptions: {
+                    strokeColor: 'red' // Yolun rengini burada belirleyebilirsiniz
+                }
+            });
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: {@Model.PickLocationLatLng}, // Başlangıç noktası için koordinatlar
+        mapTypeControl: false,
+            streetViewControl: false,
+                zoomControl: false,
+                    fullscreenControl: false
+                    });
+
+        directionsRenderer.setMap(map);
+
+        var startPlaceId = "@Model.PickLocationPlaceId";
+        var endPlaceId = "@Model.DropLocationPlaceId";
+
+        var request = {
+            origin: { placeId: startPlaceId },
+            destination: { placeId: endPlaceId },
+            travelMode: 'DRIVING' // Yürüyüş, bisiklet, transit veya araç seçeneklerinden birini seçin
+        };
+
+        directionsService.route(request, function (result, status) {
+            if (status == 'OK') {
+                directionsRenderer.setDirections(result);
+            }
+        });
+                }
+
+        window.onload = () => {
+            initMap();
+        }
+
+    </script>
+}
