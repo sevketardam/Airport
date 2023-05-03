@@ -11,7 +11,7 @@
 
 * {
     font-family: "AvertaDemoPE-Regular";
-}   
+}
 
 ._Steps_Style {
     width: 100%;
@@ -73,8 +73,8 @@
 
 .col-md-1.mb-3:not(.col-md-1.mb-3.d-none) {
     display: flex;
-    flex-direction:column;
-    justify-content:end;
+    flex-direction: column;
+    justify-content: end;
     align-items: end;
 }
 
@@ -95,6 +95,7 @@
         width: 100%;
         margin-top: 1rem;
     }
+
     .panel_sevice_item {
         width: 100%;
     }
@@ -126,10 +127,11 @@
     position: relative;
     border: 1px solid rgb(0, 0, 0, .16);
 }
+
     .extrasItem.active {
         border: 4px solid orange;
     }
-    
+
 
     .extrasItem img {
         width: 100%;
@@ -167,4 +169,45 @@
     .extrasArea {
         width: 100%;
     }
+}
+
+
+
+.imageDivStyle {
+    width: 100%;
+    background-color: transparent;
+    height: 20rem;
+    border-radius: 15px;
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+    .imageDivStyle p {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .imageDivStyle img {
+        position: absolute;
+        width: 98%;
+        height: 98%;
+        margin-left: 1rem;
+        object-fit: scale-down;
+    }
+
+
+
+
+input#selectPhoto {
+    width: 95%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    opacity: 0;
+    cursor: pointer;
 }
