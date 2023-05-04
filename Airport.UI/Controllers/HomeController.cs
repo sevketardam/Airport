@@ -117,7 +117,7 @@ namespace Airport.UI.Controllers
                 ViewBag.Message = "success";
                 return View();
             }
-
+            ViewBag.Message = "email";
             return View();
         }
 
