@@ -26,10 +26,6 @@ namespace Airport.UI.Controllers
 {
     public class ReservationController : Controller
     {
-
-
-
-
         ILocationsDAL _location;
         ILocationCarsDAL _locationCar;
         ILocationCarsFareDAL _locationCarsFare;
@@ -493,6 +489,8 @@ namespace Airport.UI.Controllers
                     ReturnStatus = createReservation.ReservationValues.ReturnStatus,
                     DistanceText = createReservation.Distance,
                     DurationText = createReservation.Duration,
+                    Discount = 0,
+                    IsDiscount = false
                 });
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);

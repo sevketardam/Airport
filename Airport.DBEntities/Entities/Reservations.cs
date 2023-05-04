@@ -14,7 +14,7 @@ namespace Airport.DBEntities.Entities
         public string PickLatLng { get; set; }
         public double Price { get; set; }
         public string Name { get; set; }
-        public string Surname { get; set; }
+        public string? Surname { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string DropPlaceId { get; set; }
