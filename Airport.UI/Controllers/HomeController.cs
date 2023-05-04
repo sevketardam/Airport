@@ -113,7 +113,9 @@ namespace Airport.UI.Controllers
                 user.Password = GetMD5(user.Password);
                 _userdata.Insert(user);
 
-                return RedirectToAction("Index", "Home");
+
+                ViewBag.Message = "success";
+                return View();
             }
 
             return View();

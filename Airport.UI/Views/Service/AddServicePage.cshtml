@@ -5,8 +5,6 @@
 
 
 @section pageCSSLink{
-
-
     <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 }
 
@@ -69,7 +67,7 @@
                                 <optgroup label="@category.ServiceCategoryName">
                                     @foreach (var property in category.ServiceProperties)
                                     {
-                                        <option value="@property.Id">@property.ServicePropertyName</option>
+                                        <option value="@property.Id">@Html.Raw(property.ServicePropertyName)</option>
                                     }
                                 </optgroup>
                             }

@@ -193,6 +193,7 @@ namespace Airport.UI.Controllers
             return new JsonResult(new { });
         }
 
+        [Authorize(Roles = "0")]
         [HttpPost]
         public JsonResult AddServiceCategory(string categoryName)
         {
@@ -207,6 +208,7 @@ namespace Airport.UI.Controllers
             }
         }
 
+        [Authorize(Roles ="0")]
         [HttpPost]
         public JsonResult AddServiceProperty(AddServicePropertyVM serviceProperty)
         {

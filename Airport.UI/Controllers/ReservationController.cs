@@ -7,7 +7,6 @@ using Airport.UI.Models.Interface;
 using Airport.UI.Models.VM;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,11 +15,13 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Airport.MessageExtension.VM;
-using static System.Net.WebRequestMethods;
-using Microsoft.CodeAnalysis;
-using Org.BouncyCastle.Asn1.X509;
-using Org.BouncyCastle.Asn1.Cms;
+using System.Web;
 using Microsoft.AspNetCore.Authorization;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
+using System.IO;
+using Microsoft.IdentityModel.Protocols;
 
 namespace Airport.UI.Controllers
 {
@@ -510,15 +511,15 @@ namespace Airport.UI.Controllers
 
                 _reservationsPeople.InsertRage(reservationPeople);
 
-                _mail.SendReservationMail(new ReservationMailVM
-                {
-                    Name = reservation.Name,
-                    Phone = reservation.Phone,
-                    ReservationCode = kod,
-                    Surname = reservation.Surname,
-                    Email = reservation.Email,
-                    Price = createReservation.LastPrice.ToString()
-                });
+                //_mail.SendReservationMail(new ReservationMailVM
+                //{
+                //    Name = reservation.Name,
+                //    Phone = reservation.Phone,
+                //    ReservationCode = kod,
+                //    Surname = reservation.Surname,
+                //    Email = reservation.Email,
+                //    Price = createReservation.LastPrice.ToString()
+                //});
 
                 HttpContext.Session.Remove("reservationData");
 
@@ -563,6 +564,68 @@ namespace Airport.UI.Controllers
         [HttpGet("panel/manual-reservation-one")]
         public async Task<IActionResult> ManualReservationStepOne()
         {
+            Document document = new Document();
+            string pdfFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "pdf");
+            PdfWriter writer = PdfWriter.GetInstance(document, new FileStream("wwwroot/pdf/belge.pdf", FileMode.Create));
+            document.Open();
+
+            // HTML'i PDF'ye dönüştür
+            StringReader reader = new StringReader(@"<html>
+<head>
+	<title>Reservation Information</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f2f2f2;
+			padding: 20px;
+		}
+		.container {
+			background-color: white;
+			border-radius: 10px;
+			padding: 20px;
+			max-width: 600px;
+			margin: 0 auto;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		}
+		.logo {
+			display: block;
+			margin: 0 auto;
+			max-width: 300px;
+			height: auto;
+		{
+		.text {
+			margin-top: 20px;
+			font-size: 18px;
+
+		{
+		.bold {
+			font-weight: bold;
+color:red;
+		{
+	</style>
+</head>
+<body>
+	<div class=""container"">
+		<img class=""logo"" src=""http://test.airportglobaltransfer.com/images/Logo.png"" alt=""Logo"" />
+		<div class=""text"">
+			<p class=""bold"">Reservation Code:</p>
+			<span>{reservationDetail.ReservationCode}</span>
+			<p class=""bold"">Name:</p>
+			<p>{reservationDetail.Name}</p>
+			<p style=""color:red;"" class=""bold"">Surname:</p>
+			<p>{reservationDetail.Surname}</p>
+			<p class=""bold"">Phone:</p>
+			<p>{reservationDetail.Phone}</p>
+			<p class=""bold"">Price:</p>
+			<p>{reservationDetail.Price}</p>
+		</div>
+	</div>
+</body>
+</html>");
+            XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, reader);
+
+            document.Close();
+
             return View();
         }
 
@@ -1032,15 +1095,15 @@ namespace Airport.UI.Controllers
 
                 _reservationsPeople.InsertRage(reservationPeople);
 
-                _mail.SendReservationMail(new ReservationMailVM
-                {
-                    Name = reservation.Name,
-                    Phone = reservation.Phone,
-                    ReservationCode = kod,
-                    Surname = reservation.Surname,
-                    Email = reservation.Email,
-                    Price = createReservation.LastPrice.ToString()
-                });
+                //_mail.SendReservationMail(new ReservationMailVM
+                //{
+                //    Name = reservation.Name,
+                //    Phone = reservation.Phone,
+                //    ReservationCode = kod,
+                //    Surname = reservation.Surname,
+                //    Email = reservation.Email,
+                //    Price = createReservation.LastPrice.ToString()
+                //});
 
                 HttpContext.Session.Remove("reservationData");
 

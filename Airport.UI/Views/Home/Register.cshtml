@@ -9,7 +9,7 @@
 </section>
 <section class="_Module_Margin">
     <div class="container">
-        <form id="_Register_Form" asp-action="personRegister" method="post">
+        <form id="_Register_Form" asp-route="personRegister" method="post">
             <div class="_Register_Flex">
                 <div class="_Register_Input_Div">
                     <label class="_Register_Label">Name</label>
@@ -51,9 +51,33 @@
     </div>
 </section>
 
-<script>
-    var cleave = new Cleave('[name="phoneNumber"]', {
-        numericOnly: true,
-        blocks: [15]
-    });
-</script>
+@section pageJs{
+    <script>
+
+        @if (ViewBag.Message == "success")
+        {
+            <text>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Successfully Created Your Account',
+                })
+            </text>
+        }else if (ViewBag.Message == "email")
+        {
+            <text>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: 'An account has already been created with this email.',
+                })
+            </text> 
+        }
+
+            var cleave = new Cleave('[name="phoneNumber"]', {
+                numericOnly: true,
+                blocks: [15]
+            });
+    </script>
+
+}
