@@ -14,19 +14,21 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Airport.MessageExtension.VM;
-using System.Web;
 using Microsoft.AspNetCore.Authorization;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using iTextSharp.tool.xml;
 using System.IO;
-using Microsoft.IdentityModel.Protocols;
+using iText.Kernel.Pdf;
+using iText.Html2pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Airport.UI.Controllers
 {
     public class ReservationController : Controller
     {
+        private readonly IWebHostEnvironment _env;
+
         ILocationsDAL _location;
         ILocationCarsDAL _locationCar;
         ILocationCarsFareDAL _locationCarsFare;
@@ -37,7 +39,7 @@ namespace Airport.UI.Controllers
         IReservationPeopleDAL _reservationsPeople;
         IMail _mail;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env)
         {
             _location = location;
             _locationCar = locationCar;
@@ -48,7 +50,7 @@ namespace Airport.UI.Controllers
             _getCar = getCar;
             _reservationsPeople = reservationsPeople;
             _mail = mail;
-
+            _env = env;
         }
 
         [HttpPost("reservation", Name = "getLocationValue")]
@@ -564,45 +566,9 @@ namespace Airport.UI.Controllers
         [HttpGet("panel/manual-reservation-one")]
         public async Task<IActionResult> ManualReservationStepOne()
         {
-            Document document = new Document();
-            string pdfFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "pdf");
-            PdfWriter writer = PdfWriter.GetInstance(document, new FileStream("wwwroot/pdf/belge.pdf", FileMode.Create));
-            document.Open();
-
-            // HTML'i PDF'ye dönüştür
-            StringReader reader = new StringReader(@"<html>
+            string html = @"<html>
 <head>
 	<title>Reservation Information</title>
-	<style>
-		body {
-			font-family: Arial, sans-serif;
-			background-color: #f2f2f2;
-			padding: 20px;
-		}
-		.container {
-			background-color: white;
-			border-radius: 10px;
-			padding: 20px;
-			max-width: 600px;
-			margin: 0 auto;
-			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-		}
-		.logo {
-			display: block;
-			margin: 0 auto;
-			max-width: 300px;
-			height: auto;
-		{
-		.text {
-			margin-top: 20px;
-			font-size: 18px;
-
-		{
-		.bold {
-			font-weight: bold;
-color:red;
-		{
-	</style>
 </head>
 <body>
 	<div class=""container"">
@@ -621,10 +587,10 @@ color:red;
 		</div>
 	</div>
 </body>
-</html>");
-            XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, reader);
+</html>";
 
-            document.Close();
+            PdfCreator pdfCreator = new PdfCreator(_env);
+            pdfCreator.CreatePdfFromHtml(html,"deneme.pdf");
 
             return View();
         }
