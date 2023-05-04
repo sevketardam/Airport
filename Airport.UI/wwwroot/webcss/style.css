@@ -3200,3 +3200,85 @@ label.error {
         transform: translateY(-100%);
     }
 }
+
+
+.globalLoader {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255 255 255 / 100%);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 30;
+    opacity: 1;
+    visibility: visible;
+    transition: visibility 250ms, opacity 250ms;
+}
+
+    .globalLoader.deActive {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .globalLoader .car__body {
+        animation: shake 0.2s ease-in-out infinite alternate;
+    }
+
+    .globalLoader .car__line {
+        transform-origin: center right;
+        stroke-dasharray: 22;
+        animation: line 0.8s ease-in-out infinite;
+        animation-fill-mode: both;
+    }
+
+    .globalLoader .car__line--top {
+        animation-delay: 0s;
+    }
+
+    .globalLoader .car__line--middle {
+        animation-delay: 0.2s;
+    }
+
+    .globalLoader .car__line--bottom {
+        animation-delay: 0.4s;
+    }
+
+@keyframes shake {
+    0% {
+        transform: translateY(-1%);
+    }
+
+    100% {
+        transform: translateY(3%);
+    }
+}
+
+@keyframes line {
+    0% {
+        stroke-dashoffset: 22;
+    }
+
+    25% {
+        stroke-dashoffset: 22;
+    }
+
+    50% {
+        stroke-dashoffset: 0;
+    }
+
+    51% {
+        stroke-dashoffset: 0;
+    }
+
+    80% {
+        stroke-dashoffset: -22;
+    }
+
+    100% {
+        stroke-dashoffset: -22;
+    }
+}

@@ -97,5 +97,46 @@
                 $('#_Drop_Off_Value').val(dropPlaceId)
             });
         }
+
+
+
+
+
+
+
+        $('form#reservationForm').validate({
+            rules: {
+                _Pick_Up: {
+                    required: true,
+                },
+                _Drop_Off: {
+                    required: true,
+                },
+                FlightTime: {
+                    required: true,
+                },
+                PeopleCount: {
+                    required: true,
+                },
+            },
+            messages: {
+                _Pick_Up: {
+                    required: "!"
+                },
+                _Drop_Off: {
+                    required: "!"
+                },
+                FlightTime: {
+                    required: "!"
+                },
+                PeopleCount: {
+                    required: "!"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit()
+            },
+        });
+
     </script>
-                                        }
+                   }

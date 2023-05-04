@@ -251,5 +251,10 @@
             $('input[name="Discount"]').val($(this).val())
         })
 
+        var cleave = new Cleave('[name="Phone"]', {
+            numericOnly: true,
+            blocks: [15]
+        });
+
     </script>
 }
