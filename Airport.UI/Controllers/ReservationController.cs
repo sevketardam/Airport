@@ -871,7 +871,6 @@ namespace Airport.UI.Controllers
                 }
 
 
-
                 var selectedDatasMini = HttpContext.Session.MyGet<List<LocationIsOutMiniVM>>("selectedLocationMini").Where(a => a.LocationCarId == id).FirstOrDefault();
 
                 if (selectedDatasMini != null)
