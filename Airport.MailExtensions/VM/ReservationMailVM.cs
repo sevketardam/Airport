@@ -14,5 +14,6 @@ namespace Airport.MessageExtension.VM
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Price { get; set; }
+        public string Id { get; set; }
     }
 }
