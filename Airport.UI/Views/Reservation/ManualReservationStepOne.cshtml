@@ -6,8 +6,8 @@
     <div class="container">
         <div>
             <div class="stepOneBtns">
-                <a href="javascript:;">One Way</a>
-                <a href="javascript:;">Roundtrip</a>
+                <a href="javascript:;" class="One_Way">One Way</a>
+                <a href="javascript:;" class="Roundtrip_Btn">Roundtrip</a>
             </div>
             <div class="stepOneStyle">
                 <div>
@@ -28,9 +28,10 @@
                                 <input type="datetime-local" name="FlightTime">
                             </div>
                             <div class="_Pos_Rel">
-                                <div class="d-none">
+                                <div class="d-none Return_Arrival">
                                     <label for="">Return</label>
-                                    <input type="datetime-local" name="">
+                                    <input type="datetime-local" name="ReturnDate">
+                                    <input type="checkbox" name="ReturnStatus" value="true" style="position:absolute; opacity: 0;visibility: visible; " />
                                 </div>
                                 <div>
                                     <button type="button" class="_Add_Return">

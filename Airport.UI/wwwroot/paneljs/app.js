@@ -248,3 +248,41 @@ $("#discountCheck").on("change", function () {
     $(this).closest("div").find("p").toggleClass("discountP")
     $("._Total_Flex div.price").toggleClass("active");
 })
+
+
+
+$("[name='FlightTime']").on("change", function () {
+    setTimeout(() => {
+        $("#-error").text("!")
+        $(`.Return_Arrival [type="datetime-local"]`).prop("min", $(`[name="FlightTime"]`).val())
+        $(`.Return_Arrival [type="datetime-local"]`).prop("value ", $(`[name="FlightTime"]`).val())
+    }, 1);
+})
+
+$(".Return_Arrival input[type='datetime-local']").on("change", function () {
+    setTimeout(() => {
+        $("#-error").text("!")
+    }, 1);
+})
+
+$("#_Search_Booking").on("click", function () {
+    setTimeout(() => {
+        $("#-error").text("!")
+    }, 1);
+})
+
+
+
+$("._Add_Return, .Roundtrip_Btn").on("click", function () {
+    $("._Add_Return").closest("div").attr("class", "d-none _DeActive")
+    $(".Return_Arrival").attr("class", "Return_Arrival")
+    $(`[name="ReturnStatus"]`).prop("checked", true);
+    $(`.Return_Arrival [type="datetime-local"]`).prop("min", $(`[name="FlightTime"]`).val())
+})
+
+
+$(".One_Way").on("click", function () {
+    $("._Add_Return").closest("div").attr("class", "")
+    $(".Return_Arrival").attr("class", "d-none Return_Arrival")
+    $(`[name="ReturnStatus"]`).prop("checked", false);
+})
