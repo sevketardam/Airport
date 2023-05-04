@@ -18,7 +18,7 @@ namespace Airport.MessageExtensions.Repos
             MimeMessage mimeMessage = new MimeMessage();
 
             MailboxAddress mailboxAddressFrom = new MailboxAddress
-                ("Ben", "arda05697@gmail.com");
+                ("Airport", "airportglobaltransfer@gmail.com");
 
             mimeMessage.From.Add(mailboxAddressFrom);
 
@@ -77,6 +77,8 @@ namespace Airport.MessageExtensions.Repos
 			<p>{reservationDetail.Phone}</p>
 			<p class=""bold"">Price:</p>
 			<p>{reservationDetail.Price}</p>
+
+			<a href=""http://test.airportglobaltransfer.com/pdf/{reservationDetail.ReservationCode}-{reservationDetail.Id}"">Download PDF</p>
 		</div>
 	</div>
 </body>
@@ -89,7 +91,7 @@ namespace Airport.MessageExtensions.Repos
             SmtpClient client = new SmtpClient();
             client.Connect("smtp.gmail.com", 587, false);
             //sepetispor@gmail.com //cmjvjyecqpnqwkis
-            client.Authenticate("arda05697@gmail.com", "ufgwwqoebmoodhzx");
+            client.Authenticate("airportglobaltransfer@gmail.com", "jcgbdclwxjpcpcew");
             client.Send(mimeMessage);
             client.Disconnect(true);
         }

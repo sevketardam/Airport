@@ -22,6 +22,7 @@ using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using Microsoft.AspNetCore.Hosting;
+using Airport.MessageExtension.VM;
 
 namespace Airport.UI.Controllers
 {
@@ -513,17 +514,21 @@ namespace Airport.UI.Controllers
 
                 _reservationsPeople.InsertRage(reservationPeople);
 
-                //_mail.SendReservationMail(new ReservationMailVM
-                //{
-                //    Name = reservation.Name,
-                //    Phone = reservation.Phone,
-                //    ReservationCode = kod,
-                //    Surname = reservation.Surname,
-                //    Email = reservation.Email,
-                //    Price = createReservation.LastPrice.ToString()
-                //});
+                _mail.SendReservationMail(new ReservationMailVM
+                {
+                    Name = reservation.Name,
+                    Phone = reservation.Phone,
+                    ReservationCode = kod,
+                    Surname = reservation.Surname,
+                    Email = reservation.Email,
+                    Price = createReservation.LastPrice.ToString(),
+                    Id = item.Id.ToString()
+                });
 
                 HttpContext.Session.Remove("reservationData");
+
+                PdfCreator pdfCreator = new PdfCreator(_env);
+                pdfCreator.CreateReservationPDF(kod + "-" + item.Id, item);
 
                 return View(item);
             }
@@ -566,31 +571,6 @@ namespace Airport.UI.Controllers
         [HttpGet("panel/manual-reservation-one")]
         public async Task<IActionResult> ManualReservationStepOne()
         {
-            string html = @"<html>
-<head>
-	<title>Reservation Information</title>
-</head>
-<body>
-	<div class=""container"">
-		<img class=""logo"" src=""http://test.airportglobaltransfer.com/images/Logo.png"" alt=""Logo"" />
-		<div class=""text"">
-			<p class=""bold"">Reservation Code:</p>
-			<span>{reservationDetail.ReservationCode}</span>
-			<p class=""bold"">Name:</p>
-			<p>{reservationDetail.Name}</p>
-			<p style=""color:red;"" class=""bold"">Surname:</p>
-			<p>{reservationDetail.Surname}</p>
-			<p class=""bold"">Phone:</p>
-			<p>{reservationDetail.Phone}</p>
-			<p class=""bold"">Price:</p>
-			<p>{reservationDetail.Price}</p>
-		</div>
-	</div>
-</body>
-</html>";
-
-            PdfCreator pdfCreator = new PdfCreator(_env);
-            pdfCreator.CreatePdfFromHtml(html,"deneme.pdf");
 
             return View();
         }
@@ -1061,17 +1041,25 @@ namespace Airport.UI.Controllers
 
                 _reservationsPeople.InsertRage(reservationPeople);
 
-                //_mail.SendReservationMail(new ReservationMailVM
-                //{
-                //    Name = reservation.Name,
-                //    Phone = reservation.Phone,
-                //    ReservationCode = kod,
-                //    Surname = reservation.Surname,
-                //    Email = reservation.Email,
-                //    Price = createReservation.LastPrice.ToString()
-                //});
+                _mail.SendReservationMail(new ReservationMailVM
+                {
+                    Name = reservation.Name,
+                    Phone = reservation.Phone,
+                    ReservationCode = kod,
+                    Surname = reservation.Surname,
+                    Email = reservation.Email,
+                    Price = createReservation.LastPrice.ToString(),
+                    Id = item.Id.ToString()
+                    
+                });
 
                 HttpContext.Session.Remove("reservationData");
+
+                PdfCreator pdfCreator = new PdfCreator(_env);
+                
+
+                pdfCreator.CreateReservationPDF(kod+"-"+item.Id,item);
+
 
                 return View(item);
             }
