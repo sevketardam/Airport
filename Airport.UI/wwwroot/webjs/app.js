@@ -210,38 +210,7 @@ function numControl(event) {
     return true;
 }
 
-// Anasayfadaki araçların slider kodu
-var swiper = new Swiper("._Car_Slider", {
-    slidesPerView: 1,
-    spaceBetween: 10,
 
-    navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-    },
-    breakpoints: {
-        480: {
-            slidesPerView: 1,
-            spaceBetween: 0,
-        },
-        576: {
-            slidesPerView: 2,
-            spaceBetween: 10,
-        },
-        768: {
-            slidesPerView: 3,
-            spaceBetween: 20,
-        },
-        992: {
-            slidesPerView: 4,
-            spaceBetween: 30,
-        },
-        1024: {
-            slidesPerView: 5,
-            spaceBetween: 40,
-        },
-    },
-});
 
 // Browse Butonuna basıldığında file inputun click olması sağlandı
 $("._Clone_Input").on("click", function () {
@@ -313,30 +282,10 @@ $('form#_Sign_Form').validate({
 //, .Return_Arrival[type = 'datetime-local']
 $("[name='FlightTime']").on("change", function () {
     setTimeout(() => {
-        $("#-error").text("!")
         $(`.Return_Arrival [type="datetime-local"]`).prop("min", $(`[name="FlightTime"]`).val())
         $(`.Return_Arrival [type="datetime-local"]`).prop("value ", $(`[name="FlightTime"]`).val())
     }, 1);
 })
-
-$(".Return_Arrival input[type='datetime-local']").on("change", function () {
-    setTimeout(() => {
-        $("#-error").text("!")
-    }, 1);
-})
-
-$("#_Search_Booking").on("click", function () {
-    setTimeout(() => {
-        $("#-error").text("!")
-    }, 1);
-})
-
-$(".stepOneSubmit").on("click", function () {
-    setTimeout(() => {
-        $("#-error").text("!")
-    }, 1);
-})
-
 
 
 $("._Add_Return, .Roundtrip_Btn").on("click", function () {
@@ -357,3 +306,69 @@ $(".One_Way").on("click", function () {
 $(".nav_btn").on("click", function () {
     $(this).closest(".btn-group").find(".dropdown-menu").toggleClass("activeNav");
 })
+
+$("._user_btns div").on("click", function () {
+    let type = $(this).attr("class");
+
+    if (type == "_up_number") {
+        $(this)
+            .closest("._Pos_Rel")
+            .find("input")
+            .val(Number($(this).closest("._Pos_Rel").find("input").val()) + 1);
+    } else {
+        if ($(this).closest("._Pos_Rel").find("input").val() != 0)
+            $(this)
+                .closest("._Pos_Rel")
+                .find("input")
+                .val(Number($(this).closest("._Pos_Rel").find("input").val()) - 1);
+    }
+});
+
+$("#_Passenger_Form").validate({
+    rules: {
+        Name: {
+            required: true,
+        },
+        Surname: {
+            required: true,
+        },
+        Email: {
+            required: true,
+            email: true,
+        },
+        Phone: {
+            required: true,
+        },
+    },
+    messages: {
+        Name: {
+            required: "!",
+        },
+        Surname: {
+            required: "!",
+        },
+        Email: {
+            required: "!",
+        },
+        Phone: {
+            required: "!",
+        },
+    },
+    submitHandler: function (form) {
+
+        $("body").append(`
+        <div class="createLoader active">
+            <p>Creating</p>
+            <div class="words">
+                <span class="word">Reservation</span>
+                <span class="word">PDF</span>
+            </div>
+        </div>
+        `)
+        $("html, body").css("overflow", "hidden");
+
+        form.submit();
+    },
+});
+
+

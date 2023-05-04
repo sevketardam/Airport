@@ -1,4 +1,9 @@
 
+
+$(document).ready(function () {
+    $(".globalLoader").addClass("deActive");
+});
+
 // Araç Ekleme Form Validasyonu
 $("#addMyCarForm").validate({
     rules: {
@@ -289,7 +294,6 @@ $(".One_Way").on("click", function () {
 
 
 
-
 $("#_Passenger_Form").validate({
     rules: {
         Name: {
@@ -308,16 +312,16 @@ $("#_Passenger_Form").validate({
     },
     messages: {
         Name: {
-            required: "This Field is Required",
+            required: "!",
         },
         Surname: {
-            required: "This Field is Required",
+            required: "!",
         },
         Email: {
-            required: "This Field is Required",
+            required: "!",
         },
         Phone: {
-            required: "This Field is Required",
+            required: "!",
         },
     },
     submitHandler: function (form) {
@@ -331,17 +335,9 @@ $("#_Passenger_Form").validate({
             </div>
         </div>
         `)
+        $("html, body").css("overflow", "hidden");
 
         form.submit();
     },
 });
 
-
-$(document).ready(function () {
-    // Banner formundaki comboboxlara eklenti eklendi
-    //$("._Pick_Up").select2();
-    //$("._Drop_Off").select2();
-    // Banner formundaki comboboxlara eklenti eklendi
-
-    $(".globalLoader").addClass("deActive");
-});

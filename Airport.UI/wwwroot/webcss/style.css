@@ -3149,9 +3149,9 @@ label.error {
     height: 40px;
     padding: 10px 10px;
     display: -ms-flexbox;
-    border-radius: 8px;
+    border-radius: 0;
     position: fixed;
-    z-index: 50;
+    z-index: 1350;
     background: #00000099;
     width: 100%;
     height: 100%;
@@ -3174,6 +3174,9 @@ label.error {
     .createLoader p {
         height: 2rem;
         margin: 0 0 .2rem 0;
+        display: flex;
+        font-size: 1.5rem;
+        align-items: center;
     }
 
     .createLoader .words {
@@ -3213,7 +3216,7 @@ label.error {
     height: 100%;
     top: 0;
     left: 0;
-    z-index: 30;
+    z-index: 1030;
     opacity: 1;
     visibility: visible;
     transition: visibility 250ms, opacity 250ms;

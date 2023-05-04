@@ -603,7 +603,7 @@ namespace Airport.UI.Controllers
                 var content4 = response4.Content.ReadAsStringAsync().Result;
                 var betweenLocation = JsonConvert.DeserializeObject<DistanceMatrixApiResponse>(content4);
 
-                if (betweenLocation.status == "OK")
+                if (betweenLocation.status == "OK" && betweenLocation.rows[0].elements[0].status == "OK")
                 {
                     var locations = _location.Select();
                     var listlocation = new List<ReservationLocationCarsVM>();

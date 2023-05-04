@@ -15,12 +15,12 @@
                         <div class="_Form_Inputs">
                             <div class="_Pos_Rel">
                                 <label for="">Pick Up</label>
-                                <input type="text" id="_Pick_Up" placeholder="Search Location">
+                                <input type="text" id="_Pick_Up" name="_Pick_Up_Text" placeholder="Search Location">
                                 <input type="hidden" name="PickValue" id="_Pick_Up_Value">
                             </div>
                             <div class="_Pos_Rel">
                                 <label for="">Drop Off</label>
-                                <input type="text" id="_Drop_Off" placeholder="Search Location">
+                                <input type="text" id="_Drop_Off" name="_Drop_Off_Text" placeholder="Search Location">
                                 <input type="hidden" name="DropValue" id="_Drop_Off_Value">
                             </div>
                             <div class="_Pos_Rel">
@@ -104,15 +104,18 @@
 
 
 
-        $('form#reservationForm').validate({
+        $('form.stepOneForm').validate({
             rules: {
-                _Pick_Up: {
+                _Pick_Up_Text: {
                     required: true,
                 },
-                _Drop_Off: {
+                _Drop_Off_Text: {
                     required: true,
                 },
                 FlightTime: {
+                    required: true,
+                },
+                ReturnDate: {
                     required: true,
                 },
                 PeopleCount: {
@@ -120,20 +123,25 @@
                 },
             },
             messages: {
-                _Pick_Up: {
-                    required: "!"
+                _Pick_Up_Text: {
+                    required: "This Field is Required!"
                 },
-                _Drop_Off: {
-                    required: "!"
+                _Drop_Off_Text: {
+                    required: "This Field is Required!"
                 },
                 FlightTime: {
-                    required: "!"
+                    required: "This Field is Required!"
+                },
+                ReturnDate: {
+                    required: "This Field is Required!"
                 },
                 PeopleCount: {
-                    required: "!"
+                    required: "This Field is Required!"
                 }
             },
             submitHandler: function (form) {
+                $(".globalLoader").removeClass("deActive")
+                $("html, body").css("overflow", "hidden");
                 form.submit()
             },
         });
