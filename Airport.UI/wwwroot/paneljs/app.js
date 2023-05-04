@@ -286,3 +286,62 @@ $(".One_Way").on("click", function () {
     $(".Return_Arrival").attr("class", "d-none Return_Arrival")
     $(`[name="ReturnStatus"]`).prop("checked", false);
 })
+
+
+
+
+$("#_Passenger_Form").validate({
+    rules: {
+        Name: {
+            required: true,
+        },
+        Surname: {
+            required: true,
+        },
+        Email: {
+            required: true,
+            email: true,
+        },
+        Phone: {
+            required: true,
+        },
+    },
+    messages: {
+        Name: {
+            required: "This Field is Required",
+        },
+        Surname: {
+            required: "This Field is Required",
+        },
+        Email: {
+            required: "This Field is Required",
+        },
+        Phone: {
+            required: "This Field is Required",
+        },
+    },
+    submitHandler: function (form) {
+
+        $("body").append(`
+        <div class="createLoader active">
+            <p>Creating</p>
+            <div class="words">
+                <span class="word">Reservation</span>
+                <span class="word">PDF</span>
+            </div>
+        </div>
+        `)
+
+        form.submit();
+    },
+});
+
+
+$(document).ready(function () {
+    // Banner formundaki comboboxlara eklenti eklendi
+    //$("._Pick_Up").select2();
+    //$("._Drop_Off").select2();
+    // Banner formundaki comboboxlara eklenti eklendi
+
+    $(".globalLoader").addClass("deActive");
+});

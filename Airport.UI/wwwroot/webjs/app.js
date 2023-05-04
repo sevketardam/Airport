@@ -2,11 +2,14 @@ $("._Auth ul._Btns > li._Active > a").on("click", function () {
     $("._Sing_Form_Main").toggleClass("_Active");
 });
 
+
 $(document).ready(function () {
     // Banner formundaki comboboxlara eklenti eklendi
-    $("._Pick_Up").select2();
-    $("._Drop_Off").select2();
+    //$("._Pick_Up").select2();
+    //$("._Drop_Off").select2();
     // Banner formundaki comboboxlara eklenti eklendi
+
+    $(".globalLoader").addClass("deActive");
 });
 
 // Banner formunda comboboxların value değerlerini almak için
@@ -323,6 +326,12 @@ $(".Return_Arrival input[type='datetime-local']").on("change", function () {
 })
 
 $("#_Search_Booking").on("click", function () {
+    setTimeout(() => {
+        $("#-error").text("!")
+    }, 1);
+})
+
+$(".stepOneSubmit").on("click", function () {
     setTimeout(() => {
         $("#-error").text("!")
     }, 1);
