@@ -236,9 +236,9 @@ namespace Airport.UI.Controllers
                                 b.LocationCarsFares.ForEach(c =>
                                 {
 
-                                    if (c.UpTo < minKm)
+                                    if (c.StartFrom < minKm)
                                     {
-                                        if (c.PriceType == 1)
+                                        if (c.PriceType == 2)
                                         {
                                             price += c.Fare * (c.UpTo - c.StartFrom);
                                         }
@@ -346,8 +346,6 @@ namespace Airport.UI.Controllers
                     return NotFound();
                 }
 
-
-
                 var selectedDatasMini = HttpContext.Session.MyGet<List<LocationIsOutMiniVM>>("selectedLocationMini").Where(a => a.LocationCarId == id).FirstOrDefault();
 
                 if (selectedDatasMini != null)
@@ -380,9 +378,9 @@ namespace Airport.UI.Controllers
                         locationCar.LocationCarsFares.ForEach(c =>
                         {
 
-                            if (c.UpTo < datas.KM)
+                            if (c.StartFrom < datas.KM)
                             {
-                                if (c.PriceType == 1)
+                                if (c.PriceType == 2)
                                 {
                                     price += c.Fare * (c.UpTo - c.StartFrom);
                                 }
@@ -567,13 +565,12 @@ namespace Airport.UI.Controllers
         [HttpGet("panel/manual-reservation-one")]
         public async Task<IActionResult> ManualReservationStepOne()
         {
-
             return View();
         }
 
         [Authorize(Roles = "0")]
-        [HttpPost("panel/manual-reservation-one", Name = "getManualLocationValue")]
-        public async Task<IActionResult> ManualReservationStepOnePost(GetResevationIM reservation)
+        [HttpPost("panel/manual-reservation-two", Name = "getManualLocationValue")]
+        public async Task<IActionResult> ManualReservationStepTwo(GetResevationIM reservation)
         {
             try
             {
@@ -754,9 +751,9 @@ namespace Airport.UI.Controllers
                                 b.LocationCarsFares.ForEach(c =>
                                 {
 
-                                    if (c.UpTo < minKm)
+                                    if (c.StartFrom < minKm)
                                     {
-                                        if (c.PriceType == 1)
+                                        if (c.PriceType == 2)
                                         {
                                             price += c.Fare * (c.UpTo - c.StartFrom);
                                         }
@@ -838,32 +835,226 @@ namespace Airport.UI.Controllers
                 }
 
 
-                return RedirectToAction("Index", "Panel");
+                return RedirectToAction("Index", "Home");
                 //return View(lastVM);
             }
             catch (Exception)
             {
                 ViewBag.Error = "Error";
-                return RedirectToAction("Index", "Panel");
+                return RedirectToAction("Index", "Home");
             }
 
         }
 
 
         [Authorize(Roles = "0")]
-        [HttpGet("panel/manual-reservation-two")]
-        public IActionResult ManualReservationStepTwo()
+        [HttpGet("panel/manual-reservation-three/{id}")]
+        public IActionResult ManualReservationStepThree(int id)
         {
-            return View();
+            try
+            {
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var user = _userDatas.SelectByID(userId);
+
+                var datas = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
+
+                if (datas == null)
+                {
+                    return NotFound();
+                }
+
+
+
+                var selectedDatasMini = HttpContext.Session.MyGet<List<LocationIsOutMiniVM>>("selectedLocationMini").Where(a => a.LocationCarId == id).FirstOrDefault();
+
+                if (selectedDatasMini != null)
+                {
+                    var locationCar = _locationCar.SelectByID(selectedDatasMini.LocationCarId);
+
+
+                    locationCar.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == id);
+                    locationCar.Location = _location.SelectByID(locationCar.LocationId);
+
+                    //fixed= 1
+                    //per = 2 
+
+                    double price = 0;
+                    var lastUp = 0;
+                    double lastPrice = 0;
+                    if (selectedDatasMini.IsOutZone)
+                    {
+                        price = locationCar.Location.DropCharge + (datas.KM * locationCar.Location.OutZonePricePerKM);
+
+                        if (datas.ReservationValues.ReturnStatus)
+                        {
+                            price *= 2;
+                        }
+                    }
+                    else
+                    {
+                        locationCar.LocationCarsFares = _locationCarsFare.SelectByFunc(c => c.LocationCarId == locationCar.Id);
+
+                        locationCar.LocationCarsFares.ForEach(c =>
+                        {
+
+                            if (c.StartFrom < datas.KM)
+                            {
+                                if (c.PriceType == 2)
+                                {
+                                    price += c.Fare * (c.UpTo - c.StartFrom);
+                                }
+                                else
+                                {
+                                    price += c.Fare;
+                                }
+                            }
+
+                            lastUp = c.UpTo;
+                            lastPrice = c.Fare;
+                        });
+
+
+                        if (lastUp < datas.KM)
+                        {
+                            var plusPrice = datas.KM - lastUp;
+                            price += lastPrice * plusPrice;
+                        }
+
+                        if (datas.ReservationValues.ReturnStatus)
+                        {
+                            price *= 2;
+                        }
+
+                    }
+
+                    datas.LastPrice = price;
+                    datas.LocationCar = locationCar;
+                    datas.LocationCar.Car = _carDetail.CarDetail(locationCar.CarId);
+
+                    HttpContext.Session.Remove("reservationData");
+
+                    HttpContext.Session.MySet("reservationData", datas);
+
+                    var reservation = new ReservationStepThreeVM()
+                    {
+                        SelectedData = datas,
+                        User = user
+                    };
+
+                    return View(reservation);
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "Error";
+                return RedirectToAction("Index", "Home");
+            }
+
         }
+
         [Authorize(Roles = "0")]
-        [HttpGet("panel/manual-reservation-three")]
-        public IActionResult ManualReservationStepThree()
+        [HttpPost("panel/manual-reservation-three/{id}",Name = "getManualBookValues")]
+        public IActionResult ManualReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname)
         {
-            return View();
+            try
+            {
+
+                var createReservation = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
+
+                if (createReservation == null)
+                {
+                    return NotFound();
+                }
+
+                var peopleList = new List<GetOtherPeople>();
+                for (int i = 0; i < OthersName.Count; i++)
+                {
+                    if (OthersName[i].Trim() != "" && OthersName[i] != null)
+                    {
+                        peopleList.Add(new GetOtherPeople
+                        {
+                            OthersName = OthersName[i],
+                            OthersSurname = OthersSurname[i]
+                        });
+                    }
+                }
+
+
+                Random random = new Random();
+                int kodUzunlugu = 6;
+                string karakterler = "0123456789";
+                string kod = "";
+                for (int i = 0; i < kodUzunlugu; i++)
+                {
+                    int index = random.Next(karakterler.Length);
+                    kod += karakterler[index];
+                }
+
+                var item = _reservations.Insert(new Reservations
+                {
+                    DropLatLng = createReservation.DropLocationLatLng,
+                    PickLatLng = createReservation.PickLocationLatLng,
+                    Phone = reservation.Phone,
+                    DropPlaceId = createReservation.DropLocationPlaceId,
+                    PickPlaceId = createReservation.PickLocationPlaceId,
+                    Email = reservation.Email,
+                    LocationCarId = createReservation.LocationCar.Id,
+                    Name = reservation.Name,
+                    ReservationCode = kod,
+                    Price = createReservation.LastPrice,
+                    Surname = reservation.Surname,
+                    DropFullName = createReservation.DropLocationName,
+                    PickFullName = createReservation.PickLocationName,
+                    PeopleCount = createReservation.ReservationValues.PeopleCount,
+                    ReservationDate = createReservation.ReservationValues.FlightTime,
+                    ReturnDate = createReservation.ReservationValues.ReturnDate,
+                    ReturnStatus = createReservation.ReservationValues.ReturnStatus,
+                    DistanceText = createReservation.Distance,
+                    DurationText = createReservation.Duration,
+                    IsDiscount = reservation.IsDiscount,
+                    Discount = reservation.Discount
+                });
+
+                item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
+                item.LocationCars.Car = _getCar.CarDetail(item.LocationCars.CarId);
+
+                var reservationPeople = new List<ReservationPeople>();
+
+                peopleList.ForEach(a =>
+                {
+                    reservationPeople.Add(new ReservationPeople
+                    {
+                        Name = a.OthersName,
+                        Surname = a.OthersSurname,
+                        ReservationId = item.Id
+                    });
+                });
+
+                _reservationsPeople.InsertRage(reservationPeople);
+
+                _mail.SendReservationMail(new ReservationMailVM
+                {
+                    Name = reservation.Name,
+                    Phone = reservation.Phone,
+                    ReservationCode = kod,
+                    Surname = reservation.Surname,
+                    Email = reservation.Email,
+                    Price = createReservation.LastPrice.ToString()
+                });
+
+                HttpContext.Session.Remove("reservationData");
+
+                return View(item);
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "Error";
+                return RedirectToAction("Index", "Home");
+            }
+
         }
-
-
 
 
 

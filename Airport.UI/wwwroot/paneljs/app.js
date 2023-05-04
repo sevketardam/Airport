@@ -242,3 +242,9 @@ $(".extrasItem").on("click", function () {
         $(this).removeClass("active")
     }
 })
+
+
+$("#discountCheck").on("change", function () {
+    $(this).closest("div").find("p").toggleClass("discountP")
+    $("._Total_Flex div.price").toggleClass("active");
+})

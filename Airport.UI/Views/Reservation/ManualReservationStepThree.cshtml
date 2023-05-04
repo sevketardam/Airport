@@ -50,13 +50,6 @@
             justify-content: space-between;
         }
 
-            ._Total_Flex p {
-                font-size: 2rem;
-                border: 1px solid rgb(0,0,0,.5);
-                border-radius: 5px;
-                padding: 0 1rem;
-            }
-
         #_Passenger_Form span {
             font-size: 12px;
         }
@@ -64,6 +57,55 @@
         ._Profile_Right._None_Shodow {
             box-shadow: none !important;
         }
+
+
+
+        ._Total_Flex div.price {
+            border: 1px solid rgb(0, 0, 0, .5);
+            width: 9rem;
+            position: relative;
+            padding: .5rem .5rem .5rem .5rem;
+            transition: padding 250ms;
+        }
+
+            ._Total_Flex div.price.active {
+                padding: .5rem .5rem 2.5rem .5rem;
+            }
+
+
+        ._Total_Flex p {
+            font-size: 1.5rem;
+            border-radius: 5px;
+            padding: 0 1rem;
+            text-align: center;
+            transition: font-size 250ms, font-weight 250ms, text-decoration 250ms;
+        }
+
+        .newPriceInput {
+            width: 89%;
+            padding: 0 1rem;
+            height: 2rem;
+            border: none;
+            box-shadow: 0 0 5px rgb(0, 0, 0, .16);
+            outline: none;
+            position: absolute;
+            border-radius: 5px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 250ms, visibility 250ms;
+        }
+
+        div.price.active .newPriceInput {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .discountP {
+            text-decoration: line-through;
+            font-size: .9rem !important;
+            font-weight: 200 !important;
+        }
+
     </style>
 }
 
@@ -106,14 +148,20 @@
                             <h5>@Model.SelectedData.ReservationValues.FlightTime</h5>
                         </div>
                         <div class="my-2">
+
                             <div class="_Total_Flex">
                                 <h3>
                                     Total
                                 </h3>
-                                <p>
-                                    <span>€</span> <span contenteditable="true">@Model.SelectedData.LastPrice</span>
-                                </p>
+                                <div>
+                                    <div class="price">
+                                        <p><span>€ @Model.SelectedData.LastPrice</span></p>
+                                        <input class="newPriceInput" type="number" id="newPriceInput" value="@Model.SelectedData.LastPrice">
+                                    </div>
+                                    <input id="discountCheck" type="checkbox"> Discount
+                                </div>
                             </div>
+
                             <p>
                                 Free Cancellation <br>
                                 All Taxes included
@@ -136,7 +184,7 @@
                         </p>
                     </div>
                     <div>
-                        <form id="_Passenger_Form" asp-route="getBookValues">
+                        <form id="_Passenger_Form" asp-route="getManualBookValues">
                             <div class="_Form_Flex_Style">
                                 <div class="_Form_Div">
                                     <label class="_Form_Label">Name</label>
@@ -153,6 +201,7 @@
                                         Your invoice will be sent to this e-mail address
                                     </span>
                                 </div>
+                              
                                 <div class="_Form_Div _Info_Div">
                                     <label class="_Form_Label">Phone</label>
                                     <input type="text" value="@Model.User?.PhoneNumber" name="Phone">
@@ -160,6 +209,8 @@
                                         You will be receiving both text and phone calls from
                                         the driver at this number.
                                     </span>
+                                    <input type="hidden" name="IsDiscount" value="false" />
+                                    <input type="hidden" name="Discount" value="@Model.SelectedData.LastPrice" />
                                 </div>
 
                                 @for (int i = 0; i < Model.SelectedData.ReservationValues.PeopleCount - 1; i++)
@@ -188,3 +239,17 @@
         </div>
     </div>
 </section>
+
+
+@section pageJs{
+    <script>
+        $('#discountCheck').on("change",function(){
+            $('input[name="IsDiscount"]').val($(this).is(":checked"))
+        })
+
+        $('#newPriceInput').on('change',function(){
+            $('input[name="Discount"]').val($(this).val())
+        })
+
+    </script>
+}
