@@ -167,11 +167,11 @@ namespace Airport.UI.Controllers
                     var getCarDetails = _carDetail.CarDetail(myCar.Id);
 
                     var Brands = _carBrands.Select();
-                    var Models = _carModels.SelectByFuncPer(a => a.CarBrandId == myCar.BrandId);
-                    var Series = _carSeries.SelectByFuncPer(a => a.CarModelId == myCar.ModelId);
+                    var Models = _carModels.SelectByFunc(a => a.CarBrandId == myCar.BrandId);
+                    var Series = _carSeries.SelectByFunc(a => a.CarModelId == myCar.ModelId);
                     var Types = _carTypes.Select().ToImmutableList();
-                    var Services = _services.SelectByFuncPer(a => a.UserId == userId);
-                    var Drivers = _drivers.SelectByFuncPer(a => a.UserId == userId);
+                    var Services = _services.SelectByFunc(a => a.UserId == userId);
+                    var Drivers = _drivers.SelectByFunc(a => a.UserId == userId);
 
 
                     var updateBrand = new UpdateMyCarVM()

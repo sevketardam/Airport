@@ -17,12 +17,14 @@ namespace Airport.UI.Controllers
         IServicePropertiesDAL _serviceProperties;
         IServicesDAL _services;
         IServiceItemsDAL _items;
-        public ServiceController(IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IServicesDAL services, IServiceItemsDAL items)
+        IMyCarsDAL _myCars;
+        public ServiceController(IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IServicesDAL services, IServiceItemsDAL items, IMyCarsDAL myCars)
         {
             _serviceCategory = serviceCategories;
             _serviceProperties = serviceProperties;
             _services = services;
             _items = items;
+            _myCars = myCars;
         }
 
         [HttpGet("panel/service")]
@@ -37,7 +39,8 @@ namespace Airport.UI.Controllers
         [HttpGet("panel/add-service")]
         public IActionResult AddServicePage()
         {
-            var serviceCategories = _serviceCategory.Select();
+            var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+            var serviceCategories = _serviceCategory.SelectByFunc(a=>a.UserId == userId);
 
             serviceCategories.ForEach(a =>
             {
@@ -55,14 +58,13 @@ namespace Airport.UI.Controllers
             var serviceProperties = new List<ServiceProperties>();
             serviceCategories.ForEach(a =>
             {
-                serviceProperties.AddRange(_serviceProperties.SelectByFunc(a => a.ServiceCategoryId == a.Id));
+                a.ServiceProperties = _serviceProperties.SelectByFunc(b => b.ServiceCategoryId == a.Id);
             });
 
 
             var ServiceItems = new ServiceManagementVM()
             {
                 ServiceCategories = serviceCategories,
-                ServiceProperties = serviceProperties,
             };
 
 
@@ -96,21 +98,13 @@ namespace Airport.UI.Controllers
                             ServiceProperties = _serviceProperties.SelectByID(a.ServicePropertyId)                          
                         });
 
-                        //ServicePriceDataVM.Add(new ServicePriceDataVM()
-                        //{
-                        //    CategoryId = a.ServiceProperty.ServiceCategoryId,
-                        //    PriceData = ServiceCategoryPriceVM
-                        //});
-
                         serviceSelectedProps.Add(_serviceProperties.SelectByID(a.ServicePropertyId));
                     });
 
 
                     var s = ServiceCategoryPriceVM.GroupBy(a => a.CategoryId).ToList();
 
-
                     var d = new List<ServiceLastCategoryPriceVM>();
-
 
                     s.ForEach(a => 
                     {
@@ -125,7 +119,7 @@ namespace Airport.UI.Controllers
 
                     var updateServiceVM = new UpdatePageServiceVM()
                     {
-                        ServiceCategories = _serviceCategory.Select(),
+                        ServiceCategories = _serviceCategory.SelectByFunc(a=>a.UserId == userId),
                         ServiceSelectedProperties = serviceSelectedProps,
                         Service = service,
                         ServicePriceDatas = d
@@ -233,6 +227,55 @@ namespace Airport.UI.Controllers
                 return new JsonResult(new { });
             }
         }
+
+        [HttpPost]
+        public JsonResult DeleteService(int id)
+        {
+            try
+            {
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var service = _serviceCategory.SelectByFunc(a=>a.Id == id && a.UserId == userId).FirstOrDefault();
+                if (service != null)
+                {
+                    var serviceProps = _serviceProperties.SelectByFunc(a=>a.ServiceCategoryId == service.Id);
+                    serviceProps.ForEach(a =>
+                    {
+
+
+                        var items = _items.SelectByFunc(b => b.ServicePropertyId == a.Id);
+                        items.ForEach(b =>
+                        {
+                            var services = _services.SelectByFunc(c => c.Id == b.ServiceId);
+                            services.ForEach(c =>
+                            {
+                                var myCars = _myCars.SelectByFunc(d=>d.ServiceId == c.Id);
+                                myCars.ForEach(d =>
+                                {
+                                    d.ServiceId = null;
+                                    _myCars.Update(d);
+                                });
+
+                                _services.HardDelete(c);
+                            });
+                            _items.HardDelete(b);
+                        });
+
+
+                        _serviceProperties.HardDelete(a);
+                    });
+
+                    _serviceCategory.HardDelete(service);
+
+                }
+
+                return new JsonResult(new { result = 1 });
+            }
+            catch (System.Exception)
+            {
+                return new JsonResult(new { });
+            }
+        }
+
 
         [HttpPost]
         public JsonResult AddService(AddServiceVM service)

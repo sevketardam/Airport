@@ -16,6 +16,10 @@
     margin: 7rem auto;
 }
 
+.menu .main-menu ul li a {
+    text-align: center;
+}
+
 ._Nav_Flex {
     display: flex;
     flex-wrap: wrap;
