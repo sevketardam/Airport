@@ -8,7 +8,7 @@ $(document).ready(function () {
     //$("._Pick_Up").select2();
     //$("._Drop_Off").select2();
     // Banner formundaki comboboxlara eklenti eklendi
-
+    $("#serviceList").select2();
     $(".globalLoader").addClass("deActive");
 });
 
@@ -372,3 +372,7 @@ $("#_Passenger_Form").validate({
 });
 
 
+$("body").on("click", ".pageServiceDownItemTop", function () {
+    $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
+    $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
+})
