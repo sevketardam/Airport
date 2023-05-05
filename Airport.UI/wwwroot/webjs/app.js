@@ -8,7 +8,7 @@ $(document).ready(function () {
     //$("._Pick_Up").select2();
     //$("._Drop_Off").select2();
     // Banner formundaki comboboxlara eklenti eklendi
-
+    $("#serviceList").select2();
     $(".globalLoader").addClass("deActive");
 });
 

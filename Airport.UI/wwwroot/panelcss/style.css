@@ -375,7 +375,7 @@ input.selectPhoto {
 
 .pageServiceItem h3 {
     color: white;
-    background-color: orange;
+    background-color: var(--orange);
     display: inline;
     padding: .5rem 1rem;
     margin: 0;

@@ -2,12 +2,9 @@
 
 $(document).ready(function () {
     $(".globalLoader").addClass("deActive");
-});
-
-$(document).ready(function () {
     $(".formLoader").addClass("deActive");
+    $("#serviceList").select2();
 });
-
 
 // Araç Ekleme Form Validasyonu
 $("#addMyCarForm").validate({
