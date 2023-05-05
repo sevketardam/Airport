@@ -372,3 +372,7 @@ $("#_Passenger_Form").validate({
 });
 
 
+$("body").on("click", ".pageServiceDownItemTop", function () {
+    $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
+    $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
+})

@@ -358,3 +358,92 @@ input.selectPhoto {
     }
 }
 
+
+.pageServices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+    .pageServices .pageServiceItem {
+        width: 100%;
+        padding: 1.2rem 1rem 1rem 1rem;
+        height: auto;
+        box-shadow: 0 0 5px rgb(0, 0, 0, .2);
+        border-radius: .5rem;
+    }
+
+.pageServiceItem h3 {
+    color: white;
+    background-color: orange;
+    display: inline;
+    padding: .5rem 1rem;
+    margin: 0;
+    font-size: 1.5rem;
+    border-radius: .5rem;
+}
+
+.pageServiceDownItems {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+
+.pageServiceDownItems {
+    margin-top: 1rem;
+    padding: .5rem;
+    border-radius: .5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.pageServiceDownItem {
+    box-shadow: 0 0 5px rgb(0, 0, 0, .2);
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+}
+
+.pageServiceDownItemTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+    .pageServiceDownItemTop p {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .pageServiceDownItemTop .pageServicePrice p {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+.pageServicePrice {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pageServiceAngle {
+    background-color: white;
+    border: none;
+    outline: none;
+    color: black;
+    font-size: 1rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    transform: rotateZ(0);
+    transition: transform 250ms;
+}
+
+    .pageServiceAngle.active {
+        transform: rotateZ(90deg);
+    }
