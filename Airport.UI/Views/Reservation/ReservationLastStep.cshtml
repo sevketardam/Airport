@@ -42,19 +42,18 @@
                         <h4>Passengers</h4>
                         <h5>@Model.PeopleCount Adult</h5>
                     </div>
+
                     <div class="my-2">
                         <h4>Date</h4>
                         <h5>@Model.ReservationDate</h5>
                     </div>
 
-
                     @if (Model.IsDiscount)
                     {
-                        <h6>Price:<span style="text-decoration: line-through;">@Model.Price €</span></h6>
+                        <h6>Price:<span style="text-decoration: line-through;">@Model.OfferPrice €</span></h6>
                     }
 
-
-                    <h3>@(Model.IsDiscount ? "Discount Price" : "Price"):@(Model.IsDiscount ? Model.Discount : Model.Price) €</h3>
+                    <h3>@(Model.IsDiscount ? "Discount Price" : "Price"):@(Model.IsDiscount ? Model.Discount : Model.OfferPrice) €</h3>
 
                     <a class="_Btn_Style btn" href="http://test.airportglobaltransfer.com/pdf/@(Model.ReservationCode)-@(Model.Id).pdf" target="_blank">Download Voucher</a>
                 </div>

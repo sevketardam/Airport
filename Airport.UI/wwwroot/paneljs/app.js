@@ -4,6 +4,11 @@ $(document).ready(function () {
     $(".globalLoader").addClass("deActive");
 });
 
+$(document).ready(function () {
+    $(".formLoader").addClass("deActive");
+});
+
+
 // Araç Ekleme Form Validasyonu
 $("#addMyCarForm").validate({
     rules: {

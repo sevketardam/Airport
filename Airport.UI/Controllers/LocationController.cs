@@ -233,6 +233,8 @@ namespace Airport.UI.Controllers
 
             location.OutZonePricePerKM = convertData.OutZonePerKmPrice;
             location.DropCharge = convertData.DropCharge;
+            location.LocationName = convertData.LocationName;
+            location.LocationRadius = convertData.LocationZone;
             _locations.Update(location);
 
             var oldLocationCar = _locationCars.SelectByFunc(a => a.LocationId == location.Id);

@@ -47,12 +47,17 @@ namespace Airport.UI.Controllers
             return View(serviceCategories);
         }
 
-        [Authorize(Roles = "0")]
-        [HttpGet("panel/servicemanagament")]
+        [HttpGet("panel/service-managament")]
         public async Task<IActionResult> ServiceManagement()
         {
-            var serviceCategories = _serviceCategory.Select();
-            var serviceProperties = _serviceProperties.Select();
+            var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+            var serviceCategories = _serviceCategory.SelectByFunc(a=>a.UserId == userId);
+            var serviceProperties = new List<ServiceProperties>();
+            serviceCategories.ForEach(a =>
+            {
+                serviceProperties.AddRange(_serviceProperties.SelectByFunc(a => a.ServiceCategoryId == a.Id));
+            });
+
 
             var ServiceItems = new ServiceManagementVM()
             {
@@ -64,7 +69,7 @@ namespace Airport.UI.Controllers
             return View(ServiceItems);
         }
 
-        [HttpGet("panel/updateservice/{id}")]
+        [HttpGet("panel/update-service/{id}")]
         public async Task<IActionResult> UpdateServicePage(int id)
         {
             try
@@ -141,6 +146,7 @@ namespace Airport.UI.Controllers
             }
         }
 
+
         [HttpPost]
         public JsonResult UpdateService(AddServiceVM updateService, int id)
         {
@@ -193,13 +199,13 @@ namespace Airport.UI.Controllers
             return new JsonResult(new { });
         }
 
-        [Authorize(Roles = "0")]
         [HttpPost]
         public JsonResult AddServiceCategory(string categoryName)
         {
             try
             {
-                _serviceCategory.Insert(new ServiceCategories { ServiceCategoryName = categoryName });
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                _serviceCategory.Insert(new ServiceCategories { ServiceCategoryName = categoryName,UserId = userId });
                 return new JsonResult(new { result = 1 });
             }
             catch (System.Exception)
@@ -208,7 +214,6 @@ namespace Airport.UI.Controllers
             }
         }
 
-        [Authorize(Roles ="0")]
         [HttpPost]
         public JsonResult AddServiceProperty(AddServicePropertyVM serviceProperty)
         {

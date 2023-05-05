@@ -13,7 +13,9 @@ namespace Airport.DBEntities.Entities
         [Key]
         public int Id{ get; set; }
         public string ServiceCategoryName { get; set; }
+        public int UserId { get; set; }
 
         public List<ServiceProperties> ServiceProperties { get; set; }
+        public UserDatas User { get; set; }
     }
 }
