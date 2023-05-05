@@ -3204,8 +3204,12 @@ label.error {
     }
 }
 
+.formLoader {
+    background-color: rgb(255 255 255 / 18%) !important;
+    cursor: wait;
+}
 
-.globalLoader {
+.globalLoader, .formLoader {
     height: 100vh;
     display: flex;
     align-items: center;
@@ -3222,33 +3226,35 @@ label.error {
     transition: visibility 250ms, opacity 250ms;
 }
 
-    .globalLoader.deActive {
+    .globalLoader.deActive, .formLoader.deActive {
         opacity: 0;
         visibility: hidden;
     }
 
-    .globalLoader .car__body {
+    .globalLoader .car__body, .formLoader .car__body {
         animation: shake 0.2s ease-in-out infinite alternate;
     }
 
-    .globalLoader .car__line {
+    .globalLoader .car__line, .formLoader .car__line {
         transform-origin: center right;
         stroke-dasharray: 22;
         animation: line 0.8s ease-in-out infinite;
         animation-fill-mode: both;
     }
 
-    .globalLoader .car__line--top {
+    .globalLoader .car__line--top, .formLoader .car__line--top {
         animation-delay: 0s;
     }
 
-    .globalLoader .car__line--middle {
+    .globalLoader .car__line--middle, .formLoader .car__line--middle {
         animation-delay: 0.2s;
     }
 
-    .globalLoader .car__line--bottom {
+    .globalLoader .car__line--bottom, .formLoader .car__line--bottom {
         animation-delay: 0.4s;
     }
+
+
 
 @keyframes shake {
     0% {

@@ -128,6 +128,8 @@
     <script>
         $('#carBrands').on("change", function () {
             var value = $(this).val();
+
+            $('.formLoader').removeClass("deActive")
             $.ajax({
                 url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController.GetModels))',
                 type: "POST",
@@ -139,12 +141,24 @@
                         $.each(response.models, function (key, value) {
                             $('#carModels').append(`<option value="${value.id}">${value.carModelName}</option>`)
                         })
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Something went wrong',
+                        }).then(() => {
+                            location.reload()
+                        })
                     }
+
+                    $('.formLoader').addClass("deActive")
                 }
             });
         })
 
         $('#carModels').on("change", function () {
+
+            $('.formLoader').removeClass("deActive")
             var value = $(this).val();
             $.ajax({
                 url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController.GetSeries))',
@@ -157,7 +171,17 @@
                         $.each(response.series, function (key, value) {
                             $('#carSeries').append(`<option value="${value.id}">${value.carSeriesName}</option>`)
                         })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Something went wrong',
+                        }).then(() => {
+                            location.reload()
+                        })
                     }
+
+                    $('.formLoader').addClass("deActive")
                 }
             });
         })

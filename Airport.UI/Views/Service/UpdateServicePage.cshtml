@@ -100,7 +100,7 @@
 <div class="servicecard-container row">
     @foreach (var item in Model.ServicePriceDatas)
     {
-        <div class="col-md-4 service-items" data-id="@item.CategoryId">
+        <div class="col-md-6 service-items" data-id="@item.CategoryId">
             <div class="card">
                 <div class="card-body">
                     <div>
@@ -118,7 +118,7 @@
                                 <div class="row mt-2 service-category-item" data-id="@item2.ServiceProperties.Id">
                                     <div class="col-md-5">
                                         <b class="list-item-heading mb-0 pt-1">@item2.ServiceProperties.ServicePropertyName</b>
-                                        <p class="m-0">@item2.ServiceProperties.ServicePropertyDescription</p>
+                                        <p class="m-0">@Html.Raw(item2.ServiceProperties.ServicePropertyDescription)</p>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="input-group">

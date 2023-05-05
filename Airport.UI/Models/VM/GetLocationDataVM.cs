@@ -7,6 +7,8 @@ namespace Airport.UI.Models.VM
         public int LocationId { get; set; }
         public double DropCharge { get; set; }
         public double OutZonePerKmPrice { get; set; }
+        public string LocationName { get; set; }
+        public string LocationZone { get; set; }
         public List<GetLocationCarsPriceVM> CarsPrice { get; set; }
     }
 }

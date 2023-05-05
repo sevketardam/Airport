@@ -12,7 +12,7 @@ namespace Airport.DBEntities.Entities
         public int Id { get; set; }
         public string DropLatLng { get; set; }
         public string PickLatLng { get; set; }
-        public double Price { get; set; }
+        public double OfferPrice { get; set; }
         public string Name { get; set; }
         public string? Surname { get; set; }
         public string Email { get; set; }
@@ -31,9 +31,12 @@ namespace Airport.DBEntities.Entities
         public string DurationText { get; set; }
         public bool IsDiscount { get; set; }
         public double? Discount { get; set; }
-
+        public int UserId { get; set; }
+        public string Comment { get; set; }
+        public double ServiceFee { get; set; }
 
         public LocationCars LocationCars { get; set; }
+        public UserDatas User { get; set; }
         public List<ReservationPeople> ReservationPeoples { get; set; }
     }
 }

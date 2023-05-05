@@ -15,12 +15,6 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using System.IO;
-using iText.Kernel.Pdf;
-using iText.Html2pdf;
-using iText.Layout;
-using iText.Layout.Element;
-using iText.Layout.Properties;
 using Microsoft.AspNetCore.Hosting;
 using Airport.MessageExtension.VM;
 
@@ -483,7 +477,7 @@ namespace Airport.UI.Controllers
                     LocationCarId = createReservation.LocationCar.Id,
                     Name = reservation.Name,
                     ReservationCode = kod,
-                    Price = createReservation.LastPrice,
+                    OfferPrice = createReservation.LastPrice,
                     Surname = reservation.Surname,
                     DropFullName = createReservation.DropLocationName,
                     PickFullName = createReservation.PickLocationName,
@@ -494,7 +488,8 @@ namespace Airport.UI.Controllers
                     DistanceText = createReservation.Distance,
                     DurationText = createReservation.Duration,
                     Discount = 0,
-                    IsDiscount = false
+                    IsDiscount = false,
+                    UserId = _location.SelectByID(createReservation.LocationCar.LocationId).UserId,
                 });
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
@@ -571,7 +566,6 @@ namespace Airport.UI.Controllers
         [HttpGet("panel/manual-reservation-one")]
         public async Task<IActionResult> ManualReservationStepOne()
         {
-
             return View();
         }
 
@@ -881,9 +875,6 @@ namespace Airport.UI.Controllers
                     locationCar.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == id);
                     locationCar.Location = _location.SelectByID(locationCar.LocationId);
 
-                    //fixed= 1
-                    //per = 2 
-
                     double price = 0;
                     var lastUp = 0;
                     double lastPrice = 0;
@@ -997,7 +988,7 @@ namespace Airport.UI.Controllers
                     int index = random.Next(karakterler.Length);
                     kod += karakterler[index];
                 }
-
+                createReservation.LocationCar.Location = _location.SelectByID(createReservation.LocationCar.LocationId);
                 var item = _reservations.Insert(new Reservations
                 {
                     DropLatLng = createReservation.DropLocationLatLng,
@@ -1009,7 +1000,7 @@ namespace Airport.UI.Controllers
                     LocationCarId = createReservation.LocationCar.Id,
                     Name = reservation.Name,
                     ReservationCode = kod,
-                    Price = createReservation.LastPrice,
+                    OfferPrice = createReservation.LastPrice,
                     Surname = reservation.Surname,
                     DropFullName = createReservation.DropLocationName,
                     PickFullName = createReservation.PickLocationName,
@@ -1020,7 +1011,8 @@ namespace Airport.UI.Controllers
                     DistanceText = createReservation.Distance,
                     DurationText = createReservation.Duration,
                     IsDiscount = reservation.IsDiscount,
-                    Discount = reservation.Discount
+                    Discount = reservation.Discount,
+                    UserId = _location.SelectByID(createReservation.LocationCar.LocationId).UserId,               
                 });
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
@@ -1069,7 +1061,6 @@ namespace Airport.UI.Controllers
             }
 
         }
-
 
 
 

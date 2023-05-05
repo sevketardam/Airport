@@ -155,7 +155,7 @@ namespace Airport.UI.Controllers
             return new JsonResult(new { });
         }
 
-        [HttpGet("panel/updatemycar/{id}")]
+        [HttpGet("panel/update-my-car/{id}")]
         public async Task<IActionResult> UpdateMyCarPage(int id)
         {
             try
@@ -211,9 +211,6 @@ namespace Airport.UI.Controllers
                 return BadRequest();
             }
         }
-
-
-
 
         [Authorize(Roles = "0")]
         [HttpGet("panel/car-management")]
