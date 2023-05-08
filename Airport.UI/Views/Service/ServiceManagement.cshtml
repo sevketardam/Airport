@@ -53,7 +53,7 @@
                 padding: 0 0.5rem 0 1.5rem;
                 border-radius: 0 0 0.5rem 0.5rem;
                 border-top: 1px solid rgb(0,0,0,.3);
-                margin:0;
+                margin: 0;
             }
 
             .serviceBottom li {
@@ -243,11 +243,11 @@
                                     </p>
                                 </div>
                                 <div>
-                                    <div class="serviceBtns">
-                                        <button type="button" class="addService btn btn-warning" title="Update Category">
+                                    <div class="serviceBtns" data-id="@item2.Id">
+                                        <button type="button" class="updateServiceProp btn btn-warning" title="Update Category">
                                             <i class="fa-solid fa-pen"></i>
                                         </button>
-                                        <button type="button" class="removeServiceAttr btn btn-danger" title="Delete Category">
+                                        <button type="button" class="removeServiceProp btn btn-danger" title="Delete Category">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </div>
@@ -260,13 +260,6 @@
         }
     </div>
 </section>
-
-
-
-
-
-
-
 
 <div class="modal fade" id="addServiceCategoryModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -297,7 +290,37 @@
     </div>
 </div>
 
+<div class="modal fade" id="updateServicePropertyModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Service Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateServicePropertyForm">
+                    <div class="form-group position-relative error-l-50">
+                        <label>Service Property Name</label>
+                        <input type="text" class="form-control" name="ServicePropertyName" placeholder="Enter Your Service Property Name">
+                    </div>
+                    <div class="form-group position-relative error-l-50">
+                        <label>Service Property Description</label>
+                        <div id="updateDestriptionQuil" style="height:250px;"></div>
+                    </div>
+                </form>
+            </div>
 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" id="updateServiceProperty">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="addServicePropertyModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -309,7 +332,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="addServicePropertyForm">                
+                <form id="addServicePropertyForm">
                     <div class="form-group position-relative error-l-50">
                         <label>Service Property Name</label>
                         <input type="text" class="form-control" name="PropertyName" placeholder="Enter Your Service Property Name">
@@ -317,7 +340,6 @@
                     <div class="form-group position-relative error-l-50">
                         <label>Service Property Description</label>
                         <div id="destriptionQuil" style="height:250px;"></div>
-                        @*<input type="text" class="form-control" name="PropertyDescription" placeholder="Enter Your Service Property Description">*@
                     </div>
                 </form>
             </div>
@@ -334,16 +356,123 @@
 </div>
 
 @section pageJsScript{
-
     <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
 }
 
-
 @section pageJs{
     <script>
-        var categoryId = 0;
+        let categoryId = 0;
+        let propId = 0;
 
-        $('.addService').on("click",function(){
+
+        $('.removeServiceProp').on("click", function () {
+            propId = $(this).closest(".serviceBtns").attr("data-id");
+
+            Swal.fire({
+                title: 'Do You Want To Delete The Property?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed == true) {
+                    $('.formLoader').removeClass("deActive")
+                    $.ajax({
+                        url: '/Service/DeleteServiceProp',
+                        type: "POST",
+                        data: { id: propId },
+                        success: function (data) {
+                            if (data.result == "1") {
+                                Swal.fire({
+                                    title: 'Success',
+                                    html: 'Successfully deleted property',
+                                    icon: 'success',
+                                    confirmButtonText: 'Okey'
+                                }).then(() => {
+                                    location.reload();
+                                })
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    html: 'Something went wrong',
+                                    icon: 'error',
+                                    confirmButtonText: 'Okey'
+                                }).then(() => {
+                                    location.reload();
+                                })
+                            }
+
+                            $('.formLoader').addClass("deActive")
+                        }
+                    });
+                }
+            })
+        })
+
+
+
+        let updateDescription = new Quill("#updateDestriptionQuil", {
+            theme: "snow"
+        });
+
+        $('#updateServicePropertyForm').on("submit", function (e) {
+            e.preventDefault();
+            $('.formLoader').removeClass("deActive")
+            var formData = $(this).serialize()
+
+            $.ajax({
+                url: '/Service/UpdateServiceProperty',
+                type: "POST",
+                data: formData + "&Id=" + propId + "&ServicePropertyDescription=" + updateDescription.root.innerHTML,
+                success: function (response) {
+                    if (response.result == 1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Successfully Updated Service Property',
+                        }).then(() => {
+                            location.reload();
+                        })
+
+                        $('#updateServicePropertyModal').modal("hide");
+                    }
+                    $('.formLoader').addClass("deActive")
+                }
+            });
+        })
+
+
+
+        $('#updateServiceProperty').on("click", function () {
+            $('#updateServicePropertyForm').submit();
+        })
+
+
+
+        $('.updateServiceProp').on("click", function () {
+            $('.formLoader').removeClass("deActive")
+            propId = $(this).closest('.serviceBtns').attr("data-id")
+
+            $.ajax({
+                url: '/Service/GetServiceProperty',
+                type: "POST",
+                data: { id: propId },
+                success: function (response) {
+                    if (response.result == 1) {
+                        $('#updateServicePropertyModal input[name="ServicePropertyName"]').val(response.data.servicePropertyName);
+                        updateDescription.setContents(updateDescription.clipboard.convert(response.data.servicePropertyDescription));
+                        $('#updateServicePropertyModal').modal();
+                    }
+                    $('.formLoader').addClass("deActive")
+                }
+            });
+        })
+
+
+
+        $('.addService').on("click", function () {
             categoryId = $(this).closest(".serviceItem").attr("data-id");
             $('#addServicePropertyModal').modal()
         })
@@ -372,7 +501,7 @@
             if ($('#addServicePropertyForm').valid()) {
                 var formData = $(this).serialize() + "&PropertyDescription=" + description.root.innerHTML
                 $.ajax({
-                    url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.AddServiceProperty))',
+                    url: '/Service/AddServiceProperty',
                     type: "POST",
                     data: formData + "&ServiceCategoryId=" + categoryId,
                     success: function (response) {
@@ -395,7 +524,7 @@
             if ($('#addServiceCategoryForm').valid()) {
                 var formData = $(this).serialize()
                 $.ajax({
-                    url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.AddServiceCategory))',
+                    url: '/Service/AddServiceCategory',
                     type: "POST",
                     data: formData,
                     success: function (response) {
@@ -414,11 +543,11 @@
 
         })
 
-        $('.removeServiceList').on("click",function(){
+        $('.removeServiceList').on("click", function () {
             categoryId = $(this).closest(".serviceItem").attr("data-id");
 
             Swal.fire({
-                title: 'Do You Want To Delete The Property?',
+                title: 'Do You Want To Delete The Category?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -429,14 +558,14 @@
                 if (result.isConfirmed == true) {
                     $('.formLoader').removeClass("deActive")
                     $.ajax({
-                        url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.DeleteService))',
+                        url: '/Service/DeleteService',
                         type: "POST",
                         data: { id: categoryId },
                         success: function (data) {
                             if (data.result == "1") {
                                 Swal.fire({
                                     title: 'Success',
-                                    html: 'Successfully deleted property',
+                                    html: 'Successfully deleted category',
                                     icon: 'success',
                                     confirmButtonText: 'Okey'
                                 }).then(() => {
@@ -458,6 +587,7 @@
                 }
             })
         })
+
 
     </script>
 }

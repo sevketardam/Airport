@@ -121,7 +121,7 @@
                                     Total
                                 </h3>
                                 <p>
-                                    €@Model.SelectedData.LastPrice
+                                    €<span id="priceBox">@Model.SelectedData.LastPrice</span>
                                 </p>
                             </div>
                             <p>
@@ -145,288 +145,7 @@
                             you may be charged for any extra pack or not to be taken by driver without any refund
                         </p>
                     </div>
-                    <div>
-                        <label for="Servisler">Servisler</label>
-                        <select class="form-control select2-multiple" name="serviceItems" multiple="multiple" id="serviceList" data-width="100%">
-                            <optgroup label="A">
-                                <option value="A1">A1</option>
-                                <option value="A2">A2</option>
-                            </optgroup>
-                            <optgroup label="B">
-                                <option value="B1">B1</option>
-                                <option value="B2">B2</option>
-                            </optgroup>
-                        </select>
-                    </div>
 
-                    <div class="pageServices my-3">
-                        <div class="pageServiceItem">
-                            <h3>
-                                Category Name
-                            </h3>
-                            <div class="pageServiceDownItems">
-                                <div class="pageServiceDownItem">
-                                    <div class="pageServiceDownItemTop">
-                                        <div class="pageServiceName">
-                                            <p>
-                                                Servis Adı
-                                            </p>
-                                        </div>
-                                        <div class="pageServicePrice">
-                                            <p>
-                                                €65
-                                            </p>
-                                            <button class="pageServiceAngle">
-                                                <i class="fa-solid fa-angle-right"></i>
-                                            </button>
-                                        </div>
-
-                                    </div>
-                                    <div class="pageServiceDownItemBottom" style="display: none;">
-                                        <div class="pageServiceDesc pt-3">
-                                            <p>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste rerum incidunt
-                                                voluptatibus adipisci perspiciatis autem quod accusantium reprehenderit! At
-                                                saepe repudiandae dolorum corporis eligendi ut voluptas commodi cum dolor. Rerum
-                                                s numquam, optio perferendis.
-                                                Consequatur, recusandae voluptates magnam distinctio officiis quo quia porro
-                                                dolorum, doloribus maxime doloremque facere aut, ab eligendi? Est atque,
-                                                necessitatibus nemo iste nisi quae explicabo! Saepe molestiae omnis quasi modi
-                                                eaque soluta, ab nesciunt, ipsam fuga laborum commodi? Iusto velit amet iure
-                                                molestias necessitatibus illum consectetur dolorum nulla, quo at magnam.
-                                                Obcaecati, fuga consequuntur, exercitationem odio voluptates mollitia quasi
-                                                dolorum similique reiciendis neque, ullam quo? Rem inventore expedita saepe
-                                                labore deserunt odit ad, est nemo libero quis. Tempora velit at debitis
-                                                veritatis, soluta assumenda impedit nostrum aut, natus repudiandae eligendi
-                                                aliquam id nesciunt ipsum? Assumenda adipisci accusantium soluta at sit odit
-                                                exercitationem, obcaecati pariatur enim quaerat quo doloremque commodi, nam modi
-                                                accusamus possimus laudantium? Temporibus quibusdam distinctio cupiditate
-                                                officia consequuntur in, reiciendis recusandae molestiae porro ducimus id
-                                                reprehenderit beatae nemo obcaecati, suscipit ipsum inventore ut. Sequi
-                                                repudiandae temporibus labore, unde officia debitis totam excepturi magni,
-                                                perspiciatis fuga natus, earum qui est. Nisi deleniti quae voluptatibus sunt
-                                                assumenda eum repudiandae dolore illo impedit ut vitae asperiores ipsum nam
-                                                incidunt animi vel vero aliquam debitis, soluta sit veniam saepe quisquam
-                                                delectus reprehenderit! Facilis et voluptates minus maiores optio? Dicta,
-                                                reiciendis nam! Fugiat facere doloribus earum vitae accusamus ullam expedita
-                                                quidem quos, saepe, ipsum deserunt provident labore facilis quod aut quasi,
-                                                totam in aliquam magni sit enim. Eius et non nobis, blanditiis id ipsum facilis
-                                                sunt ea qui exercitationem eveniet autem at sit officia illo harum culpa
-                                                quisquam. Vitae perferendis nesciunt totam porro libero odit error perspiciatis
-                                                illum voluptate ex sequi qui consequatur accusantium facere explicabo
-                                                consectetur molestiae ullam, fugit quibusdam reiciendis sit voluptatem? Debitis
-                                                dolor aut, repellendus delectus minus nam. Adipisci ratione possimus, doloribus
-                                                perferendis magni doloremque nisi corporis, non alias distinctio ea dolorum
-                                                dolorem recusandae. Eaque fuga voluptatem odit sequi beatae optio sint sapiente
-                                                molestiae rem ullam, facilis nisi! Dolorem modi sunt consequatur necessitatibus
-                                                assumenda. Commodi incidunt atque veritatis consequatur. Nostrum, dicta
-                                                quibusdam. Commodi ab veritatis rem sunt labore? Iste quo minus fugiat in?
-                                                Molestiae nobis tenetur natus accusamus ea voluptas corrupti ipsa ducimus est
-                                                enim, ratione maxime corporis autem minima tempore nam. Doloribus sunt atque
-                                                quaerat illo. Suscipit optio assumenda illo omnis incidunt eos placeat aliquid!
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="pageServiceDownItem">
-                                    <div class="pageServiceDownItemTop">
-                                        <div class="pageServiceName">
-                                            <p>
-                                                Servis Adı
-                                            </p>
-                                        </div>
-                                        <div class="pageServicePrice">
-                                            <p>
-                                                €65
-                                            </p>
-                                            <button class="pageServiceAngle">
-                                                <i class="fa-solid fa-angle-right"></i>
-                                            </button>
-                                        </div>
-
-                                    </div>
-                                    <div class="pageServiceDownItemBottom" style="display: none;">
-                                        <div class="pageServiceDesc pt-3">
-                                            <p>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste rerum incidunt
-                                                voluptatibus adipisci perspiciatis autem quod accusantium reprehenderit! At
-                                                saepe repudiandae dolorum corporis eligendi ut voluptas commodi cum dolor. Rerum
-                                                s numquam, optio perferendis.
-                                                Consequatur, recusandae voluptates magnam distinctio officiis quo quia porro
-                                                dolorum, doloribus maxime doloremque facere aut, ab eligendi? Est atque,
-                                                necessitatibus nemo iste nisi quae explicabo! Saepe molestiae omnis quasi modi
-                                                eaque soluta, ab nesciunt, ipsam fuga laborum commodi? Iusto velit amet iure
-                                                molestias necessitatibus illum consectetur dolorum nulla, quo at magnam.
-                                                Obcaecati, fuga consequuntur, exercitationem odio voluptates mollitia quasi
-                                                dolorum similique reiciendis neque, ullam quo? Rem inventore expedita saepe
-                                                labore deserunt odit ad, est nemo libero quis. Tempora velit at debitis
-                                                veritatis, soluta assumenda impedit nostrum aut, natus repudiandae eligendi
-                                                aliquam id nesciunt ipsum? Assumenda adipisci accusantium soluta at sit odit
-                                                exercitationem, obcaecati pariatur enim quaerat quo doloremque commodi, nam modi
-                                                accusamus possimus laudantium? Temporibus quibusdam distinctio cupiditate
-                                                officia consequuntur in, reiciendis recusandae molestiae porro ducimus id
-                                                reprehenderit beatae nemo obcaecati, suscipit ipsum inventore ut. Sequi
-                                                repudiandae temporibus labore, unde officia debitis totam excepturi magni,
-                                                perspiciatis fuga natus, earum qui est. Nisi deleniti quae voluptatibus sunt
-                                                assumenda eum repudiandae dolore illo impedit ut vitae asperiores ipsum nam
-                                                incidunt animi vel vero aliquam debitis, soluta sit veniam saepe quisquam
-                                                delectus reprehenderit! Facilis et voluptates minus maiores optio? Dicta,
-                                                reiciendis nam! Fugiat facere doloribus earum vitae accusamus ullam expedita
-                                                quidem quos, saepe, ipsum deserunt provident labore facilis quod aut quasi,
-                                                totam in aliquam magni sit enim. Eius et non nobis, blanditiis id ipsum facilis
-                                                sunt ea qui exercitationem eveniet autem at sit officia illo harum culpa
-                                                quisquam. Vitae perferendis nesciunt totam porro libero odit error perspiciatis
-                                                illum voluptate ex sequi qui consequatur accusantium facere explicabo
-                                                consectetur molestiae ullam, fugit quibusdam reiciendis sit voluptatem? Debitis
-                                                dolor aut, repellendus delectus minus nam. Adipisci ratione possimus, doloribus
-                                                perferendis magni doloremque nisi corporis, non alias distinctio ea dolorum
-                                                dolorem recusandae. Eaque fuga voluptatem odit sequi beatae optio sint sapiente
-                                                molestiae rem ullam, facilis nisi! Dolorem modi sunt consequatur necessitatibus
-                                                assumenda. Commodi incidunt atque veritatis consequatur. Nostrum, dicta
-                                                quibusdam. Commodi ab veritatis rem sunt labore? Iste quo minus fugiat in?
-                                                Molestiae nobis tenetur natus accusamus ea voluptas corrupti ipsa ducimus est
-                                                enim, ratione maxime corporis autem minima tempore nam. Doloribus sunt atque
-                                                quaerat illo. Suscipit optio assumenda illo omnis incidunt eos placeat aliquid!
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pageServiceItem">
-                            <h3>
-                                Category Name
-                            </h3>
-                            <div class="pageServiceDownItems">
-                                <div class="pageServiceDownItem">
-                                    <div class="pageServiceDownItemTop">
-                                        <div class="pageServiceName">
-                                            <p>
-                                                Servis Adı
-                                            </p>
-                                        </div>
-                                        <div class="pageServicePrice">
-                                            <p>
-                                                €65
-                                            </p>
-                                            <button class="pageServiceAngle">
-                                                <i class="fa-solid fa-angle-right"></i>
-                                            </button>
-                                        </div>
-
-                                    </div>
-                                    <div class="pageServiceDownItemBottom" style="display: none;">
-                                        <div class="pageServiceDesc pt-3">
-                                            <p>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste rerum incidunt
-                                                voluptatibus adipisci perspiciatis autem quod accusantium reprehenderit! At
-                                                saepe repudiandae dolorum corporis eligendi ut voluptas commodi cum dolor. Rerum
-                                                s numquam, optio perferendis.
-                                                Consequatur, recusandae voluptates magnam distinctio officiis quo quia porro
-                                                dolorum, doloribus maxime doloremque facere aut, ab eligendi? Est atque,
-                                                necessitatibus nemo iste nisi quae explicabo! Saepe molestiae omnis quasi modi
-                                                eaque soluta, ab nesciunt, ipsam fuga laborum commodi? Iusto velit amet iure
-                                                molestias necessitatibus illum consectetur dolorum nulla, quo at magnam.
-                                                Obcaecati, fuga consequuntur, exercitationem odio voluptates mollitia quasi
-                                                dolorum similique reiciendis neque, ullam quo? Rem inventore expedita saepe
-                                                labore deserunt odit ad, est nemo libero quis. Tempora velit at debitis
-                                                veritatis, soluta assumenda impedit nostrum aut, natus repudiandae eligendi
-                                                aliquam id nesciunt ipsum? Assumenda adipisci accusantium soluta at sit odit
-                                                exercitationem, obcaecati pariatur enim quaerat quo doloremque commodi, nam modi
-                                                accusamus possimus laudantium? Temporibus quibusdam distinctio cupiditate
-                                                officia consequuntur in, reiciendis recusandae molestiae porro ducimus id
-                                                reprehenderit beatae nemo obcaecati, suscipit ipsum inventore ut. Sequi
-                                                repudiandae temporibus labore, unde officia debitis totam excepturi magni,
-                                                perspiciatis fuga natus, earum qui est. Nisi deleniti quae voluptatibus sunt
-                                                assumenda eum repudiandae dolore illo impedit ut vitae asperiores ipsum nam
-                                                incidunt animi vel vero aliquam debitis, soluta sit veniam saepe quisquam
-                                                delectus reprehenderit! Facilis et voluptates minus maiores optio? Dicta,
-                                                reiciendis nam! Fugiat facere doloribus earum vitae accusamus ullam expedita
-                                                quidem quos, saepe, ipsum deserunt provident labore facilis quod aut quasi,
-                                                totam in aliquam magni sit enim. Eius et non nobis, blanditiis id ipsum facilis
-                                                sunt ea qui exercitationem eveniet autem at sit officia illo harum culpa
-                                                quisquam. Vitae perferendis nesciunt totam porro libero odit error perspiciatis
-                                                illum voluptate ex sequi qui consequatur accusantium facere explicabo
-                                                consectetur molestiae ullam, fugit quibusdam reiciendis sit voluptatem? Debitis
-                                                dolor aut, repellendus delectus minus nam. Adipisci ratione possimus, doloribus
-                                                perferendis magni doloremque nisi corporis, non alias distinctio ea dolorum
-                                                dolorem recusandae. Eaque fuga voluptatem odit sequi beatae optio sint sapiente
-                                                molestiae rem ullam, facilis nisi! Dolorem modi sunt consequatur necessitatibus
-                                                assumenda. Commodi incidunt atque veritatis consequatur. Nostrum, dicta
-                                                quibusdam. Commodi ab veritatis rem sunt labore? Iste quo minus fugiat in?
-                                                Molestiae nobis tenetur natus accusamus ea voluptas corrupti ipsa ducimus est
-                                                enim, ratione maxime corporis autem minima tempore nam. Doloribus sunt atque
-                                                quaerat illo. Suscipit optio assumenda illo omnis incidunt eos placeat aliquid!
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="pageServiceDownItem">
-                                    <div class="pageServiceDownItemTop">
-                                        <div class="pageServiceName">
-                                            <p>
-                                                Servis Adı
-                                            </p>
-                                        </div>
-                                        <div class="pageServicePrice">
-                                            <p>
-                                                €65
-                                            </p>
-                                            <button class="pageServiceAngle">
-                                                <i class="fa-solid fa-angle-right"></i>
-                                            </button>
-                                        </div>
-
-                                    </div>
-                                    <div class="pageServiceDownItemBottom" style="display: none;">
-                                        <div class="pageServiceDesc pt-3">
-                                            <p>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste rerum incidunt
-                                                voluptatibus adipisci perspiciatis autem quod accusantium reprehenderit! At
-                                                saepe repudiandae dolorum corporis eligendi ut voluptas commodi cum dolor. Rerum
-                                                s numquam, optio perferendis.
-                                                Consequatur, recusandae voluptates magnam distinctio officiis quo quia porro
-                                                dolorum, doloribus maxime doloremque facere aut, ab eligendi? Est atque,
-                                                necessitatibus nemo iste nisi quae explicabo! Saepe molestiae omnis quasi modi
-                                                eaque soluta, ab nesciunt, ipsam fuga laborum commodi? Iusto velit amet iure
-                                                molestias necessitatibus illum consectetur dolorum nulla, quo at magnam.
-                                                Obcaecati, fuga consequuntur, exercitationem odio voluptates mollitia quasi
-                                                dolorum similique reiciendis neque, ullam quo? Rem inventore expedita saepe
-                                                labore deserunt odit ad, est nemo libero quis. Tempora velit at debitis
-                                                veritatis, soluta assumenda impedit nostrum aut, natus repudiandae eligendi
-                                                aliquam id nesciunt ipsum? Assumenda adipisci accusantium soluta at sit odit
-                                                exercitationem, obcaecati pariatur enim quaerat quo doloremque commodi, nam modi
-                                                accusamus possimus laudantium? Temporibus quibusdam distinctio cupiditate
-                                                officia consequuntur in, reiciendis recusandae molestiae porro ducimus id
-                                                reprehenderit beatae nemo obcaecati, suscipit ipsum inventore ut. Sequi
-                                                repudiandae temporibus labore, unde officia debitis totam excepturi magni,
-                                                perspiciatis fuga natus, earum qui est. Nisi deleniti quae voluptatibus sunt
-                                                assumenda eum repudiandae dolore illo impedit ut vitae asperiores ipsum nam
-                                                incidunt animi vel vero aliquam debitis, soluta sit veniam saepe quisquam
-                                                delectus reprehenderit! Facilis et voluptates minus maiores optio? Dicta,
-                                                reiciendis nam! Fugiat facere doloribus earum vitae accusamus ullam expedita
-                                                quidem quos, saepe, ipsum deserunt provident labore facilis quod aut quasi,
-                                                totam in aliquam magni sit enim. Eius et non nobis, blanditiis id ipsum facilis
-                                                sunt ea qui exercitationem eveniet autem at sit officia illo harum culpa
-                                                quisquam. Vitae perferendis nesciunt totam porro libero odit error perspiciatis
-                                                illum voluptate ex sequi qui consequatur accusantium facere explicabo
-                                                consectetur molestiae ullam, fugit quibusdam reiciendis sit voluptatem? Debitis
-                                                dolor aut, repellendus delectus minus nam. Adipisci ratione possimus, doloribus
-                                                perferendis magni doloremque nisi corporis, non alias distinctio ea dolorum
-                                                dolorem recusandae. Eaque fuga voluptatem odit sequi beatae optio sint sapiente
-                                                molestiae rem ullam, facilis nisi! Dolorem modi sunt consequatur necessitatibus
-                                                assumenda. Commodi incidunt atque veritatis consequatur. Nostrum, dicta
-                                                quibusdam. Commodi ab veritatis rem sunt labore? Iste quo minus fugiat in?
-                                                Molestiae nobis tenetur natus accusamus ea voluptas corrupti ipsa ducimus est
-                                                enim, ratione maxime corporis autem minima tempore nam. Doloribus sunt atque
-                                                quaerat illo. Suscipit optio assumenda illo omnis incidunt eos placeat aliquid!
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div>
                         <form id="_Passenger_Form" asp-route="getBookValues">
                             <div class="_Form_Flex_Style">
@@ -464,7 +183,7 @@
                                         <label class="_Form_Label">@(i + 2) People Surname</label>
                                         <input type="text" name="OthersSurname">
                                     </div>
-                                }
+                                }                           
 
                                 <div class="_Form_Div">
                                     <button>
@@ -473,10 +192,190 @@
                                 </div>
 
                             </div>
+
+                            <input type="text" name="comment"/>
+
+                            @if (Model.ServiceItems.Count != 0)
+                            {
+                                <div>
+                                    <label for="Servisler">Services</label>
+                                    <select class="form-control select2-multiple" name="serviceItems" multiple="multiple" id="serviceList" data-width="100%">
+                                        @foreach (var item in Model.ServiceItems)
+                                        {
+                                            <optgroup label="@item.Category.ServiceCategoryName">
+                                                @foreach (var item2 in item.CategoryProps)
+                                                {
+                                                    <option value="@item2.Id">@item2.ServicePropertyName</option>
+                                                }
+                                            </optgroup>
+                                        }
+                                    </select>
+                                </div>
+
+
+                                <div class="pageServices my-3 servicecard-container">
+                                </div>
+                            }
                         </form>
                     </div>
+                  
+
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+@section pageJs{
+    <script>
+        const firstPrice = @Model.SelectedData.LastPrice
+
+        $('#serviceList').on("change", function () {
+            var propId = $(this).val()
+            $.ajax({
+                url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.GetServiceItem))',
+                type: "POST",
+                data: { serviceProId: propId,serviceId:@Model.SelectedData.LocationCar.Car.ServiceId },
+                success: function (response) {
+                    console.log(response)
+                    if (response.result == 1) {
+                        let serviceList2 = [];
+
+                        $.each($('.servicecard-container .service-items'), function (key, value) {
+                            serviceList2.push(parseInt($(value).attr("data-id")))
+                        })
+
+                        var thisValues = $('#serviceList').val()
+
+                        var list2 = [];
+                        $.each(response.data, function (key, value) {
+                            list2.push(value.serviceCategoryId);
+                        })
+
+                        $.each($('.servicecard-container .service-items'), function (key, value) {
+                            var dataId = parseInt($(value).attr("data-id"))
+                            if (!list2.includes(dataId)) {
+                                $(value).remove()
+
+                                    $('#priceBox').text(parseFloat($('#priceBox').text()) - parseFloat($(value).find(".servicePrice").text()))
+                            }
+                        })
+
+
+                        $.each(response.data, function (key, value) {
+                            if (!serviceList2.includes(value.serviceCategoryId)) {
+
+                                $('.servicecard-container').append(` 
+                                <div class="pageServiceItem service-items" data-id="${value.serviceCategoryId}">
+                                    <h3>
+                                                ${value.serviceCategoryName}
+                                    </h3>
+                                    <div class="pageServiceDownItems service-category-items" >
+                                        <div class="pageServiceDownItem service-category-item" data-id="${value.categoryItems[0].id}">
+                                            <div class="pageServiceDownItemTop">
+                                                <div class="pageServiceName">
+                                                    <p>
+                                                                ${value.categoryItems[0].serviceName}
+                                                    </p>
+                                                </div>
+                                                <div class="pageServicePrice">
+                                                    <p>
+                                                                        €<span class="servicePrice">${value.categoryItems[0].price}</span>
+                                                    </p>
+                                                    <button type="button" class="pageServiceAngle">
+                                                        <i class="fa-solid fa-angle-right"></i>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                            <div class="pageServiceDownItemBottom " style="display: none;">
+                                                <div class="pageServiceDesc pt-3 " >
+                                                       <div class="row mt-2">
+                                                             ${value.categoryItems[0].serviceDescripton}
+                                                        </div>
+                                                 </div>
+                                              </div>
+                                        </div>
+                                    </div>
+                                </div>`)
+                                $('#priceBox').text(parseFloat($('#priceBox').text()) + value.categoryItems[0].price)
+                            }
+                            else {
+
+                                if (value.categoryItems.length > $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item').length) {
+
+                                    let serviceList3 = [];
+                                    $.each($('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items'), function (key, value2) {
+                                        serviceList3.push(parseInt($(value2).find('.service-category-item').attr("data-id")))
+                                    })
+
+                                    $.each(value.categoryItems, function (key, value2) {
+                                        if (!serviceList3.includes(value2.id)) {
+                                                                                                                            
+                                          $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items').append(`
+                                                           <div class="pageServiceDownItem service-category-item" data-id="${value2.id}">
+                                                    <div class="pageServiceDownItemTop">
+                                                        <div class="pageServiceName">
+                                                            <p>
+                                                                                ${value2.serviceName}
+                                                            </p>
+                                                        </div>
+                                                        <div class="pageServicePrice">
+                                                            <p>
+                                                                                €<span class="servicePrice">${value2.price}</span>
+                                                            </p>
+                                                            <button type="button" class="pageServiceAngle">
+                                                                <i class="fa-solid fa-angle-right"></i>
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="pageServiceDownItemBottom " style="display: none;">
+                                                        <div class="pageServiceDesc pt-3 " >
+                                                                       <div class="row mt-2">
+                                                                             ${value2.serviceDescripton}
+                                                                </div>
+                                                         </div>
+                                                      </div>
+                                                </div>
+                                          `)
+                                            $('#priceBox').text(parseFloat($('#priceBox').text()) + value2.price)
+                                        }
+                                    })
+                                }
+                                else if (value.categoryItems.length < $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item').length) {
+
+
+                                    var list2 = [];
+                                    $.each(value.categoryItems, function (key, value2) {
+                                        list2.push(value2.id);
+                                    })
+
+
+
+                                    $.each($('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item'), function (key, value2) {
+                                        var dataId = parseInt($(value2).attr("data-id"))
+                                        if (!list2.includes(dataId)) {
+                                            $(value2).remove()
+                                            $('#priceBox').text(parseFloat($('#priceBox').text()) - parseFloat($(value2).find(".servicePrice").text()))
+                                        }
+                                    })
+                                }
+
+
+                            }
+
+                        })
+
+                        if (response.data.length == 0) {
+                            $('.servicecard-container').html("")
+                                $('#priceBox').text(firstPrice)
+                        }
+
+                    }
+                }
+            });
+        })
+
+    </script>
+}

@@ -14,6 +14,7 @@ namespace Airport.UI.Models.IM
         public int SmallBags { get; set; }
         public int? Service { get; set; }
         public int? Driver { get; set; }
+        public string? Plate { get; set; }
 
         public bool Wifi { get; set; }
         public bool Water { get; set; }

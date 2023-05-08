@@ -285,8 +285,6 @@
 
                         })
 
-
-
                         if (response.data.length == 0) {
                             $('.servicecard-container').html("")
                         }
@@ -299,11 +297,8 @@
 
         $('body').on("click", ".deleteServiceItem", function () {
             var dataId = $(this).attr("data-id")
-
             let array = $('#serviceList').val();
-
             let value = dataId;
-
             let index = array.indexOf(value);
 
             if (index > -1) {

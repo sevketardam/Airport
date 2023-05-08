@@ -40,7 +40,7 @@ namespace Airport.UI.Controllers
         public IActionResult AddServicePage()
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-            var serviceCategories = _serviceCategory.SelectByFunc(a=>a.UserId == userId);
+            var serviceCategories = _serviceCategory.SelectByFunc(a => a.UserId == userId);
 
             serviceCategories.ForEach(a =>
             {
@@ -54,7 +54,7 @@ namespace Airport.UI.Controllers
         public async Task<IActionResult> ServiceManagement()
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-            var serviceCategories = _serviceCategory.SelectByFunc(a=>a.UserId == userId);
+            var serviceCategories = _serviceCategory.SelectByFunc(a => a.UserId == userId);
             var serviceProperties = new List<ServiceProperties>();
             serviceCategories.ForEach(a =>
             {
@@ -95,7 +95,7 @@ namespace Airport.UI.Controllers
                             Price = a.Price,
                             PropId = a.ServicePropertyId,
                             CategoryId = a.ServiceProperty.ServiceCategoryId,
-                            ServiceProperties = _serviceProperties.SelectByID(a.ServicePropertyId)                          
+                            ServiceProperties = _serviceProperties.SelectByID(a.ServicePropertyId)
                         });
 
                         serviceSelectedProps.Add(_serviceProperties.SelectByID(a.ServicePropertyId));
@@ -106,12 +106,12 @@ namespace Airport.UI.Controllers
 
                     var d = new List<ServiceLastCategoryPriceVM>();
 
-                    s.ForEach(a => 
+                    s.ForEach(a =>
                     {
                         d.Add(new ServiceLastCategoryPriceVM
                         {
                             CategoryId = a.Key,
-                            serviceCategoryPrices = a.Select(b=>b),
+                            serviceCategoryPrices = a.Select(b => b),
                             CategoryName = _serviceCategory.SelectByID(a.Key).ServiceCategoryName
                         });
                     });
@@ -119,7 +119,7 @@ namespace Airport.UI.Controllers
 
                     var updateServiceVM = new UpdatePageServiceVM()
                     {
-                        ServiceCategories = _serviceCategory.SelectByFunc(a=>a.UserId == userId),
+                        ServiceCategories = _serviceCategory.SelectByFunc(a => a.UserId == userId),
                         ServiceSelectedProperties = serviceSelectedProps,
                         Service = service,
                         ServicePriceDatas = d
@@ -158,8 +158,8 @@ namespace Airport.UI.Controllers
 
                     _services.Update(service);
 
-                    var oldItems = _items.SelectByFunc(a=>a.ServiceId == id);
-                  
+                    var oldItems = _items.SelectByFunc(a => a.ServiceId == id);
+
                     oldItems.ForEach(a =>
                     {
                         _items.HardDelete(a);
@@ -199,7 +199,7 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                _serviceCategory.Insert(new ServiceCategories { ServiceCategoryName = categoryName,UserId = userId });
+                _serviceCategory.Insert(new ServiceCategories { ServiceCategoryName = categoryName, UserId = userId });
                 return new JsonResult(new { result = 1 });
             }
             catch (System.Exception)
@@ -229,26 +229,106 @@ namespace Airport.UI.Controllers
         }
 
         [HttpPost]
+        public JsonResult GetServiceProperty(int id)
+        {
+            try
+            {
+                var propData = _serviceProperties.SelectByID(id);
+                if (propData != null)
+                {
+                    return new JsonResult(new { result = 1, data = propData });
+                }
+                return new JsonResult(new { result = 2 });
+            }
+            catch (System.Exception)
+            {
+                return new JsonResult(new { });
+            }
+        }
+
+
+        [HttpPost]
+        public JsonResult UpdateServiceProperty(ServiceProperties prop)
+        {
+            try
+            {
+                var propData = _serviceProperties.SelectByID(prop.Id);
+
+                if (propData != null)
+                {
+                    var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                    propData.ServiceCategory = _serviceCategory.SelectByID(propData.ServiceCategoryId);
+                    if (propData.ServiceCategory.UserId == userId)
+                    {
+                        propData.ServiceCategory = null;
+                        propData.ServicePropertyDescription = prop.ServicePropertyDescription;
+                        propData.ServicePropertyName = prop.ServicePropertyName;
+
+                        _serviceProperties.Update(propData);
+                        return new JsonResult(new { result = 1 });
+                    }
+                }
+
+                return new JsonResult(new { result = 2 });
+            }
+            catch (System.Exception)
+            {
+                return new JsonResult(new { });
+            }
+        }
+
+
+        [HttpPost]
+        public JsonResult DeleteServiceProp(int id)
+        {
+            try
+            {
+                var serviceProps = _serviceProperties.SelectByID(id);
+                if (serviceProps != null)
+                {
+                    var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                    serviceProps.ServiceCategory = _serviceCategory.SelectByID(serviceProps.ServiceCategoryId);
+                    if (serviceProps.ServiceCategory.UserId == userId)
+                    {
+                        var items = _items.SelectByFunc(b => b.ServicePropertyId == id);
+                        items.ForEach(b =>
+                        {
+                            _items.HardDelete(b);
+                        });
+
+                        _serviceProperties.HardDelete(serviceProps);
+                        return new JsonResult(new { result = 1 });
+                    }
+                }
+
+                return new JsonResult(new { result = 2 });
+            }
+            catch (System.Exception)
+            {
+                return new JsonResult(new { });
+            }
+        }
+
+
+        [HttpPost]
         public JsonResult DeleteService(int id)
         {
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var service = _serviceCategory.SelectByFunc(a=>a.Id == id && a.UserId == userId).FirstOrDefault();
+                var service = _serviceCategory.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
                 if (service != null)
                 {
-                    var serviceProps = _serviceProperties.SelectByFunc(a=>a.ServiceCategoryId == service.Id);
+                    var serviceProps = _serviceProperties.SelectByFunc(a => a.ServiceCategoryId == service.Id);
                     serviceProps.ForEach(a =>
                     {
-
-
                         var items = _items.SelectByFunc(b => b.ServicePropertyId == a.Id);
                         items.ForEach(b =>
                         {
                             var services = _services.SelectByFunc(c => c.Id == b.ServiceId);
                             services.ForEach(c =>
                             {
-                                var myCars = _myCars.SelectByFunc(d=>d.ServiceId == c.Id);
+                                var myCars = _myCars.SelectByFunc(d => d.ServiceId == c.Id);
                                 myCars.ForEach(d =>
                                 {
                                     d.ServiceId = null;

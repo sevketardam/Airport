@@ -17,5 +17,6 @@
         public bool Armored { get; set; }
         public bool Partition { get; set; }
         public int? Driver { get; set; }
+        public string? Plate { get; set; }
     }
 }

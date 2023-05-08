@@ -54,7 +54,8 @@ namespace Airport.UI.Models.Extendions
 
 
             var price = reservation.IsDiscount ? reservation.Discount : reservation.OfferPrice;
-            var totalprice = price + reservation.ServiceFee;
+            var servicefee = reservation.IsDiscount ? 0 : reservation.ServiceFee;
+            var totalprice = price + servicefee;
 
             var htmlContent = @$"<!DOCTYPE html>
 <html lang=""en"">
@@ -97,8 +98,8 @@ namespace Airport.UI.Models.Extendions
 
             </p>
             <p style=""margin: 5px 0px;"">
-                Options:{(reservation.LocationCars.Car.Wifi ? "Free wifi" : "")},{(reservation.LocationCars.Car.Water ? "Free water" : "")},{(reservation.LocationCars.Car.Partition ? "Safety partition" : "")},{(reservation.LocationCars.Car.Charger ? "Phone charger" : "")},
-{(reservation.LocationCars.Car.Armored ? "Armored voyage" : "")},{(reservation.LocationCars.Car.Disabled ? "Handy for the disabled" : "")}
+                Options:{(reservation.LocationCars.Car.Wifi ? "Free wifi" : "")}{(reservation.LocationCars.Car.Water ? ",Free water" : "")}{(reservation.LocationCars.Car.Partition ? ",Safety partition" : "")}{(reservation.LocationCars.Car.Charger ? ",Phone charger" : "")}
+{(reservation.LocationCars.Car.Armored ? ",Armored voyage" : "")}{(reservation.LocationCars.Car.Disabled ? ",Handy for the disabled" : "")}
             </p>
         </div>
     </div>
@@ -153,14 +154,14 @@ namespace Airport.UI.Models.Extendions
         <div>
             <div>
                 <span>Offer price:</span>
-                <span>{price}$</span>
+                <span>{price}€</span>
             </div>
             <div>
                 <span>Service fee:</span>
-                <span>{reservation.ServiceFee}$</span>
+                <span>{servicefee}€</span>
             </div>
             <div style=""margin-top: 15px;"">
-                <b>TOTAL {totalprice}</b>
+                <b>TOTAL {totalprice}</b>€
             </div>
         </div>
     </div>

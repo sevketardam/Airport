@@ -107,7 +107,8 @@ namespace Airport.UI.Controllers
                     Partition = myCar.Partition,
                     Water = myCar.Water,
                     Wifi = myCar.Wifi,
-                    DriverId = myCar.Driver,                  
+                    DriverId = myCar.Driver,    
+                    Plate = myCar.Plate
                 });
 
                 return RedirectToAction("Index", "Cars");
@@ -142,6 +143,7 @@ namespace Airport.UI.Controllers
                     myCar.Partition = updateMyCar.Partition;
                     myCar.Disabled = updateMyCar.Disabled;
                     myCar.DriverId = updateMyCar.Driver;
+                    myCar.Plate = updateMyCar.Plate;
 
                     _myCars.Update(myCar);
                     return new JsonResult(new { result = 1 });
@@ -197,7 +199,8 @@ namespace Airport.UI.Controllers
                         Water = myCar.Water,
                         Wifi = myCar.Wifi,
                         DriverId = myCar.DriverId,
-                        Drivers = Drivers
+                        Drivers = Drivers,
+                        Plate = myCar.Plate
                     };
 
 

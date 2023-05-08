@@ -20,6 +20,7 @@ namespace Airport.UI.Models.VM
         public IEnumerable<Services> Services { get; set; }
         public int? ServiceId { get; set; }
         public int? DriverId { get; set; }
+        public string? Plate { get; set; }
 
         public IEnumerable<Drivers> Drivers { get; set; }
 
