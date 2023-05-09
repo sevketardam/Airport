@@ -34,9 +34,13 @@ namespace Airport.DBEntities.Entities
         public int UserId { get; set; }
         public string Comment { get; set; }
         public double? ServiceFee { get; set; }
+        public byte Status { get; set; }
+        public string? FinishComment { get; set; }
+        public int DriverId { get; set; }
 
         public LocationCars LocationCars { get; set; }
         public UserDatas User { get; set; }
         public List<ReservationPeople> ReservationPeoples { get; set; }
+        public Drivers Driver { get; set; }
     }
 }

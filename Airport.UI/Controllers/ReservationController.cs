@@ -540,7 +540,8 @@ namespace Airport.UI.Controllers
                     IsDiscount = false,
                     UserId = _location.SelectByID(createReservation.LocationCar.LocationId).UserId,
                     ServiceFee = totalServiceFee,
-                    Comment = reservation.Comment
+                    Comment = reservation.Comment,
+                    Status = 1
                 });
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
@@ -1102,7 +1103,8 @@ namespace Airport.UI.Controllers
                     Discount = reservation.Discount,
                     UserId = _location.SelectByID(createReservation.LocationCar.LocationId).UserId,           
                     ServiceFee = totalServiceFee,
-                    Comment = reservation.Comment
+                    Comment = reservation.Comment,
+                    Status = 1
                 });
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);

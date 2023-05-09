@@ -1,0 +1,34 @@
+﻿@model ReservationManagementVM
+@{
+    Layout = "_PanelLayout";
+}
+
+<div>
+    @Model.Reservation.Name
+</div>
+
+<div>
+    @Model.Reservation.Surname
+</div>
+
+<div>
+    @Model.Reservation.Email
+</div>
+
+<div>
+    <form>
+        <div>
+            <label for="driver">Select Driver </label>
+            <select name="DriverId" class="form-control" id="driver">
+                @foreach (var item in Model.Drivers)
+                {
+                    <option value="@item.Id">@item.Name @item.Surname</option>
+                }
+            </select>
+        </div>
+    </form>
+</div>
+
+
+
+
