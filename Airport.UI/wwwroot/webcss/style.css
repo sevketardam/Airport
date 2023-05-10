@@ -188,7 +188,10 @@ label.error {
     right: 0;
     background-color: white;
     padding: 1rem;
-    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     border-radius: 15px;
     z-index: 15;
     opacity: 0;
@@ -331,7 +334,10 @@ label.error {
         position: absolute;
         top: 0;
         /* z-index: 9; */
-        box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+        box-shadow: 0 0 5px rgb(0,0,0,.16);
+        -webkit-appearance: none;
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+        -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
         background: white;
         width: 100%;
         left: -105%;
@@ -633,11 +639,11 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 ._Orange_Title {
     text-align: center;
     font-weight: 600;
-    background-color: var(--orange);
+    background-color: white;
     width: max-content;
     margin: auto;
-    padding: 0.7rem 1.3rem;
-    color: white;
+    padding: 0;
+    color: black;
     border-radius: 0.75rem;
 }
 
@@ -734,6 +740,10 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     align-items: center;
 }
 
+._Module_Inner_Pad {
+    margin: 2rem 0;
+}
+
     ._Happy_Detail p {
         margin: 0;
         font-size: 1.3rem;
@@ -775,7 +785,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 
 ._List_Item h3 {
     text-align: start;
-    margin: 0 0 1rem 0;
+    margin: 0 0 .5rem 0;
     font-size: 1.15rem;
 }
 
@@ -1065,7 +1075,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     outline: none;
     box-shadow: 0 2px 5px rgb(0, 0, 0, 0.16);
     padding: 1rem;
-    border:none;
+    border: none;
 }
 
 ._Register_Input_Div {
@@ -1166,7 +1176,7 @@ button._Verify_Number {
     border: 0.5px solid #232323;
     box-shadow: 0 2px 5px rgb(0, 0, 0, 0.16);
     padding: 1rem;
-    border:none;
+    border: none;
 }
 
 ._Form_Flex_Style textarea {
@@ -1960,7 +1970,10 @@ input[type="number"]::-webkit-outer-spin-button {
 ._Reservatiton_Style {
     width: 100%;
     /* height: 20rem; */
-    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     border-radius: 15px;
     padding: 2rem;
 }
@@ -1983,7 +1996,10 @@ input[type="number"]::-webkit-outer-spin-button {
         padding: 1rem;
         outline: none;
         border: none;
-        box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+        box-shadow: 0 0 5px rgb(0,0,0,.16);
+        -webkit-appearance: none;
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+        -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     }
 
 ._Reservatiton_Style button {
@@ -2040,7 +2056,10 @@ input[type="number"]::-webkit-outer-spin-button {
     width: 80%;
     height: auto;
     border-radius: 15px;
-    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     padding: 2rem;
 }
 
@@ -2078,7 +2097,10 @@ input[type="number"]::-webkit-outer-spin-button {
 ._History_Style {
     width: 100%;
     /* height: 10rem; */
-    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     border-radius: 12px;
     padding: 0.5rem;
 }
@@ -2114,7 +2136,10 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
 ._History_Item {
-    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     width: 100%;
     padding: 0.5rem;
     height: 100%;
@@ -2202,7 +2227,10 @@ input[type="number"]::-webkit-outer-spin-button {
 
 ._Wallet_Style {
     width: 100%;
-    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     border-radius: 15px;
     padding: 1rem;
 }
@@ -2293,7 +2321,10 @@ input[type="number"]::-webkit-outer-spin-button {
 
 ._Cars_Style {
     width: 100%;
-    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     border-radius: 15px;
     padding: 1rem;
 }
@@ -2346,7 +2377,10 @@ input[type="number"]::-webkit-outer-spin-button {
     width: 100%;
     height: 8.5rem;
     position: relative;
-    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     border-radius: 8px;
     overflow: hidden;
 }
@@ -2809,11 +2843,11 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
     ._Happy_Item {
-        width: 100%;
+        width: calc((100% / 2) - 0.75rem);
     }
 
         ._Happy_Item > img {
-            width: 11rem;
+            width: 100%;
             height: 4rem;
             object-fit: scale-down;
         }
@@ -2864,11 +2898,18 @@ input[type="number"]::-webkit-outer-spin-button {
 
 @media only screen and (max-width: 480px) {
     ._Module_Margin {
-        margin: 2.5rem auto;
+        margin: 2rem auto;
+    }
+
+    ._Car_Types{
+        display: none;
     }
 
     ._Banner_Title {
-        font-size: 1.6rem;
+        font-size: 1.25rem;
+    }
+    h2._Orange_Title {
+        font-size: 1.25rem;
     }
 
     ._List_Flex {
@@ -2913,9 +2954,49 @@ input[type="number"]::-webkit-outer-spin-button {
     ._Last_Input {
         margin-top: 1rem;
     }
+
     ._Why_Module_Flex > div {
         width: 100%;
         height: auto;
+    }
+    ._Pay_Flex > div{
+        width: 10%;
+    }
+    ._Travel_Right img, ._Business_Right img {
+    width: 100%;
+    }
+    ._Form_Cat button, ._Form_Inputs ._Add_Return {
+        font-size: .95rem;
+    }
+    ._Form_Inputs label {
+        font-size: 0.55rem;
+    }
+    ._Form_Inputs input {
+        font-size: 0.75rem;
+    }
+    ._Search_Booking {
+        height: 2.3rem;
+        font-size: 1rem;
+    }
+    ._Form_Cat button, ._Form_Inputs input {
+        height: 2.3rem;
+    }
+    ._Locaiton_Icon {
+        bottom: 0.5rem;
+        width: 1.3rem;
+    }
+    #reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(1) input {
+        padding-left: 1.5rem !important;
+    }
+    #reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(1) label {
+        left: 1.5rem !important;
+    }
+    #reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(2) input {
+        padding-left: 1.5rem !important;
+    }
+
+    #reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(2) label {
+        left: 1.5rem !important;
     }
 }
 
@@ -2934,6 +3015,9 @@ input[type="number"]::-webkit-outer-spin-button {
 
     ._Card_Item_Left_Inner_Left {
         height: 10rem;
+    }
+    ._Module_p {
+        font-size: 0.9rem;
     }
 }
 
@@ -2956,6 +3040,9 @@ input[type="number"]::-webkit-outer-spin-button {
 
     ._List_Flex ._List_Item {
         width: 100%;
+    }
+    ._Footer_Contact_Links {
+        flex-direction: column;
     }
 }
 
@@ -3033,7 +3120,10 @@ input[type="number"]::-webkit-outer-spin-button {
     background: white;
     top: 2.6rem;
     left: -0.4rem;
-    box-shadow: 0 0 5px rgb(0,0,0,.16); -webkit-appearance: none; -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     border-radius: 10px;
     transition: opacity 250ms, visibility 250ms;
 }
