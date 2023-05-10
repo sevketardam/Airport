@@ -3033,7 +3033,7 @@ input[type="number"]::-webkit-outer-spin-button {
     background: white;
     top: 2.6rem;
     left: -0.4rem;
-    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    box-shadow: 0 0 5px rgb(0,0,0,.16); -webkit-appearance: none; -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     border-radius: 10px;
     transition: opacity 250ms, visibility 250ms;
 }
