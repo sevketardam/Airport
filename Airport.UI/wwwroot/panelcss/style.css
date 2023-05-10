@@ -178,7 +178,10 @@
     background-color: transparent;
     height: 20rem;
     border-radius: 15px;
-    box-shadow: 0 0 5px rgb(0,0,0,.16); -webkit-appearance: none; -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
@@ -242,7 +245,10 @@ input.selectPhoto {
     width: 100%;
     height: auto;
     border-radius: 5px;
-    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     background-color: white;
     position: relative;
     z-index: 2;
@@ -254,7 +260,10 @@ input.selectPhoto {
 }
 
     .stepOneForm input {
-        box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+        box-shadow: 0 0 5px rgb(0,0,0,.16);
+        -webkit-appearance: none;
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+        -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
         width: 100%;
         font-size: 0.8rem;
     }
@@ -290,7 +299,10 @@ input.selectPhoto {
 }
 
 .stepOneForm ._Add_Return {
-    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
 }
 
 .stepOneSubmit {
