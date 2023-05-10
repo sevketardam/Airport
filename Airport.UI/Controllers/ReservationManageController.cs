@@ -20,7 +20,7 @@ namespace Airport.UI.Controllers
             _reservations = reservations;
         }
 
-        [HttpGet("reservation-management")]
+        [HttpGet("panel/reservation-management")]
         public IActionResult Index()
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
@@ -29,7 +29,7 @@ namespace Airport.UI.Controllers
             return View(reservations);
         }
 
-        [HttpGet("reservation-detail/{id}")]
+        [HttpGet("panel/reservation-detail/{id}")]
         public IActionResult ReservationDetail(int id)
         {
 
