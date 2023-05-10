@@ -4,6 +4,12 @@
 }
 
 @model UpdateLocationVM
+<div class="row">
+    <div class="col-md-12">
+        <a class="btn btn-danger float-right" id="deleteLocation" href="#">Delete Location</a>
+    </div>
+</div>
+
 
 <div class="row">
     <div class="col-12 mb-4">
@@ -168,6 +174,52 @@
 
 @section pageJs{
     <script>
+
+        $('#deleteLocation').on("click",function(){
+
+            Swal.fire({
+                title: 'Do You Want To Delete The Location?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed == true) {
+                    $('.formLoader').removeClass("deActive")
+                    $.ajax({
+                        url: '@Url.Action(nameof(Airport.UI.Controllers.LocationController.DeleteLocation))',
+                        type: "POST",
+                        data: "id=" + @Model.Location.Id,
+                        success: function (response) {
+                            if (response.result == 1) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Successfully Delete Location',
+                                }).then(() => {
+                                    location.href = "/panel/location";
+                                })
+                            }
+                            else
+                            {
+                                  Swal.fire({
+                                    title: 'Error!',
+                                    html: 'Something went wrong',
+                                    icon: 'error',
+                                    confirmButtonText: 'Okey'
+                                }).then(() => {
+                                        location.href = "/panel/location";
+                                })
+                            }
+                        }
+                    });
+                }
+            })
+          
+        })
+
 
 
         processFormData = function () {

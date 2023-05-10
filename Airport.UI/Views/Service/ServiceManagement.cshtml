@@ -141,65 +141,6 @@
 }
 
 
-
-@*<div class="row">
-    <div class="col-md-6">
-        <div class="text-right">
-            <button class="btn btn-secondary mb-3" type="button" data-toggle="modal" data-target="#addServiceCategoryModal">
-                Add Service Category
-            </button>
-        </div>
-        <table id="serviceCategoryTable" class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Category Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.ServiceCategories)
-                {
-                    i++;
-                    <tr>
-                        <td>@i</td>
-                        <td>@item.ServiceCategoryName</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-    </div>
-
-    <div class="col-md-6">
-        <div class="text-right">
-            <button class="btn btn-secondary mb-3" type="button" data-toggle="modal" data-target="#addServicePropertyModal">
-                Add Service Property
-            </button>
-        </div>
-
-        <table id="servicePropertyTable" class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Property Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    i++;
-                    <tr>
-                        <td>@i</td>
-                        <td>@item.ServicePropertyName</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-    </div>
-</div>*@
-
-
 <section class="my-5">
     <div class="text-right">
         <button class="btn btn-secondary mb-3" type="button" data-toggle="modal" data-target="#addServiceCategoryModal">
@@ -221,6 +162,9 @@
                             <div class="serviceBtns">
                                 <button type="button" class="addService btn btn-secondary" title="Add Category">
                                     <i class="fa-sharp fa-solid fa-plus"></i>
+                                </button>
+                                <button type="button" class="updateServiceCategory btn btn-danger" title="Update Category">
+                                    <i class="fa-solid fa-pen"></i>
                                 </button>
                                 <button type="button" class="removeServiceList btn btn-danger" title="Delete Category">
                                     <i class="fa-solid fa-trash"></i>
@@ -244,10 +188,10 @@
                                 </div>
                                 <div>
                                     <div class="serviceBtns" data-id="@item2.Id">
-                                        <button type="button" class="updateServiceProp btn btn-warning" title="Update Category">
+                                        <button type="button" class="updateServiceProp btn btn-warning" title="Update Property">
                                             <i class="fa-solid fa-pen"></i>
                                         </button>
-                                        <button type="button" class="removeServiceProp btn btn-danger" title="Delete Category">
+                                        <button type="button" class="removeServiceProp btn btn-danger" title="Delete Property">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </div>
@@ -276,7 +220,6 @@
                         <label>Service List Name</label>
                         <input type="text" class="form-control" name="categoryName" placeholder="Enter Your Service Category Name">
                     </div>
-
                 </form>
             </div>
             <div class="modal-footer">
@@ -285,6 +228,34 @@
                     Close
                 </button>
                 <button type="button" class="btn btn-primary" id="addServiceCategory">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateServiceCategoryModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Service Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateServiceCategoryForm">
+                    <div class="form-group position-relative error-l-50 _Pos_Rel">
+                        <label>Service List Name</label>
+                        <input type="text" class="form-control" name="categoryName" placeholder="Enter Your Service Category Name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" onclick="$('#updateServiceCategoryForm').submit()" id="updateServiceCategory">Update</button>
             </div>
         </div>
     </div>
@@ -364,6 +335,34 @@
         let categoryId = 0;
         let propId = 0;
 
+        $('#updateServiceCategoryForm').on("submit", function (e) {
+            e.preventDefault();
+            
+            categoryId = $(this).closest(".serviceItem").attr("data-id");
+
+            $('.formLoader').removeClass("deActive")
+            var formData = $(this).serialize()
+            $.ajax({
+                url: '/Service/UpdateServiceCategory',
+                type: "POST",
+                data: formData + "&Id=" + categoryId,
+                success: function (response) {
+                    if (response.result == 1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Successfully Updated Service Category',
+                        }).then(() => {
+                            location.reload();
+                        })
+
+                        $('#updateServiceCategoryModal').modal("hide");
+                    }
+                    $('.formLoader').addClass("deActive")
+                }
+            });
+        })
+
 
         $('.removeServiceProp').on("click", function () {
             propId = $(this).closest(".serviceBtns").attr("data-id");
@@ -410,8 +409,6 @@
                 }
             })
         })
-
-
 
         let updateDescription = new Quill("#updateDestriptionQuil", {
             theme: "snow"

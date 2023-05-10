@@ -246,7 +246,6 @@ namespace Airport.UI.Controllers
             }
         }
 
-
         [HttpPost]
         public JsonResult UpdateServiceProperty(ServiceProperties prop)
         {
@@ -276,7 +275,6 @@ namespace Airport.UI.Controllers
                 return new JsonResult(new { });
             }
         }
-
 
         [HttpPost]
         public JsonResult DeleteServiceProp(int id)
@@ -308,7 +306,6 @@ namespace Airport.UI.Controllers
                 return new JsonResult(new { });
             }
         }
-
 
         [HttpPost]
         public JsonResult DeleteService(int id)
@@ -355,7 +352,6 @@ namespace Airport.UI.Controllers
                 return new JsonResult(new { });
             }
         }
-
 
         [HttpPost]
         public JsonResult AddService(AddServiceVM service)
@@ -443,6 +439,25 @@ namespace Airport.UI.Controllers
             {
                 return new JsonResult(new { });
             }
+        }
+
+        public JsonResult UpdateServiceCategory(string categoryName,int id)
+        {
+            try
+            {
+                var service = _serviceCategory.SelectByID(id);
+                if (service is not null)
+                {
+                    service.ServiceCategoryName = categoryName;
+                    return Json(new { result = 1 });
+                }
+                return Json(new { result = 2 });
+            }
+            catch (Exception)
+            {
+                return Json(new {});
+            }
+          
         }
     }
 }

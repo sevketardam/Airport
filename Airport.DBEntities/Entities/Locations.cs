@@ -20,6 +20,7 @@ namespace Airport.DBEntities.Entities
         public double OutZonePricePerKM { get; set; }
         public string Lat { get; set; }
         public string Lng { get; set; }
+        public bool IsDelete { get; set; }
 
         public UserDatas User { get; set; }
         public List<LocationCars> LocationCars { get; set; }

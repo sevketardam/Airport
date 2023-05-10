@@ -27,7 +27,11 @@ namespace Airport.UI.Controllers
         IMyCarsDAL _myCars;
         IDriversDAL _drivers;
         IGetCarDetail _carDetail;
-        public CarsController(ICarBrandsDAL carBrands, IServicesDAL services, IServiceItemsDAL serviceItems, ICarModelsDAL carModels, ICarSeriesDAL carSeries, ICarTypesDAL carTypes, IMyCarsDAL myCars, IDriversDAL drivers, IGetCarDetail getCarDetail)
+        IReservationsDAL _reservations;
+        ILocationCarsDAL _locationCars;
+        ILocationCarsFareDAL _locationCarsFare;
+
+        public CarsController(ICarBrandsDAL carBrands, IServicesDAL services, IServiceItemsDAL serviceItems, ICarModelsDAL carModels, ICarSeriesDAL carSeries, ICarTypesDAL carTypes, IMyCarsDAL myCars, IDriversDAL drivers, IGetCarDetail getCarDetail, IReservationsDAL reservations, ILocationCarsDAL locationCars, ILocationCarsFareDAL locationCarsFare)
         {
             _carBrands = carBrands;
             _services = services;
@@ -38,6 +42,9 @@ namespace Airport.UI.Controllers
             _myCars = myCars;
             _drivers = drivers;
             _carDetail = getCarDetail;
+            _reservations = reservations;
+            _locationCars = locationCars;
+            _locationCarsFare = locationCarsFare;
         }
 
 
@@ -49,6 +56,7 @@ namespace Airport.UI.Controllers
             myCars.ForEach(a =>
             {
                 a.Brand = _carBrands.SelectByID(a.BrandId);
+                a.Model = _carModels.SelectByID(a.ModelId);
             });
 
             return View(myCars);
@@ -230,41 +238,56 @@ namespace Airport.UI.Controllers
             }
         }
 
-        //[HttpPost]
-        //public IActionResult AddFirstData()
-        //{
-        //    try
-        //    {
-        //        //string line = "";
+
+        public async Task<IActionResult> DeleteMyCar(int id)
+        {
+            try
+            {
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var myCar = _myCars.SelectByFunc(a=>a.Id == id && a.UserId == userId).FirstOrDefault();
+                if (myCar != null)
+                {
+                    var check = false;
+                    var locationCars = _locationCars.SelectByFunc(a=>a.CarId == myCar.Id);
+                    locationCars.ForEach(a =>
+                    {
+                        var checkReservation = _reservations.SelectByFunc(b => b.LocationCarId == a.Id).FirstOrDefault();
+                        if (checkReservation is null)
+                        {
+                            var locationCarsFare = _locationCarsFare.SelectByFunc(b => b.LocationCarId == a.Id);
+                            locationCarsFare.ForEach(b =>
+                            {
+                                _locationCarsFare.HardDelete(b);
+                            });
+
+                            _locationCars.HardDelete(a);
+                        }
+                        else
+                        {
+                            check = true;
+                        }
+                    });
+
+                    if (check)
+                    {
+                        _myCars.SoftDelete(myCar);
+                    }
+                    else
+                    {
+                        _myCars.HardDelete(myCar);
+                    }
 
 
-        //        string jsonText = System.IO.File.ReadAllText("wwwroot/trims.json");
 
-        //        var list = System.Text.Json.JsonSerializer.Deserialize<List<TableEntry>>(jsonText);
-        //        var list2 = new List<CarTrims>();
-        //        list.ForEach(a =>
-        //        {
-        //            list2.Add(new CarTrims
-        //            {
-        //                CarSeriesId = a.serie_id,
-        //                CarTrimName = a.name,
-        //                Id = a.id,
-        //                CarModelId = a.model_id
-        //            });
-        //        });
-
-        //        _carTrims.InsertRage(list2);
-
-        //        //_carBrands.InsertRage(list);
-
-
-        //        return new JsonResult(new { result = 1 });
-        //    }
-        //    catch (System.Exception)
-        //    {
-        //        return BadRequest();
-        //    }
-        //}
+                    return Json(new {result = 1});
+                }
+                return Json(new { result = 2 });
+            }
+            catch (System.Exception)
+            {
+                return Json(new { });
+            }
+        }
 
     }
 }

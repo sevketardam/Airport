@@ -3,7 +3,7 @@
 }
 @model IEnumerable<MyCars>
 
-<div class="d-flex justify-content-end">
+<div class="d-flex justify-content-end mb-3">
     <a href="/panel/add-car" class="btn" style="
     background: #EC681E;
     color: white;">
@@ -14,13 +14,13 @@
 <div class="row">
     @foreach (var item in Model)
     {
-        <div class="col-md-4">
+        <div class="col-md-4 mb-3">
             <a href="/panel/update-my-car/@item.Id" class="serviceItems" data-value="@item.Id">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <p class="list-item-heading mb-0 pt-1">@item.Brand.CarBrandName</p>
+                                <p class="list-item-heading mb-0 pt-1">@item.Brand.CarBrandName @item.Model.CarModelName</p>
                             </div>
                         </div>
                     </div>

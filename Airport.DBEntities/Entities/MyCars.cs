@@ -22,6 +22,7 @@ namespace Airport.DBEntities.Entities
         public int? ServiceId { get; set; }
         public int UserId { get; set; }
         public string? Plate { get; set; }
+        public bool IsDelete { get; set; }
 
         public bool Wifi { get; set; }
         public bool Water { get; set; }

@@ -3,7 +3,7 @@
 }
 @model List<Locations>
 
-<div class="d-flex justify-content-end">
+<div class="d-flex justify-content-end mb-3">
     <a href="/panel/add-location/step-one" class="btn" style="background: #EC681E;color: white;">
         Add Location
     </a>
@@ -13,7 +13,7 @@
 <div class="row">
     @foreach (var item in Model)
     {
-        <div class="col-md-4">
+        <div class="col-md-4 mb-3">
             <a href="/panel/update-location/@item.Id" class="serviceItems" data-value="@item.Id">
                 <div class="card">
                     <div class="card-body">

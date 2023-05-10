@@ -17,7 +17,7 @@ namespace Airport.DBEntities.Entities
         public double Fare { get; set; }
         public byte PriceType { get; set; }
         public int LocationCarId { get; set; }
-
+        public bool IsDelete { get; set; }
         public LocationCars LocationCar { get; set; }
     }
 }

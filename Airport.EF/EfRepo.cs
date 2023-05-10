@@ -97,7 +97,7 @@ namespace Airport.EF
 
         public void SoftDelete(TEntity deletedData)
         {
-            deletedData.GetType().GetProperty("Isdelete").SetValue(deletedData, true);
+            deletedData.GetType().GetProperty("IsDelete").SetValue(deletedData, true);
             this.Update(deletedData);
         }
 

@@ -85,7 +85,7 @@ namespace Airport.UI.Controllers
 
                 if (betweenLocation.status == "OK")
                 {
-                    var locations = _location.Select();
+                    var locations = _location.SelectByFunc(a=>!a.IsDelete);
                     var listlocation = new List<ReservationLocationCarsVM>();
                     var locationCars = new List<List<ReservationLocationCarsVM>>();
                     int i = 0;
@@ -285,6 +285,7 @@ namespace Airport.UI.Controllers
                         });
                     });
 
+                    getreservation = getreservation.Distinct().ToList();
 
                     var lastVM = new ReservationStepTwoVM()
                     {
@@ -319,6 +320,8 @@ namespace Airport.UI.Controllers
 
 
                     lastVM.ReservationValues = lastVM.ReservationValues.OrderBy(a => a.LastPrice).ToList();
+
+ 
 
                     return View(lastVM);
                 }
@@ -541,7 +544,8 @@ namespace Airport.UI.Controllers
                     UserId = _location.SelectByID(createReservation.LocationCar.LocationId).UserId,
                     ServiceFee = totalServiceFee,
                     Comment = reservation.Comment,
-                    Status = 1
+                    Status = 1,
+                    IsDelete = false,
                 });
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
@@ -651,7 +655,7 @@ namespace Airport.UI.Controllers
 
                 if (betweenLocation.status == "OK" && betweenLocation.rows[0].elements[0].status == "OK")
                 {
-                    var locations = _location.Select();
+                    var locations = _location.SelectByFunc(a => !a.IsDelete);
                     var listlocation = new List<ReservationLocationCarsVM>();
                     var locationCars = new List<List<ReservationLocationCarsVM>>();
                     int i = 0;
@@ -853,6 +857,8 @@ namespace Airport.UI.Controllers
                     });
 
 
+                    getreservation = getreservation.Distinct().ToList();
+
                     var lastVM = new ReservationStepTwoVM()
                     {
                         ReservationValues = getreservation,
@@ -1038,7 +1044,6 @@ namespace Airport.UI.Controllers
         {
             try
             {
-
                 var createReservation = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
                 if (createReservation == null)
@@ -1104,7 +1109,8 @@ namespace Airport.UI.Controllers
                     UserId = _location.SelectByID(createReservation.LocationCar.LocationId).UserId,           
                     ServiceFee = totalServiceFee,
                     Comment = reservation.Comment,
-                    Status = 1
+                    Status = 1,
+                    IsDelete = false
                 });
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);

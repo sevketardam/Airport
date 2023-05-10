@@ -36,7 +36,8 @@ namespace Airport.DBEntities.Entities
         public double? ServiceFee { get; set; }
         public byte Status { get; set; }
         public string? FinishComment { get; set; }
-        public int DriverId { get; set; }
+        public int? DriverId { get; set; }
+        public bool IsDelete { get; set; }
 
         public LocationCars LocationCars { get; set; }
         public UserDatas User { get; set; }

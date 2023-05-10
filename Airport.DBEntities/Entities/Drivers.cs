@@ -24,6 +24,7 @@ namespace Airport.DBEntities.Entities
         public string? PhotoFront { get; set; }
         public string? PhotoBack { get; set; }
         public string? DriverId { get; set; }
+        public bool IsDelete { get; set; }
 
         public UserDatas User { get; set; }
         public List<MyCars> MyCars { get; set; }

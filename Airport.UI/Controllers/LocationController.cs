@@ -24,7 +24,8 @@ namespace Airport.UI.Controllers
         ILocationsDAL _locations;
         ILocationCarsDAL _locationCars;
         ILocationCarsFareDAL _locationCarsFare;
-        public LocationController(IMyCarsDAL myCars, ICarBrandsDAL carBrands, IGetCarDetail carDetail, ILocationsDAL locations, ILocationCarsDAL locationCars, ILocationCarsFareDAL locationCarsFare)
+        IReservationsDAL _reservations; 
+        public LocationController(IMyCarsDAL myCars, ICarBrandsDAL carBrands, IGetCarDetail carDetail, ILocationsDAL locations, ILocationCarsDAL locationCars, ILocationCarsFareDAL locationCarsFare,IReservationsDAL reservations)
         {
             _myCars = myCars;
             _myBrands = carBrands;
@@ -32,13 +33,14 @@ namespace Airport.UI.Controllers
             _locations = locations;
             _locationCars = locationCars;
             _locationCarsFare = locationCarsFare;
+            _reservations = reservations;
         }
 
         [HttpGet("panel/location")]
         public IActionResult Index()
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-            var myLocation = _locations.SelectByFunc(a => a.UserId == userId);
+            var myLocation = _locations.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
             return View(myLocation);
         }
 
@@ -154,6 +156,7 @@ namespace Airport.UI.Controllers
                     OutZonePricePerKM = convertData.OutZonePerKmPrice,
                     Lat = result.Result.Geometry.Location.lat,
                     Lng = result.Result.Geometry.Location.lng,
+                    IsDelete = false
                 });
 
                 var carLocationFareList = new List<LocationCarsFare>();
@@ -220,7 +223,6 @@ namespace Airport.UI.Controllers
             return View(VM);
         }
 
-
         [HttpPost("panel/update-location/{id}", Name = "updateLocationValues")]
         public IActionResult UpdateLocation(string jsonValues)
         {
@@ -275,6 +277,50 @@ namespace Airport.UI.Controllers
             _locationCarsFare.InsertRage(carLocationFareList);
 
             return RedirectToAction("Index", "Location");
+        }
+
+
+        public IActionResult DeleteLocation(int id)
+        {
+            var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+            var location = _locations.SelectByFunc(a=>a.Id == id && a.UserId == userId).FirstOrDefault();
+            if (location == null)
+            {
+                return Json(new { result = 2 });
+            }
+
+            var check = false;
+            var locationCars = _locationCars.SelectByFunc(a=>a.LocationId == location.Id);
+            locationCars.ForEach(a =>
+            {
+                var checkReservation = _reservations.SelectByFunc(b=>b.LocationCarId == a.Id).FirstOrDefault();
+                if (checkReservation is null)
+                {
+                    var locationCarsFare = _locationCarsFare.SelectByFunc(b => b.LocationCarId == a.Id);
+                    locationCarsFare.ForEach(b =>
+                    {
+                        _locationCarsFare.HardDelete(b);
+                    });
+
+                    _locationCars.HardDelete(a);
+                }
+                else
+                {
+                    check = true;
+                }
+            });
+
+            if (check)
+            {
+                _locations.SoftDelete(location);
+            }
+            else
+            {
+                _locations.HardDelete(location);
+            }
+
+
+            return Json(new { result = 1 });
         }
 
     }

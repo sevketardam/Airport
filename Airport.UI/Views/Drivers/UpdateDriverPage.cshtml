@@ -6,8 +6,12 @@
 
 @section pageCSSLink{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.15/css/jquery.Jcrop.min.css" integrity="sha512-bbAsdySYlqC/kxg7Id5vEUVWy3nOfYKzVHCKDFgiT+GsHG/3MD7ywtJnJNSgw++HBc+w4j71MLiaeVm1XY5KDQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 }
+<div class="row">
+    <div class="col-md-12">
+        <a class="btn btn-danger float-right" id="deleteDriver" href="#">Delete Driver</a>
+    </div>
+</div>
 
 <form id="updateDriverForm">
     <div class="row">
@@ -138,6 +142,49 @@
 
 @section pageJs{
     <script>
+        $('#deleteDriver').on("click", function () {
+            Swal.fire({
+                title: 'Do You Want To Delete The Driver?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed == true) {
+                    $('.formLoader').removeClass("deActive")
+                    $.ajax({
+                        url: '@Url.Action(nameof(Airport.UI.Controllers.DriversController.DeleteDriver))',
+                        type: "POST",
+                        data: "id=" + @Model.Id,
+                        success: function (response) {
+                            if (response.result == 1) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Successfully Delete Driver',
+                                }).then(() => {
+                                    location.href = "/panel/location";
+                                })
+                            }
+                            else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    html: 'Something went wrong',
+                                    icon: 'error',
+                                    confirmButtonText: 'Okey'
+                                }).then(() => {
+                                    location.href = "/panel/location";
+                                })
+                            }
+                        }
+                    });
+                }
+            })
+        })
+
+
         $('#updateDriverForm').on("submit", function (e) {
             e.preventDefault();
             if ($(this).valid()) {
