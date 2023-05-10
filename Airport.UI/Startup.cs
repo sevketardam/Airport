@@ -1,5 +1,7 @@
 using Airport.DBEntitiesDAL.Concrete;
 using Airport.DBEntitiesDAL.Interfaces;
+using Airport.MessageExtension.Interfaces;
+using Airport.MessageExtension.Repos;
 using Airport.MessageExtensions.Interfaces;
 using Airport.MessageExtensions.Repos;
 using Airport.UI.Models.Interface;
@@ -53,6 +55,7 @@ namespace Airport.UI
             services.AddScoped<IReservationsDAL, ReservationsDAL>();
             services.AddScoped<IReservationPeopleDAL, ReservationPeopleDAL>();
             services.AddScoped<IMail, MailRepo>();
+            services.AddScoped<ISMS, SMSRepo>();
 
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
