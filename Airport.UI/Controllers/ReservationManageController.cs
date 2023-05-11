@@ -93,7 +93,6 @@ namespace Airport.UI.Controllers
             {
                 return Json(new { });
             }
-
         }
 
         public IActionResult AssignDriver(int driverId,int reservationId)

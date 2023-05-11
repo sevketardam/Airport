@@ -157,7 +157,7 @@ namespace Airport.UI.Controllers
                     });
 
                     var selectedLocations = new List<LocationIsOutVM>();
-
+                    allDatas = allDatas.Distinct().ToList();
                     allDatas.ForEach(a =>
                     {
                         var convertLocation = _location.SelectByFunc(b => b.Lat == a.Lat && b.Lng == a.Lng);
