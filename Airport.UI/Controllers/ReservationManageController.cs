@@ -28,6 +28,7 @@ namespace Airport.UI.Controllers
             _reservationPeople = reservationPeople;
         }
 
+
         [HttpGet("panel/reservation-management")]
         public IActionResult Index()
         {
