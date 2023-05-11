@@ -39,7 +39,7 @@ namespace Airport.UI.Controllers
         IServiceCategoriesDAL _serviceCategories;
         IReservationServicesTableDAL _reservationServicesTable;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services,IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable)
         {
             _location = location;
             _locationCar = locationCar;
@@ -86,7 +86,7 @@ namespace Airport.UI.Controllers
 
                 if (betweenLocation.status == "OK")
                 {
-                    var locations = _location.SelectByFunc(a=>!a.IsDelete);
+                    var locations = _location.SelectByFunc(a => !a.IsDelete);
                     var listlocation = new List<ReservationLocationCarsVM>();
                     var locationCars = new List<List<ReservationLocationCarsVM>>();
                     int i = 0;
@@ -102,7 +102,7 @@ namespace Airport.UI.Controllers
                             ZoneValue = a.LocationRadius,
                             Lat = a.Lat,
                             Lng = a.Lng
-                        });                      
+                        });
                     });
 
                     if (listlocation.Count != 0)
@@ -176,8 +176,8 @@ namespace Airport.UI.Controllers
                     var getreservation = new List<GetReservationValues>();
                     selectedLocations = selectedLocations.Distinct().ToList();
                     int minKm = 0;
-                    var lastKm = Math.Ceiling(Convert.ToDouble(betweenLocation.rows[0].elements[0].distance.value) / 1000) * 1000;
-                    minKm = Convert.ToInt32(lastKm / 1000);
+                    var lastKm = Math.Floor(Convert.ToDouble(betweenLocation.rows[0].elements[0].distance.value) / 100) * 100;
+                    minKm = Convert.ToInt32(lastKm / 100);
                     var selectedLocationsMini = new List<LocationIsOutMiniVM>();
                     selectedLocations.ForEach(a =>
                     {
@@ -236,7 +236,15 @@ namespace Airport.UI.Controllers
                                             }
                                             else
                                             {
-                                                price += c.Fare;
+                                                if (minKm < (c.UpTo - c.StartFrom))
+                                                {
+                                                    price += c.Fare * minKm;
+                                                }
+                                                else
+                                                {
+                                                    price += c.Fare * (c.UpTo - c.StartFrom);
+                                                }
+
                                             }
                                         }
 
@@ -256,6 +264,8 @@ namespace Airport.UI.Controllers
                                         price *= 2;
                                     }
 
+                                    price = price / 10;
+
                                     getreservation.Add(new GetReservationValues
                                     {
                                         LocationCars = b,
@@ -270,7 +280,7 @@ namespace Airport.UI.Controllers
                                         PickLocationPlaceId = reservation.PickValue,
                                     });
                                 }
-                            }                           
+                            }
                         });
                     });
 
@@ -310,7 +320,7 @@ namespace Airport.UI.Controllers
 
                     lastVM.ReservationValues = lastVM.ReservationValues.OrderBy(a => a.LastPrice).ToList();
 
- 
+
 
                     return View(lastVM);
                 }
@@ -458,7 +468,6 @@ namespace Airport.UI.Controllers
                     return NotFound();
                 }
 
-                var services = JsonConvert.DeserializeObject<List<SelectServiceVM>>(selectedServiceItems);
 
                 var peopleList = new List<GetOtherPeople>();
                 for (int i = 0; i < OthersName.Count; i++)
@@ -484,11 +493,15 @@ namespace Airport.UI.Controllers
                 }
 
                 var totalServiceFee = 0.0;
-
-                foreach (var item1 in services)
+                var services = new List<SelectServiceVM>();
+                if (selectedServiceItems != null)
                 {
-                    var serviceFee = _serviceItems.SelectByID(item1.SelectedValue);
-                    totalServiceFee += serviceFee.Price * item1.PeopleCountInput;
+                    services = JsonConvert.DeserializeObject<List<SelectServiceVM>>(selectedServiceItems);
+                    foreach (var item1 in services)
+                    {
+                        var serviceFee = _serviceItems.SelectByID(item1.SelectedValue);
+                        totalServiceFee += serviceFee.Price * item1.PeopleCountInput;
+                    }
                 }
 
 
@@ -526,7 +539,8 @@ namespace Airport.UI.Controllers
                 foreach (var item1 in services)
                 {
                     var serviceFee = _serviceItems.SelectByID(item1.SelectedValue);
-                    reservationItemsList.Add(new ReservationServicesTable{
+                    reservationItemsList.Add(new ReservationServicesTable
+                    {
                         ReservationId = item.Id,
                         PeopleCount = item1.PeopleCountInput,
                         Price = serviceFee.Price,
@@ -1039,16 +1053,19 @@ namespace Airport.UI.Controllers
                         });
                     }
                 }
-
-                var services = JsonConvert.DeserializeObject<List<SelectServiceVM>>(selectedServiceItems);
-
                 var totalServiceFee = 0.0;
-
-                foreach (var item1 in services)
+                var services = new List<SelectServiceVM>();
+                if (selectedServiceItems != null)
                 {
-                    var serviceFee = _serviceItems.SelectByID(item1.SelectedValue);
-                    totalServiceFee += serviceFee.Price * item1.PeopleCountInput;
+                    services = JsonConvert.DeserializeObject<List<SelectServiceVM>>(selectedServiceItems);
+                    foreach (var item1 in services)
+                    {
+                        var serviceFee = _serviceItems.SelectByID(item1.SelectedValue);
+                        totalServiceFee += serviceFee.Price * item1.PeopleCountInput;
+                    }
                 }
+
+
 
                 Random random = new Random();
                 int kodUzunlugu = 6;
@@ -1125,6 +1142,15 @@ namespace Airport.UI.Controllers
 
                 _reservationsPeople.InsertRage(reservationPeople);
 
+
+
+                HttpContext.Session.Remove("reservationData");
+
+                PdfCreator pdfCreator = new PdfCreator(_env);
+
+
+                pdfCreator.CreateReservationPDF(kod + "-" + item.Id, item);
+
                 _mail.SendReservationMail(new ReservationMailVM
                 {
                     Name = reservation.Name,
@@ -1136,14 +1162,6 @@ namespace Airport.UI.Controllers
                     Id = item.Id.ToString()
 
                 });
-
-                HttpContext.Session.Remove("reservationData");
-
-                PdfCreator pdfCreator = new PdfCreator(_env);
-
-
-                pdfCreator.CreateReservationPDF(kod + "-" + item.Id, item);
-
 
                 return View(item);
             }

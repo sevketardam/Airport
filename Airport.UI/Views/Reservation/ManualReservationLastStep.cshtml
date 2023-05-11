@@ -57,10 +57,10 @@
 
                     @if (Model.IsDiscount)
                     {
-                        <h6>Price:<span style="text-decoration: line-through;">@Model.OfferPrice €</span></h6>
+                        <h6>Price:<span style="text-decoration: line-through;">@(Model.OfferPrice + Model.ServiceFee) €</span></h6>
                     }
 
-                    <h3>@(Model.IsDiscount ? "Discount Price" : "Price"):@(Model.IsDiscount ? Model.Discount : Model.OfferPrice) €</h3>
+                    <h3>@(Model.IsDiscount ? "Discount Price" : "Price"):@(Model.IsDiscount ? Model.Discount : (Model.OfferPrice + Model.ServiceFee)) €</h3>
 
 
                     <a class="_Btn_Style btn" href="http://test.airportglobaltransfer.com/pdf/@(Model.ReservationCode)-@(Model.Id).pdf" target="_blank">Download Voucher</a>

@@ -277,7 +277,7 @@
                                                             </p>
                                                         </div>
                                                         <div class="pageServicePrice">
-                                                            <input type="number" name="peopleCountInput" value="1" min="1" max="@Model.SelectedData.ReservationValues.PeopleCount" class="passengerInputs">
+                                                            <input type="number" name="peopleCountInput" id="peopleCountInput" value="1" min="1" max="@Model.SelectedData.ReservationValues.PeopleCount" class="passengerInputs">
                                                             <p>
                                                                 €<b class="servicePrice">@item.Price</b>
                                                             </p>
@@ -338,8 +338,11 @@
             blocks: [15]
         });
 
+        let listCheckedItems = []
+        const lastPrice = @Model.SelectedData.LastPrice;
         $('.itemCheckbox').on("click", function () {
             listCheckedItems = []
+            var price = 0;
             $.each($('.itemCheckbox'), function (key, value) {
                 if ($(value).is(":checked")) {
                     var peoplecount = $(value).closest(".pageServiceDownItem").find(".passengerInputs").val()
@@ -347,11 +350,36 @@
                         SelectedValue: $(value).val(),
                         PeopleCountInput: peoplecount == "" || peoplecount == 0 ? 1 : peoplecount
                     })
+                    price += (parseFloat($(this).closest('.pageServiceDownItem').find(".servicePrice").text().trim()) * parseFloat($(this).closest('.pageServiceDownItem').find("#peopleCountInput").val()))
                 }
             })
 
+            $('#priceBox').text(lastPrice + price)
+            $('#newPriceInput').val(lastPrice + price)
             $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
         })
+
+
+        $('.passengerInputs').on("change", function () {
+            listCheckedItems = []
+            var price = 0;
+            $.each($('.itemCheckbox'), function (key, value) {
+                if ($(value).is(":checked")) {
+                    var peoplecount = $(value).closest(".pageServiceDownItem").find(".passengerInputs").val()
+                    listCheckedItems.push({
+                        SelectedValue: $(value).val(),
+                        PeopleCountInput: peoplecount == "" || peoplecount == 0 ? 1 : peoplecount
+                    })
+                    price += (parseFloat($(this).closest('.pageServiceDownItem').find(".servicePrice").text().trim()) * parseFloat($(this).closest('.pageServiceDownItem').find("#peopleCountInput").val()))
+                }
+            })
+
+            $('#priceBox').text(lastPrice + price)
+            $('#newPriceInput').val(lastPrice + price)
+            $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
+        })
+
+        const firstPrice = @Model.SelectedData.LastPrice
 
     </script>
 }

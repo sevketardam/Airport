@@ -25,11 +25,11 @@ namespace Airport.UI.Models.Extendions
             _hostingEnvironment = hostingEnvironment;
         }
 
-        public void CreateReservationPDF(string fileName,Reservations reservation)
+        public void CreateReservationPDF(string fileName, Reservations reservation)
         {
 
             var httpClient = new HttpClient();
-            var apiUrl = $"https://maps.googleapis.com/maps/api/directions/json?origin={reservation.PickLatLng.Replace("lat:", "").Replace("lng:", "")}&destination={reservation.DropLatLng.Replace("lat:","").Replace("lng:","")}&mode=driving&key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg";
+            var apiUrl = $"https://maps.googleapis.com/maps/api/directions/json?origin={reservation.PickLatLng.Replace("lat:", "").Replace("lng:", "")}&destination={reservation.DropLatLng.Replace("lat:", "").Replace("lng:", "")}&mode=driving&key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg";
             var response = httpClient.GetAsync(apiUrl).Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var contentJsonResult = JsonConvert.DeserializeObject<JObject>(content);
@@ -48,14 +48,14 @@ namespace Airport.UI.Models.Extendions
             str = str.Substring(0, str.Length - 3);
 
             var imageResponse = httpClient.GetAsync(str).Result;
-            
+
             byte[] imageBytes = imageResponse.Content.ReadAsByteArrayAsync().Result;
             string base64String = Convert.ToBase64String(imageBytes);
 
 
             var price = reservation.IsDiscount ? reservation.Discount : reservation.OfferPrice;
-            var servicefee = reservation.IsDiscount ? 0 : reservation.ServiceFee;
-            var totalprice = price + servicefee;
+            var servicefee = reservation.ServiceFee;
+            var totalprice = reservation.IsDiscount ? price - servicefee : price + servicefee;
 
             var htmlContent = @$"<!DOCTYPE html>
 <html lang=""en"">
@@ -64,7 +64,11 @@ namespace Airport.UI.Models.Extendions
     <meta http-equiv=""X-UA-Compatible"" content=""IE=edge"">
     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
     <title>Document</title>
-
+<style>
+*{{
+    font-size:.9rem;
+}}
+</style>
 </head>
 
 <body style=""margin: 0px; padding: 30px;"">
@@ -80,29 +84,29 @@ namespace Airport.UI.Models.Extendions
 
 
     <div style=""padding: 5px 5px;"">
-        <div style=""margin-bottom:20px"">
+        <div>
             <h4 style=""font-weight: bold; margin: 5px 0px;"">RERVATION CODE</h4>
             <p style=""margin: 5px 0px;"">{reservation.ReservationCode}</p>
         </div>
-        <div style=""margin-bottom:20px"">
+        <div>
             <h4 style=""font-weight: bold; margin: 5px 0px;"">CLIENT INFORMATION</h4>
             <p style=""margin: 5px 0px;"">{reservation.User.CompanyName}</p>
         </div>
 
-        <div style=""margin-bottom:20px"">
+        <div>
             <h4 style=""font-weight: bold; margin: 5px 0px;"">CLIENT INFORMATION</h4>
             <p style=""margin: 0px;"">GLOBAL TRANSFER</p>
-            <p style=""margin:0"">Phone number:</p>{reservation.User.CompanyPhoneNumber}
+            <p style=""margin: 0px;"">Phone number:{reservation.User.CompanyPhoneNumber}</p>
 
         </div>
         <div>
             <h4 style=""font-weight: bold; margin: 5px 0px;"">TRANSPORT INFORMATION</h4>
-            <p style=""margin: 5px 0px;"">Transport type: 
+            <p style=""margin:0px;"">Transport type: 
                 Small Bags x{reservation.LocationCars.Car.SmallBags}, Suit Case x{reservation.LocationCars.Car.SuitCase}, Passenger x{reservation.LocationCars.Car.MaxPassenger} 
             </p>
-            <p>Vehicle: {reservation.LocationCars.Car.Brand.CarBrandName} {reservation.LocationCars.Car.Model.CarModelName} </p>
-            <p style=""margin: 5px 0px;"">License plate: {reservation.LocationCars.Car.Plate}</p>
-            <p style=""margin: 5px 0px;"">
+            <p style=""margin: 0px;"">Vehicle: {reservation.LocationCars.Car.Brand.CarBrandName} {reservation.LocationCars.Car.Model.CarModelName} </p>
+            <p style=""margin: 0px;"">License plate: {reservation.LocationCars.Car.Plate}</p>
+            <p style=""margin: 0px;"">
                 Options:{(reservation.LocationCars.Car.Wifi ? "Free wifi" : "")}{(reservation.LocationCars.Car.Water ? ",Free water" : "")}{(reservation.LocationCars.Car.Partition ? ",Safety partition" : "")}{(reservation.LocationCars.Car.Charger ? ",Phone charger" : "")}
 {(reservation.LocationCars.Car.Armored ? ",Armored voyage" : "")}{(reservation.LocationCars.Car.Disabled ? ",Handy for the disabled" : "")}
             </p>
@@ -114,8 +118,7 @@ namespace Airport.UI.Models.Extendions
 
         <h3 style=""text-align: center; font-size: 23px;margin-bottom:20px;padding:0;"">BOOKING DETAILS</h3>
         <div style=""display: flex; justify-content: space-between;"">
-            <div>
-
+            <div style=""float: right;"">
                 <p style=""font-weight: bold; margin: 0;"">RIDE DATE</p>
                 <div>
                     <p style=""margin: 0 0 15px 0px;"">{reservation.ReservationDate.ToString("d 'of' MMMM, yyyy")} {reservation.ReservationDate.ToShortTimeString()}</p>
@@ -147,42 +150,53 @@ namespace Airport.UI.Models.Extendions
                 </div>
                 <p style=""font-weight: bold; margin: 0px;"">WAITING TIME:</p>
                 <div style=""margin: 0 0 15px 0px;"">
-                    <p style=""margin:0px"">Free waiting time included: at airports, sea or river passenger port terminals — 60 minutes,
-at railway stations — 30 minutes, all other locations — 15 minutes</p>
+                    <p style=""margin:0px"">Free waiting time included: at airports, sea or river passenger port terminals — 60 minutes,at railway stations — 30 minutes, all other locations — 15 minutes</p>
                 </div>
             </div>
 
-            <div style=""margin-left:20px;"">
+            <div style=""margin-left:20px;float: left;"">
                 <img src=""data:image/png;base64,{base64String}"" alt=""Harita"">
             </div>
         </div>
     </div>
 
-    <div style=""padding: 15px 15px; border-bottom: 4px solid #FF6900;"">
-        <h3 style=""text-align: center; font-size: 23px;"">PAYMENT DETAILS</h3>
-        <div>
+    <div style=""margin: 15px 15px; border-bottom: 4px solid #FF6900;"">
+        <h3 style=""font-size: 23px;text-align: center;"">PAYMENT DETAILS</h3>
+
+        <div style=""display: flex; justify-content: space-between;width:100%;"">
             <div>
-                <span style=""float: right;"">Offer price:</span>
-                <span style=""float: left;"">€{price}</span>
+                      <p style=""margin: 0px;"">Offer price:</p>
             </div>
-            <div style=""margin-bottom:30px"">
-                <span style=""float: right;"">Service fee:</span>
-                <span style=""float: left;"">€{servicefee}</span>
+            <div>
+                      <p style=""margin: 0px;margin-left:.5rem"">€{price}</p>
             </div>
-            <div style=""margin-top: 15px;"">
-                <b style=""float: right;"">TOTAL</b>
-                <span style=""float: left;"">€{totalprice}</span>
+        </div>
+        <div style=""display: flex; justify-content: space-between;width:100%;"">
+            <div>
+                      <p style=""margin: 0px;"">Service fee:</p>
+            </div>
+            <div>
+                      <p style=""margin: 0px;margin-left:.5rem;"">€{servicefee}</p>
+            </div>
+        </div>
+        <div style=""display: flex; justify-content: space-between;width:100%;"">
+            <div>
+                      <p style=""font-weight: bold;margin: 0px;"">TOTAL:</p>
+            </div>
+            <div>
+                       <p style=""margin: 0px;margin-left:.5rem;"">€{totalprice}</p>
             </div>
         </div>
     </div>
- <div style=""padding: 15px 15px;"">
+
+ <div style=""margin: 15px 15px;"">
         <h6 style=""text-align: center; font-size: 15px; font-weight: bold; margin: 5px;"">CANCELATION POLICY</h6>
         <div>
             <p>Allowed cancellation period for reimbursement is over. Any payments will not be reimbursed.</p>
         </div>
     </div>
 
-    <div style=""padding: 15px 15px;"">
+    <div style=""margin: 15px 15px;"">
         <h6 style=""text-align: center; font-size: 15px; font-weight: bold; margin: 5px;"">SUPPORT</h6>
         <div>
             <p style=""float: right;"">info@airportglobaltransfer.com</p>
@@ -191,9 +205,9 @@ at railway stations — 30 minutes, all other locations — 15 minutes</p>
     </div>
 </body>
 
-</html>";       
+</html>";
 
-            var outputPath = Path.Combine(_hostingEnvironment.WebRootPath, "pdf", fileName +".pdf");
+            var outputPath = Path.Combine(_hostingEnvironment.WebRootPath, "pdf", fileName + ".pdf");
             var pdfWriter = new PdfWriter(outputPath);
             var pdfDoc = new PdfDocument(pdfWriter);
             var converterProperties = new ConverterProperties();
