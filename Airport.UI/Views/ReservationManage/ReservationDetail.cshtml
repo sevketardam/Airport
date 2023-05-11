@@ -133,7 +133,6 @@
         .carServices .carServiceItemImage {
             width: 4rem;
             height: 4rem;
-            background-color: white;
             display: flex;
             padding: .5rem;
             border-radius: .3rem;
@@ -190,7 +189,6 @@
 
 
         .slideDriverPhotos img {
-            max-width: 10rem;
             width: 100%;
             margin: auto;
             display: flex;
@@ -206,7 +204,6 @@
 
         .slideDriverPhotos {
             display: flex;
-            height: 85%;
             align-items: center;
         }
 
@@ -254,9 +251,9 @@
             }
         }
 
-        .topStyle{
+        .topStyle {
             background-color: transparent !important;
-            box-shadow: none !important 
+            box-shadow: none !important
         }
 
         .driverRight.topStyle {
@@ -264,72 +261,48 @@
             padding: 0;
         }
 
-        .driverRight.topStyle form{
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
+            .driverRight.topStyle form {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
 
-        .driverRight.topStyle form button{
+                .driverRight.topStyle form button {
                     white-space: nowrap;
                     border-radius: 0;
                     margin-left: 1rem;
-        }
+                }
 
-
-        
-
-      
     </style>
 }
 
-<div>
-    @Model.Reservation.Name
-</div>
-
-<div>
-    @Model.Reservation.Surname
-</div>
-
-<div>
-    @Model.Reservation.Email
-</div>
-
-
-
-
-
 <section>
     <div class="container my-5">
-        <div style="border: 2px solid; width: 100%; height: 350px;">map</div>
+        <div style="width: 100%; height: 350px;" id="map">map</div>
 
         <!-- Müşterilerin Bilgileri -->
         <div class="my-4">
             <div class="resPeople">
                 <div class="firstPeople">
-                    name
+                    @Model.Reservation.Name
                 </div>
                 <div class="firstPeople">
-                    surname
+                    @Model.Reservation.Surname
                 </div>
                 <div class="firstPeople">
-                    Phone
+                    @Model.Reservation.Phone
                 </div>
                 <div class="firstPeople">
-                    Mail
+                    @Model.Reservation.Email
                 </div>
-                <div class="otherPeople">
-                    2. kişi
-                </div>
-                <div class="otherPeople">
-                    3. kişi
-                </div>
-                <div class="otherPeople">
-                    4. kişi
-                </div>
-                <div class="otherPeople">
-                    5. kişi
-                </div>
+                @foreach (var item in Model.Reservation.ReservationPeoples)
+                {
+                    <div class="otherPeople">
+                        @item.Name @item.Surname
+                    </div>
+                }
+
+
             </div>
         </div>
 
@@ -337,71 +310,101 @@
         <div class="my-4">
             <div class="carFlex">
                 <div class="carLeft">
-                    <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                    <img src="@Model.Reservation.LocationCars.Car.Type.CarImageURL" alt="">
                 </div>
                 <div class="carRight">
                     <h2>Car Infos</h2>
                     <div class="carInputs">
                         <div>
                             <label>Type</label>
-                            <div>test</div>
+                            <div>@Model.Reservation.LocationCars.Car.Type.CarTypeName</div>
                         </div>
                         <div>
                             <label>Model</label>
-                            <div></div>
+                            <div>@Model.Reservation.LocationCars.Car.Model.CarModelName</div>
                         </div>
                         <div>
                             <label>Series</label>
-                            <div></div>
+                            <div>@Model.Reservation.LocationCars.Car.Series.CarSeriesName</div>
                         </div>
                         <div>
                             <label>Mas Passengers</label>
-                            <div></div>
+                            <div>@Model.Reservation.LocationCars.Car.MaxPassenger</div>
                         </div>
                         <div>
                             <label>Suitcase</label>
-                            <div></div>
+                            <div>@Model.Reservation.LocationCars.Car.SuitCase</div>
                         </div>
                         <div>
                             <label>Small Bags</label>
-                            <div></div>
+                            <div>@Model.Reservation.LocationCars.Car.SmallBags</div>
                         </div>
                         <div>
                             <label>Plate</label>
-                            <div></div>
+                            <div>@Model.Reservation.LocationCars.Car.Plate</div>
                         </div>
                     </div>
+
                     <div class="carServices">
-                        <div class="carServiceItem">
-                            <div class="carServiceItemImage">
-                                <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                        @if (Model.Reservation.LocationCars.Car.Water)
+                        {
+                            <div class="carServiceItem">
+                                <div class="carServiceItemImage">
+                                    <img src="/img/i1.png" alt="">
+                                </div>
+                                <span>Free Water</span>
                             </div>
-                            <span>asd</span>
-                        </div>
-                        <div class="carServiceItem">
-                            <div class="carServiceItemImage">
-                                <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                        }
+
+                        @if (Model.Reservation.LocationCars.Car.Disabled)
+                        {
+                            <div class="carServiceItem">
+                                <div class="carServiceItemImage">
+                                    <img src="/img/i2.png" alt="">
+                                </div>
+                                <span>Disabled</span>
                             </div>
-                            <span>asd</span>
-                        </div>
-                        <div class="carServiceItem">
-                            <div class="carServiceItemImage">
-                                <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                        }
+                        @if (Model.Reservation.LocationCars.Car.Charger)
+                        {
+                            <div class="carServiceItem">
+                                <div class="carServiceItemImage">
+                                    <img src="/img/i3.png" alt="">
+                                </div>
+                                <span>Charger</span>
                             </div>
-                            <span>asd</span>
-                        </div>
-                        <div class="carServiceItem">
-                            <div class="carServiceItemImage">
-                                <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                        }
+                        @if (Model.Reservation.LocationCars.Car.Wifi)
+                        {
+                            <div class="carServiceItem">
+                                <div class="carServiceItemImage">
+                                    <img src="/img/i4.png" alt="">
+                                </div>
+                                <span>Wifi</span>
                             </div>
-                            <span>asd</span>
-                        </div>
-                        <div class="carServiceItem">
-                            <div class="carServiceItemImage">
-                                <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                        }
+
+                        @if (Model.Reservation.LocationCars.Car.Armored)
+                        {
+                            <div class="carServiceItem">
+                                <div class="carServiceItemImage">
+                                    <img src="/img/i5.png" alt="">
+                                </div>
+                                <span>Armored</span>
                             </div>
-                            <span>asd</span>
-                        </div>
+                        }
+
+                        @if (Model.Reservation.LocationCars.Car.Partition)
+                        {
+                            <div class="carServiceItem">
+                                <div class="carServiceItemImage">
+                                    <img src="/img/i6.png" alt="">
+                                </div>
+                                <span>Partition</span>
+                            </div>
+                        }
+
+
                     </div>
                 </div>
             </div>
@@ -412,21 +415,27 @@
             <div class="driverFlex">
                 <div class="driverLeft topStyle"></div>
                 <div class="driverRight topStyle">
-                    <form>
-                        <div class="w-100">
-                            <select name="DriverId" class="form-control" id="driver">
-                                @foreach (var item in Model.Drivers)
+                    <div class="w-100">
+                        <select name="DriverId" class="form-control" id="driverSelectbox">
+                            <option value="null" selected disabled>Select Driver</option>
+                            @foreach (var item in Model.Drivers)
+                            {
+                                if (Model.Reservation.DriverId == item.Id)
+                                {
+                                    <option value="@item.Id" selected>@item.Name @item.Surname</option>
+                                }
+                                else
                                 {
                                     <option value="@item.Id">@item.Name @item.Surname</option>
                                 }
-                            </select>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary">
-                                Get Driver
-                            </button>
-                        </div>
-                    </form>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" id="assignDriverBtn">
+                            Get Driver
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="driverFlex">
@@ -436,27 +445,27 @@
                     <div class="carInputs">
                         <div>
                             <label>Driver ID</label>
-                            <div>test</div>
+                            <div>@Model.Reservation.Driver?.DriverId</div>
                         </div>
                         <div>
                             <label>Name</label>
-                            <div></div>
+                            <div>@Model.Reservation.Driver?.Name</div>
                         </div>
                         <div>
                             <label>Surname</label>
-                            <div></div>
+                            <div>@Model.Reservation.Driver?.Surname</div>
                         </div>
                         <div>
                             <label>E-Mail</label>
-                            <div></div>
+                            <div>@Model.Reservation.Driver?.Email</div>
                         </div>
                         <div>
                             <label>Phone</label>
-                            <div></div>
+                            <div>@Model.Reservation.Driver?.Phone</div>
                         </div>
                         <div>
                             <label>Date Of Birth</label>
-                            <div></div>
+                            <div>@Model.Reservation.Driver?.DateOfBirth</div>
                         </div>
                     </div>
                 </div>
@@ -464,10 +473,10 @@
 
                     <div class="slideDriverPhotos">
                         <div>
-                            <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                            <img src="@Model.Reservation.Driver?.PhotoFront" alt="">
                         </div>
                         <div>
-                            <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                            <img src="@Model.Reservation.Driver?.PhotoBack" alt="">
                         </div>
                     </div>
                 </div>
@@ -477,15 +486,42 @@
     </div>
 </section>
 
-
 @section  pageJsScript{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"
             integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&libraries=places&callback=initMap"></script>
                 }
 
 @section pageJs{
     <script>
+        $('#assignDriverBtn').on("click",function(){
+            var driverId = $('#driverSelectbox').val();
+            $.ajax({
+                url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.AssignDriver))',
+                type: "POST",
+                data: { reservationId: @Model.Reservation.Id, driverId: driverId },
+                success: function (response) {
+                    if (response.result == 1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Successfully Assign Driver',
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Something went wrong',
+                        }).then(() => {
+                            location.reload()
+                        })
+                    }
+                    $('.formLoader').addClass("deActive")
+                }
+            });
+        })
+
         $('.slideDriverPhotos').slick({
             infinite: false,
             slidesToShow: 1,
@@ -493,5 +529,45 @@
             arrows: false,
             dots: true,
         });
+
+        function initMap() {
+            var directionsService = new google.maps.DirectionsService();
+            var directionsRenderer = new google.maps.DirectionsRenderer({
+                polylineOptions: {
+                    strokeColor: 'red' // Yolun rengini burada belirleyebilirsiniz
+                }
+            });
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: {@Model.Reservation.PickLatLng}, // Başlangıç noktası için koordinatlar
+        mapTypeControl: false,
+            streetViewControl: false,
+                zoomControl: false,
+                    fullscreenControl: false
+                    });
+
+        directionsRenderer.setMap(map);
+
+        var startPlaceId = "@Model.Reservation.PickPlaceId";
+        var endPlaceId = "@Model.Reservation.DropPlaceId";
+
+        var request = {
+            origin: { placeId: startPlaceId },
+            destination: { placeId: endPlaceId },
+            travelMode: 'DRIVING' // Yürüyüş, bisiklet, transit veya araç seçeneklerinden birini seçin
+        };
+
+        directionsService.route(request, function (result, status) {
+            if (status == 'OK') {
+                directionsRenderer.setDirections(result);
+            }
+        });
+                }
+
+
+        window.onload = () => {
+            initMap();
+        }
     </script>
                         }

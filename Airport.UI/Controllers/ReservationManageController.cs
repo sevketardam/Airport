@@ -8,6 +8,7 @@ using iText.Layout.Element;
 using Airport.DBEntities.Entities;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Airport.UI.Models.Interface;
 
 namespace Airport.UI.Controllers
 {
@@ -15,10 +16,16 @@ namespace Airport.UI.Controllers
     {
         IReservationsDAL _reservations;
         IDriversDAL _drivers;
-        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers)
+        IGetCarDetail _carDetail;
+        ILocationCarsDAL _locationCars;
+        IReservationPeopleDAL _reservationPeople;
+        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers,IGetCarDetail carDetail,ILocationCarsDAL locationCars,IReservationPeopleDAL reservationPeople)
         {
             _drivers = drivers;
             _reservations = reservations;
+            _carDetail = carDetail;
+            _locationCars = locationCars;
+            _reservationPeople = reservationPeople;
         }
 
         [HttpGet("panel/reservation-management")]
@@ -43,8 +50,10 @@ namespace Airport.UI.Controllers
             var reservation = _reservations.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
             if (reservation is not null)
             {
-
-
+                reservation.LocationCars = _locationCars.SelectByID(reservation.LocationCarId);
+                reservation.LocationCars.Car = _carDetail.CarDetail(reservation.LocationCars.CarId);
+                reservation.Driver = _drivers.SelectByID(reservation.DriverId);
+                reservation.ReservationPeoples = _reservationPeople.SelectByFunc(a=>a.ReservationId == reservation.Id);
                 var reservationVM = new ReservationManagementVM()
                 {
                     Reservation = reservation,
