@@ -2,7 +2,10 @@
     ViewData["Title"] = "Home Page";
 }
 
-
+@section pageCSSLink{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+}
 
 @section pageCss{
             <style>
@@ -189,7 +192,7 @@
 </section>
 
 <!--  1.000.000+ happy riders every year -->
-<section class="_Module_Margin">
+<section class="_Module_Margin noneSliderHappySection">
     <div class="container">
         <div class="_Module_Inner_Pad">
             <h2 class="_Orange_Title">
@@ -255,11 +258,86 @@
     </div>
 </section>
 
+
+<section class="_Module_Margin sliderHappySection">
+    <div class="container">
+        <div class="_Module_Inner_Pad">
+            <h2 class="_Orange_Title">
+                1.000.000+ happy riders every year
+            </h2>
+            <div class="_Module_Inner_Pad">
+                <div class="_Happy_Flex sliderHappy">
+                    <div class="_Happy_Item">
+                        <img src="~/img/trustpilot.png" alt="trustpilot">
+                        <div class="_Happy_Detail">
+                            <div>
+                                <img src="~/img/star.png" alt="star">
+                            </div>
+                            <div>
+                                <p>
+                                    4.9<span>/5</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="_Happy_Item">
+                        <img src="~/img/tripadvisor.png" alt="tripadvisor">
+                        <div class="_Happy_Detail">
+                            <div>
+                                <img src="~/img/star.png" alt="star">
+                            </div>
+                            <div>
+                                <p>
+                                    4.9<span>/5</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="_Happy_Item">
+                        <img src="~/img/reviews.png" alt="reviews">
+                        <div class="_Happy_Detail">
+                            <div>
+                                <img src="~/img/star.png" alt="star">
+                            </div>
+                            <div>
+                                <p>
+                                    4.9<span>/5</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="_Happy_Item">
+                        <img src="~/img/google.png" alt="google">
+                        <div class="_Happy_Detail">
+                            <div>
+                                <img src="~/img/star.png" alt="star">
+                            </div>
+                            <div>
+                                <p>
+                                    4.9<span>/5</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
 <!-- Maddeler -->
 <section class="_Module_Margin">
     <div class="container">
         <div class="_Module_Inner_Pad">
-            <div>
+            <h2 class="_Orange_Title">
+               Available services
+            </h2>
+            <div class="_Module_Inner_Pad">
                 <div class="_List_Flex">
                     <div class="_List_Item">
                         <div>
@@ -511,12 +589,7 @@
                                 Bus
                             </p>
                         </div>
-                         <div class="">
-                            <img src="https://gettransfer.com/common/transport_types/parcel_small.png" alt="car">
-                            <p>
-                                Parcel
-                            </p>
-                        </div>
+
                 </div>
             </div>
         </div>
@@ -767,6 +840,7 @@
 
 @section pageJsScript{
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&libraries=places&callback=initMap"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 }
 
 @section pageJs{
@@ -859,6 +933,39 @@ $('form#reservationForm').validate({
             form.submit()
     },
 });
+
+
+$('.sliderHappySection .sliderHappy').slick({
+  dots: false,
+  infinite: false,
+  arrow: false,
+  speed: 300,
+  slidesToShow: 4,
+  slidesToScroll: 4,
+  responsive: [
+    {
+      breakpoint: 576,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+    // You can unslick at a given breakpoint now by adding:
+    // settings: "unslick"
+    // instead of a settings object
+  ]
+});
+
+
+
+
 
 // Anasayfadaki araçların slider kodu
 //var swiper = new Swiper("._Car_Slider", {
