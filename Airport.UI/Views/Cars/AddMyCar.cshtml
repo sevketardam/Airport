@@ -3,6 +3,22 @@
 }
 @model AddMyCarsVM
 
+
+
+
+
+@section pageCSS{
+    <style>
+        label.error {
+            left: 1.3rem !important;
+        }
+
+        label#Plate-error{
+            left: 0.3rem !important;
+        }
+    </style>
+}
+
 <form id="addMyCarForm" method="post" asp-route="AddCar">
     <div class="row">
         <div class="col-sm-12 mb-3 _Pos_Rel">
@@ -96,33 +112,63 @@
             <div class="extrasArea">
                 <div class="extrasFlex">
                     <div class="extrasItem ">
-                        <img src="/img/i1.png">
-                        <input type="checkbox" name="Water" value="true">
+                       <div>
+                            <img src="/img/i1.png">
+                            <input type="checkbox" name="Water" value="true">
+                       </div>
+                        <span>
+                            Water
+                        </span>
                     </div>
                     <div class="extrasItem ">
-                        <img src="/img/i2.png">
-                        <input type="checkbox" name="Disabled" value="true">
+                        <div>
+                            <img src="/img/i2.png">
+                            <input type="checkbox" name="Disabled" value="true">
+                        </div>
+                        <span>
+                            Disabled
+                        </span>
                     </div> <div class="extrasItem ">
-                        <img src="/img/i3.png">
-                        <input type="checkbox" name="Charger" value="true">
+                        <div>
+                            <img src="/img/i3.png">
+                            <input type="checkbox" name="Charger" value="true">
+                        </div>
+                        <span>
+                            Charger
+                        </span>
                     </div>
                     <div class="extrasItem ">
-                        <img src="/img/i4.png">
-                        <input type="checkbox" name="Wifi" value="true">
+                        <div>
+                            <img src="/img/i4.png">
+                            <input type="checkbox" name="Wifi" value="true">
+                        </div>
+                        <span>
+                            Free Wifi
+                        </span>
                     </div>
                     <div class="extrasItem ">
-                        <img src="/img/i5.png">
-                        <input type="checkbox" name="Armored" value="true">
+                        <div>
+                            <img src="/img/i5.png">
+                            <input type="checkbox" name="Armored" value="true">
+                        </div>
+                        <span>
+                            Armored
+                        </span>
                     </div>
                     <div class="extrasItem ">
-                        <img src="/img/i6.png">
-                        <input type="checkbox" name="Partition" value="true">
+                        <div>
+                            <img src="/img/i6.png">
+                            <input type="checkbox" name="Partition" value="true">
+                        </div>
+                        <span>
+                            Partition
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-12 mt-3">
             <div class="text-right">
                 <button class="btn btn-secondary" type="submit">
                     Add My Car

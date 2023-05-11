@@ -239,14 +239,14 @@ $("#addServicePropertyForm").validate({
 });
 
 $(".extrasItem").on("click", function () {
-    console.log("asdasd")
+    console.log($(this))
     if ($(this).find("input").prop("checked")) {
         $(this).find("input").prop("checked", false)
-        $(this).addClass("active")
+        $(this).removeClass("active")
     }
     else {
         $(this).find("input").prop("checked", true)
-        $(this).removeClass("active")
+        $(this).addClass("active")
     }
 })
 
