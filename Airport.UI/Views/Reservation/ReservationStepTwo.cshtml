@@ -1,6 +1,24 @@
 ﻿@using Airport.UI.Models.IM;
 @model ReservationStepTwoVM
 
+@section pageCss{
+    <style>
+        ._Form_Inputs > div {
+            width: calc(50% - 0.4rem);
+        }
+
+        ._Peoples_Div, ._Peoples_Div > div {
+            width: 100% !important;
+        }
+
+            
+
+        ._Form_Inputs > div:last-child {
+            width: 100%;
+        }
+    </style>
+}
+
 <section class="_Module_Margin">
     <div class="container">
         <div class="_Step_Flex">
@@ -22,11 +40,11 @@
 
                 <div class="_Step_Travel_Form_Style">
                     <div class="_Step_Travel_Buttons">
-                        <div>
-                            <button>One Way</button>
+                        <div class="One_Way">
+                            <button type="button">One Way</button>
                         </div>
-                        <div>
-                            <button>Roundtrip</button>
+                        <div class="Roundtrip_Btn">
+                            <button type="button">Roundtrip</button>
                         </div>
                     </div>
                     <div>
@@ -48,14 +66,16 @@
                                     <div class="_Pos_Rel">
                                         <label for="">Flight Arrival</label>
                                         <input type="datetime-local">
+                                        <img src="~/img/calendar.png" class="calendarImage" />
                                     </div>
                                     <div class="_Pos_Rel">
-                                        <div class="d-none">
-                                            <label for="">Flight Arrival</label>
-                                            <input type="datetime-local">
+                                        <div class="d-none Return_Arrival">
+                                            <label for="">Return</label>
+                                            <input type="datetime-local" name="ReturnDate">
+                                            <img src="~/img/calendar.png" class="calendarImage" />
                                         </div>
                                         <div>
-                                            <button class="_Add_Return">
+                                            <button type="button" class="_Add_Return">
                                                 <i class="fa-sharp fa-solid fa-plus"></i> Add Return
                                             </button>
                                         </div>

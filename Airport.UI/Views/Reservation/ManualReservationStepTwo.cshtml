@@ -22,6 +22,72 @@
                     </div>
                 </div>
                 <div class="_Step_Map_Area" id="map"></div>
+                <div class="_Step_Travel_Form_Style">
+                    <div class="_Step_Travel_Buttons">
+                        <div class="One_Way">
+                            <button type="button">One Way</button>
+                        </div>
+                        <div class="Roundtrip_Btn">
+                            <button type="button">Roundtrip</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="_Step_Travel_Form">
+                            <form>
+                                <div class="_Form_Inputs">
+                                    <div class="_Pos_Rel">
+                                        <div>
+                                            <label for="">Pick Up</label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="_Pos_Rel">
+                                        <div>
+                                            <label for="">Drop off</label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="_Pos_Rel">
+                                        <label for="">Flight Arrival</label>
+                                        <input type="datetime-local">
+                                        <img src="~/img/calendar.png" class="calendarImage" />
+                                    </div>
+                                    <div class="_Pos_Rel">
+                                        <div class="d-none Return_Arrival">
+                                            <label for="">Return</label>
+                                            <input type="datetime-local" name="ReturnDate">
+                                            <img src="~/img/calendar.png" class="calendarImage" />
+                                        </div>
+                                        <div>
+                                            <button type="button" class="_Add_Return">
+                                                <i class="fa-sharp fa-solid fa-plus"></i> Add Return
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="_Peoples_Div">
+                                        <div class="_Pos_Rel">
+                                            <label for="">Adults</label>
+                                            <input type="number" value="1" min="0">
+                                            <div class="_user_btns">
+                                                <div class="_up_number">
+                                                    <i class="fa-sharp fa-solid fa-caret-up"></i>
+                                                </div>
+                                                <div class="_down_number">
+                                                    <i class="fa-sharp fa-solid fa-caret-down"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="_Pos_Rel">
+                                        <button class="_Search_Booking">
+                                            Search Booking
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="_Step_Right">
                 <div class="_Cars_Flex">
