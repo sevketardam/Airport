@@ -449,6 +449,7 @@ namespace Airport.UI.Controllers
                 if (service is not null)
                 {
                     service.ServiceCategoryName = categoryName;
+                    _serviceCategory.Update(service);
                     return Json(new { result = 1 });
                 }
                 return Json(new { result = 2 });
@@ -456,8 +457,25 @@ namespace Airport.UI.Controllers
             catch (Exception)
             {
                 return Json(new {});
+            }       
+        }
+
+        public JsonResult GetServiceCategory(int id)
+        {
+            try
+            {
+                var service = _serviceCategory.SelectByID(id);
+                if (service is not null)
+                {
+                    return Json(new { result = 1,data=service });
+                }
+                return Json(new { result = 2 });
             }
-          
+            catch (Exception)
+            {
+                return Json(new { });
+            }
+
         }
     }
 }

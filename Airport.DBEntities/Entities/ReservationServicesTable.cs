@@ -8,17 +8,16 @@ using System.Threading.Tasks;
 
 namespace Airport.DBEntities.Entities
 {
-    public class ServiceItems : IEntity
+    public class ReservationServicesTable : IEntity
     {
         [Key]
         public int Id { get; set; }
-        public int ServiceId { get; set; }
-        public int ServicePropertyId { get; set; }
+        public int ReservationId { get; set; }
         public double Price { get; set; }
+        public int PeopleCount { get; set; }
+        public int ServiceItemId { get; set; }
 
-
-        public Services Service { get; set; }
-        public List<ReservationServicesTable> ReservationServicesTables { get; set; }
-        public ServiceProperties ServiceProperty { get; set; }
+        public ServiceItems ServiceItem { get; set; }
+        public Reservations Reservation { get; set; }
     }
 }

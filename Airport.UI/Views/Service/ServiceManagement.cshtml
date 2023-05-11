@@ -163,7 +163,7 @@
                                 <button type="button" class="addService btn btn-secondary" title="Add Category">
                                     <i class="fa-sharp fa-solid fa-plus"></i>
                                 </button>
-                                <button type="button" class="updateServiceCategory btn btn-danger" title="Update Category">
+                                <button type="button" class="updateServiceCategory btn btn-warning" title="Update Category">
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
                                 <button type="button" class="removeServiceList btn btn-danger" title="Delete Category">
@@ -237,7 +237,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Service Category</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Update Service Category</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -246,7 +246,7 @@
                 <form id="updateServiceCategoryForm">
                     <div class="form-group position-relative error-l-50 _Pos_Rel">
                         <label>Service List Name</label>
-                        <input type="text" class="form-control" name="categoryName" placeholder="Enter Your Service Category Name">
+                        <input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="Enter Your Service Category Name">
                     </div>
                 </form>
             </div>
@@ -335,11 +335,27 @@
         let categoryId = 0;
         let propId = 0;
 
+        $('.updateServiceCategory').on("click",function(){
+            $('.formLoader').removeClass("deActive")
+            categoryId = $(this).closest(".serviceItem").attr("data-id");
+            $.ajax({
+                url: '/Service/GetServiceCategory',
+                type: "POST",
+                data: { id: categoryId },
+                success: function (response) {
+                    if (response.result == 1) {
+                        $('#updateServiceCategoryModal input[name="categoryName"]').val(response.data.serviceCategoryName);
+                        $('#updateServiceCategoryModal').modal();
+                    }
+                    $('.formLoader').addClass("deActive")
+                }
+            });
+
+        })
+
         $('#updateServiceCategoryForm').on("submit", function (e) {
             e.preventDefault();
             
-            categoryId = $(this).closest(".serviceItem").attr("data-id");
-
             $('.formLoader').removeClass("deActive")
             var formData = $(this).serialize()
             $.ajax({
@@ -362,7 +378,6 @@
                 }
             });
         })
-
 
         $('.removeServiceProp').on("click", function () {
             propId = $(this).closest(".serviceBtns").attr("data-id");

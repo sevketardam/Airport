@@ -43,5 +43,6 @@ namespace Airport.DBEntities.Entities
         public UserDatas User { get; set; }
         public List<ReservationPeople> ReservationPeoples { get; set; }
         public Drivers Driver { get; set; }
+        public List<ReservationServicesTable> ReservationServicesTables { get; set; }
     }
 }

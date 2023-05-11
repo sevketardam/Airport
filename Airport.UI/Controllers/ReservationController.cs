@@ -37,8 +37,9 @@ namespace Airport.UI.Controllers
         IServiceItemsDAL _serviceItems;
         IServicePropertiesDAL _serviceProperties;
         IServiceCategoriesDAL _serviceCategories;
+        IReservationServicesTableDAL _reservationServicesTable;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services,IServiceItemsDAL serviceItems,IServicePropertiesDAL serviceProperties,IServiceCategoriesDAL serviceCategories)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services,IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable)
         {
             _location = location;
             _locationCar = locationCar;
@@ -54,6 +55,7 @@ namespace Airport.UI.Controllers
             _serviceItems = serviceItems;
             _serviceProperties = serviceProperties;
             _serviceCategories = serviceCategories;
+            _reservationServicesTable = reservationServicesTable;
         }
 
         [HttpPost("reservation", Name = "getLocationValue")]
@@ -61,7 +63,6 @@ namespace Airport.UI.Controllers
         {
             try
             {
-
                 var api_key = "AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg";
 
                 var httpClient = new HttpClient();
@@ -520,6 +521,20 @@ namespace Airport.UI.Controllers
                     Status = 1,
                     IsDelete = false,
                 });
+                var reservationItemsList = new List<ReservationServicesTable>();
+
+                foreach (var item1 in services)
+                {
+                    var serviceFee = _serviceItems.SelectByID(item1.SelectedValue);
+                    reservationItemsList.Add(new ReservationServicesTable{
+                        ReservationId = item.Id,
+                        PeopleCount = item1.PeopleCountInput,
+                        Price = serviceFee.Price,
+                        ServiceItemId = item1.SelectedValue,
+                    });
+                }
+
+                _reservationServicesTable.InsertRage(reservationItemsList);
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
                 item.LocationCars.Car = _getCar.CarDetail(item.LocationCars.CarId);
@@ -691,7 +706,7 @@ namespace Airport.UI.Controllers
 
                     allDatas.ForEach(a =>
                     {
-                        var convertLocation = _location.SelectByFunc(b => b.Lat == a.Lat && b.Lng == a.Lng);
+                        var convertLocation = _location.SelectByFunc(b => b.Lat == a.Lat && b.Lng == a.Lng && !b.IsDelete);
                         convertLocation.ForEach(b =>
                         {
                             var realRadiusValue = Convert.ToInt32(b.LocationRadius) * 1000;
@@ -992,10 +1007,10 @@ namespace Airport.UI.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ViewBag.Error = "Error";
-                return RedirectToAction("Index", "Home");
+                return BadRequest(ex.ToString());
             }
 
         }
@@ -1074,6 +1089,23 @@ namespace Airport.UI.Controllers
                     Status = 1,
                     IsDelete = false
                 });
+
+                var reservationItemsList = new List<ReservationServicesTable>();
+
+                foreach (var item1 in services)
+                {
+                    var serviceFee = _serviceItems.SelectByID(item1.SelectedValue);
+                    reservationItemsList.Add(new ReservationServicesTable
+                    {
+                        ReservationId = item.Id,
+                        PeopleCount = item1.PeopleCountInput,
+                        Price = serviceFee.Price,
+                        ServiceItemId = item1.SelectedValue,
+                    });
+                }
+
+                _reservationServicesTable.InsertRage(reservationItemsList);
+
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
                 item.LocationCars.Car = _getCar.CarDetail(item.LocationCars.CarId);
