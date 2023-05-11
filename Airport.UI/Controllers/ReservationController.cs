@@ -148,7 +148,7 @@ namespace Airport.UI.Controllers
                     allDatas = allDatas.Distinct().ToList();
                     allDatas.ForEach(a =>
                     {
-                        var convertLocation = _location.SelectByFunc(b => b.Lat == a.Lat && b.Lng == a.Lng);
+                        var convertLocation = _location.SelectByFunc(b => b.Lat == a.Lat && b.Lng == a.Lng && !b.IsDelete);
                         convertLocation.ForEach(b =>
                         {
                             var realRadiusValue = Convert.ToInt32(b.LocationRadius) * 1000;
