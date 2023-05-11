@@ -47,9 +47,11 @@
             border-radius: 10px;
         }
 
-        li.detail p {
+        li.detail {
             font-size: 0.8rem;
             margin-top: -0.4rem;
+            border-bottom: 1px solid #00000033;
+            padding-bottom:.5rem;
         }
 
     </style>
@@ -104,53 +106,29 @@
                             </p>
                         </li>
 
-                        <li class="active">
-                            <p>
-                                Services
-                            </p>
-                        </li>
-                       
-                        <li>
-                            <p>
-                                servis 1 : <b>€15</b>
-                            </p>
-                        </li>
-                        <li class="detail">
-                            <p>
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                            </p>
-                        </li>
+                        @if (Model.ReservationServicesTables.Count > 0)
+                        {
+                            <li class="active">
+                                <p>
+                                    Services
+                                </p>
+                            </li>
 
-                         <li>
-                            <p>
-                                servis 1 : <b>€15</b>
-                            </p>
-                        </li>
-                        <li class="detail">
-                            <p>
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                                açıklama
-                            </p>
-                        </li>
+
+                            @foreach (var item in Model.ReservationServicesTables)
+                            {
+                                <li>
+                                    <p>
+                                        @item.ServiceItem.ServiceProperty.ServicePropertyName : <b>€@item.Price</b>
+                                    </p>
+                                </li>
+                                <li class="detail">
+
+                                    @Html.Raw(item.ServiceItem.ServiceProperty.ServicePropertyDescription)
+
+                                </li>
+                            }
+                        }
 
 
                         <li class="active">
@@ -214,7 +192,7 @@
             streetViewControl: false,
                 zoomControl: false,
                     fullscreenControl: false
-                                            });
+                                                    });
 
         directionsRenderer.setMap(map);
 
@@ -232,7 +210,7 @@
                 directionsRenderer.setDirections(result);
             }
         });
-                                        }
+                                                }
 
 
         window.onload = () => {

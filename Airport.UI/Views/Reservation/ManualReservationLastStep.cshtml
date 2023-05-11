@@ -2,6 +2,61 @@
 @{
     Layout = "_PanelLayout";
 }
+@section pageCss{
+    <style>
+
+        .infosList {
+            padding: 0;
+            list-style: none;
+        }
+
+            .infosList li.active p {
+                color: orange;
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+
+
+
+        p {
+            margin: 0;
+        }
+
+        .price p {
+            font-size: 1.85rem;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .leftDetail {
+            height: 100%;
+            background-color: #eeeeee;
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .rightPhotos {
+            height: 300px;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #eeeeee;
+            border-radius: 10px;
+        }
+
+        .rightMap {
+            height: 300px;
+            border-radius: 10px;
+        }
+
+        li.detail {
+            font-size: 0.8rem;
+            margin-top: -0.4rem;
+            border-bottom: 1px solid #00000033;
+            padding-bottom: .5rem;
+        }
+
+    </style>
+}
 
 
 <section class="mt-5 _Module_Margin">
@@ -27,40 +82,79 @@
                         <p>Max @Model.LocationCars.Car.SuitCase Suitcase+ @Model.LocationCars.Car.SmallBags Small Bags</p>
                     </div>
 
-                    <div class="my-2">
-                        <h4>Pick Up</h4>
-                        <h5>@Model.PickFullName</h5>
-                    </div>
+                    <ul class="infosList">
+                        <li class="active">
+                            <p>
+                                Pick Up
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                @Model.PickFullName
+                            </p>
+                        </li>
 
-                    <div class="my-2">
-                        <h4>Drop Off</h4>
-                        <h5>@Model.DropFullName</h5>
-                    </div>
+                        <li class="active">
+                            <p>
+                                Drop Off
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                @Model.DropFullName
+                            </p>
+                        </li>
 
-                    @if (Model.ReturnStatus)
-                    {
-                        <div class="my-2">
-                            <h4>Return Date</h4>
-                            <h5>@Model.ReturnDate</h5>
-                        </div>
-                    }
+                        <li class="active">
+                            <p>
+                                Passengers
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                @Model.PeopleCount Adult
+                            </p>
+                        </li>
+                        @if (Model.ReservationServicesTables.Count > 0)
+                        {
+                            <li class="active">
+                                <p>
+                                    Services
+                                </p>
+                            </li>
 
-                    <div class="my-2">
-                        <h4>Passengers</h4>
-                        <h5>@Model.PeopleCount Adult</h5>
-                    </div>
+                            @foreach (var item in Model.ReservationServicesTables)
+                            {
+                                <li>
+                                    <p>
+                                        @item.ServiceItem.ServiceProperty.ServicePropertyName : <b>€@item.Price</b>
+                                    </p>
+                                </li>
+                                <li class="detail">
 
-                    <div class="my-2">
-                        <h4>Date</h4>
-                        <h5>@Model.ReservationDate</h5>
-                    </div>
+                                    @Html.Raw(item.ServiceItem.ServiceProperty.ServicePropertyDescription)
 
-                    @if (Model.IsDiscount)
-                    {
-                        <h6>Price:<span style="text-decoration: line-through;">@(Model.OfferPrice + Model.ServiceFee) €</span></h6>
-                    }
+                                </li>
+                            }
+                        }
+                       
+                        <li class="active">
+                            <p>
+                                Date
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                @Model.ReservationDate
+                            </p>
+                        </li>
 
-                    <h3>@(Model.IsDiscount ? "Discount Price" : "Price"):@(Model.IsDiscount ? Model.Discount : (Model.OfferPrice + Model.ServiceFee)) €</h3>
+                        <li class="price">
+                            <p>
+                                @(Model.IsDiscount ? "Discount Price" : "Price"):@(Model.IsDiscount ? Model.Discount : (Model.OfferPrice + Model.ServiceFee))
+                            </p>
+                        </li>
+                    </ul>
 
 
                     <a class="_Btn_Style btn" href="http://test.airportglobaltransfer.com/pdf/@(Model.ReservationCode)-@(Model.Id).pdf" target="_blank">Download Voucher</a>

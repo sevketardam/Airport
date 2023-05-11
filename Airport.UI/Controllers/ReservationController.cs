@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Airport.MessageExtension.VM;
+using iText.Layout.Element;
 
 namespace Airport.UI.Controllers
 {
@@ -384,16 +385,21 @@ namespace Airport.UI.Controllers
                         locationCar.LocationCarsFares.ForEach(c =>
                         {
 
-                            if (c.StartFrom < datas.KM)
+                            if (c.PriceType == 2)
                             {
-                                if (c.PriceType == 2)
+                                price += c.Fare * (c.UpTo - c.StartFrom);
+                            }
+                            else
+                            {
+                                if (datas.KM < (c.UpTo - c.StartFrom))
                                 {
-                                    price += c.Fare * (c.UpTo - c.StartFrom);
+                                    price += c.Fare * datas.KM;
                                 }
                                 else
                                 {
-                                    price += c.Fare;
+                                    price += c.Fare * (c.UpTo - c.StartFrom);
                                 }
+
                             }
 
                             lastUp = c.UpTo;
@@ -412,8 +418,10 @@ namespace Airport.UI.Controllers
                             price *= 2;
                         }
 
+
                     }
 
+                    price = price / 10;
 
                     datas.LastPrice = price;
                     datas.LocationCar = locationCar;
@@ -586,6 +594,12 @@ namespace Airport.UI.Controllers
                     Price = createReservation.LastPrice.ToString(),
                     Id = item.Id.ToString()
                 });
+                item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a=>a.ReservationId == item.Id);
+                item.ReservationServicesTables.ForEach(a =>
+                {
+                    a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
+                    a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
+                });
 
                 return View(item);
             }
@@ -747,8 +761,8 @@ namespace Airport.UI.Controllers
                     var getreservation = new List<GetReservationValues>();
                     selectedLocations = selectedLocations.Distinct().ToList();
                     int minKm = 0;
-                    var lastKm = Math.Ceiling(Convert.ToDouble(betweenLocation.rows[0].elements[0].distance.value) / 1000) * 1000;
-                    minKm = Convert.ToInt32(lastKm / 1000);
+                    var lastKm = Math.Floor(Convert.ToDouble(betweenLocation.rows[0].elements[0].distance.value) / 100) * 100;
+                    minKm = Convert.ToInt32(lastKm / 100);
                     var selectedLocationsMini = new List<LocationIsOutMiniVM>();
                     selectedLocations.ForEach(a =>
                     {
@@ -807,7 +821,15 @@ namespace Airport.UI.Controllers
                                             }
                                             else
                                             {
-                                                price += c.Fare;
+                                                if (minKm < (c.UpTo - c.StartFrom))
+                                                {
+                                                    price += c.Fare * minKm;
+                                                }
+                                                else
+                                                {
+                                                    price += c.Fare * (c.UpTo - c.StartFrom);
+                                                }
+
                                             }
                                         }
 
@@ -827,6 +849,7 @@ namespace Airport.UI.Controllers
                                         price *= 2;
                                     }
 
+                                    price = price / 10;
                                     getreservation.Add(new GetReservationValues
                                     {
                                         LocationCars = b,
@@ -943,16 +966,21 @@ namespace Airport.UI.Controllers
                         locationCar.LocationCarsFares.ForEach(c =>
                         {
 
-                            if (c.StartFrom < datas.KM)
+                            if (c.PriceType == 2)
                             {
-                                if (c.PriceType == 2)
+                                price += c.Fare * (c.UpTo - c.StartFrom);
+                            }
+                            else
+                            {
+                                if (datas.KM < (c.UpTo - c.StartFrom))
                                 {
-                                    price += c.Fare * (c.UpTo - c.StartFrom);
+                                    price += c.Fare * datas.KM;
                                 }
                                 else
                                 {
-                                    price += c.Fare;
+                                    price += c.Fare * (c.UpTo - c.StartFrom);
                                 }
+
                             }
 
                             lastUp = c.UpTo;
@@ -972,6 +1000,8 @@ namespace Airport.UI.Controllers
                         }
 
                     }
+
+                    price = price / 10;
 
                     datas.LastPrice = price;
                     datas.LocationCar = locationCar;
@@ -1064,8 +1094,6 @@ namespace Airport.UI.Controllers
                         totalServiceFee += serviceFee.Price * item1.PeopleCountInput;
                     }
                 }
-
-
 
                 Random random = new Random();
                 int kodUzunlugu = 6;
@@ -1161,6 +1189,13 @@ namespace Airport.UI.Controllers
                     Price = createReservation.LastPrice.ToString(),
                     Id = item.Id.ToString()
 
+                });
+
+                item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
+                item.ReservationServicesTables.ForEach(a =>
+                {
+                    a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
+                    a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
                 });
 
                 return View(item);
