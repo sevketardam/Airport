@@ -3,6 +3,286 @@
     Layout = "_PanelLayout";
 }
 
+@section pageCSSLink{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"
+          integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"
+          integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+}
+
+@section pageCSS{
+    <style>
+        .resPeople {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        :root {
+            --shadow: 0 0 5px rgb(0, 0, 0, .16);
+            --bg: #EFEEEE;
+        }
+
+        .resPeople > div {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            height: 2.25rem;
+            border-radius: .5rem;
+            background-color: var(--bg);
+            box-shadow: var(--shadow);
+            -webkit-appearance: none;
+            -webkit-box-shadow: var(--shadow);
+            -moz-box-shadow: var(--shadow);
+        }
+
+        .resPeople > div {
+            width: calc(50% - .5rem);
+        }
+
+        .firstPeople {
+            width: calc(25% - .75rem) !important;
+        }
+
+
+        .carFlex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .driverFlex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+
+        .carFlex .carLeft {
+            width: calc(45% - .5rem);
+            height: auto;
+            display: flex;
+            background-color: var(--bg);
+            border-radius: .5rem;
+            box-shadow: var(--shadow);
+            -webkit-appearance: none;
+            -webkit-box-shadow: var(--shadow);
+            -moz-box-shadow: var(--shadow);
+            padding: 1rem;
+        }
+
+        .carFlex .carRight {
+            width: calc(55% - .5rem);
+            height: auto;
+            background-color: var(--bg);
+            border-radius: .5rem;
+            box-shadow: var(--shadow);
+            -webkit-appearance: none;
+            -webkit-box-shadow: var(--shadow);
+            -moz-box-shadow: var(--shadow);
+            padding: 1rem;
+        }
+
+
+        .driverFlex .driverLeft {
+            width: calc(55% - .5rem);
+            height: auto;
+            background-color: var(--bg);
+            border-radius: .5rem;
+            box-shadow: var(--shadow);
+            -webkit-appearance: none;
+            -webkit-box-shadow: var(--shadow);
+            -moz-box-shadow: var(--shadow);
+            padding: 1rem;
+        }
+
+        .driverFlex .driverRight {
+            width: calc(45% - .5rem);
+            height: auto;
+            background-color: var(--bg);
+            border-radius: .5rem;
+            box-shadow: var(--shadow);
+            -webkit-appearance: none;
+            -webkit-box-shadow: var(--shadow);
+            -moz-box-shadow: var(--shadow);
+            padding: 1rem;
+        }
+
+        .carServices {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .carServiceItem {
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+            .carServiceItem span {
+                font-size: .7rem;
+                font-weight: 600;
+            }
+
+        .carServices .carServiceItemImage {
+            width: 4rem;
+            height: 4rem;
+            background-color: white;
+            display: flex;
+            padding: .5rem;
+            border-radius: .3rem;
+        }
+
+            .carServices .carServiceItemImage img {
+                width: 100%;
+                object-fit: contain;
+            }
+
+
+
+        .carFlex h2,
+        .driverFlex h2 {
+            font-weight: bold;
+        }
+
+        .carInputs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+            .carInputs > div {
+                width: calc((100% / 3) - .67rem);
+            }
+
+                .carInputs > div > label {
+                    font-size: .9rem;
+                    font-weight: 500;
+                }
+
+                .carInputs > div > div {
+                    margin-top: .1rem;
+                    height: 2.25rem;
+                    display: flex;
+                    align-items: center;
+                    border-radius: .3rem;
+                    box-shadow: var(--shadow);
+                    -webkit-appearance: none;
+                    -webkit-box-shadow: var(--shadow);
+                    -moz-box-shadow: var(--shadow);
+                    padding: 0 1rem;
+                    background-color: white;
+                }
+
+        .carLeft img {
+            width: 80%;
+            display: flex;
+            margin: auto;
+            object-fit: contain;
+        }
+
+
+        .slideDriverPhotos img {
+            max-width: 10rem;
+            width: 100%;
+            margin: auto;
+            display: flex;
+        }
+
+
+        .slideDriverPhotos .slick-dots li button:before {
+            border: 1px solid;
+            border-radius: 50%;
+            background-color: black;
+            color: transparent;
+        }
+
+        .slideDriverPhotos {
+            display: flex;
+            height: 85%;
+            align-items: center;
+        }
+
+        .slick-dots li.slick-active button {
+            background: transparent !important;
+        }
+
+        @@media (max-width:992px) {
+            .firstPeople {
+                width: calc(50% - .5rem) !important;
+            }
+
+            .carInputs > div {
+                width: calc(50% - .5rem);
+            }
+        }
+
+        @@media (max-width:768px) {
+            .carFlex .carLeft {
+                width: 100%;
+                height: 15rem;
+                padding: 0;
+            }
+
+            .driverFlex .driverLeft, .driverFlex .driverRight {
+                width: 100%;
+            }
+
+            .carLeft img {
+                width: 15rem;
+            }
+
+            .carFlex .carRight {
+                width: 100%;
+            }
+
+            .driverFlex {
+                flex-direction: column-reverse;
+            }
+        }
+
+        @@media (max-width:480px) {
+            .resPeople > div {
+                width: 100% !important;
+            }
+        }
+
+        .topStyle{
+            background-color: transparent !important;
+            box-shadow: none !important 
+        }
+
+        .driverRight.topStyle {
+            margin-bottom: 1rem;
+            padding: 0;
+        }
+
+        .driverRight.topStyle form{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .driverRight.topStyle form button{
+                    white-space: nowrap;
+                    border-radius: 0;
+                    margin-left: 1rem;
+        }
+
+
+        
+
+      
+    </style>
+}
+
 <div>
     @Model.Reservation.Name
 </div>
@@ -15,20 +295,203 @@
     @Model.Reservation.Email
 </div>
 
-<div>
-    <form>
-        <div>
-            <label for="driver">Select Driver </label>
-            <select name="DriverId" class="form-control" id="driver">
-                @foreach (var item in Model.Drivers)
-                {
-                    <option value="@item.Id">@item.Name @item.Surname</option>
-                }
-            </select>
+
+
+
+
+<section>
+    <div class="container my-5">
+        <div style="border: 2px solid; width: 100%; height: 350px;">map</div>
+
+        <!-- Müşterilerin Bilgileri -->
+        <div class="my-4">
+            <div class="resPeople">
+                <div class="firstPeople">
+                    name
+                </div>
+                <div class="firstPeople">
+                    surname
+                </div>
+                <div class="firstPeople">
+                    Phone
+                </div>
+                <div class="firstPeople">
+                    Mail
+                </div>
+                <div class="otherPeople">
+                    2. kişi
+                </div>
+                <div class="otherPeople">
+                    3. kişi
+                </div>
+                <div class="otherPeople">
+                    4. kişi
+                </div>
+                <div class="otherPeople">
+                    5. kişi
+                </div>
+            </div>
         </div>
-    </form>
-</div>
+
+        <!-- Araç Bilgileri -->
+        <div class="my-4">
+            <div class="carFlex">
+                <div class="carLeft">
+                    <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                </div>
+                <div class="carRight">
+                    <h2>Car Infos</h2>
+                    <div class="carInputs">
+                        <div>
+                            <label>Type</label>
+                            <div>test</div>
+                        </div>
+                        <div>
+                            <label>Model</label>
+                            <div></div>
+                        </div>
+                        <div>
+                            <label>Series</label>
+                            <div></div>
+                        </div>
+                        <div>
+                            <label>Mas Passengers</label>
+                            <div></div>
+                        </div>
+                        <div>
+                            <label>Suitcase</label>
+                            <div></div>
+                        </div>
+                        <div>
+                            <label>Small Bags</label>
+                            <div></div>
+                        </div>
+                        <div>
+                            <label>Plate</label>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div class="carServices">
+                        <div class="carServiceItem">
+                            <div class="carServiceItemImage">
+                                <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                            </div>
+                            <span>asd</span>
+                        </div>
+                        <div class="carServiceItem">
+                            <div class="carServiceItemImage">
+                                <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                            </div>
+                            <span>asd</span>
+                        </div>
+                        <div class="carServiceItem">
+                            <div class="carServiceItemImage">
+                                <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                            </div>
+                            <span>asd</span>
+                        </div>
+                        <div class="carServiceItem">
+                            <div class="carServiceItemImage">
+                                <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                            </div>
+                            <span>asd</span>
+                        </div>
+                        <div class="carServiceItem">
+                            <div class="carServiceItemImage">
+                                <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                            </div>
+                            <span>asd</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sürücü Bilgileri -->
+        <div class="my-4">
+            <div class="driverFlex">
+                <div class="driverLeft topStyle"></div>
+                <div class="driverRight topStyle">
+                    <form>
+                        <div class="w-100">
+                            <select name="DriverId" class="form-control" id="driver">
+                                @foreach (var item in Model.Drivers)
+                                {
+                                    <option value="@item.Id">@item.Name @item.Surname</option>
+                                }
+                            </select>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary">
+                                Get Driver
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="driverFlex">
+
+                <div class="driverLeft">
+                    <h2>Driver Infos</h2>
+                    <div class="carInputs">
+                        <div>
+                            <label>Driver ID</label>
+                            <div>test</div>
+                        </div>
+                        <div>
+                            <label>Name</label>
+                            <div></div>
+                        </div>
+                        <div>
+                            <label>Surname</label>
+                            <div></div>
+                        </div>
+                        <div>
+                            <label>E-Mail</label>
+                            <div></div>
+                        </div>
+                        <div>
+                            <label>Phone</label>
+                            <div></div>
+                        </div>
+                        <div>
+                            <label>Date Of Birth</label>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="driverRight">
+
+                    <div class="slideDriverPhotos">
+                        <div>
+                            <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                        </div>
+                        <div>
+                            <img src="http://test.airportglobaltransfer.com/img/pc.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
 
 
+@section  pageJsScript{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"
+            integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                }
 
-
+@section pageJs{
+    <script>
+        $('.slideDriverPhotos').slick({
+            infinite: false,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            dots: true,
+        });
+    </script>
+                        }
