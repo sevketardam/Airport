@@ -3037,7 +3037,7 @@ input[type="number"]::-webkit-outer-spin-button {
         width: calc((100% / 3) - 0.45rem);
     }
 
-    ._Car_Slider {
+    ._Car_Slider { 
         justify-content: center;
     }
 
