@@ -414,7 +414,7 @@ namespace Airport.UI.Controllers
                             ServiceDescripton = serviceProp.ServicePropertyDescription,
                             ServiceCategoryName = serviceProp.ServiceCategory.ServiceCategoryName,
                             ServiceName = serviceProp.ServicePropertyName,
-                            ServiceCategoryId = serviceProp.ServiceCategoryId
+                            ServiceCategoryId = serviceProp.ServiceCategoryId,
                         });
                     }
                 }
