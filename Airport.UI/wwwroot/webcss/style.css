@@ -1247,7 +1247,7 @@ button._Verify_Number {
 }
 
 ._Agency_Flex button,
-._Form_Flex_Style button {
+._Form_Flex_Style button:not(._Form_Flex_Style button[type="button"]) {
     width: 100%;
     height: 2.6rem;
     border-radius: 12px;
@@ -3403,7 +3403,6 @@ label.error {
 
 
 
-
 .pageServices {
     display: flex;
     flex-wrap: wrap;
@@ -3420,7 +3419,7 @@ label.error {
 
 .pageServiceItem h3 {
     color: white;
-    background-color: var(--orange;
+    background-color: var(--orange);
     display: inline;
     padding: .5rem 1rem;
     margin: 0;
@@ -3436,7 +3435,7 @@ label.error {
 
 
 .pageServiceDownItems {
-    margin-top: 1rem;
+    margin-top: 0 !important;
     padding: .5rem;
     border-radius: .5rem;
     display: flex;
@@ -3444,29 +3443,62 @@ label.error {
     gap: .5rem;
 }
 
-.pageServiceDownItem {
+.pageServiceDownItem .pageServiceDownItemTop {
     box-shadow: 0 0 5px rgb(0, 0, 0, .2);
     padding: .5rem 1rem;
     border-radius: .5rem;
 }
 
-.pageServiceDownItemTop {
+.checkServiceDiv {
+    width: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    align-items: flex-start;
+    padding-top: .8rem;
+}
+
+.passengerInputs {
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    border-radius: 5px !important;
+    padding: 0 !important;
+    width: 3rem !important;
+    text-align: center !important;
+}
+
+.formTextarea {
+    width: 100%;
+    margin: 1rem 0px;
+    border-radius: 0.5rem;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 5px;
+    min-height: 100px;
+}
+
+.pageServiceDownItemTop > .pageServiceDownItemTopFlex {
     display: flex;
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
 }
 
-    .pageServiceDownItemTop p {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin: 0;
-    }
+.pageServiceDownItemTop p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
 
-    .pageServiceDownItemTop .pageServicePrice p {
-        font-size: 1.5rem;
-        font-weight: 700;
-    }
+.pageServiceDownItemTop .pageServicePrice p {
+    font-size: 1.5rem;
+    font-weight: 700;
+    min-width: 2rem;
+}
+
+.pageServiceDownItemBottom p {
+    font-weight: 300 !important;
+    font-size: 0.8rem !important;
+}
 
 .pageServicePrice {
     display: flex;
@@ -3492,3 +3524,15 @@ label.error {
     .pageServiceAngle.active {
         transform: rotateZ(90deg);
     }
+
+
+.servicesFlexDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.checkServiceDiv.page {
+    padding-top: 1.4rem;
+}
