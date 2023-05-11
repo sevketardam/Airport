@@ -151,34 +151,64 @@
             <div class="extrasArea">
                 <div class="extrasFlex">
                     <div class="extrasItem @(Model.Water ? "active" : "")">
-                        <img src="/img/i1.png">
-                        <input type="checkbox" name="Water" value="true" @(Model.Water ? "checked" : "")>
+                        <div>
+                            <img src="/img/i1.png">
+                            <input type="checkbox" name="Water" value="true" @(Model.Water ? "checked" : "")>
+                        </div>
+                        <span>
+                            Water
+                        </span>
                     </div>
                     <div class="extrasItem @(Model.Disabled ? "active" : "")">
-                        <img src="/img/i2.png">
-                        <input type="checkbox" name="Disabled" value="true" @(Model.Disabled ? "checked" : "")>
+                        <div>
+                            <img src="/img/i2.png">
+                            <input type="checkbox" name="Disabled" value="true" @(Model.Disabled ? "checked" : "")>
+                        </div>
+                        <span>
+                            Disabled
+                        </span>
                     </div> 
                     <div class="extrasItem @(Model.Charger ? "active" : "")">
-                        <img src="/img/i3.png">
-                        <input type="checkbox" name="Charger" value="true" @(Model.Charger ? "checked" : "")>
+                        <div>
+                            <img src="/img/i3.png">
+                            <input type="checkbox" name="Charger" value="true" @(Model.Charger ? "checked" : "")>
+                        </div>
+                        <span>
+                            Charger
+                        </span>
                     </div>
                     <div class="extrasItem @(Model.Wifi ? "active" : "")">
-                        <img src="/img/i4.png">
-                        <input type="checkbox" name="Wifi" value="true" @(Model.Wifi ? "checked" : "")>
+                       <div>
+                            <img src="/img/i4.png">
+                            <input type="checkbox" name="Wifi" value="true" @(Model.Wifi ? "checked" : "")>
+                       </div>
+                        <span>
+                            Free Wifi
+                        </span>
                     </div>
                     <div class="extrasItem @(Model.Armored ? "active" : "")">
-                        <img src="/img/i5.png">
-                        <input type="checkbox" name="Armored" value="true" @(Model.Armored ? "checked" : "")>
+                        <div>
+                            <img src="/img/i5.png">
+                            <input type="checkbox" name="Armored" value="true" @(Model.Armored ? "checked" : "")>
+                        </div>
+                        <span>
+                            Armored
+                        </span>
                     </div>
                     <div class="extrasItem @(Model.Partition ? "active" : "")">
-                        <img src="/img/i6.png">
-                        <input type="checkbox" name="Partition" value="true" @(Model.Partition ? "checked" : "")>
+                       <div>
+                            <img src="/img/i6.png">
+                            <input type="checkbox" name="Partition" value="true" @(Model.Partition ? "checked" : "")>
+                       </div>
+                        <span>
+                            Partition
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-12 mt-3">
             <div class="text-right">
                 <button class="btn btn-secondary" type="submit">
                     Update My Car
