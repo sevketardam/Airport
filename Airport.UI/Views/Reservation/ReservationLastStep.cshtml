@@ -46,6 +46,12 @@
             height: 300px;
             border-radius: 10px;
         }
+
+        li.detail p {
+            font-size: 0.8rem;
+            margin-top: -0.4rem;
+        }
+
     </style>
 }
 
@@ -97,6 +103,55 @@
                                 @Model.PeopleCount Adult
                             </p>
                         </li>
+
+                        <li class="active">
+                            <p>
+                                Services
+                            </p>
+                        </li>
+                       
+                        <li>
+                            <p>
+                                servis 1 : <b>€15</b>
+                            </p>
+                        </li>
+                        <li class="detail">
+                            <p>
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                            </p>
+                        </li>
+
+                         <li>
+                            <p>
+                                servis 1 : <b>€15</b>
+                            </p>
+                        </li>
+                        <li class="detail">
+                            <p>
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                                açıklama
+                            </p>
+                        </li>
+
 
                         <li class="active">
                             <p>
@@ -159,7 +214,7 @@
             streetViewControl: false,
                 zoomControl: false,
                     fullscreenControl: false
-                                    });
+                                            });
 
         directionsRenderer.setMap(map);
 
@@ -177,7 +232,7 @@
                 directionsRenderer.setDirections(result);
             }
         });
-                                }
+                                        }
 
 
         window.onload = () => {

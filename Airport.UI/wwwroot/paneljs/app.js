@@ -321,6 +321,7 @@ $("#_Passenger_Form").validate({
         },
         Email: {
             required: "!",
+            email: "!",
         },
         Phone: {
             required: "!",
