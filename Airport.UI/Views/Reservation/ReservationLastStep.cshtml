@@ -28,7 +28,6 @@
         }
 
         .leftDetail {
-            border: 1px solid;
             height: 100%;
             background-color: #eeeeee;
             border-radius: 10px;
@@ -36,7 +35,6 @@
         }
 
         .rightPhotos {
-            border: 1px solid;
             height: 300px;
             margin-top: 1rem;
             padding: 1rem;
@@ -45,74 +43,11 @@
         }
 
         .rightMap {
-            border: 1px solid;
             height: 300px;
             border-radius: 10px;
         }
     </style>
 }
-
-
-<section class="mt-5 _Module_Margin">
-    <div class="container">
-        <h1 class="_Page_Title mb-4">
-            Reservation information
-        </h1>
-        <div class="_Page_Flex">
-            <div class="_Page_Left">
-                <img src="@Model.LocationCars.Car.Type.CarImageURL" alt="">
-            </div>
-            <div class="_Page_Right">
-                <div class="_Page_Right_Style">
-                    <div class="mb-2">
-                        <h1><b>Reservation Code : <span>@Model.ReservationCode</span> </b></h1>
-                    </div>
-                    <h2>
-                        @Model.LocationCars.Car.Brand.CarBrandName
-                    </h2>
-                    <div class="my-4">
-                        <p>TRANSFER-INN-PERA VIP TRAVEL</p>
-                        <p>Min 1 Max @Model.LocationCars.Car.MaxPassenger Passengers</p>
-                        <p>Max @Model.LocationCars.Car.SuitCase Suitcase+ @Model.LocationCars.Car.SmallBags Small Bags</p>
-                    </div>
-                    <div class="my-2">
-                        <h4>Pick Up</h4>
-                        <h5>@Model.PickFullName</h5>
-                    </div>
-                    <div class="my-2">
-                        <h4>Drop Off</h4>
-                        <h5>@Model.DropFullName</h5>
-                    </div>
-                    @if (Model.ReturnStatus)
-                    {
-                        <div class="my-2">
-                            <h4>Return Date</h4>
-                            <h5>@Model.ReturnDate</h5>
-                        </div>
-                    }
-                    <div class="my-2">
-                        <h4>Passengers</h4>
-                        <h5>@Model.PeopleCount Adult</h5>
-                    </div>
-
-                    <div class="my-2">
-                        <h4>Date</h4>
-                        <h5>@Model.ReservationDate</h5>
-                    </div>
-
-                    @if (Model.IsDiscount)
-                    {
-                        <h6>Price:<span style="text-decoration: line-through;">@Model.OfferPrice €</span></h6>
-                    }
-
-                    <h3>@(Model.IsDiscount ? "Discount Price" : "Price"):@(Model.IsDiscount ? Model.Discount : Model.OfferPrice) €</h3>
-
-                    <a class="_Btn_Style btn" href="http://test.airportglobaltransfer.com/pdf/@(Model.ReservationCode)-@(Model.Id).pdf" target="_blank">Download Voucher</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <section>
     <div class="container my-5">
@@ -122,11 +57,11 @@
 
                     <div>
                         <h2>
-                            Reservation Code : <span>358099</span>
+                            Reservation Code : <span>@Model.ReservationCode</span>
                         </h2>
-                        <p>Volkswagen</p>
+                        <p>@Model.LocationCars.Car.Brand.CarBrandName @Model.LocationCars.Car.Model.CarModelName @Model.LocationCars.Car.Type.CarTypeName</p>
                         <p>TRANSFER-INN-PERA-VIP-TRAVEL</p>
-                        <p>Max 6 Suitcase+ 6 Small Bags</p>
+                        <p>Max @Model.LocationCars.Car.MaxPassenger Suitcase @Model.LocationCars.Car.SuitCase Small Bags @Model.LocationCars.Car.SmallBags</p>
                     </div>
 
                     <ul class="infosList">
@@ -137,7 +72,7 @@
                         </li>
                         <li>
                             <p>
-                                Ayazağa, 34396 Sarıyer/İstanbul, Türkiye
+                                @Model.PickFullName
                             </p>
                         </li>
 
@@ -148,7 +83,7 @@
                         </li>
                         <li>
                             <p>
-                                Kağıthane/İstanbul, Türkiye
+                                @Model.DropFullName
                             </p>
                         </li>
 
@@ -159,7 +94,7 @@
                         </li>
                         <li>
                             <p>
-                                1 Adult
+                                @Model.PeopleCount Adult
                             </p>
                         </li>
 
@@ -170,37 +105,32 @@
                         </li>
                         <li>
                             <p>
-                                18.052023 09:50:00
+                                @Model.ReservationDate
                             </p>
                         </li>
 
                         <li class="price">
                             <p>
-                                Price : 10€
+                                @(Model.IsDiscount ? "Discount Price" : "Price"):@(Model.IsDiscount ? Model.Discount : Model.OfferPrice)
                             </p>
                         </li>
                     </ul>
-                    <button class="btn btn-danger">
-                        asd
-                    </button>
 
+                    <a class="_Btn_Style btn" href="http://test.airportglobaltransfer.com/pdf/@(Model.ReservationCode)-@(Model.Id).pdf" target="_blank">Download Voucher</a>
                 </div>
             </div>
+
             <div class="col-md-6 mt-3">
-                <div class="rightMap">
-                    map
+                <div class="rightMap" id="map">
                 </div>
                 <div class="rightPhotos">
-                    <img src="http://test.airportglobaltransfer.com/img/pc.png" width="100%" height="100%"
+                    <img src="@Model.LocationCars.Car.Type.CarImageURL" width="100%" height="100%"
                          style="object-fit: contain;" alt="">
                 </div>
             </div>
         </div>
     </div>
 </section>
-</section>
-
-
 
 
 @section  pageJsScript{
