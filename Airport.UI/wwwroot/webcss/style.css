@@ -456,6 +456,7 @@ label.error {
     font-weight: bold;
     margin: 2rem 0;
     text-align: center;
+    font-family: "AvertaDemoPE-Regular";
 }
 
 h2._Orange_Title {
@@ -523,9 +524,11 @@ h2._Orange_Title {
 }
 
 input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-    color: transparent;
-    background: url(../img/calendar.png) !important;
+    filter: invert(56%) sepia(81%) saturate(4242%) hue-rotate(355deg) brightness(100%) contrast(102%);
+    /*
+     background: url(../img/calendar.png) !important;
     background-size: 100% !important;
+    */
 }
 
 ._Form_Inputs input {
@@ -860,7 +863,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 }
 
     ._Car_Slider > div {
-        width: calc((100% / 10) - 0.45rem);
+        width: calc((100% / 9) - 0.45rem);
     }
 
 ._Car_Types .swiper-slide {
@@ -2696,9 +2699,7 @@ input[type="number"]::-webkit-outer-spin-button {
         gap: 0;
     }
 
-    ._Business_Item {
-        justify-content: center;
-    }
+
 
     ._Partner_Item {
         width: calc((100% / 4) - 0.75rem);
@@ -2861,13 +2862,32 @@ input[type="number"]::-webkit-outer-spin-button {
     ._Profile_Attrs_Flex > div {
         width: calc(50% - 0.5rem);
     }
+
+   /* ._Business_Item {
+        justify-content: center;
+    }*/
+
 }
 
+.noneSliderHappySection
+{
+    display:block;
+}
+
+.sliderHappySection {
+    display: none;
+}
 @media only screen and (max-width: 576px) {
     ._Module_Margin {
         margin: 3.5rem auto;
     }
+    .noneSliderHappySection {
+        display: none;
+    }
 
+    .sliderHappySection {
+        display: block;
+    }
     ._Banner_Title {
         font-size: 1.8rem;
     }
@@ -2878,6 +2898,8 @@ input[type="number"]::-webkit-outer-spin-button {
 
     ._Happy_Item {
         width: calc((100% / 2) - 0.75rem);
+        display: flex !important;
+        margin: 0 1rem;
     }
 
         ._Happy_Item > img {
@@ -3497,11 +3519,12 @@ label.error {
 
 .formTextarea {
     width: 100%;
-    margin: 1rem 0px;
+    margin: 0 0 1rem 0px;
     border-radius: 0.5rem;
     border: none;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 5px;
     min-height: 100px;
+    outline: none;
 }
 
 .pageServiceDownItemTop > .pageServiceDownItemTopFlex {

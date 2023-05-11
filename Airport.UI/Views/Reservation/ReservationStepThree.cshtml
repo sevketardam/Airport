@@ -237,7 +237,12 @@
 
                                 <input type="hidden" name="selectedServiceItems" />
 
-                                <textarea class="formTextarea" name="comment"></textarea>
+                                <div class="w-100">
+                                    <label class="_Form_Label">Comment</label>
+                                    <textarea class="formTextarea" name="comment"></textarea>
+                                </div>
+
+                                
 
                                <div class="servicesFlexDiv">
                                     @foreach (var item in Model.SelectedData.LocationCar.Car.Service.ServiceItems)
@@ -255,7 +260,7 @@
                                                             <div class="pageServicePrice">
                                                                 <input type="number" name="peopleCountInput" value="1" min="1" max="@Model.SelectedData.ReservationValues.PeopleCount" class="passengerInputs">
                                                                 <p>
-                                                                    €<span class="servicePrice">@item.Price</span>
+                                                                    €<b class="servicePrice">@item.Price</b>
                                                                 </p>
                                                                 <button type="button" class="pageServiceAngle">
                                                                     <i class="fa-solid fa-angle-right"></i>
