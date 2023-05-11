@@ -524,11 +524,21 @@ h2._Orange_Title {
 }
 
 input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-    filter: invert(56%) sepia(81%) saturate(4242%) hue-rotate(355deg) brightness(100%) contrast(102%);
-    /*
+    /*filter: invert(56%) sepia(81%) saturate(4242%) hue-rotate(355deg) brightness(100%) contrast(102%);
+    
      background: url(../img/calendar.png) !important;
     background-size: 100% !important;
     */
+    color: transparent;
+    background: transparent;
+}
+
+.calendarImage {
+    position: absolute;
+    top: 11px;
+    right: 15px;
+    width: 1.2rem;
+    pointer-events: none;
 }
 
 ._Form_Inputs input {
@@ -1201,6 +1211,7 @@ button._Verify_Number {
 ._Form_Flex_Style textarea {
     height: 10em;
     min-height: 2.5rem;
+    padding: 1rem;
 }
 
 ._Form_Flex_Style select {

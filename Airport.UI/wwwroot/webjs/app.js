@@ -361,7 +361,7 @@ $("#_Passenger_Form").validate({
             <p>Creating</p>
             <div class="words">
                 <span class="word">Reservation</span>
-                <span class="word">PDF</span>
+                <span class="word">Voucher</span>
             </div>
         </div>
         `)
