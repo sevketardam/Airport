@@ -107,7 +107,7 @@ namespace Airport.UI.Models.Extendions
 
     <div style=""padding: 5px 5px;"">
 
-        <h3 style=""text-align: center; font-size: 23px;margin:0;padding:0;"">BOOKING DETAILS</h3>
+        <h3 style=""text-align: center; font-size: 23px;margin-bottom:20px;padding:0;"">BOOKING DETAILS</h3>
         <div style=""display: flex; justify-content: space-between;"">
             <div>
 
@@ -143,7 +143,7 @@ namespace Airport.UI.Models.Extendions
 
             </div>
 
-            <div>
+            <div style=""margin-left:20px;"">
                 <img src=""data:image/png;base64,{base64String}"" alt=""Harita"">
             </div>
         </div>
