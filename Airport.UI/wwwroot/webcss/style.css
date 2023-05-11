@@ -853,8 +853,15 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     }
 
 ._Car_Slider {
+    display: flex;
     margin-top: 2rem !important;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
+
+    ._Car_Slider > div {
+        width: calc((100% / 10) - 0.45rem);
+    }
 
 ._Car_Types .swiper-slide {
     text-align: center;
@@ -866,6 +873,14 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     flex-direction: column;
 }
 
+._Car_Slider > div img {
+    width: 100%;
+}
+._Car_Slider > div p {
+   font-size: .6rem;
+   text-align: center;
+
+}
     ._Car_Types .swiper-slide img {
         display: block;
         width: 90%;
@@ -2735,6 +2750,10 @@ input[type="number"]::-webkit-outer-spin-button {
     ._Profile_Attrs_Flex > div {
         width: calc(25% - 0.75rem);
     }
+
+    ._Car_Slider > div {
+        width: calc((100% / 5) - 0.45rem);
+    }
 }
 
 @media only screen and (max-width: 768px) {
@@ -3013,6 +3032,15 @@ input[type="number"]::-webkit-outer-spin-button {
     #reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(2) label {
         left: 1.5rem !important;
     }
+
+    ._Car_Slider > div {
+        width: calc((100% / 3) - 0.45rem);
+    }
+
+    ._Car_Slider { 
+        justify-content: center;
+    }
+
 }
 
 @media only screen and (max-width: 446px) {
