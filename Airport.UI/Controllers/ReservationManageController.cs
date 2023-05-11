@@ -31,15 +31,24 @@ namespace Airport.UI.Controllers
         [HttpGet("panel/reservation-management")]
         public IActionResult Index()
         {
-            var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-            var reservationVM = new ReservationsIndexVM()
+            try
             {
-                Reservations = _reservations.SelectByFunc(a => a.UserId == userId),
-                Drivers = _drivers.SelectByFunc(a => a.UserId == userId)
-            };
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var reservationVM = new ReservationsIndexVM()
+                {
+                    Reservations = _reservations.SelectByFunc(a => a.UserId == userId),
+                    Drivers = _drivers.SelectByFunc(a => a.UserId == userId)
+                };
 
 
-            return View(reservationVM);
+                return View(reservationVM);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.ToString());
+            }
+
         }
 
         [HttpGet("panel/reservation-detail/{id}")]
