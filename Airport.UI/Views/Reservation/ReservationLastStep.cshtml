@@ -1,6 +1,56 @@
 ﻿@model Reservations
 
 
+@section pageCss{
+    <style>
+
+        .infosList {
+            padding: 0;
+            list-style: none;
+        }
+
+            .infosList li.active p {
+                color: orange;
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+
+        p {
+            margin: 0;
+        }
+
+        .price p {
+            font-size: 1.85rem;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .leftDetail {
+            border: 1px solid;
+            height: 100%;
+            background-color: #eeeeee;
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .rightPhotos {
+            border: 1px solid;
+            height: 300px;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #eeeeee;
+            border-radius: 10px;
+        }
+
+        .rightMap {
+            border: 1px solid;
+            height: 300px;
+            border-radius: 10px;
+        }
+    </style>
+}
+
+
 <section class="mt-5 _Module_Margin">
     <div class="container">
         <h1 class="_Page_Title mb-4">
@@ -56,6 +106,91 @@
                     <h3>@(Model.IsDiscount ? "Discount Price" : "Price"):@(Model.IsDiscount ? Model.Discount : Model.OfferPrice) €</h3>
 
                     <a class="_Btn_Style btn" href="http://test.airportglobaltransfer.com/pdf/@(Model.ReservationCode)-@(Model.Id).pdf" target="_blank">Download Voucher</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-6 mt-3">
+                <div class="leftDetail">
+
+                    <div>
+                        <h2>
+                            Reservation Code : <span>358099</span>
+                        </h2>
+                        <p>Volkswagen</p>
+                        <p>TRANSFER-INN-PERA-VIP-TRAVEL</p>
+                        <p>Max 6 Suitcase+ 6 Small Bags</p>
+                    </div>
+
+                    <ul class="infosList">
+                        <li class="active">
+                            <p>
+                                Pick Up
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Ayazağa, 34396 Sarıyer/İstanbul, Türkiye
+                            </p>
+                        </li>
+
+                        <li class="active">
+                            <p>
+                                Drop Off
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Kağıthane/İstanbul, Türkiye
+                            </p>
+                        </li>
+
+                        <li class="active">
+                            <p>
+                                Passengers
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                1 Adult
+                            </p>
+                        </li>
+
+                        <li class="active">
+                            <p>
+                                Date
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                18.052023 09:50:00
+                            </p>
+                        </li>
+
+                        <li class="price">
+                            <p>
+                                Price : 10€
+                            </p>
+                        </li>
+                    </ul>
+                    <button class="btn btn-danger">
+                        asd
+                    </button>
+
+                </div>
+            </div>
+            <div class="col-md-6 mt-3">
+                <div class="rightMap">
+                    map
+                </div>
+                <div class="rightPhotos">
+                    <img src="http://test.airportglobaltransfer.com/img/pc.png" width="100%" height="100%"
+                         style="object-fit: contain;" alt="">
                 </div>
             </div>
         </div>
