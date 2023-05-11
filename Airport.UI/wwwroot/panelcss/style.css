@@ -491,3 +491,20 @@ input.selectPhoto {
     .pageServiceAngle.active {
         transform: rotateZ(90deg);
     }
+
+
+.Form_Flex_Style_Button {
+    margin: 1rem 0 0 0.5rem;
+    width: max-content;
+    font-size: 0.9rem;
+    height: 2.6rem;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    background-color: var(--orange);
+    color: white;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+}

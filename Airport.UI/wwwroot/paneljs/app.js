@@ -343,7 +343,10 @@ $("#_Passenger_Form").validate({
     },
 });
 
-$("body").on("click", ".pageServiceDownItemTop", function () {
-    $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
-    $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
+$("body").on("click", ".pageServiceDownItemTop", function (e) {
+    if ($(e.target).attr("class") != "passengerInputs") {
+        $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
+        $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
+    }
+   
 })
