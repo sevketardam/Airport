@@ -425,27 +425,11 @@ namespace Airport.UI.Controllers
                     {
                         datas.LocationCar.Car.Service.ServiceItems = _serviceItems.SelectByFunc(a => a.ServiceId == datas.LocationCar.Car.ServiceId);
 
-                        var listServices = new List<ServiceCategories>();
-
-                        var c = new List<PriceService>();
-
                         datas.LocationCar.Car.Service.ServiceItems.ForEach(a =>
                         {
                             a.ServiceProperty = _serviceProperties.SelectByID(a.ServicePropertyId);
-                            a.ServiceProperty.ServiceCategory = _serviceCategories.SelectByID(a.ServiceProperty.ServiceCategoryId);
-                            c.Add(new PriceService
-                            {
-                                Category = a.ServiceProperty.ServiceCategory,
-                                CategoryProp = a.ServiceProperty
-                            });
                         });
-
-                        selectedCarItems = c.GroupBy(c => c.Category)
-                                    .Select(g => new PriceServiceList
-                                    {
-                                        Category = g.Key,
-                                        CategoryProps = g.Select(c => c.CategoryProp).ToList(),
-                                    }).ToList();
+                   
                     }
 
 
