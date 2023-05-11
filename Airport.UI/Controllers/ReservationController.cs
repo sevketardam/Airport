@@ -93,27 +93,15 @@ namespace Airport.UI.Controllers
                     locations.ForEach(a =>
                     {
                         a.LocationCars = _locationCar.SelectByFunc(b => b.LocationId == a.Id);
-                        a.LocationCars.ForEach(b =>
+
+                        listlocation.Add(new ReservationLocationCarsVM
                         {
-
-                            listlocation.Add(new ReservationLocationCarsVM
-                            {
-                                LocationCar = b,
-                                PlaceId = a.LocationMapId,
-                                ZoneValue = a.LocationRadius,
-                                Lat = a.Lat,
-                                Lng = a.Lng
-                            });
-
-                            i++;
-                            if (i == 25)
-                            {
-                                locationCars.Add(listlocation);
-
-                                listlocation = new List<ReservationLocationCarsVM>();
-                                i = 0;
-                            }
-                        });
+                            LocationCar = a.LocationCars,
+                            PlaceId = a.LocationMapId,
+                            ZoneValue = a.LocationRadius,
+                            Lat = a.Lat,
+                            Lng = a.Lng
+                        });                      
                     });
 
                     if (listlocation.Count != 0)
@@ -429,7 +417,7 @@ namespace Airport.UI.Controllers
                         {
                             a.ServiceProperty = _serviceProperties.SelectByID(a.ServicePropertyId);
                         });
-                   
+
                     }
 
 
@@ -458,7 +446,7 @@ namespace Airport.UI.Controllers
         }
 
         [HttpPost("reservation-get-code", Name = "getBookValues")]
-        public async Task<IActionResult> ReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname,List<int> serviceItems, string selectedServiceItems)
+        public async Task<IActionResult> ReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, List<int> serviceItems, string selectedServiceItems)
         {
             try
             {
@@ -648,26 +636,14 @@ namespace Airport.UI.Controllers
                     locations.ForEach(a =>
                     {
                         a.LocationCars = _locationCar.SelectByFunc(b => b.LocationId == a.Id);
-                        a.LocationCars.ForEach(b =>
+
+                        listlocation.Add(new ReservationLocationCarsVM
                         {
-
-                            listlocation.Add(new ReservationLocationCarsVM
-                            {
-                                LocationCar = b,
-                                PlaceId = a.LocationMapId,
-                                ZoneValue = a.LocationRadius,
-                                Lat = a.Lat,
-                                Lng = a.Lng
-                            });
-
-                            i++;
-                            if (i == 25)
-                            {
-                                locationCars.Add(listlocation);
-
-                                listlocation = new List<ReservationLocationCarsVM>();
-                                i = 0;
-                            }
+                            LocationCar = a.LocationCars,
+                            PlaceId = a.LocationMapId,
+                            ZoneValue = a.LocationRadius,
+                            Lat = a.Lat,
+                            Lng = a.Lng
                         });
                     });
 
@@ -837,7 +813,7 @@ namespace Airport.UI.Controllers
                                     });
                                 }
                             }
-                           
+
                         });
                     });
 
@@ -1024,7 +1000,7 @@ namespace Airport.UI.Controllers
 
         }
 
-        [HttpPost("panel/manual-reservation-three/{id}",Name = "getManualBookValues")]
+        [HttpPost("panel/manual-reservation-three/{id}", Name = "getManualBookValues")]
         public IActionResult ManualReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, List<int> serviceItems, string selectedServiceItems)
         {
             try
@@ -1092,7 +1068,7 @@ namespace Airport.UI.Controllers
                     DurationText = createReservation.Duration,
                     IsDiscount = reservation.IsDiscount,
                     Discount = reservation.Discount,
-                    UserId = _location.SelectByID(createReservation.LocationCar.LocationId).UserId,           
+                    UserId = _location.SelectByID(createReservation.LocationCar.LocationId).UserId,
                     ServiceFee = totalServiceFee,
                     Comment = reservation.Comment,
                     Status = 1,
@@ -1126,15 +1102,15 @@ namespace Airport.UI.Controllers
                     Email = reservation.Email,
                     Price = createReservation.LastPrice.ToString(),
                     Id = item.Id.ToString()
-                    
+
                 });
 
                 HttpContext.Session.Remove("reservationData");
 
                 PdfCreator pdfCreator = new PdfCreator(_env);
-                
 
-                pdfCreator.CreateReservationPDF(kod+"-"+item.Id,item);
+
+                pdfCreator.CreateReservationPDF(kod + "-" + item.Id, item);
 
 
                 return View(item);
@@ -1147,7 +1123,7 @@ namespace Airport.UI.Controllers
 
         }
 
-        public JsonResult GetServiceItem(int[] serviceProId,int serviceId)
+        public JsonResult GetServiceItem(int[] serviceProId, int serviceId)
         {
             try
             {
@@ -1169,7 +1145,7 @@ namespace Airport.UI.Controllers
                             ServiceCategoryName = serviceProp.ServiceCategory.ServiceCategoryName,
                             ServiceName = serviceProp.ServicePropertyName,
                             ServiceCategoryId = serviceProp.ServiceCategoryId,
-                            Price = _serviceItems.SelectByFunc(a=>a.ServiceId == serviceId && a.ServicePropertyId == serviceProp.Id).FirstOrDefault()?.Price
+                            Price = _serviceItems.SelectByFunc(a => a.ServiceId == serviceId && a.ServicePropertyId == serviceProp.Id).FirstOrDefault()?.Price
                         });
                     }
                 }

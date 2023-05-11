@@ -12,7 +12,7 @@ using Airport.UI.Models.Interface;
 
 namespace Airport.UI.Controllers
 {
-    public class ReservationManageController : Controller
+    public class ReservationManageController : PanelAuthController
     {
         IReservationsDAL _reservations;
         IDriversDAL _drivers;
@@ -41,7 +41,6 @@ namespace Airport.UI.Controllers
                     Drivers = _drivers.SelectByFunc(a => a.UserId == userId)
                 };
 
-
                 return View(reservationVM);
             }
             catch (Exception ex)
@@ -55,8 +54,9 @@ namespace Airport.UI.Controllers
         [HttpGet("panel/reservation-detail/{id}")]
         public IActionResult ReservationDetail(int id)
         {
-
-            var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+            try
+            {
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
             var reservation = _reservations.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
             if (reservation is not null)
             {
@@ -74,6 +74,11 @@ namespace Airport.UI.Controllers
                 return View(reservationVM);
             }
             return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
         public IActionResult GetReservationNote(int id)
