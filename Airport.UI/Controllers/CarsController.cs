@@ -1,5 +1,7 @@
 ﻿using Airport.DBEntities.Entities;
 using Airport.DBEntitiesDAL.Interfaces;
+using Airport.MessageExtension.Interfaces;
+using Airport.MessageExtension.VM;
 using Airport.UI.Models.IM;
 using Airport.UI.Models.Interface;
 using Airport.UI.Models.VM;
@@ -30,8 +32,9 @@ namespace Airport.UI.Controllers
         IReservationsDAL _reservations;
         ILocationCarsDAL _locationCars;
         ILocationCarsFareDAL _locationCarsFare;
+        ISMS _sms;
 
-        public CarsController(ICarBrandsDAL carBrands, IServicesDAL services, IServiceItemsDAL serviceItems, ICarModelsDAL carModels, ICarSeriesDAL carSeries, ICarTypesDAL carTypes, IMyCarsDAL myCars, IDriversDAL drivers, IGetCarDetail getCarDetail, IReservationsDAL reservations, ILocationCarsDAL locationCars, ILocationCarsFareDAL locationCarsFare)
+        public CarsController(ICarBrandsDAL carBrands, IServicesDAL services, IServiceItemsDAL serviceItems, ICarModelsDAL carModels, ICarSeriesDAL carSeries, ICarTypesDAL carTypes, IMyCarsDAL myCars, IDriversDAL drivers, IGetCarDetail getCarDetail, IReservationsDAL reservations, ILocationCarsDAL locationCars, ILocationCarsFareDAL locationCarsFare, ISMS sms)
         {
             _carBrands = carBrands;
             _services = services;
@@ -45,6 +48,29 @@ namespace Airport.UI.Controllers
             _reservations = reservations;
             _locationCars = locationCars;
             _locationCarsFare = locationCarsFare;
+            _sms = sms;
+        }
+
+
+        public IActionResult SMSDeneme()
+        {
+            var allMessage = new List<Mesaj>();
+            allMessage.Add(new Mesaj
+            {
+                dest = "905365278808",
+                msg = "deneme mesaj1"
+            });
+            allMessage.Add(new Mesaj
+            {
+                dest = "905531878855",
+                msg = "deneme mesaj1"
+            });
+            var mesaj = allMessage.ToArray();
+
+            _sms.SmsForReservation(mesaj);
+
+
+            return View();
         }
 
 
@@ -115,7 +141,7 @@ namespace Airport.UI.Controllers
                     Partition = myCar.Partition,
                     Water = myCar.Water,
                     Wifi = myCar.Wifi,
-                    DriverId = myCar.Driver,    
+                    DriverId = myCar.Driver,
                     Plate = myCar.Plate
                 });
 
@@ -244,11 +270,11 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var myCar = _myCars.SelectByFunc(a=>a.Id == id && a.UserId == userId).FirstOrDefault();
+                var myCar = _myCars.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
                 if (myCar != null)
                 {
                     var check = false;
-                    var locationCars = _locationCars.SelectByFunc(a=>a.CarId == myCar.Id);
+                    var locationCars = _locationCars.SelectByFunc(a => a.CarId == myCar.Id);
                     locationCars.ForEach(a =>
                     {
                         var checkReservation = _reservations.SelectByFunc(b => b.LocationCarId == a.Id).FirstOrDefault();
@@ -279,7 +305,7 @@ namespace Airport.UI.Controllers
 
 
 
-                    return Json(new {result = 1});
+                    return Json(new { result = 1 });
                 }
                 return Json(new { result = 2 });
             }

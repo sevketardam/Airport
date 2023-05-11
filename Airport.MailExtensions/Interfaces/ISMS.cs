@@ -9,6 +9,6 @@ namespace Airport.MessageExtension.Interfaces
 {
     public interface ISMS
     {
-        void SmsForReservation(SmsIstegi smsIstegi);
+        void SmsForReservation(Mesaj[] mesaj);
     }
 }

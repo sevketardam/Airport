@@ -7,6 +7,7 @@ using Airport.UI.Models.VM;
 using iText.Layout.Element;
 using Airport.DBEntities.Entities;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Airport.UI.Controllers
 {
@@ -24,9 +25,14 @@ namespace Airport.UI.Controllers
         public IActionResult Index()
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-            var reservations = _reservations.SelectByFunc(a => a.UserId == userId);
+            var reservationVM = new ReservationsIndexVM()
+            {
+                Reservations = _reservations.SelectByFunc(a => a.UserId == userId),
+                Drivers = _drivers.SelectByFunc(a => a.UserId == userId)
+            };
 
-            return View(reservations);
+
+            return View(reservationVM);
         }
 
         [HttpGet("panel/reservation-detail/{id}")]
@@ -60,6 +66,48 @@ namespace Airport.UI.Controllers
                 return Json(new { result = 1, Data = reservation });
             }
             return BadRequest();
+        }
+
+        public IActionResult GetDriverDetail(int id)
+        {
+            try
+            {
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var reservation = _reservations.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
+                if (reservation is not null)
+                {
+                    return Json(new { result = 1, Data = reservation });
+                }
+                return Json(new { result = 1 });
+            }
+            catch (Exception)
+            {
+                return Json(new { });
+            }
+
+        }
+
+        public IActionResult AssignDriver(int driverId,int reservationId)
+        {
+            try
+            {
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var driver = _drivers.SelectByFunc(a => a.Id == driverId && a.UserId == userId).FirstOrDefault();
+                var reservation = _reservations.SelectByFunc(a => a.Id == reservationId && a.UserId == userId).FirstOrDefault();
+                if (driver is not null && reservation is not null)
+                {
+                    reservation.DriverId = driver.Id;
+                    _reservations.Update(reservation);
+
+                    return Json(new { result = 1 });
+                }
+                return Json(new { result = 2 });
+            }
+            catch (Exception)
+            {
+                return Json(new { });
+            }
+
         }
 
         public IActionResult UpdateReservationStatus(Reservations reservation)

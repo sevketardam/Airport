@@ -11,6 +11,7 @@ namespace Airport.MessageExtension.VM
         public string msg { get; set; }
         public string dest { get; set; }
         public Mesaj() { }
+
         public Mesaj(string msg, string dest)
         {
             this.msg = msg;
