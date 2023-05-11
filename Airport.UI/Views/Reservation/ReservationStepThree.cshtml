@@ -235,6 +235,7 @@
                                     </div>
                                 }
 
+                                <input type="hidden" name="selectedServiceItems" />
 
                                 <textarea class="formTextarea" name="comment"></textarea>
 
@@ -252,7 +253,7 @@
                                                                 </p>
                                                             </div>
                                                             <div class="pageServicePrice">
-                                                                <input type="number" val="1" min="1" max="@Model.SelectedData.ReservationValues.PeopleCount" class="passengerInputs">
+                                                                <input type="number" name="peopleCountInput" value="1" min="1" max="@Model.SelectedData.ReservationValues.PeopleCount" class="passengerInputs">
                                                                 <p>
                                                                     €<span class="servicePrice">@item.Price</span>
                                                                 </p>
@@ -263,20 +264,21 @@
                                                         </div>
                                                         <div class="pageServiceDownItemBottom " style="display: none;">
                                                             <div class="pageServiceDesc pt-3 ">
-                                                                <div class="">
+                                                                <div class="mt-2">
                                                                     @Html.Raw(item.ServiceProperty.ServicePropertyDescription)
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="checkServiceDiv page">
-                                                        <input type="checkbox" class="w-100" />
+                                                    <div class="checkServiceDiv">
+                                                        <input type="checkbox" class="itemCheckbox" name="selectedValue" value="@item.Id" class="w-100" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     }
                                </div>
+                              
 
                                 <div class="_Form_Div">
                                     <button>
@@ -300,154 +302,26 @@
 
 @section pageJs{
     <script>
+        let listCheckedItems = []
+
+        $('.itemCheckbox').on("click", function () {
+            listCheckedItems = []
+            $.each($('.itemCheckbox'), function (key, value) {
+                if($(value).is(":checked")){
+                    var peoplecount = $(value).closest(".pageServiceDownItem").find(".passengerInputs").val()
+                    listCheckedItems.push({
+                        SelectedValue: $(value).val(),
+                        PeopleCountInput: peoplecount == "" || peoplecount == 0 ? 1 : peoplecount
+                    })
+                }
+            })
+
+            $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
+        })
+
+
         const firstPrice = @Model.SelectedData.LastPrice
 
-        $('#serviceList').on("change", function () {
-            var propId = $(this).val()
-            $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.GetServiceItem))',
-                type: "POST",
-                data: { serviceProId: propId,serviceId:@Model.SelectedData.LocationCar.Car.ServiceId },
-                success: function (response) {
-                    console.log(response)
-                    if (response.result == 1) {
-                        let serviceList2 = [];
-
-                        $.each($('.servicecard-container .service-items'), function (key, value) {
-                            serviceList2.push(parseInt($(value).attr("data-id")))
-                        })
-
-                        var thisValues = $('#serviceList').val()
-
-                        var list2 = [];
-                        $.each(response.data, function (key, value) {
-                            list2.push(value.serviceCategoryId);
-                        })
-
-                        $.each($('.servicecard-container .service-items'), function (key, value) {
-                            var dataId = parseInt($(value).attr("data-id"))
-                            if (!list2.includes(dataId)) {
-                                $(value).remove()
-
-                                    $('#priceBox').text(parseFloat($('#priceBox').text()) - parseFloat($(value).find(".servicePrice").text()))
-                            }
-                        })
-
-
-                        $.each(response.data, function (key, value) {
-                            if (!serviceList2.includes(value.serviceCategoryId)) {
-
-                                $('.servicecard-container').append(` 
-                                <div class="pageServiceItem service-items" data-id="${value.serviceCategoryId}">
-                                    <h3>
-                                                ${value.serviceCategoryName}
-                                    </h3>
-                                    <div class="pageServiceDownItems service-category-items" >
-                                        <div class="pageServiceDownItem service-category-item" data-id="${value.categoryItems[0].id}">
-                                            <div class="pageServiceDownItemTop">
-                                                <div class="pageServiceName">
-                                                    <p>
-                                                                ${value.categoryItems[0].serviceName}
-                                                    </p>
-                                                </div>
-                                                <div class="pageServicePrice">
-                                                    <p>
-                                                                        €<span class="servicePrice">${value.categoryItems[0].price}</span>
-                                                    </p>
-                                                    <button type="button" class="pageServiceAngle">
-                                                        <i class="fa-solid fa-angle-right"></i>
-                                                    </button>
-                                                </div>
-
-                                            </div>
-                                            <div class="pageServiceDownItemBottom " style="display: none;">
-                                                <div class="pageServiceDesc pt-3 " >
-                                                       <div class="row mt-2">
-                                                             ${value.categoryItems[0].serviceDescripton}
-                                                        </div>
-                                                 </div>
-                                              </div>
-                                        </div>
-                                    </div>
-                                </div>`)
-                                $('#priceBox').text(parseFloat($('#priceBox').text()) + value.categoryItems[0].price)
-                            }
-                            else {
-
-                                if (value.categoryItems.length > $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item').length) {
-
-                                    let serviceList3 = [];
-                                    $.each($('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items'), function (key, value2) {
-                                        serviceList3.push(parseInt($(value2).find('.service-category-item').attr("data-id")))
-                                    })
-
-                                    $.each(value.categoryItems, function (key, value2) {
-                                        if (!serviceList3.includes(value2.id)) {
-                                                                                                                            
-                                          $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items').append(`
-                                                           <div class="pageServiceDownItem service-category-item" data-id="${value2.id}">
-                                                    <div class="pageServiceDownItemTop">
-                                                        <div class="pageServiceName">
-                                                            <p>
-                                                                                ${value2.serviceName}
-                                                            </p>
-                                                        </div>
-                                                        <div class="pageServicePrice">
-                                                            <p>
-                                                                                €<span class="servicePrice">${value2.price}</span>
-                                                            </p>
-                                                            <button type="button" class="pageServiceAngle">
-                                                                <i class="fa-solid fa-angle-right"></i>
-                                                            </button>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="pageServiceDownItemBottom " style="display: none;">
-                                                        <div class="pageServiceDesc pt-3 " >
-                                                                       <div class="row mt-2">
-                                                                             ${value2.serviceDescripton}
-                                                                </div>
-                                                         </div>
-                                                      </div>
-                                                </div>
-                                          `)
-                                            $('#priceBox').text(parseFloat($('#priceBox').text()) + value2.price)
-                                        }
-                                    })
-                                }
-                                else if (value.categoryItems.length < $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item').length) {
-
-
-                                    var list2 = [];
-                                    $.each(value.categoryItems, function (key, value2) {
-                                        list2.push(value2.id);
-                                    })
-
-
-
-                                    $.each($('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item'), function (key, value2) {
-                                        var dataId = parseInt($(value2).attr("data-id"))
-                                        if (!list2.includes(dataId)) {
-                                            $(value2).remove()
-                                            $('#priceBox').text(parseFloat($('#priceBox').text()) - parseFloat($(value2).find(".servicePrice").text()))
-                                        }
-                                    })
-                                }
-
-
-                            }
-
-                        })
-
-                        if (response.data.length == 0) {
-                            $('.servicecard-container').html("")
-                                $('#priceBox').text(firstPrice)
-                        }
-
-                    }
-                }
-            });
-        })
 
     </script>
 }
