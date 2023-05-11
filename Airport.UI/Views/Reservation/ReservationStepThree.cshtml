@@ -253,7 +253,7 @@
                                                                 </p>
                                                             </div>
                                                             <div class="pageServicePrice">
-                                                                <input type="number" val="1" min="1" max="@Model.SelectedData.ReservationValues.PeopleCount" class="passengerInputs">
+                                                                <input type="number" name="peopleCountInput" value="1" min="1" max="@Model.SelectedData.ReservationValues.PeopleCount" class="passengerInputs">
                                                                 <p>
                                                                     €<span class="servicePrice">@item.Price</span>
                                                                 </p>
@@ -264,57 +264,21 @@
                                                         </div>
                                                         <div class="pageServiceDownItemBottom " style="display: none;">
                                                             <div class="pageServiceDesc pt-3 ">
-                                                                <div class="">
+                                                                <div class="mt-2">
                                                                     @Html.Raw(item.ServiceProperty.ServicePropertyDescription)
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="checkServiceDiv page">
-                                                        <input type="checkbox" class="w-100" />
+                                                    <div class="checkServiceDiv">
+                                                        <input type="checkbox" class="itemCheckbox" name="selectedValue" value="@item.Id" class="w-100" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     }
                                </div>
-                                @foreach (var item in Model.SelectedData.LocationCar.Car.Service.ServiceItems)
-                                {
-                                    <div class="pageServiceDownItems service-category-items">
-                                        <div class="pageServiceDownItem service-category-item">
-                                            <div style="display: flex;">
-                                                <div class="pageServiceDownItemTop" style="width:100%;">
-                                                    <div class="pageServiceDownItemTopFlex">
-                                                        <div class="pageServiceName">
-                                                            <p>
-                                                                @item.ServiceProperty.ServicePropertyName
-                                                            </p>
-                                                        </div>
-                                                        <div class="pageServicePrice">
-                                                            <input type="number" name="peopleCountInput" value="1" min="1" max="@Model.SelectedData.ReservationValues.PeopleCount" class="passengerInputs">
-                                                            <p>
-                                                                €<span class="servicePrice">@item.Price</span>
-                                                            </p>
-                                                            <button type="button" class="pageServiceAngle">
-                                                                <i class="fa-solid fa-angle-right"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="pageServiceDownItemBottom " style="display: none;">
-                                                        <div class="pageServiceDesc pt-3 ">
-                                                            <div class="mt-2">
-                                                                @Html.Raw(item.ServiceProperty.ServicePropertyDescription)
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="checkServiceDiv">
-                                                    <input type="checkbox" class="itemCheckbox" name="selectedValue" value="@item.Id" class="w-100" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
+                              
 
                                 <div class="_Form_Div">
                                     <button>

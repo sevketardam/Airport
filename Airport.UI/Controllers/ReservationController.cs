@@ -1025,7 +1025,7 @@ namespace Airport.UI.Controllers
         }
 
         [HttpPost("panel/manual-reservation-three/{id}",Name = "getManualBookValues")]
-        public IActionResult ManualReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, List<int> serviceItems,List<SelectServiceVM> items)
+        public IActionResult ManualReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, List<int> serviceItems, string selectedServiceItems)
         {
             try
             {
@@ -1049,13 +1049,14 @@ namespace Airport.UI.Controllers
                     }
                 }
 
+                var services = JsonConvert.DeserializeObject<List<SelectServiceVM>>(selectedServiceItems);
+
                 var totalServiceFee = 0.0;
 
-                foreach (var item1 in serviceItems)
+                foreach (var item1 in services)
                 {
-                    var serviceFee = _serviceItems.SelectByFunc(a => a.ServicePropertyId == item1 && a.ServiceId == createReservation.LocationCar.Car.ServiceId).FirstOrDefault();
-
-                    totalServiceFee += serviceFee.Price;
+                    var serviceFee = _serviceItems.SelectByID(item1.SelectedValue);
+                    totalServiceFee += serviceFee.Price * item1.PeopleCountInput;
                 }
 
                 Random random = new Random();
