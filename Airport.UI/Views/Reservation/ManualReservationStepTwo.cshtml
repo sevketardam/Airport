@@ -33,32 +33,38 @@
                     </div>
                     <div>
                         <div class="_Step_Travel_Form">
-                            <form>
+                            <form asp-route="getManualLocationValue" method="post">
                                 <div class="_Form_Inputs">
                                     <div class="_Pos_Rel">
                                         <div>
                                             <label for="">Pick Up</label>
-                                            <input type="text">
+                                            <input class="get-location" id="_Pick_Up" name="PickValueText" placeholder="Search Location" type="text" value="@Model.SelectedReservationValues.PickValueText" />
+                                            <input id="_Pick_Up_Value" name="PickValue" type="hidden" value="@Model.SelectedReservationValues.PickValue" />
+
                                         </div>
                                     </div>
                                     <div class="_Pos_Rel">
                                         <div>
                                             <label for="">Drop off</label>
-                                            <input type="text">
+                                            <input class="get-location" id="_Drop_Off" name="DropValueText" placeholder="Search Location" type="text" value="@Model.SelectedReservationValues.DropValueText" />
+
+                                            <input id="_Drop_Off_Value" name="DropValue" type="hidden" value="@Model.SelectedReservationValues.DropValue" />
                                         </div>
                                     </div>
                                     <div class="_Pos_Rel">
                                         <label for="">Flight Arrival</label>
-                                        <input type="datetime-local">
+                                        <input type="datetime-local" name="FlightTime" value="@Model.SelectedReservationValues.FlightTime.ToString("yyyy-MM-ddTHH:mm:ss")">
                                         <img src="~/img/calendar.png" class="calendarImage" />
                                     </div>
                                     <div class="_Pos_Rel">
-                                        <div class="d-none Return_Arrival">
+                                        <div class="@(Model.SelectedReservationValues.ReturnStatus ? "" : "d-none") Return_Arrival">
                                             <label for="">Return</label>
-                                            <input type="datetime-local" name="ReturnDate">
+                                            <input type="datetime-local" name="ReturnDate" value="@Model.SelectedReservationValues.ReturnDate.ToString("yyyy-MM-ddTHH:mm:ss")">
                                             <img src="~/img/calendar.png" class="calendarImage" />
+
+                                            <input type="checkbox" name="ReturnStatus" value="true" @(Model.SelectedReservationValues.ReturnStatus ? "checked" : "") style="position:absolute; opacity: 0;visibility: visible; " />
                                         </div>
-                                        <div>
+                                        <div class="@(Model.SelectedReservationValues.ReturnStatus ? "d-none _DeActive" : "")">
                                             <button type="button" class="_Add_Return">
                                                 <i class="fa-sharp fa-solid fa-plus"></i> Add Return
                                             </button>
@@ -67,7 +73,7 @@
                                     <div class="_Peoples_Div">
                                         <div class="_Pos_Rel">
                                             <label for="">Adults</label>
-                                            <input type="number" value="1" min="0">
+                                            <input type="number" name="PeopleCount" onkeydown="return numControl(event)" value="@Model.SelectedReservationValues.PeopleCount" min="1">
                                             <div class="_user_btns">
                                                 <div class="_up_number">
                                                     <i class="fa-sharp fa-solid fa-caret-up"></i>
@@ -228,5 +234,29 @@
             initMap();
         }
 
+        var pickPlaceId;
+        var dropPlaceId;
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+        function initialize() {
+            var input = document.getElementById("_Pick_Up");
+            var input2 = document.getElementById("_Drop_Off");
+
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.addListener('place_changed', function () {
+                var place = autocomplete.getPlace();
+                pickPlaceId = place.place_id
+                $('#_Pick_Up_Value').val(pickPlaceId)
+            });
+
+            var autocomplete2 = new google.maps.places.Autocomplete(input2);
+
+            autocomplete2.addListener('place_changed', function () {
+                var place = autocomplete2.getPlace();
+                dropPlaceId = place.place_id
+                $('#_Drop_Off_Value').val(dropPlaceId)
+            });
+        }
     </script>
 }
