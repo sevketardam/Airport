@@ -50,7 +50,7 @@
                             <select class="form-control select2-multiple" id="carSelect" name="Cars" multiple="multiple" data-width="100%">
                                 @foreach (var car in Model)
                                 {
-                                    <option value="@car.Id">@(car.Brand?.CarBrandName)</option>
+                                    <option value="@car.Id">@car.Brand?.CarBrandName @car.Model?.CarModelName - @car.Plate</option>
                                 }
                             </select>
                         </div>
