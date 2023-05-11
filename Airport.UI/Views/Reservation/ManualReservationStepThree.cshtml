@@ -256,51 +256,46 @@
 
                             <textarea class="formTextarea" name="comment"></textarea>
 
-                            @if (Model.ServiceItems.Count != 0)
+
+                            @foreach (var item in Model.SelectedData.LocationCar.Car.Service.ServiceItems)
                             {
-                                @foreach (var item in Model.ServiceItems)
-                                {
-                                    @foreach (var item2 in item.CategoryProps)
-                                    {
-                                        <div class="pageServiceDownItems service-category-items">
-                                            <div class="pageServiceDownItem service-category-item">
-                                                <div style="display: flex;">
-                                                    <div class="pageServiceDownItemTop" style="width:100%;">
-                                                        <div class="pageServiceDownItemTopFlex">
-                                                            <div class="pageServiceName">
-                                                                <p>
-                                                                    ${value.categoryItems[0].serviceName}
-                                                                </p>
-                                                            </div>
-                                                            <div class="pageServicePrice">
-                                                                <input type="number" val="1" min="1" max="5" class="passengerInputs">
-                                                                <p>
-                                                                    €<span class="servicePrice">@item2.</span>
-                                                                </p>
-                                                                <button type="button" class="pageServiceAngle">
-                                                                    <i class="fa-solid fa-angle-right"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="pageServiceDownItemBottom " style="display: none;">
-                                                            <div class="pageServiceDesc pt-3 ">
-                                                                <div class="mt-2">
-                                                                    ${value.categoryItems[0].serviceDescripton}
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                <div class="pageServiceDownItems service-category-items">
+                                    <div class="pageServiceDownItem service-category-item">
+                                        <div style="display: flex;">
+                                            <div class="pageServiceDownItemTop" style="width:100%;">
+                                                <div class="pageServiceDownItemTopFlex">
+                                                    <div class="pageServiceName">
+                                                        <p>
+                                                            @item.ServiceProperty.ServicePropertyName
+                                                        </p>
                                                     </div>
-                                                    <div class="checkServiceDiv">
-                                                        <input type="checkbox" class="w-100" />
+                                                    <div class="pageServicePrice">
+                                                        <input type="number" val="1" min="1" max="@Model.SelectedData.ReservationValues.PeopleCount" class="passengerInputs">
+                                                        <p>
+                                                            €<span class="servicePrice">@item.Price</span>
+                                                        </p>
+                                                        <button type="button" class="pageServiceAngle">
+                                                            <i class="fa-solid fa-angle-right"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="pageServiceDownItemBottom " style="display: none;">
+                                                    <div class="pageServiceDesc pt-3 ">
+                                                        <div class="mt-2">
+                                                            @item.ServiceProperty.ServicePropertyDescription
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="checkServiceDiv">
+                                                <input type="checkbox" class="w-100" />
+                                            </div>
                                         </div>
-                                    }
-                              
-                                }
-                              
+                                    </div>
+                                </div>
                             }
+
+
 
 
                             <div class="_Form_Div">
@@ -335,174 +330,174 @@
             blocks: [15]
         });
 
-        const firstPrice = @Model.SelectedData.LastPrice
+        //const firstPrice = @Model.SelectedData.LastPrice
 
-            $('#serviceList').on("change", function () {
-                var propId = $(this).val()
-                $.ajax({
-                    url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.GetServiceItem))',
-                    type: "POST",
-                    data: { serviceProId: propId, serviceId: @Model.SelectedData.LocationCar.Car.ServiceId },
-                    success: function (response) {
-                        console.log(response)
-                        if (response.result == 1) {
-                            let serviceList2 = [];
+        //    $('#serviceList').on("change", function () {
+        //        var propId = $(this).val()
+        //        $.ajax({
+        //            url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.GetServiceItem))',
+        //            type: "POST",
+        //            data: { serviceProId: propId, serviceId: @Model.SelectedData.LocationCar.Car.ServiceId },
+        //            success: function (response) {
+        //                console.log(response)
+        //                if (response.result == 1) {
+        //                    let serviceList2 = [];
 
-                            $.each($('.servicecard-container .service-items'), function (key, value) {
-                                serviceList2.push(parseInt($(value).attr("data-id")))
-                            })
+        //                    $.each($('.servicecard-container .service-items'), function (key, value) {
+        //                        serviceList2.push(parseInt($(value).attr("data-id")))
+        //                    })
 
-                            var thisValues = $('#serviceList').val()
+        //                    var thisValues = $('#serviceList').val()
 
-                            var list2 = [];
-                            $.each(response.data, function (key, value) {
-                                list2.push(value.serviceCategoryId);
-                            })
+        //                    var list2 = [];
+        //                    $.each(response.data, function (key, value) {
+        //                        list2.push(value.serviceCategoryId);
+        //                    })
 
-                            $.each($('.servicecard-container .service-items'), function (key, value) {
-                                var dataId = parseInt($(value).attr("data-id"))
-                                if (!list2.includes(dataId)) {
-                                    $(value).remove()
+        //                    $.each($('.servicecard-container .service-items'), function (key, value) {
+        //                        var dataId = parseInt($(value).attr("data-id"))
+        //                        if (!list2.includes(dataId)) {
+        //                            $(value).remove()
 
-                                    $('#priceBox').text(parseFloat($('#priceBox').text()) - parseFloat($(value).find(".servicePrice").text()))
-                                    $('#newPriceInput').val(parseFloat($('#newPriceInput').val()) - parseFloat($(value).find(".servicePrice").text()))
-                                }
-                            })
-
-
-                            $.each(response.data, function (key, value) {
-                                if (!serviceList2.includes(value.serviceCategoryId)) {
-
-                                    $('.servicecard-container').append(`
-                                                                        <div class="pageServiceItem service-items" data-id="${value.serviceCategoryId}">
-                                                                            <h3>
-                                                                                        ${value.serviceCategoryName}
-                                                                            </h3>
-                                                                            <div class="pageServiceDownItems service-category-items" >
-                                                                                <div class="pageServiceDownItem service-category-item" data-id="${value.categoryItems[0].id}">
-                                                                                    <div style="display: flex;">
-                                                                                            <div class="pageServiceDownItemTop" style="width:100%;">
-                                                                                                        <div class="pageServiceDownItemTopFlex">
-                                                                                                <div class="pageServiceName">
-                                                                                                    <p>
-                                                                                                                ${value.categoryItems[0].serviceName}
-                                                                                                    </p>
-                                                                                                    </div>
-                                                                                                     <div class="pageServicePrice">
-                                                                                                              <input type="number" val="1" min="1" max="5" class="passengerInputs">
-                                                                                                        <p>
-                                                                                                                            €<span class="servicePrice">${value.categoryItems[0].price}</span>
-                                                                                                        </p>
-                                                                                                        <button type="button" class="pageServiceAngle">
-                                                                                                            <i class="fa-solid fa-angle-right"></i>
-                                                                                                        </button>
-                                                                                                    </div>
-                                                                                                    </div>
-                                                                                                             <div class="pageServiceDownItemBottom " style="display: none;">
-                                                                                        <div class="pageServiceDesc pt-3 " >
-                                                                                               <div class="mt-2">
-                                                                                                     ${value.categoryItems[0].serviceDescripton}
-                                                                                                </div>
-                                                                                         </div>
-                                                                                      </div>
-                                                                                                </div>
-                                                                                                <div class="checkServiceDiv">
-                                                                                                        <input type="checkbox" class="w-100" />
-                                                                                                </div>
-                                                                                    </div>
-
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>`)
-                                    $('#priceBox').text(parseFloat($('#priceBox').text()) + value.categoryItems[0].price)
-                                    $('#newPriceInput').val(parseFloat($('#newPriceInput').val()) + value.categoryItems[0].price)
-                                }
-                                else {
-
-                                    if (value.categoryItems.length > $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item').length) {
-
-                                        let serviceList3 = [];
-                                        $.each($('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items'), function (key, value2) {
-                                            serviceList3.push(parseInt($(value2).find('.service-category-item').attr("data-id")))
-                                        })
-
-                                        $.each(value.categoryItems, function (key, value2) {
-                                            if (!serviceList3.includes(value2.id)) {
-
-                                                $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items').append(`
+        //                            $('#priceBox').text(parseFloat($('#priceBox').text()) - parseFloat($(value).find(".servicePrice").text()))
+        //                            $('#newPriceInput').val(parseFloat($('#newPriceInput').val()) - parseFloat($(value).find(".servicePrice").text()))
+        //                        }
+        //                    })
 
 
-                                                                                                               <div class="pageServiceDownItem service-category-item" data-id="${value2.id}">
-                                <div style="display: flex;">
-                                    <div class="pageServiceDownItemTop" style="width:100%;">
-                                        <div class="pageServiceDownItemTopFlex">
+        //                    $.each(response.data, function (key, value) {
+        //                        if (!serviceList2.includes(value.serviceCategoryId)) {
 
-                                            <div class="pageServiceName">
-                                                <p>
-                                                    ${value2.serviceName}
-                                                </p>
-                                            </div>
-                                            <div class="pageServicePrice">
-                                                    <input type="number" val="1" min="1" max="5" class="passengerInputs">
-                                                <p>
-                                                    €<span class="servicePrice">${value2.price}</span>
-                                                </p>
-                                                <button type="button" class="pageServiceAngle">
-                                                    <i class="fa-solid fa-angle-right"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="pageServiceDownItemBottom " style="display: none;">
-                                            <div class="pageServiceDesc pt-3 ">
-                                                <div class="mt-2">
-                                                    ${value2.serviceDescripton}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="checkServiceDiv">
-                                        <input type="checkbox" class="w-100" />
-                                    </div>
-                                </div>
+        //                            $('.servicecard-container').append(`
+        //                                                                        <div class="pageServiceItem service-items" data-id="${value.serviceCategoryId}">
+        //                                                                            <h3>
+        //                                                                                        ${value.serviceCategoryName}
+        //                                                                            </h3>
+        //                                                                            <div class="pageServiceDownItems service-category-items" >
+        //                                                                                <div class="pageServiceDownItem service-category-item" data-id="${value.categoryItems[0].id}">
+        //                                                                                    <div style="display: flex;">
+        //                                                                                            <div class="pageServiceDownItemTop" style="width:100%;">
+        //                                                                                                        <div class="pageServiceDownItemTopFlex">
+        //                                                                                                <div class="pageServiceName">
+        //                                                                                                    <p>
+        //                                                                                                                ${value.categoryItems[0].serviceName}
+        //                                                                                                    </p>
+        //                                                                                                    </div>
+        //                                                                                                     <div class="pageServicePrice">
+        //                                                                                                              <input type="number" val="1" min="1" max="5" class="passengerInputs">
+        //                                                                                                        <p>
+        //                                                                                                                            €<span class="servicePrice">${value.categoryItems[0].price}</span>
+        //                                                                                                        </p>
+        //                                                                                                        <button type="button" class="pageServiceAngle">
+        //                                                                                                            <i class="fa-solid fa-angle-right"></i>
+        //                                                                                                        </button>
+        //                                                                                                    </div>
+        //                                                                                                    </div>
+        //                                                                                                             <div class="pageServiceDownItemBottom " style="display: none;">
+        //                                                                                        <div class="pageServiceDesc pt-3 " >
+        //                                                                                               <div class="mt-2">
+        //                                                                                                     ${value.categoryItems[0].serviceDescripton}
+        //                                                                                                </div>
+        //                                                                                         </div>
+        //                                                                                      </div>
+        //                                                                                                </div>
+        //                                                                                                <div class="checkServiceDiv">
+        //                                                                                                        <input type="checkbox" class="w-100" />
+        //                                                                                                </div>
+        //                                                                                    </div>
 
-                            </div>
-                                                                                  `)
-                                                $('#priceBox').text(parseFloat($('#priceBox').text()) + value2.price)
-                                                $('#newPriceInput').val(parseFloat($('#newPriceInput').val()) + value2.price)
-                                            }
-                                        })
-                                    }
-                                    else if (value.categoryItems.length < $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item').length) {
+        //                                                                                </div>
+        //                                                                            </div>
+        //                                                                        </div>`)
+        //                            $('#priceBox').text(parseFloat($('#priceBox').text()) + value.categoryItems[0].price)
+        //                            $('#newPriceInput').val(parseFloat($('#newPriceInput').val()) + value.categoryItems[0].price)
+        //                        }
+        //                        else {
+
+        //                            if (value.categoryItems.length > $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item').length) {
+
+        //                                let serviceList3 = [];
+        //                                $.each($('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items'), function (key, value2) {
+        //                                    serviceList3.push(parseInt($(value2).find('.service-category-item').attr("data-id")))
+        //                                })
+
+        //                                $.each(value.categoryItems, function (key, value2) {
+        //                                    if (!serviceList3.includes(value2.id)) {
+
+        //                                        $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items').append(`
 
 
-                                        var list2 = [];
-                                        $.each(value.categoryItems, function (key, value2) {
-                                            list2.push(value2.id);
-                                        })
+        //                                                                                                               <div class="pageServiceDownItem service-category-item" data-id="${value2.id}">
+        //                                <div style="display: flex;">
+        //                                    <div class="pageServiceDownItemTop" style="width:100%;">
+        //                                        <div class="pageServiceDownItemTopFlex">
+
+        //                                            <div class="pageServiceName">
+        //                                                <p>
+        //                                                    ${value2.serviceName}
+        //                                                </p>
+        //                                            </div>
+        //                                            <div class="pageServicePrice">
+        //                                                    <input type="number" val="1" min="1" max="5" class="passengerInputs">
+        //                                                <p>
+        //                                                    €<span class="servicePrice">${value2.price}</span>
+        //                                                </p>
+        //                                                <button type="button" class="pageServiceAngle">
+        //                                                    <i class="fa-solid fa-angle-right"></i>
+        //                                                </button>
+        //                                            </div>
+        //                                        </div>
+        //                                        <div class="pageServiceDownItemBottom " style="display: none;">
+        //                                            <div class="pageServiceDesc pt-3 ">
+        //                                                <div class="mt-2">
+        //                                                    ${value2.serviceDescripton}
+        //                                                </div>
+        //                                            </div>
+        //                                        </div>
+        //                                    </div>
+        //                                    <div class="checkServiceDiv">
+        //                                        <input type="checkbox" class="w-100" />
+        //                                    </div>
+        //                                </div>
+
+        //                            </div>
+        //                                                                                  `)
+        //                                        $('#priceBox').text(parseFloat($('#priceBox').text()) + value2.price)
+        //                                        $('#newPriceInput').val(parseFloat($('#newPriceInput').val()) + value2.price)
+        //                                    }
+        //                                })
+        //                            }
+        //                            else if (value.categoryItems.length < $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item').length) {
+
+
+        //                                var list2 = [];
+        //                                $.each(value.categoryItems, function (key, value2) {
+        //                                    list2.push(value2.id);
+        //                                })
 
 
 
-                                        $.each($('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item'), function (key, value2) {
-                                            var dataId = parseInt($(value2).attr("data-id"))
-                                            if (!list2.includes(dataId)) {
-                                                $(value2).remove()
-                                                $('#priceBox').text(parseFloat($('#priceBox').text()) - parseFloat($(value2).find(".servicePrice").text()))
-                                                $('#newPriceInput').val(parseFloat($('#newPriceInput').val()) - parseFloat($(value2).find(".servicePrice").text()))
-                                            }
-                                        })
-                                    }
-                                }
-                            })
+        //                                $.each($('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items .service-category-item'), function (key, value2) {
+        //                                    var dataId = parseInt($(value2).attr("data-id"))
+        //                                    if (!list2.includes(dataId)) {
+        //                                        $(value2).remove()
+        //                                        $('#priceBox').text(parseFloat($('#priceBox').text()) - parseFloat($(value2).find(".servicePrice").text()))
+        //                                        $('#newPriceInput').val(parseFloat($('#newPriceInput').val()) - parseFloat($(value2).find(".servicePrice").text()))
+        //                                    }
+        //                                })
+        //                            }
+        //                        }
+        //                    })
 
-                            if (response.data.length == 0) {
-                                $('.servicecard-container').html("")
-                                $('#priceBox').text(firstPrice)
-                            }
+        //                    if (response.data.length == 0) {
+        //                        $('.servicecard-container').html("")
+        //                        $('#priceBox').text(firstPrice)
+        //                    }
 
-                        }
-                    }
-                });
-            })
+        //                }
+        //            }
+        //        });
+        //    })
 
     </script>
 }
