@@ -11,6 +11,8 @@
     </a>
 </div>
 
+<button class="btn btn-warning" id="sendsms">SMS Gönder</button>
+
 <div class="row">
     @foreach (var item in Model)
     {
@@ -29,3 +31,20 @@
         </div>
     }
 </div>
+
+
+@section pageJs{
+    <script>
+        $('#sendsms').on("click",function(){
+            $.ajax({
+                url: '@Url.Action(nameof(Airport.UI.Controllers.CarsController.SMSDeneme))',
+                type: "GET",
+                success: function (response) {
+                    if (response.result == 200) {
+                       
+                    }
+                }
+            });
+        })
+    </script>
+}

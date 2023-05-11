@@ -16,10 +16,20 @@ namespace Airport.MessageExtension.Repos
     {
         readonly string username = "908502421901";
         readonly string password = "Mydn2929*";
+        readonly string source_addr = "MYDN GROUP";
 
-        public void SmsForReservation(SmsIstegi istek)
+        public void SmsForReservation(Mesaj[] mesaj)
         {
-            string payload = JsonConvert.SerializeObject(istek);
+
+            var smsistegi = new SmsIstegi()
+            {
+                username = username,
+                password = password,
+                source_addr = source_addr,
+                messages = mesaj
+            };
+
+            string payload = JsonConvert.SerializeObject(smsistegi);
 
             WebClient wc = new WebClient();
             wc.Encoding = Encoding.UTF8;
