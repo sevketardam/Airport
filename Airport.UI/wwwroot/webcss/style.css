@@ -1125,7 +1125,8 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 /* Agencies Sayfası */
 
 ._Agency_Flex,
-._Form_Flex_Style {
+._Form_Flex_Style,
+.Form_Flex_Style_Button{
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
@@ -1255,6 +1256,20 @@ button._Verify_Number {
     background-color: var(--orange);
     color: white;
     font-size: 1.2rem;
+}
+
+.Form_Flex_Style_Button {
+    width: max-content;
+    height: 2.6rem;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    background-color: var(--orange);
+    color: white;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
 }
 
 ._Form_Title h3 {

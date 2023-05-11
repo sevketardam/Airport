@@ -416,13 +416,40 @@ input.selectPhoto {
     gap: .5rem;
 }
 
-.pageServiceDownItem {
+.pageServiceDownItem .pageServiceDownItemTop {
     box-shadow: 0 0 5px rgb(0, 0, 0, .2);
     padding: .5rem 1rem;
     border-radius: .5rem;
 }
 
-.pageServiceDownItemTop {
+.checkServiceDiv {
+    width: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    align-items: flex-start;
+    padding-top: .8rem;
+}
+
+.passengerInputs {
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    border-radius: 5px;
+    padding: 0;
+    width: 3rem;
+    text-align: center;
+}
+
+.formTextarea {
+    width: 100%;
+    margin: 1rem 0px;
+    border-radius: 0.5rem;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 5px;
+    min-height: 100px;
+}
+
+.pageServiceDownItemTop > .pageServiceDownItemTopFlex {
     display: flex;
     align-items: center;
     justify-content: space-between;

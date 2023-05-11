@@ -41,7 +41,10 @@
                 margin: auto;
                 display: flex;
                 object-fit: contain;
-                box-shadow: 0 0 5px rgb(0,0,0,.16); -webkit-appearance: none; -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+                box-shadow: 0 0 5px rgb(0,0,0,.16);
+                -webkit-appearance: none;
+                -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+                -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
             }
 
         ._Total_Flex {
@@ -86,7 +89,10 @@
             padding: 0 1rem;
             height: 2rem;
             border: none;
-            box-shadow: 0 0 5px rgb(0,0,0,.16); -webkit-appearance: none; -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+            box-shadow: 0 0 5px rgb(0,0,0,.16);
+            -webkit-appearance: none;
+            -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+            -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
             outline: none;
             position: absolute;
             border-radius: 5px;
@@ -106,7 +112,7 @@
             font-weight: 200 !important;
         }
 
-        input{
+        input {
             outline: none;
             border: none;
         }
@@ -220,7 +226,7 @@
                                         Your invoice will be sent to this e-mail address
                                     </span>
                                 </div>
-                              
+
                                 <div class="_Form_Div _Info_Div">
                                     <label class="_Form_Label">Phone</label>
                                     <input type="text" value="@Model.User?.PhoneNumber" name="Phone">
@@ -244,15 +250,11 @@
                                     </div>
                                 }
 
-                                <div class="_Form_Div">
-                                    <button>
-                                        CREATE RESERVATİON
-                                    </button>
-                                </div>
+                                
 
                             </div>
 
-                            <input type="text" name="comment" />
+                            <textarea class="formTextarea" name="comment"></textarea>
 
                             @if (Model.ServiceItems.Count != 0)
                             {
@@ -275,10 +277,18 @@
                                 <div class="pageServices my-3 servicecard-container">
                                 </div>
                             }
+
+
+                            <div class="_Form_Div">
+                                <button class="Form_Flex_Style_Button">
+                                    CREATE RESERVATİON
+                                </button>
+                            </div>
+
                         </form>
                     </div>
 
-                  
+
                 </div>
             </div>
         </div>
@@ -288,11 +298,11 @@
 
 @section pageJs{
     <script>
-        $('#discountCheck').on("change",function(){
+        $('#discountCheck').on("change", function () {
             $('input[name="IsDiscount"]').val($(this).is(":checked"))
         })
 
-        $('#newPriceInput').on('change',function(){
+        $('#newPriceInput').on('change', function () {
             $('input[name="Discount"]').val($(this).val())
         })
 
@@ -340,38 +350,46 @@
                                 if (!serviceList2.includes(value.serviceCategoryId)) {
 
                                     $('.servicecard-container').append(`
-                                        <div class="pageServiceItem service-items" data-id="${value.serviceCategoryId}">
-                                            <h3>
-                                                        ${value.serviceCategoryName}
-                                            </h3>
-                                            <div class="pageServiceDownItems service-category-items" >
-                                                <div class="pageServiceDownItem service-category-item" data-id="${value.categoryItems[0].id}">
-                                                    <div class="pageServiceDownItemTop">
-                                                        <div class="pageServiceName">
-                                                            <p>
-                                                                        ${value.categoryItems[0].serviceName}
-                                                            </p>
-                                                        </div>
-                                                        <div class="pageServicePrice">
-                                                            <p>
-                                                                                €<span class="servicePrice">${value.categoryItems[0].price}</span>
-                                                            </p>
-                                                            <button type="button" class="pageServiceAngle">
-                                                                <i class="fa-solid fa-angle-right"></i>
-                                                            </button>
-                                                        </div>
+                                                                <div class="pageServiceItem service-items" data-id="${value.serviceCategoryId}">
+                                                                    <h3>
+                                                                                ${value.serviceCategoryName}
+                                                                    </h3>
+                                                                    <div class="pageServiceDownItems service-category-items" >
+                                                                        <div class="pageServiceDownItem service-category-item" data-id="${value.categoryItems[0].id}">
+                                                                            <div style="display: flex;">
+                                                                                    <div class="pageServiceDownItemTop" style="width:100%;">
+                                                                                                <div class="pageServiceDownItemTopFlex">
+                                                                                        <div class="pageServiceName">
+                                                                                            <p>
+                                                                                                        ${value.categoryItems[0].serviceName}
+                                                                                            </p>
+                                                                                            </div>
+                                                                                             <div class="pageServicePrice">
+                                                                                                      <input type="number" val="1" min="1" max="5" class="passengerInputs">
+                                                                                                <p>
+                                                                                                                    €<span class="servicePrice">${value.categoryItems[0].price}</span>
+                                                                                                </p>
+                                                                                                <button type="button" class="pageServiceAngle">
+                                                                                                    <i class="fa-solid fa-angle-right"></i>
+                                                                                                </button>
+                                                                                            </div>
+                                                                                            </div>
+                                                                                                     <div class="pageServiceDownItemBottom " style="display: none;">
+                                                                                <div class="pageServiceDesc pt-3 " >
+                                                                                       <div class="mt-2">
+                                                                                             ${value.categoryItems[0].serviceDescripton}
+                                                                                        </div>
+                                                                                 </div>
+                                                                              </div>
+                                                                                        </div>
+                                                                                        <div class="checkServiceDiv">
+                                                                                                <input type="checkbox" class="w-100" />
+                                                                                        </div>
+                                                                            </div>
 
-                                                    </div>
-                                                    <div class="pageServiceDownItemBottom " style="display: none;">
-                                                        <div class="pageServiceDesc pt-3 " >
-                                                               <div class="row mt-2">
-                                                                     ${value.categoryItems[0].serviceDescripton}
-                                                                </div>
-                                                         </div>
-                                                      </div>
-                                                </div>
-                                            </div>
-                                        </div>`)
+                                                                        </div>
+                                                                    </div>
+                                                                </div>`)
                                     $('#priceBox').text(parseFloat($('#priceBox').text()) + value.categoryItems[0].price)
                                     $('#newPriceInput').val(parseFloat($('#newPriceInput').val()) + value.categoryItems[0].price)
                                 }
@@ -388,32 +406,43 @@
                                             if (!serviceList3.includes(value2.id)) {
 
                                                 $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items').append(`
-                                                                   <div class="pageServiceDownItem service-category-item" data-id="${value2.id}">
-                                                            <div class="pageServiceDownItemTop">
-                                                                <div class="pageServiceName">
-                                                                    <p>
-                                                                                        ${value2.serviceName}
-                                                                    </p>
-                                                                </div>
-                                                                <div class="pageServicePrice">
-                                                                    <p>
-                                                                                        €<span class="servicePrice">${value2.price}</span>
-                                                                    </p>
-                                                                    <button type="button" class="pageServiceAngle">
-                                                                        <i class="fa-solid fa-angle-right"></i>
-                                                                    </button>
-                                                                </div>
 
-                                                            </div>
-                                                            <div class="pageServiceDownItemBottom " style="display: none;">
-                                                                <div class="pageServiceDesc pt-3 " >
-                                                                               <div class="row mt-2">
-                                                                                     ${value2.serviceDescripton}
-                                                                        </div>
-                                                                 </div>
-                                                              </div>
-                                                        </div>
-                                                  `)
+
+                                                                                                       <div class="pageServiceDownItem service-category-item" data-id="${value2.id}">
+                        <div style="display: flex;">
+                            <div class="pageServiceDownItemTop" style="width:100%;">
+                                <div class="pageServiceDownItemTopFlex">
+
+                                    <div class="pageServiceName">
+                                        <p>
+                                            ${value2.serviceName}
+                                        </p>
+                                    </div>
+                                    <div class="pageServicePrice">
+                                            <input type="number" val="1" min="1" max="5" class="passengerInputs">
+                                        <p>
+                                            €<span class="servicePrice">${value2.price}</span>
+                                        </p>
+                                        <button type="button" class="pageServiceAngle">
+                                            <i class="fa-solid fa-angle-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="pageServiceDownItemBottom " style="display: none;">
+                                    <div class="pageServiceDesc pt-3 ">
+                                        <div class="mt-2">
+                                            ${value2.serviceDescripton}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="checkServiceDiv">
+                                <input type="checkbox" class="w-100" />
+                            </div>
+                        </div>
+
+                    </div>
+                                                                          `)
                                                 $('#priceBox').text(parseFloat($('#priceBox').text()) + value2.price)
                                                 $('#newPriceInput').val(parseFloat($('#newPriceInput').val()) + value2.price)
                                             }
