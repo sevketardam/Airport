@@ -25,7 +25,8 @@ namespace Airport.UI.Controllers
         ILocationCarsDAL _locationCars;
         ILocationCarsFareDAL _locationCarsFare;
         IReservationsDAL _reservations; 
-        public LocationController(IMyCarsDAL myCars, ICarBrandsDAL carBrands, IGetCarDetail carDetail, ILocationsDAL locations, ILocationCarsDAL locationCars, ILocationCarsFareDAL locationCarsFare,IReservationsDAL reservations)
+        ICarModelsDAL _carModels;
+        public LocationController(IMyCarsDAL myCars, ICarBrandsDAL carBrands, IGetCarDetail carDetail, ILocationsDAL locations, ILocationCarsDAL locationCars, ILocationCarsFareDAL locationCarsFare,IReservationsDAL reservations, ICarModelsDAL carModels)
         {
             _myCars = myCars;
             _myBrands = carBrands;
@@ -34,6 +35,7 @@ namespace Airport.UI.Controllers
             _locationCars = locationCars;
             _locationCarsFare = locationCarsFare;
             _reservations = reservations;
+            _carModels = carModels;
         }
 
         [HttpGet("panel/location")]
@@ -99,6 +101,7 @@ namespace Airport.UI.Controllers
                 myCarsList.ForEach(a =>
                 {
                     a.Brand = _myBrands.SelectByID(a.BrandId);
+                    a.Model = _carModels.SelectByID(a.ModelId);
                 });
 
                 return View(myCarsList);

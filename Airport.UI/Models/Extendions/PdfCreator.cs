@@ -81,6 +81,10 @@ namespace Airport.UI.Models.Extendions
 
     <div style=""padding: 5px 5px;"">
         <div style=""margin-bottom:20px"">
+            <h4 style=""font-weight: bold; margin: 5px 0px;"">RERVATION CODE</h4>
+            <p style=""margin: 5px 0px;"">{reservation.ReservationCode}</p>
+        </div>
+        <div style=""margin-bottom:20px"">
             <h4 style=""font-weight: bold; margin: 5px 0px;"">CLIENT INFORMATION</h4>
             <p style=""margin: 5px 0px;"">{reservation.User.CompanyName}</p>
         </div>
@@ -93,10 +97,11 @@ namespace Airport.UI.Models.Extendions
         </div>
         <div>
             <h4 style=""font-weight: bold; margin: 5px 0px;"">TRANSPORT INFORMATION</h4>
-            <p style=""margin: 5px 0px;"">
-                Small Bags x{reservation.LocationCars.Car.SmallBags}, Suit Case x{reservation.LocationCars.Car.SuitCase}, Passenger x{reservation.LocationCars.Car.MaxPassenger} : {reservation.LocationCars.Car.Brand.CarBrandName} {reservation.LocationCars.Car.Model.CarModelName}, License plate: {reservation.LocationCars.Car.Plate}
-
+            <p style=""margin: 5px 0px;"">Transport type: 
+                Small Bags x{reservation.LocationCars.Car.SmallBags}, Suit Case x{reservation.LocationCars.Car.SuitCase}, Passenger x{reservation.LocationCars.Car.MaxPassenger} 
             </p>
+            <p>Vehicle: {reservation.LocationCars.Car.Brand.CarBrandName} {reservation.LocationCars.Car.Model.CarModelName} </p>
+            <p style=""margin: 5px 0px;"">License plate: {reservation.LocationCars.Car.Plate}</p>
             <p style=""margin: 5px 0px;"">
                 Options:{(reservation.LocationCars.Car.Wifi ? "Free wifi" : "")}{(reservation.LocationCars.Car.Water ? ",Free water" : "")}{(reservation.LocationCars.Car.Partition ? ",Safety partition" : "")}{(reservation.LocationCars.Car.Charger ? ",Phone charger" : "")}
 {(reservation.LocationCars.Car.Armored ? ",Armored voyage" : "")}{(reservation.LocationCars.Car.Disabled ? ",Handy for the disabled" : "")}
@@ -113,7 +118,7 @@ namespace Airport.UI.Models.Extendions
 
                 <p style=""font-weight: bold; margin: 0;"">RIDE DATE</p>
                 <div>
-                    <p style=""margin: 0 0 15px 0px;"">{reservation.ReservationDate}</p>
+                    <p style=""margin: 0 0 15px 0px;"">{reservation.ReservationDate.ToString("d 'of' MMMM, yyyy")} {reservation.ReservationDate.ToShortTimeString()}</p>
                 </div>
 
                 <p style=""font-weight: bold; margin: 0px;"">FROM</p>
@@ -140,7 +145,11 @@ namespace Airport.UI.Models.Extendions
                 <div style=""margin: 0 0 15px 0px;"">
                     <p style=""margin:0px"">{reservation.Comment}</p>
                 </div>
-
+                <p style=""font-weight: bold; margin: 0px;"">WAITING TIME:</p>
+                <div style=""margin: 0 0 15px 0px;"">
+                    <p style=""margin:0px"">Free waiting time included: at airports, sea or river passenger port terminals — 60 minutes,
+at railway stations — 30 minutes, all other locations — 15 minutes</p>
+                </div>
             </div>
 
             <div style=""margin-left:20px;"">
@@ -153,16 +162,23 @@ namespace Airport.UI.Models.Extendions
         <h3 style=""text-align: center; font-size: 23px;"">PAYMENT DETAILS</h3>
         <div>
             <div>
-                <span>Offer price:</span>
-                <span>{price}€</span>
+                <span style=""float: right;"">Offer price:</span>
+                <span style=""float: left;"">€{price}</span>
             </div>
-            <div>
-                <span>Service fee:</span>
-                <span>{servicefee}€</span>
+            <div style=""margin-bottom:30px"">
+                <span style=""float: right;"">Service fee:</span>
+                <span style=""float: left;"">€{servicefee}</span>
             </div>
             <div style=""margin-top: 15px;"">
-                <b>TOTAL {totalprice}</b>€
+                <b style=""float: right;"">TOTAL</b>
+                <span style=""float: left;"">€{totalprice}</span>
             </div>
+        </div>
+    </div>
+ <div style=""padding: 15px 15px;"">
+        <h6 style=""text-align: center; font-size: 15px; font-weight: bold; margin: 5px;"">CANCELATION POLICY</h6>
+        <div>
+            <p>Allowed cancellation period for reimbursement is over. Any payments will not be reimbursed.</p>
         </div>
     </div>
 
