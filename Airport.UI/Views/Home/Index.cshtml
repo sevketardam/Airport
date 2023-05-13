@@ -939,11 +939,16 @@ $('form#reservationForm').validate({
 
 $('.sliderHappySection .sliderHappy').slick({
   dots: false,
-  infinite: false,
+  infinite: true,
   arrow: false,
-  speed: 300,
-  slidesToShow: 4,
-  slidesToScroll: 4,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 0,
+    speed: 6000,
+    cssEase: 'linear',
+    useTransform: true,
+    pauseOnHover: false,
   responsive: [
     {
       breakpoint: 576,

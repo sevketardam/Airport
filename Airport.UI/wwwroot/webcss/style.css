@@ -1,4 +1,6 @@
-@font-face {
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/*@font-face {
     font-family: "gothic";
     src: url(../font/GOTHIC.TTF);
 }
@@ -7,9 +9,9 @@
     font-family: "AvertaDemoPE-Regular";
     src: url(../font/AvertaDemoPE-Regular.otf);
 }
-
+*/
 * {
-    font-family: "AvertaDemoPE-Regular";
+    font-family: "Montserrat";
 }
 
 ._Module_Margin {
@@ -456,7 +458,7 @@ label.error {
     font-weight: bold;
     margin: 2rem 0;
     text-align: center;
-    font-family: "AvertaDemoPE-Regular";
+    font-family: "Montserrat";
 }
 
 h2._Orange_Title {
@@ -549,6 +551,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     outline: none;
     padding: 1.4rem 1rem 0.3rem 0.5rem;
     font-size: 1.05rem;
+    background-color: white;
 }
 
 ._Form_Inputs label {
@@ -1945,6 +1948,7 @@ label._Down_Label {
     height: 2.5rem;
     padding: 1.4rem 1rem 0.6rem 0.5rem;
     font-size: 1rem;
+    background-color: white;
 }
 
 ._Form_Inputs label {

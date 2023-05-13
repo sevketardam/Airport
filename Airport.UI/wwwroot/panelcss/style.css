@@ -1,5 +1,6 @@
-﻿
-@font-face {
+﻿@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/*@font-face {
     font-family: "gothic";
     src: url(../font/GOTHIC.TTF);
 }
@@ -7,10 +8,10 @@
 @font-face {
     font-family: "AvertaDemoPE-Regular";
     src: url(../font/AvertaDemoPE-Regular.otf);
-}
+}*/
 
 * {
-    font-family: "AvertaDemoPE-Regular";
+    font-family: "Montserrat";
 }
 
 ._Steps_Style {
@@ -510,3 +511,11 @@ input.selectPhoto {
     align-items: center;
     padding: 0 1rem;
 }
+
+@media (max-width: 576px) {
+    .stepOneBtns a {
+        width: calc(50% - 0.26rem);
+    }
+}
+
+input:checked
