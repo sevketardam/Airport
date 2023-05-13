@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Airport.UI.Models.IM;
+using System.Collections.Generic;
 
 namespace Airport.UI.Models.VM
 {
@@ -11,5 +12,6 @@ namespace Airport.UI.Models.VM
         public string PickLocationPlaceId { get; set; }
         public string Distance { get; set; }
         public string Duration { get; set; }
+        public GetResevationIM SelectedReservationValues { get; set; }
     }
 }

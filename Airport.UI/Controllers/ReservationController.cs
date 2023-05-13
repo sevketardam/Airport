@@ -295,7 +295,8 @@ namespace Airport.UI.Controllers
                         DropLocationPlaceId = reservation.DropValue,
                         PickLocationPlaceId = reservation.PickValue,
                         Distance = betweenLocation.rows[0].elements[0].distance.text,
-                        Duration = betweenLocation.rows[0].elements[0].duration.text
+                        Duration = betweenLocation.rows[0].elements[0].duration.text,
+                        SelectedReservationValues = reservation
                     };
 
                     var reservationDatas = new ReservationDatasVM()
@@ -880,7 +881,8 @@ namespace Airport.UI.Controllers
                         DropLocationPlaceId = reservation.DropValue,
                         PickLocationPlaceId = reservation.PickValue,
                         Distance = betweenLocation.rows[0].elements[0].distance.text,
-                        Duration = betweenLocation.rows[0].elements[0].duration.text
+                        Duration = betweenLocation.rows[0].elements[0].duration.text,
+                        SelectedReservationValues = reservation
                     };
 
                     var reservationDatas = new ReservationDatasVM()

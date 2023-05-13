@@ -25,12 +25,12 @@
                         <div class="_Form_Inputs">
                             <div class="_Pos_Rel">
                                 <label for="">Pick Up</label>
-                                <input type="text" id="_Pick_Up" name="_Pick_Up_Text" placeholder="Search Location">
+                                <input type="text" id="_Pick_Up" name="PickValueText" placeholder="Search Location">
                                 <input type="hidden" name="PickValue" id="_Pick_Up_Value">
                             </div>
                             <div class="_Pos_Rel">
                                 <label for="">Drop Off</label>
-                                <input type="text" id="_Drop_Off" name="_Drop_Off_Text" placeholder="Search Location">
+                                <input type="text" id="_Drop_Off" name="DropValueText" placeholder="Search Location">
                                 <input type="hidden" name="DropValue" id="_Drop_Off_Value">
                             </div>
                             <div class="_Pos_Rel">
@@ -110,18 +110,12 @@
             });
         }
 
-
-
-
-
-
-
         $('form.stepOneForm').validate({
             rules: {
-                _Pick_Up_Text: {
+                PickValueText: {
                     required: true,
                 },
-                _Drop_Off_Text: {
+                DropValueText: {
                     required: true,
                 },
                 FlightTime: {
@@ -135,7 +129,7 @@
                 },
             },
             messages: {
-                _Pick_Up_Text: {
+                DropValueText: {
                     required: "This Field is Required!"
                 },
                 _Drop_Off_Text: {

@@ -32,8 +32,7 @@
                 <div class="_Banner_Left">
                     <div class="_Banner_Form">
                 
-                        <form asp-route="getLocationValue" method="post" id="reservationForm">
-                            
+                        <form asp-route="getLocationValue" method="post" id="reservationForm">                           
                             <div class="_Form_Cat">
                                 <div>
                                     <input id="reservationDatas" name="reservationDatas" type="hidden" />
@@ -52,7 +51,7 @@
                                     <div>
                                         <img src="~/img/location.png" class="_Locaiton_Icon" alt="Location icon">
                                         <label for="">Pick Up</label>
-                                        <input class="get-location" id="_Pick_Up" name="_Pick_Up" placeholder="Search Location" type="text" />
+                                        <input class="get-location" id="_Pick_Up" name="PickValueText" placeholder="Search Location" type="text" />
 
                                         <input id="_Pick_Up_Value" name="PickValue" type="hidden" />
                                     </div>
@@ -61,7 +60,7 @@
                                     <div>
                                         <img src="~/img/location.png" class="_Locaiton_Icon" alt="Location icon">
                                         <label for="">Drop off</label>
-                                        <input class="get-location" id="_Drop_Off" name="_Drop_Off" placeholder="Search Location" type="text" />
+                                        <input class="get-location" id="_Drop_Off" name="DropValueText" placeholder="Search Location" type="text" />
 
                                         <input id="_Drop_Off_Value" name="DropValue" type="hidden" />
                                     </div>
@@ -880,7 +879,6 @@
 
             autocomplete2.addListener('place_changed', function () {
                 var place = autocomplete2.getPlace();
-                console.log(place.geometry.location.lat)
                 dropPlaceId = place.place_id
                 $('#_Drop_Off_Value').val(dropPlaceId)
             });
@@ -890,10 +888,10 @@
         
 $('form#reservationForm').validate({
     rules: {
-        _Pick_Up: {
+        PickValueText: {
             required: true,
         },
-        _Drop_Off: {
+        DropValueText: {
             required: true,
         },
         FlightTime: {
@@ -908,10 +906,10 @@ $('form#reservationForm').validate({
         },
     },
     messages: {
-        _Pick_Up: {
+        PickValueText: {
             required: "!"
         },
-        _Drop_Off: {
+        DropValueText: {
             required: "!"
         },
         FlightTime: {
