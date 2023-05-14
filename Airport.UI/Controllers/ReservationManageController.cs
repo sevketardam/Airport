@@ -153,5 +153,19 @@ namespace Airport.UI.Controllers
             }
             return BadRequest();
         }
+
+        public IActionResult CancelReservation(int id)
+        {
+            var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+            var getReservation = _reservations.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
+            if (getReservation is not null)
+            {
+                getReservation.Status = 4;
+                _reservations.Update(getReservation);
+
+                return Json(new { result = 1 });
+            }
+            return BadRequest();
+        }
     }
 }

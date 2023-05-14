@@ -58,6 +58,12 @@
             font-size: 1.3rem;
         }
 
+        .reservation-delete{
+            color: red !important;
+            font-size: 1.1rem;
+            filter: drop-shadow(0 0 1px);
+        }
+
     </style>
 }
 
@@ -89,6 +95,10 @@
                     {
                         <span class="badge badge-info">Finished Reservation</span>
                     }
+                    else if(item.Status == 4)
+                    {
+                        <span class="badge badge-danger">Cancel Reservation</span>
+                    }
                 </td>
                 <td>
                     @if (item.DriverId != null && item.DriverId != 0)
@@ -104,6 +114,7 @@
                     <a title="Go to detail" href="/panel/reservation-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
                     <a title="Leave a note" class="open-note reservation-table-icon"><i class="iconsminds-file-edit"></i></a>
                     <a title="Select Driver" class="select-driver reservation-table-icon"><i class="iconsminds-doctor"></i></a>
+                    <a title="Cancel Reservation" class="reservation-delete"><i class="fa-regular fa-xmark"></i></a>
                 </td>
             </tr>
         }
@@ -187,6 +198,49 @@
 
 @section pageJs{
     <script>
+
+        $('.reservation-delete').on("click",function(){
+            var reservationId = $(this).closest("tr").attr("data-id")
+            Swal.fire({
+                title: 'Are you sure you want to cancel the reservation?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed == true) {
+                    $('.formLoader').removeClass("deActive")
+                    $.ajax({
+                        url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.CancelReservation))',
+                        type: "POST",
+                        data: "id=" + reservationId,
+                        success: function (response) {
+                            if (response.result == 1) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Successfully Cancel Reservation',
+                                }).then(() => {
+                                    location.reload()
+                                })
+                            }
+                            else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    html: 'Something went wrong',
+                                    icon: 'error',
+                                    confirmButtonText: 'Okey'
+                                }).then(() => {
+                                    location.reload()
+                                })
+                            }
+                        }
+                    });
+                }
+            })
+        })
 
         $('#selectDriver').on("submit", function (e) {
             e.preventDefault();
