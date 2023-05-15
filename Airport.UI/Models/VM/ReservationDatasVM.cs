@@ -17,5 +17,6 @@ namespace Airport.UI.Models.VM
         public string Duration { get; set; }
         public GetResevationIM ReservationValues{ get; set; }
         public LocationCars LocationCar { get; set; }
+        public Reservations UpdateReservation { get; set; }
     }
 }

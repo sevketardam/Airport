@@ -142,11 +142,15 @@ namespace Airport.DBEntities.Context
                 .WithMany(a => a.ReservationServicesTables)
                 .HasForeignKey(a => a.ReservationId);
 
-
             modelBuilder.Entity<ReservationServicesTable>()
                 .HasOne<ServiceItems>(a => a.ServiceItem)
                 .WithMany(a => a.ReservationServicesTables)
                 .HasForeignKey(a => a.ServiceItemId);
+
+            modelBuilder.Entity<Coupons>()
+                .HasOne<UserDatas>(a => a.User)
+                .WithMany(a => a.Coupons)
+                .HasForeignKey(a => a.User);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -226,7 +226,7 @@
                                 @for (int i = 0; i < Model.SelectedData.ReservationValues.PeopleCount - 1; i++)
                                 {
                                     <div class="_Form_Div">
-                                        <label class="_Form_Label">@(i +2) People Name</label>
+                                        <label class="_Form_Label">@(i + 2) People Name</label>
                                         <input type="text" name="OthersName">
                                     </div>
                                     <div class="_Form_Div">
@@ -242,48 +242,50 @@
                                     <textarea class="formTextarea" name="comment"></textarea>
                                 </div>
 
-                                
 
-                               <div class="servicesFlexDiv">
-                                    @foreach (var item in Model.SelectedData.LocationCar.Car.Service.ServiceItems)
-                                    {
-                                        <div class="pageServiceDownItems service-category-items">
-                                            <div class="pageServiceDownItem service-category-item">
-                                                <div style="display: flex;">
-                                                    <div class="pageServiceDownItemTop" style="width:100%;">
-                                                        <div class="pageServiceDownItemTopFlex">
-                                                            <div class="pageServiceName">
-                                                                <p>
-                                                                    @item.ServiceProperty.ServicePropertyName
-                                                                </p>
+                                @if (Model.SelectedData.LocationCar.Car.Service != null)
+                                {
+                                    <div class="servicesFlexDiv">
+                                        @foreach (var item in Model.SelectedData.LocationCar.Car.Service.ServiceItems)
+                                        {
+                                            <div class="pageServiceDownItems service-category-items">
+                                                <div class="pageServiceDownItem service-category-item">
+                                                    <div style="display: flex;">
+                                                        <div class="pageServiceDownItemTop" style="width:100%;">
+                                                            <div class="pageServiceDownItemTopFlex">
+                                                                <div class="pageServiceName">
+                                                                    <p>
+                                                                        @item.ServiceProperty.ServicePropertyName
+                                                                    </p>
+                                                                </div>
+                                                                <div class="pageServicePrice">
+                                                                    <input type="number" name="peopleCountInput" id="peopleCountInput" value="1" min="1" max="@Model.SelectedData.ReservationValues.PeopleCount" class="passengerInputs">
+                                                                    <p>
+                                                                        €<b class="servicePrice">@item.Price</b>
+                                                                    </p>
+                                                                    <button type="button" class="pageServiceAngle">
+                                                                        <i class="fa-solid fa-angle-right"></i>
+                                                                    </button>
+                                                                </div>
                                                             </div>
-                                                            <div class="pageServicePrice">
-                                                                <input type="number" name="peopleCountInput" id="peopleCountInput" value="1" min="1" max="@Model.SelectedData.ReservationValues.PeopleCount" class="passengerInputs">
-                                                                <p>
-                                                                    €<b class="servicePrice">@item.Price</b>
-                                                                </p>
-                                                                <button type="button" class="pageServiceAngle">
-                                                                    <i class="fa-solid fa-angle-right"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="pageServiceDownItemBottom " style="display: none;">
-                                                            <div class="pageServiceDesc pt-3 ">
-                                                                <div class="mt-2">
-                                                                    @Html.Raw(item.ServiceProperty.ServicePropertyDescription)
+                                                            <div class="pageServiceDownItemBottom " style="display: none;">
+                                                                <div class="pageServiceDesc pt-3 ">
+                                                                    <div class="mt-2">
+                                                                        @Html.Raw(item.ServiceProperty.ServicePropertyDescription)
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="checkServiceDiv">
-                                                        <input type="checkbox" class="itemCheckbox" name="selectedValue" value="@item.Id" class="w-100" />
+                                                        <div class="checkServiceDiv">
+                                                            <input type="checkbox" class="itemCheckbox" name="selectedValue" value="@item.Id" class="w-100" />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    }
-                               </div>
-                              
+                                        }
+                                    </div>
+                                }
+
 
                                 <div class="_Form_Div">
                                     <button>
@@ -294,10 +296,10 @@
                             </div>
 
 
-                          
+
                         </form>
                     </div>
-                  
+
 
                 </div>
             </div>
@@ -308,27 +310,8 @@
 @section pageJs{
     <script>
         let listCheckedItems = []
-        const lastPrice = @Model.SelectedData.LastPrice;
+        const lastPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
         $('.itemCheckbox').on("click", function () {
-            listCheckedItems = []
-            var price = 0;
-            $.each($('.itemCheckbox'), function (key, value) {
-                if($(value).is(":checked")){
-                    var peoplecount = $(value).closest(".pageServiceDownItem").find(".passengerInputs").val()
-                    listCheckedItems.push({
-                        SelectedValue: $(value).val(),
-                        PeopleCountInput: peoplecount == "" || peoplecount == 0 ? 1 : peoplecount
-                    })
-                    price += (parseFloat($(this).closest('.pageServiceDownItem').find(".servicePrice").text().trim()) * parseFloat($(this).closest('.pageServiceDownItem').find("#peopleCountInput").val()))
-                }
-            })
-
-            $('#priceBox').text(lastPrice + price)
-            $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
-        })
-
-
-        $('.passengerInputs').on("change",function(){
             listCheckedItems = []
             var price = 0;
             $.each($('.itemCheckbox'), function (key, value) {
@@ -346,7 +329,26 @@
             $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
         })
 
-        const firstPrice = @Model.SelectedData.LastPrice
+
+        $('.passengerInputs').on("change", function () {
+            listCheckedItems = []
+            var price = 0;
+            $.each($('.itemCheckbox'), function (key, value) {
+                if ($(value).is(":checked")) {
+                    var peoplecount = $(value).closest(".pageServiceDownItem").find(".passengerInputs").val()
+                    listCheckedItems.push({
+                        SelectedValue: $(value).val(),
+                        PeopleCountInput: peoplecount == "" || peoplecount == 0 ? 1 : peoplecount
+                    })
+                    price += (parseFloat($(this).closest('.pageServiceDownItem').find(".servicePrice").text().trim()) * parseFloat($(this).closest('.pageServiceDownItem').find("#peopleCountInput").val()))
+                }
+            })
+
+            $('#priceBox').text(lastPrice + price)
+            $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
+        })
+
+        const firstPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".")
 
 
     </script>

@@ -8,6 +8,8 @@ namespace Airport.UI.Models.VM
         public UserDatas? User { get; set; }
         public ReservationDatasVM? SelectedData { get; set; }
         public List<PriceServiceList> ServiceItems { get; set; }
+        public Reservations UpdateReservation { get; set; }
+        public List<ServiceItems> UpdateServiceItem{ get; set; }
     }
 
     public class PriceService

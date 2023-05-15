@@ -1,0 +1,155 @@
+﻿@{
+    Layout = "_PanelLayout";
+}
+@model Reservations
+<style>
+    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+        filter: invert(56%) sepia(81%) saturate(4242%) hue-rotate(355deg) brightness(100%) contrast(102%);
+        color: transparent;
+        background: url(~/img/calendar.png) !important;
+        background-size: 100% !important;
+    }
+</style>
+
+<section class="_Module_Margin">
+    <div class="container">
+        <div>
+            <div class="stepOneBtns">
+                <a href="javascript:;" class="One_Way">One Way</a>
+                <a href="javascript:;" class="Roundtrip_Btn">Roundtrip</a>
+            </div>
+            <div class="stepOneStyle">
+                <div>
+                    <form class="stepOneForm" method="post" asp-route="UpdateStepTwo">
+                        <div class="_Form_Inputs">
+                            <div class="_Pos_Rel">
+                                <label for="">Pick Up</label>
+                                <input type="text" id="_Pick_Up" name="PickValueText" placeholder="Search Location" value="@Model.PickFullName">
+                                <input type="hidden" name="PickValue" id="_Pick_Up_Value" value="@Model.PickPlaceId">
+                            </div>
+                            <div class="_Pos_Rel">
+                                <label for="">Drop Off</label>
+                                <input type="text" id="_Drop_Off" name="DropValueText" placeholder="Search Location" value="@Model.DropFullName">
+                                <input type="hidden" name="DropValue" id="_Drop_Off_Value" value="@Model.DropPlaceId">
+                            </div>
+                            <div class="_Pos_Rel">
+                                <label for="">Flight Arrival</label>
+                                <img src="~/img/calendar.png" class="calendarImage"  />
+                                <input type="datetime-local" name="FlightTime" value="@Model.ReservationDate.ToString("yyyy-MM-ddTHH:mm:ss")">
+                            </div>
+                            <div class="_Pos_Rel">
+                                <div class="@(Model.ReturnStatus ? "" : "d-none") Return_Arrival">
+                                    <label for="">Return</label>
+                                    <input type="datetime-local" value="@Model.ReturnDate.ToString("yyyy-MM-ddTHH:mm:ss")" name="ReturnDate">
+                                    <img src="~/img/calendar.png" class="calendarImage" />
+                                    <input type="checkbox" name="ReturnStatus" value="true" style="position:absolute; opacity: 0;visibility: visible; " />
+                                </div>
+                                <div class="@(Model.ReturnStatus ? "d-none _DeActive" : "")">
+                                    <button type="button" class="_Add_Return">
+                                        <i class="fa-sharp fa-solid fa-plus"></i> Add Return
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="_Pos_Rel">
+                                <span class="stepOneNumber">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                                <input type="number" value="@Model.PeopleCount" name="PeopleCount" class="numberReser">
+                                <div class="_user_btns">
+                                    <div class="_up_number">
+                                        <i class="fa-sharp fa-solid fa-caret-up"></i>
+                                    </div>
+                                    <div class="_down_number">
+                                        <i class="fa-sharp fa-solid fa-caret-down"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="stepOneSubmit" type="submit">
+                            Search Booking
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section pageJsScript{
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&libraries=places&callback=initMap"></script>
+
+    <script src="~/webjs/app.js" asp-append-version="true"></script>
+}
+
+@section pageJs{
+    <script>
+        var pickPlaceId;
+        var dropPlaceId;
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+        function initialize() {
+            var input = document.getElementById("_Pick_Up");
+            var input2 = document.getElementById("_Drop_Off");
+
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.addListener('place_changed', function () {
+                var place = autocomplete.getPlace();
+                pickPlaceId = place.place_id
+                $('#_Pick_Up_Value').val(pickPlaceId)
+            });
+
+            var autocomplete2 = new google.maps.places.Autocomplete(input2);
+
+            autocomplete2.addListener('place_changed', function () {
+                var place = autocomplete2.getPlace();
+                console.log(place.geometry.location.lat)
+                dropPlaceId = place.place_id
+                $('#_Drop_Off_Value').val(dropPlaceId)
+            });
+        }
+
+        $('form.stepOneForm').validate({
+            rules: {
+                PickValueText: {
+                    required: true,
+                },
+                DropValueText: {
+                    required: true,
+                },
+                FlightTime: {
+                    required: true,
+                },
+                ReturnDate: {
+                    required: true,
+                },
+                PeopleCount: {
+                    required: true,
+                },
+            },
+            messages: {
+                DropValueText: {
+                    required: "This Field is Required!"
+                },
+                _Drop_Off_Text: {
+                    required: "This Field is Required!"
+                },
+                FlightTime: {
+                    required: "This Field is Required!"
+                },
+                ReturnDate: {
+                    required: "This Field is Required!"
+                },
+                PeopleCount: {
+                    required: "This Field is Required!"
+                }
+            },
+            submitHandler: function (form) {
+                $(".globalLoader").removeClass("deActive")
+                $("html, body").css("overflow", "hidden");
+                form.submit()
+            },
+        });
+
+    </script>
+                   }

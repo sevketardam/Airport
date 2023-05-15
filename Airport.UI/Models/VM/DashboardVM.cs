@@ -9,6 +9,7 @@ namespace Airport.UI.Models.VM
         public List<Locations> MyLocations { get; set; }
         public UserDatas User { get; set; }
         public List<Reservations> Reservations { get; set; }
+        public List<Reservations> AWeekReservations { get; set; }
 
     }
 }
