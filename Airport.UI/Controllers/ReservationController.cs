@@ -39,8 +39,9 @@ namespace Airport.UI.Controllers
         IServicePropertiesDAL _serviceProperties;
         IServiceCategoriesDAL _serviceCategories;
         IReservationServicesTableDAL _reservationServicesTable;
+        ICouponsDAL _coupons;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons)
         {
             _location = location;
             _locationCar = locationCar;
@@ -57,6 +58,7 @@ namespace Airport.UI.Controllers
             _serviceProperties = serviceProperties;
             _serviceCategories = serviceCategories;
             _reservationServicesTable = reservationServicesTable;
+            _coupons = coupons;
         }
 
         [HttpPost("reservation", Name = "getLocationValue")]
@@ -582,8 +584,8 @@ namespace Airport.UI.Controllers
 
 
                 HttpContext.Session.Remove("reservationData");
-                item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a=>a.ReservationId  == item.Id);
-                item.ReservationServicesTables.ForEach(a => 
+                item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
+                item.ReservationServicesTables.ForEach(a =>
                 {
                     a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
                     a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
@@ -594,7 +596,7 @@ namespace Airport.UI.Controllers
 
 
                 _mail.SendReservationMail(item);
-                item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a=>a.ReservationId == item.Id);
+                item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
                 item.ReservationServicesTables.ForEach(a =>
                 {
                     a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
@@ -1252,6 +1254,27 @@ namespace Airport.UI.Controllers
 
 
                 return new JsonResult(new { result = 1, data = serviceVM });
+            }
+            catch (System.Exception)
+            {
+                return new JsonResult(new { });
+            }
+        }
+
+
+        public JsonResult CheckCoupon(string coupon)
+        {
+            try
+            {
+
+                var coupons = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now 
+                                                                                        && a.CouponFinishDate >= DateTime.Now).FirstOrDefault();
+                if (coupons != null)
+                {
+                    return new JsonResult(new { result = 1, data = coupons });
+                }
+
+                return new JsonResult(new { result = 2 });
             }
             catch (System.Exception)
             {
