@@ -206,7 +206,7 @@
                                 }
                             </div>
 
-                            <div date-js="today">
+                            <div date-js="today" style="display:none">
                                 @if (Model.AWeekReservations.Where(a => a.ReservationDate == DateTime.Today).ToList().Count != 0)
                                 {
                                     foreach (var item in Model.AWeekReservations.Where(a => a.ReservationDate == DateTime.Today).ToList())
@@ -229,7 +229,7 @@
                                 }
                             </div>
 
-                            <div date-js="tomorrow">
+                            <div date-js="tomorrow" style="display:none">
                                 @if (Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today && a.ReservationDate <= DateTime.Today.AddDays(2)).ToList().Count != 0)
                                 {
                                     foreach (var item in Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today && a.ReservationDate <= DateTime.Today.AddDays(2)).ToList())
@@ -252,7 +252,7 @@
                                 }
                             </div>
 
-                            <div date-js="days2later">
+                            <div date-js="days2later" style="display:none">
                                 @if (Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(2) && a.ReservationDate <= DateTime.Today.AddDays(3)).ToList().Count != 0)
                                 {
                                     foreach (var item in Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(2) && a.ReservationDate <= DateTime.Today.AddDays(3)).ToList())
@@ -275,7 +275,7 @@
                                 }
                             </div>
 
-                            <div date-js="days3later">
+                            <div date-js="days3later" style="display:none">
                                 @if (Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(3) && a.ReservationDate <= DateTime.Today.AddDays(4)).ToList().Count != 0)
                                 {
                                     foreach (var item in Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(3) && a.ReservationDate <= DateTime.Today.AddDays(4)).ToList())
@@ -298,7 +298,7 @@
                                 }
                             </div>
 
-                            <div date-js="days4later">
+                            <div date-js="days4later" style="display:none">
                                 @if (Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(4) && a.ReservationDate < DateTime.Today.AddDays(5)).ToList().Count != 0)
                                 {
                                     foreach (var item in Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(4) && a.ReservationDate < DateTime.Today.AddDays(5)).ToList())
@@ -321,7 +321,7 @@
                                 }
                             </div>
 
-                            <div date-js="days5later">
+                            <div date-js="days5later" style="display:none">
                                 @if (Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(5) && a.ReservationDate <= DateTime.Today.AddDays(6)).ToList().Count != 0)
                                 {
                                     foreach (var item in Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(5) && a.ReservationDate <= DateTime.Today.AddDays(6)).ToList())
@@ -344,7 +344,7 @@
                                 }
                             </div>
 
-                            <div date-js="days6later">
+                            <div date-js="days6later" style="display:none">
                                 @if (Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(6) && a.ReservationDate <= DateTime.Today.AddDays(7)).ToList().Count != 0)
                                 {
                                     foreach (var item in Model.Reservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(6) && a.ReservationDate <= DateTime.Today.AddDays(7)).ToList())
@@ -367,7 +367,7 @@
                                 }
                             </div>
 
-                            <div date-js="afteraweek">
+                            <div date-js="afteraweek" style="display:none">
                                 @if (Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(7) && a.ReservationDate <= DateTime.Today.AddDays(8)).ToList().Count != 0)
                                 {
                                     foreach (var item in Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(7) && a.ReservationDate <= DateTime.Today.AddDays(8)).ToList())
