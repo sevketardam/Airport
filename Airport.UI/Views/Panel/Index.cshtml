@@ -184,56 +184,212 @@
                         <div class="tableDatas">
 
                             <div date-js="next7days">
+                                @if (Model.AWeekReservations.Count != 0)
+                                {
+                                    foreach (var item in Model.AWeekReservations)
+                                    {
+                                        <div class="_Table_Content">
+                                            <div>@item.ReservationCode</div>
+                                            <div>@item.Name @item.Surname</div>
+                                            <div>@item.ReservationDate</div>
+                                            <div>@item.DropFullName</div>
+                                            <div>@(item.OfferPrice + item.ServiceFee)</div>
+                                            <div>@item.Status</div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="_No_Data">
+                                        No Data
+                                    </div>
+                                }
                             </div>
 
                             <div date-js="today">
+                                @if (Model.AWeekReservations.Where(a => a.ReservationDate == DateTime.Today).ToList().Count != 0)
+                                {
+                                    foreach (var item in Model.AWeekReservations.Where(a => a.ReservationDate == DateTime.Today).ToList())
+                                    {
+                                        <div class="_Table_Content">
+                                            <div>@item.ReservationCode</div>
+                                            <div>@item.Name @item.Surname</div>
+                                            <div>@item.ReservationDate</div>
+                                            <div>@item.DropFullName</div>
+                                            <div>@(item.OfferPrice + item.ServiceFee)</div>
+                                            <div>@item.Status</div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="_No_Data">
+                                        No Data
+                                    </div>
+                                }
                             </div>
 
                             <div date-js="tomorrow">
+                                @if (Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today && a.ReservationDate <= DateTime.Today.AddDays(2)).ToList().Count != 0)
+                                {
+                                    foreach (var item in Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today && a.ReservationDate <= DateTime.Today.AddDays(2)).ToList())
+                                    {
+                                        <div class="_Table_Content">
+                                            <div>@item.ReservationCode</div>
+                                            <div>@item.Name @item.Surname</div>
+                                            <div>@item.ReservationDate</div>
+                                            <div>@item.DropFullName</div>
+                                            <div>@(item.OfferPrice + item.ServiceFee)</div>
+                                            <div>@item.Status</div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="_No_Data">
+                                        No Data
+                                    </div>
+                                }
                             </div>
 
                             <div date-js="days2later">
+                                @if (Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(2) && a.ReservationDate <= DateTime.Today.AddDays(3)).ToList().Count != 0)
+                                {
+                                    foreach (var item in Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(2) && a.ReservationDate <= DateTime.Today.AddDays(3)).ToList())
+                                    {
+                                        <div class="_Table_Content">
+                                            <div>@item.ReservationCode</div>
+                                            <div>@item.Name @item.Surname</div>
+                                            <div>@item.ReservationDate</div>
+                                            <div>@item.DropFullName</div>
+                                            <div>@(item.OfferPrice + item.ServiceFee)</div>
+                                            <div>@item.Status</div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="_No_Data">
+                                        No Data
+                                    </div>
+                                }
                             </div>
 
                             <div date-js="days3later">
+                                @if (Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(3) && a.ReservationDate <= DateTime.Today.AddDays(4)).ToList().Count != 0)
+                                {
+                                    foreach (var item in Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(3) && a.ReservationDate <= DateTime.Today.AddDays(4)).ToList())
+                                    {
+                                        <div class="_Table_Content">
+                                            <div>@item.ReservationCode</div>
+                                            <div>@item.Name @item.Surname</div>
+                                            <div>@item.ReservationDate</div>
+                                            <div>@item.DropFullName</div>
+                                            <div>@(item.OfferPrice + item.ServiceFee)</div>
+                                            <div>@item.Status</div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="_No_Data">
+                                        No Data
+                                    </div>
+                                }
                             </div>
 
                             <div date-js="days4later">
+                                @if (Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(4) && a.ReservationDate < DateTime.Today.AddDays(5)).ToList().Count != 0)
+                                {
+                                    foreach (var item in Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(4) && a.ReservationDate < DateTime.Today.AddDays(5)).ToList())
+                                    {
+                                        <div class="_Table_Content">
+                                            <div>@item.ReservationCode</div>
+                                            <div>@item.Name @item.Surname</div>
+                                            <div>@item.ReservationDate</div>
+                                            <div>@item.DropFullName</div>
+                                            <div>@(item.OfferPrice + item.ServiceFee)</div>
+                                            <div>@item.Status</div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="_No_Data">
+                                        No Data
+                                    </div>
+                                }
                             </div>
 
                             <div date-js="days5later">
+                                @if (Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(5) && a.ReservationDate <= DateTime.Today.AddDays(6)).ToList().Count != 0)
+                                {
+                                    foreach (var item in Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(5) && a.ReservationDate <= DateTime.Today.AddDays(6)).ToList())
+                                    {
+                                        <div class="_Table_Content">
+                                            <div>@item.ReservationCode</div>
+                                            <div>@item.Name @item.Surname</div>
+                                            <div>@item.ReservationDate</div>
+                                            <div>@item.DropFullName</div>
+                                            <div>@(item.OfferPrice + item.ServiceFee)</div>
+                                            <div>@item.Status</div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="_No_Data">
+                                        No Data
+                                    </div>
+                                }
                             </div>
 
                             <div date-js="days6later">
+                                @if (Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(6) && a.ReservationDate <= DateTime.Today.AddDays(7)).ToList().Count != 0)
+                                {
+                                    foreach (var item in Model.Reservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(6) && a.ReservationDate <= DateTime.Today.AddDays(7)).ToList())
+                                    {
+                                        <div class="_Table_Content">
+                                            <div>@item.ReservationCode</div>
+                                            <div>@item.Name @item.Surname</div>
+                                            <div>@item.ReservationDate</div>
+                                            <div>@item.DropFullName</div>
+                                            <div>@(item.OfferPrice + item.ServiceFee)</div>
+                                            <div>@item.Status</div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="_No_Data">
+                                        No Data
+                                    </div>
+                                }
                             </div>
 
                             <div date-js="afteraweek">
+                                @if (Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(7) && a.ReservationDate <= DateTime.Today.AddDays(8)).ToList().Count != 0)
+                                {
+                                    foreach (var item in Model.AWeekReservations.Where(a => a.ReservationDate >= DateTime.Today.AddDays(7) && a.ReservationDate <= DateTime.Today.AddDays(8)).ToList())
+                                    {
+                                        <div class="_Table_Content">
+                                            <div>@item.ReservationCode</div>
+                                            <div>@item.Name @item.Surname</div>
+                                            <div>@item.ReservationDate</div>
+                                            <div>@item.DropFullName</div>
+                                            <div>@(item.OfferPrice + item.ServiceFee)</div>
+                                            <div>@item.Status</div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="_No_Data">
+                                        No Data
+                                    </div>
+                                }
                             </div>
                         </div>
-                        @*@if (Model.Reservations.Count != 0)
-                        {
-                        foreach (var item in Model.Reservations)
-                        {
-                        <div class="_Table_Content">
-                        <div>@item.ReservationCode</div>
-                        <div>@item.Name @item.Surname</div>
-                        <div>@item.ReservationDate</div>
-                        <div>@item.DropFullName</div>
-                        <div>@(item.OfferPrice + item.ServiceFee)</div>
-                        <div>@item.Status</div>
-                        </div>
-                        }
-                        }
-                        else
-                        {
-                        <div class="_No_Data">
-                        No Data
-                        </div>
-                        }*@
-
-
-
-
                     </div>
                 </div>
             </div>

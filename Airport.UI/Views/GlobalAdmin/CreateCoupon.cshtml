@@ -1,5 +1,222 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    Layout = "_PanelLayout";
+}
+
+@model List<Coupons>
+
+<a class="btn btn-primary" href="#" onclick="$('#addCouponModal').modal()">Add Coupon</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Active</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var coupon in Model)
+        {
+            <tr>
+                <td>@coupon.CouponCode</td>
+                <td>@(coupon.Active ? "Active" : "Non Active")</td>
+                <td><a href="#" class="updateCoupon" onclick="$('#addCouponModal').modal()"><i class="simple-icon-pencil"></i></a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="addCouponModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Coupon</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addCouponForm">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Coupon Code</label>
+                                <input type="text" class="form-control" name="CouponCode" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Discount</label>
+                                <input type="number" max="100" min="1" value="0" class="form-control" name="Discount" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Coupon Start Date</label>
+                                <input type="datetime-local" class="form-control" name="CouponStartDate" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Coupon Finish Date</label>
+                                <input type="datetime-local" class="form-control" name="CouponFinishDate" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Comment</label>
+                                <textarea name="Comment" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="custom-control custom-checkbox mb-3">
+                                <input type="checkbox" value="true" class="custom-control-input" name="Active" id="activeCheckbox">
+                                <label class="custom-control-label" for="activeCheckbox">
+                                    Is Active
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="custom-control custom-checkbox mb-3">
+                                <input type="checkbox" value="true" class="custom-control-input" name="IsPerma" id="permaCheckbox">
+                                <label class="custom-control-label" for="permaCheckbox">
+                                    Is Perma
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Coupon Limit</label>
+                                <input type="number" class="form-control" min="1" value="1" name="CouponLimit">
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="$('#addCouponForm').submit()">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addCouponModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Coupon</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addCouponForm">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Coupon Code</label>
+                                <input type="text" class="form-control" name="CouponCode" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Discount</label>
+                                <input type="number" max="100" min="1" value="0" class="form-control" name="Discount" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Coupon Start Date</label>
+                                <input type="datetime-local" class="form-control" name="CouponStartDate" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Coupon Finish Date</label>
+                                <input type="datetime-local" class="form-control" name="CouponFinishDate" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Comment</label>
+                                <textarea name="Comment" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="custom-control custom-checkbox mb-3">
+                                <input type="checkbox" value="true" class="custom-control-input" name="Active" id="activeCheckbox">
+                                <label class="custom-control-label" for="activeCheckbox">
+                                    Is Active
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="custom-control custom-checkbox mb-3">
+                                <input type="checkbox" value="true" class="custom-control-input" name="IsPerma" id="permaCheckbox">
+                                <label class="custom-control-label" for="permaCheckbox">
+                                    Is Perma
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Coupon Limit</label>
+                                <input type="number" class="form-control" min="1" value="1" name="CouponLimit">
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="$('#addCouponForm').submit()">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section pageJs{
+    <script>
+        $('.updateCoupon')
+
+
+        $('#addCouponForm').on("submit", function (e) {
+            e.preventDefault()
+            if ($(this).valid()) {
+                var formData = $(this).serialize()
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.GlobalAdminController.CreateCouponJSON))',
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully Created Coupon',
+                            }).then(() => {
+                                location.reload()
+                            })
+                        }
+                    }
+                });
+            }
+
+        })
+    </script>
 }
