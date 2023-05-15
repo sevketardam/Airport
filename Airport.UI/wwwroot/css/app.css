@@ -14,6 +14,9 @@
 .logo {
     background: url(/images/Logo.png) no-repeat !important;
     background-size: contain !important;
+}
+
+.siteLogo {
     width: 185px !important;
     height: 50px !important;
 }
@@ -27,7 +30,8 @@
 }
 
 .navbar .user img {
-    height: 40px;
+    height: 40px !important;
+    width: 40px !important;
 }
 
 html,

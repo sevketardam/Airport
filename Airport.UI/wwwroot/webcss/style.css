@@ -55,9 +55,10 @@ body {
 
 ._Banner_Form ._Pos_Rel {
     position: relative;
-    border-radius: 0.6rem;
     overflow: hidden;
     width: 100%;
+    background: white;
+    border-radius: 0.6rem;
 }
 
 ._Logo {
@@ -65,7 +66,7 @@ body {
 }
 
     ._Logo img {
-        width: 90%;
+        width: 75%;
     }
 
 ._Nav_Content {
@@ -760,16 +761,16 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     margin: 2rem 0;
 }
 
-    ._Happy_Detail p {
-        margin: 0;
-        font-size: 1.3rem;
-        font-weight: 600;
-    }
+._Happy_Detail p {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
 
-    ._Happy_Detail span {
-        font-size: .9rem;
-        font-weight: 400;
-    }
+._Happy_Detail span {
+    font-size: .9rem;
+    font-weight: 400;
+}
 
 /* List */
 
@@ -892,13 +893,13 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 ._Car_Slider > div img {
     width: 100%;
 }
-._Car_Slider > div p {
-   font-size: .75rem;
-   text-align: center;
 
+._Car_Slider > div p {
+    font-size: .75rem;
+    text-align: center;
 }
 
-.dateBtn{
+.dateBtn {
     cursor: pointer;
 }
 
@@ -909,11 +910,11 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     object-fit: cover;
 }
 
-    ._Car_Types .swiper-slide p {
-        text-align: center;
-        padding: 0 1.5rem;
-        margin: 0.5rem 0;
-    }
+._Car_Types .swiper-slide p {
+    text-align: center;
+    padding: 0 1.5rem;
+    margin: 0.5rem 0;
+}
 
 ._Car_Types .swiper-button-next:after,
 ._Car_Types .swiper-button-prev:after {
@@ -1165,7 +1166,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 
 ._Agency_Flex,
 ._Form_Flex_Style,
-.Form_Flex_Style_Button{
+.Form_Flex_Style_Button {
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
@@ -1550,11 +1551,13 @@ label._Down_Label {
         margin: 0;
     }
 
-    ._Profile_Item button {
+    ._Profile_Item:last-child a {
+        display: block;
         height: 100%;
         background-color: var(--orange);
         color: white;
-        padding: 0.4rem 0;
+        width: max-content !important;
+        padding: 0.4rem 2rem;
         border-radius: 5px;
         border: none;
         outline: none;
@@ -2815,6 +2818,21 @@ input[type="number"]::-webkit-outer-spin-button {
     ._Car_Slider > div {
         width: calc((100% / 5) - 0.45rem);
     }
+
+
+
+    ._Auth ul._Btns > li > a {
+        padding: .9rem 1.2rem;
+        font-size: 0.8rem;
+    }
+
+    ._Nav_List a {
+        font-size: 0.7rem;
+    }
+
+
+
+
 }
 
 @media only screen and (max-width: 768px) {
@@ -2923,24 +2941,25 @@ input[type="number"]::-webkit-outer-spin-button {
         width: calc(50% - 0.5rem);
     }
 
-   /* ._Business_Item {
+    /* ._Business_Item {
         justify-content: center;
     }*/
 
 }
 
-.noneSliderHappySection
-{
-    display:block;
+.noneSliderHappySection {
+    display: block;
 }
 
 .sliderHappySection {
     display: none;
 }
+
 @media only screen and (max-width: 576px) {
     ._Module_Margin {
         margin: 3.5rem auto;
     }
+
     .noneSliderHappySection {
         display: none;
     }
@@ -2948,6 +2967,7 @@ input[type="number"]::-webkit-outer-spin-button {
     .sliderHappySection {
         display: block;
     }
+
     ._Banner_Title {
         font-size: 1.8rem;
     }
@@ -3017,13 +3037,14 @@ input[type="number"]::-webkit-outer-spin-button {
         margin: 2rem auto;
     }
 
-    ._Car_Types{
+    ._Car_Types {
         display: none;
     }
 
     ._Banner_Title {
         font-size: 1.25rem;
     }
+
     h2._Orange_Title {
         font-size: 1.25rem;
     }
@@ -3075,38 +3096,49 @@ input[type="number"]::-webkit-outer-spin-button {
         width: 100%;
         height: auto;
     }
-    ._Pay_Flex > div{
+
+    ._Pay_Flex > div {
         width: 10%;
     }
+
     ._Travel_Right img, ._Business_Right img {
-    width: 100%;
+        width: 100%;
     }
+
     ._Form_Cat button, ._Form_Inputs ._Add_Return {
         font-size: .95rem;
     }
+
     ._Form_Inputs label {
         font-size: 0.55rem;
     }
+
     ._Form_Inputs input {
         font-size: 0.75rem;
     }
+
     ._Search_Booking {
         height: 2.3rem;
         font-size: 1rem;
     }
+
     ._Form_Cat button, ._Form_Inputs input {
         height: 2.3rem;
     }
+
     ._Locaiton_Icon {
         bottom: 0.5rem;
         width: 1.3rem;
     }
+
     #reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(1) input {
         padding-left: 1.5rem !important;
     }
+
     #reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(1) label {
         left: 1.5rem !important;
     }
+
     #reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(2) input {
         padding-left: 1.5rem !important;
     }
@@ -3119,10 +3151,9 @@ input[type="number"]::-webkit-outer-spin-button {
         width: calc((100% / 3) - 0.45rem);
     }
 
-    ._Car_Slider { 
+    ._Car_Slider {
         justify-content: center;
     }
-
 }
 
 @media only screen and (max-width: 446px) {
@@ -3141,6 +3172,7 @@ input[type="number"]::-webkit-outer-spin-button {
     ._Card_Item_Left_Inner_Left {
         height: 10rem;
     }
+
     ._Module_p {
         font-size: 0.9rem;
     }
@@ -3166,6 +3198,7 @@ input[type="number"]::-webkit-outer-spin-button {
     ._List_Flex ._List_Item {
         width: 100%;
     }
+
     ._Footer_Contact_Links {
         flex-direction: column;
     }
@@ -3649,7 +3682,7 @@ label.error {
     }
 
 
-.servicesFlexDiv{
+.servicesFlexDiv {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -3659,3 +3692,42 @@ label.error {
 .checkServiceDiv.page {
     padding-top: 1.4rem;
 }
+
+@media only screen and (max-width: 1200px) and (min-width: 992px) {
+    ._Profile_Attr_Item {
+        width: calc(50% - .5rem) !important;
+    }
+}
+
+.updateProfilePhoto {
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--orange);
+    background-color: white;
+    cursor: pointer;
+}
+
+    .updateProfilePhoto i {
+        font-size: 1rem;
+        width: auto;
+    }
+
+    .updateProfilePhoto input {
+        opacity: 0;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 2rem;
+        cursor: pointer;
+    }
