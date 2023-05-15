@@ -39,21 +39,21 @@
 
     <div class="navbar-right">
         <div class="header-icons d-inline-block align-middle">
-            <div class="d-none d-md-inline-block align-text-bottom mr-3">
+           @* <div class="d-none d-md-inline-block align-text-bottom mr-3">
                 <div class="custom-switch custom-switch-primary-inverse custom-switch-small pl-1"
                      data-toggle="tooltip" data-placement="left" title="Dark Mode">
                     <input class="custom-switch-input" id="switchDark" type="checkbox" checked>
                     <label class="custom-switch-btn" for="switchDark"></label>
                 </div>
-            </div>
+            </div>*@
 
-            <div class="position-relative d-inline-block">
+            @*<div class="position-relative d-inline-block">
                 <button class="header-icon btn btn-empty" type="button" id="notificationButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="simple-icon-bell"></i>
                     <span class="count">0</span>
                 </button>
-              @*  <div class="dropdown-menu dropdown-menu-right mt-3 position-absolute" id="notificationDropdown">
+                <div class="dropdown-menu dropdown-menu-right mt-3 position-absolute" id="notificationDropdown">
                     <div class="scroll">
                         <div class="d-flex flex-row mb-3 pb-3 border-bottom">
                             <a href="#">
@@ -82,8 +82,8 @@
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>*@
-            </div>
 
             <button class="header-icon btn btn-empty d-none d-sm-inline-block" type="button" id="fullScreenButton">
                 <i class="simple-icon-size-fullscreen"></i>
@@ -102,7 +102,8 @@
             </button>
 
             <div class="dropdown-menu dropdown-menu-right mt-3">
-                <a class="dropdown-item" href="#">Account</a>
+                <a class="dropdown-item" href="/profile">Account</a>
+                <a class="dropdown-item" href="/">Website</a>
                 <a class="dropdown-item" href="/logout">Sign out</a>
             </div>
         </div>

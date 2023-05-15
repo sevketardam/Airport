@@ -385,4 +385,3 @@ $("._Center_History_Area .dateBtn").on("click", function () {
 
     })
 })
-
