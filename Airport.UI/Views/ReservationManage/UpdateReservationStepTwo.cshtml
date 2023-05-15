@@ -6,7 +6,9 @@
 
 @section pageCss{
     <style>
-
+        .selectedCar {
+            border: 9px solid var(--orange);
+        }
         ._Form_Inputs > div {
             width: 100%;
         }
@@ -112,7 +114,7 @@
                 <div class="_Cars_Flex">
                     @foreach (var item in Model.ReservationValues)
                     {
-                        <div class="_Car_Item">
+                        <div class="_Car_Item @(item.LocationCars.Id == Model.UpdateReservationValues.LocationCarId ? "selectedCar" : "")">
                             <div class="_Card_Item_Flex">
                                 <div class="_Card_Item_Left">
                                     <div class="_Card_Item_Left_Inner_Flex">
@@ -188,7 +190,7 @@
                                     <p>
                                         Taxes included
                                     </p>
-                                    <a href="/panel/manual-reservation-three/@item.LocationCars.Id">Book Now</a>
+                                    <a href="/panel/update-reservation-user/@item.LocationCars.Id">Book Now</a>
                                 </div>
                             </div>
                         </div>
@@ -223,7 +225,7 @@
             streetViewControl: false,
                 zoomControl: false,
                     fullscreenControl: false
-                                    });
+                                            });
 
         directionsRenderer.setMap(map);
 
@@ -241,7 +243,7 @@
                 directionsRenderer.setDirections(result);
             }
         });
-                                }
+                                        }
 
         window.onload = () => {
             initMap();

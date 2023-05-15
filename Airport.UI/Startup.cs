@@ -55,6 +55,7 @@ namespace Airport.UI
             services.AddScoped<IReservationsDAL, ReservationsDAL>();
             services.AddScoped<IReservationPeopleDAL, ReservationPeopleDAL>();
             services.AddScoped<IReservationServicesTableDAL, ReservationServicesTableDAL>();
+            services.AddScoped<ICouponsDAL, CouponsDAL>();
             services.AddScoped<IMail, MailRepo>();
             services.AddScoped<ISMS, SMSRepo>();
 

@@ -4,6 +4,7 @@
     Layout = "_PanelLayout";
 }
 
+
 @section pageCss{
     <style>
         ._Step3_Item {
@@ -209,11 +210,11 @@
 
 
                     <div>
-                        <form id="_Passenger_Form" asp-route="getManualBookValues">
+                        <form id="_Passenger_Form" asp-route="UpdateReservationForm">
                             <div class="_Form_Flex_Style">
                                 <div class="_Form_Div">
                                     <label class="_Form_Label">Name</label>
-                                    <input type="text" value="@Model.User?.Name" name="Name">
+                                    <input type="text" value="@Model.UpdateReservation.Name" name="Name">
                                 </div>
                                 <div class="_Form_Div">
                                     <label class="_Form_Label">Surname</label>
@@ -221,7 +222,7 @@
                                 </div>
                                 <div class="_Form_Div _Info_Div">
                                     <label class="_Form_Label">E-mail</label>
-                                    <input type="text" value="@Model.User?.Eposta" name="Email">
+                                    <input type="text" value="@Model.UpdateReservation.Email" name="Email">
                                     <span>
                                         Your invoice will be sent to this e-mail address
                                     </span>
@@ -229,7 +230,7 @@
 
                                 <div class="_Form_Div _Info_Div">
                                     <label class="_Form_Label">Phone</label>
-                                    <input type="text" value="@Model.User?.PhoneNumber" name="Phone">
+                                    <input type="text" value="@Model.UpdateReservation.Phone" name="Phone">
                                     <span>
                                         You will be receiving both text and phone calls from
                                         the driver at this number.
@@ -257,10 +258,10 @@
 
                             <input type="hidden" name="selectedServiceItems" />
 
-                            
+
                             <div class="w-100">
                                 <label class="_Form_Label">Comment</label>
-                                <textarea class="formTextarea" name="comment"></textarea>
+                                <textarea class="formTextarea" name="comment">@Model.UpdateReservation.Comment</textarea>
                             </div>
                             @if (Model.SelectedData.LocationCar.Car.Service != null)
                             {
@@ -296,18 +297,18 @@
                                                         </div>
                                                     </div>
                                                     <div class="checkServiceDiv">
-                                                        <input type="checkbox" class="itemCheckbox" name="selectedValue" value="@item.Id" class="w-100" />
+                                                        <input type="checkbox" class="itemCheckbox w-100" name="selectedValue" value="@item.Id" @(Model.UpdateServiceItem.Contains(item) ? "checked" : "") />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     }
                                 </div>
-                            }
-                           
 
+                            }
+                  
                             <div class="_Form_Div ml-2 mt-2">
-                                <input type="checkbox" name="hidePrice" value="true"/> <label for="name">Hide Price on Voucher</label>
+                                <input type="checkbox" name="hidePrice" value="true" @(Model.UpdateReservation.HidePrice ? "checked" : "") /> <label for="name">Hide Price on Voucher</label>
                             </div>
 
 
@@ -343,9 +344,10 @@
             blocks: [15]
         });
 
+
         let listCheckedItems = []
-        const lastPrice =@Model.SelectedData.LastPrice.ToString().Replace(",",".");
-        $('.itemCheckbox').on("click", function () {
+        const lastPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
+        $('.itemCheckbox').on("change", function () {
             listCheckedItems = []
             var price = 0;
             $.each($('.itemCheckbox'), function (key, value) {
@@ -384,6 +386,9 @@
             $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
         })
 
+        window.onload = ()=>{
+            $('.itemCheckbox').trigger("change");
+        }
 
     </script>
 }

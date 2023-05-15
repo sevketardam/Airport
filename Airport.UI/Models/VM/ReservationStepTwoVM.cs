@@ -1,4 +1,5 @@
-﻿using Airport.UI.Models.IM;
+﻿using Airport.DBEntities.Entities;
+using Airport.UI.Models.IM;
 using System.Collections.Generic;
 
 namespace Airport.UI.Models.VM
@@ -13,5 +14,6 @@ namespace Airport.UI.Models.VM
         public string Distance { get; set; }
         public string Duration { get; set; }
         public GetResevationIM SelectedReservationValues { get; set; }
+        public Reservations UpdateReservationValues { get; set; }
     }
 }
