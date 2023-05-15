@@ -19,7 +19,7 @@
             <tr>
                 <td>@coupon.CouponCode</td>
                 <td>@(coupon.Active ? "Active" : "Non Active")</td>
-                <td><a href="#" class="updateCoupon" onclick="$('#addCouponModal').modal()"><i class="simple-icon-pencil"></i></a></td>
+                <td><a href="#" class="updateCoupon" data-id="@coupon.Id"><i class="simple-icon-pencil"></i></a></td>
             </tr>
         }
     </tbody>
@@ -107,7 +107,7 @@
 </div>
 
 
-<div class="modal fade" id="addCouponModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="updateCouponModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -117,7 +117,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="addCouponForm">
+                <form id="updateCouponForm">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -173,16 +173,12 @@
                                 <input type="number" class="form-control" min="1" value="1" name="CouponLimit">
                             </div>
                         </div>
-
-
                     </div>
-
-
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="$('#addCouponForm').submit()">Create</button>
+                <button type="button" class="btn btn-primary" onclick="$('#updateCouponForm').submit()">Update</button>
             </div>
         </div>
     </div>
@@ -192,7 +188,54 @@
 
 @section pageJs{
     <script>
-        $('.updateCoupon')
+        $('#updateCouponForm').on("submit", function (e) {
+            e.preventDefault()
+            if ($(this).valid()) {
+
+                var formData = $(this).serialize()
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.GlobalAdminController.UpdateCouponJSON))',
+                    type: "POST",
+                    data: formData + "&Id=" + couponId,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully Updated Coupon',
+                            }).then(() => {
+                                location.reload()
+                            })
+
+                        }
+
+                        $('#updateCouponModal').modal("hide")
+                    }
+                });
+            }
+        })
+        let couponId;
+        $('.updateCoupon').on("click", function (e) {
+            couponId = $(this).attr("data-id")
+            $.ajax({
+                url: '@Url.Action(nameof(Airport.UI.Controllers.GlobalAdminController.GetCouponJSON))',
+                type: "POST",
+                data: { id: couponId },
+                success: function (response) {
+                    if (response.result == 1) {
+                        $('#updateCouponForm input[name="CouponCode"]').val(response.data.couponCode)
+                        $('#updateCouponForm input[name="Discount"]').val(response.data.discount)
+                        $('#updateCouponForm input[name="CouponStartDate"]').val(response.data.couponStartDate)
+                        $('#updateCouponForm input[name="CouponFinishDate"]').val(response.data.couponFinishDate)
+                        $('#updateCouponForm textarea[name="Comment"]').val(response.data.comment)
+                        $('#updateCouponForm input[name="Active"]').attr("checked", response.data.active)
+                        $('#updateCouponForm input[name="IsPerma"]').attr("checked", response.data.isPerma)
+                        $('#updateCouponForm input[name="CouponLimit"]').val(response.data.couponLimit)
+                        $('#updateCouponModal').modal()
+                    }
+                }
+            });
+        })
 
 
         $('#addCouponForm').on("submit", function (e) {
@@ -216,7 +259,6 @@
                     }
                 });
             }
-
         })
     </script>
 }
