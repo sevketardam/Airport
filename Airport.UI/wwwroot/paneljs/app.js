@@ -355,6 +355,34 @@ $("._Dash_Right button").on("click", function () {
     location.pathname = `${$(this).attr("href") }`;
 })
 
-$("._Center_History_Area .swiper-slide").on("click", function () {
-    console.log($(this));
+$("._Center_History_Area .dateBtn").on("click", function () {
+    let filter = $(this).attr("date-js");
+    let control = 0;
+    $("._Bottom_Table .tableDatas > div").each((key, data) => {
+
+        if ($(data).attr("date-js") == filter) {
+            $(data).show();
+        }
+        else {
+            $(data).hide();
+            control++;
+        }
+
+        if ($("._Bottom_Table .tableDatas > div").length == control) {
+            $("._Bottom_Table .tableDatas").append(`
+                <div class="_No_Data">
+                    No Data
+                </div>
+            `)
+            control = 0;
+        }
+        else {
+            $("._Bottom_Table .tableDatas _No_Data").remove();
+        }
+
+        
+
+
+    })
 })
+

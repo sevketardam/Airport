@@ -98,63 +98,63 @@
                         </div>
                         <div class="swiper _Center_History_Area">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide">
+                                <div class="swiper-slide dateBtn" date-js="next7days">
                                     <div class="_History_Item">
                                         <p>
                                             Next 7 Days
                                         </p>
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
+                                <div class="swiper-slide dateBtn" date-js="today">
                                     <div class="_History_Item">
                                         <p>
                                             Today
                                         </p>
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
+                                <div class="swiper-slide dateBtn" date-js="tomorrow">
                                     <div class="_History_Item">
                                         <p>
                                             Tomorrow
                                         </p>
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
+                                <div class="swiper-slide dateBtn" date-js="days2later">
                                     <div class="_History_Item">
                                         <p>
                                             2 days later
                                         </p>
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
+                                <div class="swiper-slide dateBtn" date-js="days3later">
                                     <div class="_History_Item">
                                         <p>
                                             3 days later
                                         </p>
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
+                                <div class="swiper-slide dateBtn" date-js="days4later">
                                     <div class="_History_Item">
                                         <p>
                                             4 days later
                                         </p>
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
+                                <div class="swiper-slide dateBtn" date-js="days5later">
                                     <div class="_History_Item">
                                         <p>
                                             5 days later
                                         </p>
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
+                                <div class="swiper-slide dateBtn" date-js="days6later">
                                     <div class="_History_Item">
                                         <p>
                                             6 days later
                                         </p>
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
+                                <div class="swiper-slide dateBtn" date-js="afteraweek">
                                     <div class="_History_Item">
                                         <p>
                                             After a week
@@ -180,26 +180,60 @@
                             <div>Price</div>
                             <div>Status</div>
                         </div>
-                        @if (Model.AWeekReservations.Count != 0)
+
+                        <div class="tableDatas">
+
+                            <div date-js="next7days">
+                            </div>
+
+                            <div date-js="today">
+                            </div>
+
+                            <div date-js="tomorrow">
+                            </div>
+
+                            <div date-js="days2later">
+                            </div>
+
+                            <div date-js="days3later">
+                            </div>
+
+                            <div date-js="days4later">
+                            </div>
+
+                            <div date-js="days5later">
+                            </div>
+
+                            <div date-js="days6later">
+                            </div>
+
+                            <div date-js="afteraweek">
+                            </div>
+                        </div>
+                        @*@if (Model.Reservations.Count != 0)
                         {
-                            foreach (var item in Model.AWeekReservations)
-                            {
-                                <div class="_Table_Content">
-                                    <div>@item.ReservationCode</div>
-                                    <div>@item.Name @item.Surname</div>
-                                    <div>@item.ReservationDate</div>
-                                    <div>@item.DropFullName</div>
-                                    <div>@(item.OfferPrice + item.ServiceFee)</div>
-                                    <div>@item.Status</div>
-                                </div>
-                            }
+                        foreach (var item in Model.Reservations)
+                        {
+                        <div class="_Table_Content">
+                        <div>@item.ReservationCode</div>
+                        <div>@item.Name @item.Surname</div>
+                        <div>@item.ReservationDate</div>
+                        <div>@item.DropFullName</div>
+                        <div>@(item.OfferPrice + item.ServiceFee)</div>
+                        <div>@item.Status</div>
+                        </div>
+                        }
                         }
                         else
                         {
-                            <div class="_No_Data">
-                                No Data
-                            </div>
-                        }
+                        <div class="_No_Data">
+                        No Data
+                        </div>
+                        }*@
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -217,22 +251,25 @@
                             </button>
                         </div>
                     </div>
-                    <div class="_Cars_Body">
-                        @foreach (var item in Model.MyCars)
-                        {
-                            <div>
-                                <p>@item.Brand.CarBrandName @item.Model.CarModelName @item.Plate</p>
-                                <div class="_Car_Block">
-                                    <div class="_Car_Btns">
-                                        <button type="button" class="_Pencil" href="/panel/update-my-car/@item.Id">
-                                            <i class="fa-light fa-pen-to-square"></i>
-                                        </button>
+                    <div class="swiper _Cars_Body _Car_Slider">
+                        <div class="swiper-wrapper">
+                            @foreach (var item in Model.MyCars)
+                            {
+                                <div class="swiper-slide">
+                                    <div>
+                                        <p>@item.Brand.CarBrandName @item.Model.CarModelName @item.Plate</p>
+                                        <div class="_Car_Block">
+                                            <div class="_Car_Btns">
+                                                <button type="button" class="_Pencil" href="/panel/update-my-car/@item.Id">
+                                                    <i class="fa-light fa-pen-to-square"></i>
+                                                </button>
+                                            </div>
+                                            <img src="@item.Type.CarImageURL" alt="">
+                                        </div>
                                     </div>
-                                    <img src="@item.Type.CarImageURL" alt="">
                                 </div>
-                            </div>
-                        }
-
+                            }
+                        </div>
                     </div>
                 </div>
                 <div class="_Cars_Style">
@@ -248,22 +285,26 @@
                             </button>
                         </div>
                     </div>
-                    <div class="_Cars_Body">
-                        @foreach (var item in Model.MyLocations)
-                        {
-                            <div>
-                                <div class="_Car_Block _Car_Pad">
-                                    <div class="_Car_Btns">
-                                        <button type"button" class="_Pencil" href="/panel/update-location/@item.Id">
-                                            <i class="fa-light fa-pen-to-square"></i>
-                                        </button>
+                    <div class="swiper _Cars_Body _Location_Slider">
+                        <div class="swiper-wrapper">
+                            @foreach (var item in Model.MyLocations)
+                            {
+                                <div class="swiper-slide">
+                                    <div>
+                                        <div class="_Car_Block _Car_Pad">
+                                            <div class="_Car_Btns">
+                                                <button type"button" class="_Pencil" href="/panel/update-location/@item.Id">
+                                                    <i class="fa-light fa-pen-to-square"></i>
+                                                </button>
+                                            </div>
+                                            <p>
+                                                @item.LocationName
+                                            </p>
+                                        </div>
                                     </div>
-                                    <p>
-                                        @item.LocationName
-                                    </p>
                                 </div>
-                            </div>
-                        }
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -303,6 +344,15 @@
                     slidesPerView: 5,
                 },
             },
+        });
+
+        var _Cars_Body_Swiper = new Swiper("._Car_Slider", {
+            slidesPerView: 2,
+            spaceBetween: 12,
+        });
+        var _Location_Body_Swiper = new Swiper("._Location_Slider", {
+            slidesPerView: 2,
+            spaceBetween: 12,
         });
     </script>
 }
