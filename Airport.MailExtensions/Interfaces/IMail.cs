@@ -1,4 +1,5 @@
-﻿using Airport.MessageExtension.VM;
+﻿using Airport.DBEntities.Entities;
+using Airport.MessageExtension.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Airport.MessageExtensions.Interfaces
 {
     public interface IMail
     {
-        void SendReservationMail(ReservationMailVM mailVM);
+        void SendReservationMail(Reservations mailVM);
     }
 }

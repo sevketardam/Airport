@@ -205,7 +205,7 @@ namespace Airport.UI.Controllers
                                     {
                                         price *= 2;
                                     }
-
+                                    price = Math.Round(price, 2);
                                     getreservation.Add(new GetReservationValues
                                     {
                                         LocationCars = b,
@@ -266,7 +266,7 @@ namespace Airport.UI.Controllers
                                     }
 
                                     price = price / 10;
-
+                                    price = Math.Round(price, 2);
                                     getreservation.Add(new GetReservationValues
                                     {
                                         LocationCars = b,
@@ -378,6 +378,7 @@ namespace Airport.UI.Controllers
                         {
                             price *= 2;
                         }
+                        price = Math.Round(price, 2);
                     }
                     else
                     {
@@ -423,7 +424,7 @@ namespace Airport.UI.Controllers
                     }
 
                     price = price / 10;
-
+                    price = Math.Round(price, 2);
                     datas.LastPrice = price;
                     datas.LocationCar = locationCar;
                     datas.LocationCar.Car = _carDetail.CarDetail(locationCar.CarId);
@@ -542,6 +543,7 @@ namespace Airport.UI.Controllers
                     Comment = reservation.Comment,
                     Status = 1,
                     IsDelete = false,
+                    HidePrice = reservation.HidePrice,
                 });
                 var reservationItemsList = new List<ReservationServicesTable>();
 
@@ -580,21 +582,18 @@ namespace Airport.UI.Controllers
 
 
                 HttpContext.Session.Remove("reservationData");
+                item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a=>a.ReservationId  == item.Id);
+                item.ReservationServicesTables.ForEach(a => 
+                {
+                    a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
+                    a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
+                });
 
                 PdfCreator pdfCreator = new PdfCreator(_env);
                 pdfCreator.CreateReservationPDF(kod + "-" + item.Id, item);
 
 
-                _mail.SendReservationMail(new ReservationMailVM
-                {
-                    Name = reservation.Name,
-                    Phone = reservation.Phone,
-                    ReservationCode = kod,
-                    Surname = reservation.Surname,
-                    Email = reservation.Email,
-                    Price = createReservation.LastPrice.ToString(),
-                    Id = item.Id.ToString()
-                });
+                _mail.SendReservationMail(item);
                 item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a=>a.ReservationId == item.Id);
                 item.ReservationServicesTables.ForEach(a =>
                 {
@@ -790,7 +789,7 @@ namespace Airport.UI.Controllers
                                     {
                                         price *= 2;
                                     }
-
+                                    price = Math.Round(price, 2);
                                     getreservation.Add(new GetReservationValues
                                     {
                                         LocationCars = b,
@@ -851,6 +850,7 @@ namespace Airport.UI.Controllers
                                     }
 
                                     price = price / 10;
+                                    price = Math.Round(price, 2);
                                     getreservation.Add(new GetReservationValues
                                     {
                                         LocationCars = b,
@@ -960,6 +960,7 @@ namespace Airport.UI.Controllers
                         {
                             price *= 2;
                         }
+                        price = Math.Round(price, 2);
                     }
                     else
                     {
@@ -1004,8 +1005,8 @@ namespace Airport.UI.Controllers
                     }
 
                     price = price / 10;
-
-                    datas.LastPrice = price;
+                    price = Math.Round(price, 2);
+                    datas.LastPrice = Math.Round(price, 2);
                     datas.LocationCar = locationCar;
                     datas.LocationCar.Car = _carDetail.CarDetail(locationCar.CarId);
                     datas.LocationCar.Car.Service = _services.SelectByID(datas.LocationCar.Car.ServiceId);
@@ -1134,7 +1135,8 @@ namespace Airport.UI.Controllers
                     ServiceFee = totalServiceFee,
                     Comment = reservation.Comment,
                     Status = 1,
-                    IsDelete = false
+                    IsDelete = false,
+                    HidePrice = reservation.HidePrice,
                 });
 
                 var reservationItemsList = new List<ReservationServicesTable>();
@@ -1175,23 +1177,21 @@ namespace Airport.UI.Controllers
 
 
                 HttpContext.Session.Remove("reservationData");
+                item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
+                item.ReservationServicesTables.ForEach(a =>
+                {
+                    a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
+                    a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
+                });
+
+
 
                 PdfCreator pdfCreator = new PdfCreator(_env);
 
 
                 pdfCreator.CreateReservationPDF(kod + "-" + item.Id, item);
 
-                _mail.SendReservationMail(new ReservationMailVM
-                {
-                    Name = reservation.Name,
-                    Phone = reservation.Phone,
-                    ReservationCode = kod,
-                    Surname = reservation.Surname,
-                    Email = reservation.Email,
-                    Price = createReservation.LastPrice.ToString(),
-                    Id = item.Id.ToString()
-
-                });
+                _mail.SendReservationMail(item);
 
                 item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
                 item.ReservationServicesTables.ForEach(a =>

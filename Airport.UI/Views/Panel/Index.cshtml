@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "_PanelLayout";
 }
-
+@model DashboardVM
 
 @section pageCSSLink{
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
@@ -25,8 +25,7 @@
                         </div>
                         <div class="_Profile_Padding">
                             <h2>
-                                Welcome, MYDN GROUP SAGLIK TURIZM
-                                TICARET LIMITED SIRKETI
+                                Welcome, @Model.User.CompanyName
                             </h2>
                             <p>
                                 Experience seamless travel with private airport transfers.
@@ -40,10 +39,10 @@
                             <div class="_Profile_Attr_Item">
                                 <div class="_Profile_Attr_Left">
                                     <div>
-                                        <h4>Refunded</h4>
+                                        <h4>Canceled</h4>
                                     </div>
                                     <div>
-                                        <p>0</p>
+                                    <p>@Model.Reservations.Where(a=>a.Status == 4).ToList().Count</p>
                                     </div>
                                 </div>
                                 <div class="_Profile_Attr_Right">
@@ -53,11 +52,10 @@
                             <div class="_Profile_Attr_Item">
                                 <div class="_Profile_Attr_Left">
                                     <div>
-                                        <h4>Pending
-                                            Approval</h4>
+                                    <h4>Pending Approval</h4>
                                     </div>
                                     <div>
-                                        <p>0</p>
+                                    <p>@Model.Reservations.Where(a=>a.Status == 1).ToList().Count</p>
                                     </div>
                                 </div>
                                 <div class="_Profile_Attr_Right">
@@ -70,7 +68,7 @@
                                         <h4>Completed</h4>
                                     </div>
                                     <div>
-                                        <p>0</p>
+                                        <p>@Model.Reservations.Where(a=>a.Status == 3).ToList().Count</p>
                                     </div>
                                 </div>
                                 <div class="_Profile_Attr_Right">
@@ -83,7 +81,7 @@
                                         <h4>Total</h4>
                                     </div>
                                     <div>
-                                        <p>0</p>
+                                    <p>@Model.Reservations.Count</p>
                                     </div>
                                 </div>
                                 <div class="_Profile_Attr_Right">
@@ -111,66 +109,59 @@
                                     <div class="swiper-slide">
                                         <div class="_History_Item">
                                             <p>
-                                                Today 20
+                                                Today
                                             </p>
                                         </div>
                                     </div>
                                     <div class="swiper-slide">
                                         <div class="_History_Item">
                                             <p>
-                                                Today 20
+                                                Tomorrow
                                             </p>
                                         </div>
                                     </div>
                                     <div class="swiper-slide">
                                         <div class="_History_Item">
                                             <p>
-                                                Today 20
+                                                2 days later
                                             </p>
                                         </div>
                                     </div>
                                     <div class="swiper-slide">
                                         <div class="_History_Item">
                                             <p>
-                                                Today 20
+                                            3 days later
                                             </p>
                                         </div>
                                     </div>
                                     <div class="swiper-slide">
                                         <div class="_History_Item">
                                             <p>
-                                                Today 20
+                                            4 days later
                                             </p>
                                         </div>
                                     </div>
                                     <div class="swiper-slide">
                                         <div class="_History_Item">
                                             <p>
-                                                Today 20
+                                            5 days later
                                             </p>
                                         </div>
                                     </div>
+                                <div class="swiper-slide">
+                                    <div class="_History_Item">
+                                        <p>
+                                            6 days later
+                                        </p>
+                                    </div>
+                                </div>
                                     <div class="swiper-slide">
                                         <div class="_History_Item">
                                             <p>
-                                                Today 20
+                                                After a week
                                             </p>
                                         </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="_History_Item">
-                                            <p>
-                                                Today 20
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="_History_Item">
-                                            <p>
-                                                Today 20
-                                            </p>
-                                        </div>
-                                    </div>
+                                    </div>                                 
                                 </div>
 
                             </div>
@@ -190,170 +181,94 @@
                                 <div>Price</div>
                                 <div>Status</div>
                             </div>
-                             <div class="_Table_Content">
-                                 <div>Content 1</div>
-                                <div>Content 1</div>
-                                <div>Content 1</div>
-                                <div>Content 1</div>
-                                <div>Content 1</div>
-                                <div>Content 1</div> 
-                            </div>
-                        <div class="_Table_Content">
-                            <div>Content 1</div>
-                            <div>Content 1</div>
-                            <div>Content 1</div>
-                            <div>Content 1</div>
-                            <div>Content 1</div>
-                            <div>Content 1</div>
+                            @if (Model.Reservations.Count != 0)
+                        {
+                            foreach (var item in Model.Reservations)
+                            {
+                                <div class="_Table_Content">
+                                    <div>@item.ReservationCode</div>
+                                    <div>@item.Name @item.Surname</div>
+                                    <div>@item.ReservationDate</div>
+                                    <div>@item.DropFullName</div>
+                                    <div>@(item.OfferPrice + item.ServiceFee)</div>
+                                    <div>@item.Status</div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                             <div class="_No_Data">
+                        No Data
                         </div>
-                        <div class="_Table_Content">
-                            <div>Content 1</div>
-                            <div>Content 1</div>
-                            <div>Content 1</div>
-                            <div>Content 1</div>
-                            <div>Content 1</div>
-                            <div>Content 1</div>
-                        </div>
-                           @* <div class="_No_Data">
-                                No Data
-                            </div>*@
+                        }
+ 
+
+                            
+          
                         </div>
                     </div>
                 </div>
                 <div class="_Dash_Right">
-                    <div class="_Wallet_Style">
-                        <div class="_Wallet_Head">
-                            <div class="_Wallet_Head_Left">
+                    <div class="_Cars_Style">
+                        <div class="_Cars_Head">
+                            <div class="_Cars_Head_Left">
                                 <h2>
-                                    Wallet
+                                    Cars
                                 </h2>
                             </div>
-                            <div class="_Wallet_Head_Right">
-                                <button class="_bank_account">
-                                    + Add Bank Account
-                                </button>
-                                <button class="_Btn_Style">
-                                    Show Wallet
+                            <div class="_Cars_Head_Right">
+                                <button type="button" class="_Btn_Style" href="/panel/add-car">
+                                    + Add New
                                 </button>
                             </div>
                         </div>
-                        <div class="_Wallet_Body">
-                            <div>
-                                <div class="_Price_Icon">
-                                    €
+                        <div class="_Cars_Body">
+                            @foreach (var item in Model.MyCars)
+                            {
+                                 <div>
+                                    <p>@item.Brand.CarBrandName @item.Model.CarModelName @item.Plate</p>
+                                    <div class="_Car_Block">
+                                        <div class="_Car_Btns">
+                                            <button type="button" class="_Pencil" href="/panel/update-my-car/@item.Id">
+                                                <i class="fa-light fa-pen-to-square"></i>
+                                            </button>
+                                        </div>
+                                        <img src="@item.Type.CarImageURL" alt="">
+                                    </div>
                                 </div>
-                                <div class="_Price_Text">
-                                    0.0
-                                </div>
-                            </div>
-                            <div>
-                                <div class="_Price_Icon">
-                                    $
-                                </div>
-                                <div class="_Price_Text">
-                                    0.0
-                                </div>
-                            </div>
-                            <div>
-                                <div class="_Price_Icon">
-                                    £
-                                </div>
-                                <div class="_Price_Text">
-                                    0.0
-                                </div>
-                            </div>
+                            }
+                          
                         </div>
                     </div>
                     <div class="_Cars_Style">
                         <div class="_Cars_Head">
                             <div class="_Cars_Head_Left">
                                 <h2>
-                                    Wallet
+                                    Locations
                                 </h2>
                             </div>
                             <div class="_Cars_Head_Right">
-                                <button class="_Btn_Style">
+                                <button type="button" class="_Btn_Style" href="/panel/add-location/step-one">
                                     + Add New
                                 </button>
                             </div>
                         </div>
                         <div class="_Cars_Body">
-                            <div>
-                                <p>Standart People Carrier</p>
-                                <div class="_Car_Block">
-                                    <div class="_Car_Btns">
-                                        <button class="_Pencil">
-                                            <i class="fa-light fa-pen-to-square"></i>
-                                        </button>
-                                        <button class="_Trash">
-                                            <i class="fa-regular fa-trash-can"></i>
-                                        </button>
+                            @foreach (var item in Model.MyLocations)
+                            {
+                                <div>
+                                    <div class="_Car_Block _Car_Pad">
+                                        <div class="_Car_Btns">
+                                            <button type"button" class="_Pencil" href="/panel/update-location/@item.Id">
+                                                <i class="fa-light fa-pen-to-square"></i>
+                                            </button>
+                                        </div>
+                                        <p>
+                                           @item.LocationName
+                                        </p>
                                     </div>
-                                    <img src="img/car2.png" alt="">
                                 </div>
-                            </div>
-                            <div>
-                                <p>Executive People Carrier</p>
-                                <div class="_Car_Block">
-                                    <div class="_Car_Btns">
-                                        <button class="_Pencil">
-                                            <i class="fa-light fa-pen-to-square"></i>
-                                        </button>
-                                        <button class="_Trash">
-                                            <i class="fa-regular fa-trash-can"></i>
-                                        </button>
-                                    </div>
-                                    <img src="img/car2.png" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="_Cars_Style">
-                        <div class="_Cars_Head">
-                            <div class="_Cars_Head_Left">
-                                <h2>
-                                    Airports
-                                </h2>
-                            </div>
-                            <div class="_Cars_Head_Right">
-                                <button class="_Btn_Style">
-                                    + Add New
-                                </button>
-                            </div>
-                        </div>
-                        <div class="_Cars_Body">
-                            <div>
-                                <div class="_Car_Block _Car_Pad">
-                                    <div class="_Car_Btns">
-                                        <button class="_Pencil">
-                                            <i class="fa-light fa-pen-to-square"></i>
-                                        </button>
-                                    </div>
-                                    <h4>
-                                        Turkey
-                                    </h4>
-                                    <p>
-                                        Istanbul
-                                        New Airport
-                                    </p>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="_Car_Block _Car_Pad">
-                                    <div class="_Car_Btns">
-                                        <button class="_Pencil">
-                                            <i class="fa-light fa-pen-to-square"></i>
-                                        </button>
-                                    </div>
-                                    <h4>
-                                        Turkey
-                                    </h4>
-                                    <p>
-                                        Sabiha Gokcen
-                                        International Airport
-                                    </p>
-                                </div>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>

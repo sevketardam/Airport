@@ -38,6 +38,7 @@ namespace Airport.DBEntities.Entities
         public string? FinishComment { get; set; }
         public int? DriverId { get; set; }
         public bool IsDelete { get; set; }
+        public bool HidePrice { get; set; }
 
         public LocationCars LocationCars { get; set; }
         public UserDatas User { get; set; }

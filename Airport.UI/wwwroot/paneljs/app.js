@@ -350,3 +350,11 @@ $("body").on("click", ".pageServiceDownItemTop", function (e) {
         $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
     }
 })
+
+$("._Dash_Right button").on("click", function () {
+    location.pathname = `${$(this).attr("href") }`;
+})
+
+$("._Center_History_Area .swiper-slide").on("click", function () {
+    console.log($(this));
+})
