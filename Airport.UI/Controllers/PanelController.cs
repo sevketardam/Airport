@@ -26,27 +26,34 @@ namespace Airport.UI.Controllers
         }
         public IActionResult Index()
         {
-
-            var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-            var today = DateTime.Today;
-            var lastWeek = today.AddDays(7);
-
-            var myCars = _myCars.SelectByFunc(a => a.UserId == userId);
-            myCars.ForEach(a =>
+            try
             {
-                a = _getCarDetail.CarDetail(a.Id);
-            });
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var today = DateTime.Today;
+                var lastWeek = today.AddDays(7);
 
-            var myDashboard = new DashboardVM()
+                var myCars = _myCars.SelectByFunc(a => a.UserId == userId);
+                myCars.ForEach(a =>
+                {
+                    a = _getCarDetail.CarDetail(a.Id);
+                });
+
+                var myDashboard = new DashboardVM()
+                {
+                    MyCars = myCars,
+                    MyLocations = _locations.SelectByFunc(a => a.UserId == userId),
+                    User = _userDatas.SelectByID(userId),
+                    Reservations = _reservations.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
+                    AWeekReservations = _reservations.SelectByFunc(a => a.ReservationDate >= today && a.ReservationDate < lastWeek && a.UserId == userId && !a.IsDelete)
+                };
+
+                return View(myDashboard);
+            }
+            catch (Exception ex)
             {
-                MyCars = myCars,
-                MyLocations = _locations.SelectByFunc(a => a.UserId == userId),
-                User = _userDatas.SelectByID(userId),
-                Reservations = _reservations.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
-                AWeekReservations = _reservations.SelectByFunc(a => a.ReservationDate >= today && a.ReservationDate < lastWeek && a.UserId == userId && !a.IsDelete)
-            };
-
-            return View(myDashboard);
+                return BadRequest(ex.ToString());
+            }
+            
         }
     }
 }
