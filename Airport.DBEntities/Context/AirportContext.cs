@@ -150,7 +150,7 @@ namespace Airport.DBEntities.Context
             modelBuilder.Entity<Coupons>()
                 .HasOne<UserDatas>(a => a.User)
                 .WithMany(a => a.Coupons)
-                .HasForeignKey(a => a.User);
+                .HasForeignKey(a => a.UserId);
 
             base.OnModelCreating(modelBuilder);
         }
