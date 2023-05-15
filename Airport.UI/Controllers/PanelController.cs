@@ -42,7 +42,7 @@ namespace Airport.UI.Controllers
                 MyCars = myCars,
                 MyLocations = _locations.SelectByFunc(a => a.UserId == userId),
                 User = _userDatas.SelectByID(userId),
-                Reservations = _reservations.SelectByFunc(a => a.ReservationDate >= today && a.ReservationDate < lastWeek && a.UserId == userId)
+                Reservations = _reservations.SelectByFunc(a => a.ReservationDate >= today && a.ReservationDate < lastWeek && a.UserId == userId && !a.IsDelete)
             };
 
             return View(myDashboard);

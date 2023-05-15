@@ -543,6 +543,7 @@ namespace Airport.UI.Controllers
                     Comment = reservation.Comment,
                     Status = 1,
                     IsDelete = false,
+                    HidePrice = reservation.HidePrice,
                 });
                 var reservationItemsList = new List<ReservationServicesTable>();
 
@@ -581,6 +582,12 @@ namespace Airport.UI.Controllers
 
 
                 HttpContext.Session.Remove("reservationData");
+                item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a=>a.ReservationId  == item.Id);
+                item.ReservationServicesTables.ForEach(a => 
+                {
+                    a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
+                    a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
+                });
 
                 PdfCreator pdfCreator = new PdfCreator(_env);
                 pdfCreator.CreateReservationPDF(kod + "-" + item.Id, item);
@@ -1128,7 +1135,8 @@ namespace Airport.UI.Controllers
                     ServiceFee = totalServiceFee,
                     Comment = reservation.Comment,
                     Status = 1,
-                    IsDelete = false
+                    IsDelete = false,
+                    HidePrice = reservation.HidePrice,
                 });
 
                 var reservationItemsList = new List<ReservationServicesTable>();
@@ -1169,6 +1177,14 @@ namespace Airport.UI.Controllers
 
 
                 HttpContext.Session.Remove("reservationData");
+                item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
+                item.ReservationServicesTables.ForEach(a =>
+                {
+                    a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
+                    a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
+                });
+
+
 
                 PdfCreator pdfCreator = new PdfCreator(_env);
 

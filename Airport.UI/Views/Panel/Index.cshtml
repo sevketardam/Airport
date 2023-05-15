@@ -39,10 +39,10 @@
                             <div class="_Profile_Attr_Item">
                                 <div class="_Profile_Attr_Left">
                                     <div>
-                                        <h4>Refunded</h4>
+                                        <h4>Canceled</h4>
                                     </div>
                                     <div>
-                                        <p>0</p>
+                                    <p>@Model.Reservations.Where(a=>a.Status == 4).ToList().Count</p>
                                     </div>
                                 </div>
                                 <div class="_Profile_Attr_Right">
@@ -52,11 +52,10 @@
                             <div class="_Profile_Attr_Item">
                                 <div class="_Profile_Attr_Left">
                                     <div>
-                                        <h4>Pending
-                                            Approval</h4>
+                                    <h4>Pending Approval</h4>
                                     </div>
                                     <div>
-                                        <p>0</p>
+                                    <p>@Model.Reservations.Where(a=>a.Status == 1).ToList().Count</p>
                                     </div>
                                 </div>
                                 <div class="_Profile_Attr_Right">
@@ -69,7 +68,7 @@
                                         <h4>Completed</h4>
                                     </div>
                                     <div>
-                                        <p>0</p>
+                                        <p>@Model.Reservations.Where(a=>a.Status == 3).ToList().Count</p>
                                     </div>
                                 </div>
                                 <div class="_Profile_Attr_Right">
@@ -82,7 +81,7 @@
                                         <h4>Total</h4>
                                     </div>
                                     <div>
-                                        <p>0</p>
+                                    <p>@Model.Reservations.Count</p>
                                     </div>
                                 </div>
                                 <div class="_Profile_Attr_Right">

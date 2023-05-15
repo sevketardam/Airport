@@ -52,10 +52,63 @@ namespace Airport.UI.Models.Extendions
             byte[] imageBytes = imageResponse.Content.ReadAsByteArrayAsync().Result;
             string base64String = Convert.ToBase64String(imageBytes);
 
-
             var price = reservation.IsDiscount ? reservation.Discount : reservation.OfferPrice;
             var servicefee = reservation.ServiceFee;
             var totalprice = reservation.IsDiscount ? price - servicefee : price + servicefee;
+            var priceHtml = "";
+            if (reservation.HidePrice == false)
+            {
+                priceHtml = @$"
+        <h3 style=""font-size: 23px;text-align: center;"">PAYMENT DETAILS</h3>
+
+        <div style=""display: flex; justify-content: space-between;width:100%;"">
+            <div>
+                      <p style=""margin: 0px;"">Offer price:</p>
+            </div>
+            <div>
+                      <p style=""margin: 0px;margin-left:.5rem"">€{price}</p>
+            </div>
+        </div>
+        <div style=""display: flex; justify-content: space-between;width:100%;"">
+            <div>
+                      <p style=""margin: 0px;"">Service fee:</p>
+            </div>
+            <div>
+                      <p style=""margin: 0px;margin-left:.5rem;"">€{servicefee}</p>
+            </div>
+        </div>
+        <div style=""display: flex; justify-content: space-between;width:100%;"">
+            <div>
+                      <p style=""font-weight: bold;margin: 0px;"">TOTAL:</p>
+            </div>
+            <div>
+                       <p style=""margin: 0px;margin-left:.5rem;"">€{totalprice}</p>
+            </div>
+        </div>
+";
+            }
+
+            var serviceHtml = "";
+            if (reservation.ReservationServicesTables.Count > 0)
+            {
+                serviceHtml = @"
+<div style=""margin: 10px 10px; border-bottom: 4px solid #FF6900;"">
+<h3 style=""font-size: 23px;text-align: center;"">SERVICES DETAILS</h3>";
+                foreach (var item in reservation.ReservationServicesTables)
+                {
+                    serviceHtml += @$" <div>
+            <div>
+                      <p style=""margin: 0px;font-weight: bold;"">{item.ServiceItem.ServiceProperty.ServicePropertyName}</p>
+            </div>
+            <div style=""margin: 0px;margin-left:.5rem;font-size: 10px;!important;"">
+                     {item.ServiceItem.ServiceProperty.ServicePropertyDescription}
+            </div>
+        </div>"; 
+                }
+                serviceHtml += "</div></div>";
+            }
+
+
 
             var htmlContent = @$"<!DOCTYPE html>
 <html lang=""en"">
@@ -121,35 +174,35 @@ namespace Airport.UI.Models.Extendions
             <div style=""float: right;"">
                 <p style=""font-weight: bold; margin: 0;"">RIDE DATE</p>
                 <div>
-                    <p style=""margin: 0 0 15px 0px;"">{reservation.ReservationDate.ToString("d 'of' MMMM, yyyy")} {reservation.ReservationDate.ToShortTimeString()}</p>
+                    <p style=""margin: 0 0 10px 0px;"">{reservation.ReservationDate.ToString("d 'of' MMMM, yyyy")} {reservation.ReservationDate.ToShortTimeString()}</p>
                 </div>
 
                 <p style=""font-weight: bold; margin: 0px;"">FROM</p>
-                <div style=""margin: 0 0 15px 0px;"">
+                <div style=""margin: 0 0 10px 0px;"">
                     <p style=""margin:0px"">{reservation.PickFullName}</p>
                 </div>
 
                 <p style=""font-weight: bold; margin: 0px;"">TO</p>
-                <div style=""margin: 0 0 15px 0px;"">
+                <div style=""margin: 0 0 10px 0px;"">
                     <p style=""margin:0px"">{reservation.DropFullName}</p>
                 </div>
 
-                <div style=""margin: 0 0 15px 0px;"">
+                <div style=""margin: 0 0 10px 0px;"">
                     <span style=""font-weight: bold; margin: 0px;"">NAME SIGN:</span>
                     <span style=""margin:0px"">{reservation.Name} {reservation.Surname}</span>
                 </div>
 
-                <div style=""margin: 0 0 15px 0px;"">
+                <div style=""margin: 0 0 10px 0px;"">
                     <span style=""font-weight: bold; margin: 0px;"">PASSENGERS:</span>
                     <span style=""margin:0px"">{reservation.PeopleCount}</span>
                 </div>
 
                 <p style=""font-weight: bold; margin: 0px;"">COMMENT</p>
-                <div style=""margin: 0 0 15px 0px;"">
+                <div style=""margin: 0 0 10px 0px;"">
                     <p style=""margin:0px"">{reservation.Comment}</p>
                 </div>
                 <p style=""font-weight: bold; margin: 0px;"">WAITING TIME:</p>
-                <div style=""margin: 0 0 15px 0px;"">
+                <div style=""margin: 0;"">
                     <p style=""margin:0px"">Free waiting time included: at airports, sea or river passenger port terminals — 60 minutes,at railway stations — 30 minutes, all other locations — 15 minutes</p>
                 </div>
             </div>
@@ -160,43 +213,19 @@ namespace Airport.UI.Models.Extendions
         </div>
     </div>
 
-    <div style=""margin: 15px 15px; border-bottom: 4px solid #FF6900;"">
-        <h3 style=""font-size: 23px;text-align: center;"">PAYMENT DETAILS</h3>
+    {serviceHtml}
 
-        <div style=""display: flex; justify-content: space-between;width:100%;"">
-            <div>
-                      <p style=""margin: 0px;"">Offer price:</p>
-            </div>
-            <div>
-                      <p style=""margin: 0px;margin-left:.5rem"">€{price}</p>
-            </div>
-        </div>
-        <div style=""display: flex; justify-content: space-between;width:100%;"">
-            <div>
-                      <p style=""margin: 0px;"">Service fee:</p>
-            </div>
-            <div>
-                      <p style=""margin: 0px;margin-left:.5rem;"">€{servicefee}</p>
-            </div>
-        </div>
-        <div style=""display: flex; justify-content: space-between;width:100%;"">
-            <div>
-                      <p style=""font-weight: bold;margin: 0px;"">TOTAL:</p>
-            </div>
-            <div>
-                       <p style=""margin: 0px;margin-left:.5rem;"">€{totalprice}</p>
-            </div>
-        </div>
+<div style=""margin: 10px 10px; border-bottom: 4px solid #FF6900;"">
+    {priceHtml}
     </div>
-
- <div style=""margin: 15px 15px;"">
+ <div style=""margin: 10px 10px;"">
         <h6 style=""text-align: center; font-size: 15px; font-weight: bold; margin: 5px;"">CANCELATION POLICY</h6>
         <div>
             <p>Allowed cancellation period for reimbursement is over. Any payments will not be reimbursed.</p>
         </div>
     </div>
 
-    <div style=""margin: 15px 15px;"">
+    <div style=""margin: 10px 10px;"">
         <h6 style=""text-align: center; font-size: 15px; font-weight: bold; margin: 5px;"">SUPPORT</h6>
         <div>
             <p style=""float: right;"">info@airportglobaltransfer.com</p>
