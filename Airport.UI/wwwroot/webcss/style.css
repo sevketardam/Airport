@@ -893,16 +893,21 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     width: 100%;
 }
 ._Car_Slider > div p {
-   font-size: .6rem;
+   font-size: .75rem;
    text-align: center;
 
 }
-    ._Car_Types .swiper-slide img {
-        display: block;
-        width: 90%;
-        height: 100%;
-        object-fit: cover;
-    }
+
+.dateBtn{
+    cursor: pointer;
+}
+
+._Car_Types .swiper-slide img {
+    display: block;
+    width: 90%;
+    height: 100%;
+    object-fit: cover;
+}
 
     ._Car_Types .swiper-slide p {
         text-align: center;
@@ -1739,7 +1744,7 @@ label._Down_Label {
 }
 
 ._Profile_Attr_Left h4 {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     text-align: center;
 }
 
@@ -2236,7 +2241,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
     ._History_Item p {
         margin: 0;
-        font-size: 1.15rem;
+        font-size: .9rem;
         font-weight: 500;
         line-height: 1.4rem;
         color: var(--orange);
@@ -2452,7 +2457,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
     ._Cars_Body p {
         margin: 0;
-        font-size: .9rem;
+        font-size: .7rem;
         font-weight: 600;
         letter-spacing: .5px;
     }
@@ -2555,7 +2560,7 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
     ._Profile_Attr_Left h4 {
-        font-size: 0.75rem;
+        font-size: 0.65rem;
     }
 
     ._Profile_Attr_Left p {
