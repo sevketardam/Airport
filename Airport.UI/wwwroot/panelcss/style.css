@@ -389,7 +389,10 @@ input.selectPhoto {
         width: 100%;
         padding: 1.2rem 1rem 1rem 1rem;
         height: auto;
-        box-shadow: 0 0 5px rgb(0, 0, 0, .2);
+        box-shadow: 0 0 5px rgb(0,0,0,.16);
+        -webkit-appearance: none;
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+        -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
         border-radius: .5rem;
     }
 
@@ -420,7 +423,10 @@ input.selectPhoto {
 }
 
 .pageServiceDownItem .pageServiceDownItemTop {
-    box-shadow: 0 0 5px rgb(0, 0, 0, .2);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     padding: .5rem 1rem;
     border-radius: .5rem;
 }
@@ -437,6 +443,9 @@ input.selectPhoto {
 
 .passengerInputs {
     box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     border-radius: 5px;
     padding: 0;
     width: 3rem;
@@ -448,7 +457,10 @@ input.selectPhoto {
     margin: 1rem 0px;
     border-radius: 0.5rem;
     border: none;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 5px;
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     min-height: 100px;
 }
 

@@ -1104,7 +1104,10 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     border: 0.5px solid #232323;
     border-radius: 0.4rem;
     outline: none;
-    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.16);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     padding: 1rem;
     border: none;
 }
@@ -1206,7 +1209,10 @@ button._Verify_Number {
     height: 2.5rem;
     border-radius: 0.4rem;
     border: 0.5px solid #232323;
-    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.16);
+    box-shadow: 0 2px 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, .16);
     padding: 1rem;
     border: none;
 }
@@ -1381,7 +1387,10 @@ label._Down_Label {
         border: 0.5px solid #232323;
         border-radius: 0.4rem;
         outline: none;
-        box-shadow: 0 2px 5px rgb(0, 0, 0, 0.16);
+        box-shadow: 0 2px 5px rgb(0,0,0,.16);
+        -webkit-appearance: none;
+        -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, .16);
+        -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, .16);
         padding: 1rem;
         border: none;
     }
@@ -1464,14 +1473,20 @@ label._Down_Label {
 
 ._Profile_Left {
     width: calc(35% - 0.5rem);
-    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.2);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     border-radius: 12px;
     height: 100%;
 }
 
 ._Profile_Right {
     width: calc(65% - 0.5rem);
-    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.2);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     border-radius: 12px;
     /* height: 30rem; */
     padding: 1rem;
@@ -1485,7 +1500,10 @@ label._Down_Label {
     object-fit: scale-down;
     margin: auto;
     display: flex;
-    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.2);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
 }
 
 ._Profile_Items_Flex {
@@ -1601,7 +1619,10 @@ label._Down_Label {
     padding: 1rem;
     border-radius: 0.6rem;
     font-size: 0.75rem;
-    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.2);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     display: flex;
     justify-content: space-between;
 }
@@ -1692,6 +1713,9 @@ label._Down_Label {
         border-radius: 12px;
         overflow: hidden;
         box-shadow: inset 0 0 3px rgb(0, 0, 0, 0.16);
+        -webkit-appearance: none;
+        -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, .16);
+        -moz-box-shadow: inset 0 0 3px rgba(0, 0, 0, .16);
     }
 
 ._Profile_Attr_Item {
@@ -1752,7 +1776,10 @@ label._Down_Label {
 ._Step_Travel_Info_Style {
     padding: 1rem;
     border-radius: 15px;
-    box-shadow: 0 3px 6px rgb(0, 0, 0, 0.16);
+    box-shadow: 0 3px 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, .16);
 }
 
 ._Step_Travel_Flex {
@@ -1783,7 +1810,10 @@ label._Down_Label {
     height: 25rem;
     border-radius: 20px;
     margin-top: 1rem;
-    box-shadow: 0 0 5px #00000073;
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
 }
 
 ._Step_Travel_Buttons {
@@ -1821,7 +1851,10 @@ label._Down_Label {
     width: 100%;
     height: 100%;
     border-radius: 15px;
-    box-shadow: 0 0px 6px rgb(0, 0, 0, 0.5);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
 }
 
 ._Card_Item_Flex,
@@ -1853,7 +1886,10 @@ label._Down_Label {
         height: 100%;
         object-fit: contain;
         border-radius: 12px;
-        box-shadow: 0 0 6px rgb(0, 0, 0, 0.25);
+        box-shadow: 0 0 5px rgb(0,0,0,.16);
+        -webkit-appearance: none;
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+        -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
         background-color: #f7f7f7;
     }
 
@@ -2223,7 +2259,10 @@ input[type="number"]::-webkit-outer-spin-button {
     border: none;
     margin: 0.65rem 0;
     padding: 0.8rem 1rem;
-    box-shadow: 0 0 4px rgb(0, 0, 0, 0.16);
+    box-shadow: 0 0 4px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 4px rgba(0, 0, 0, .16);
 }
 
 ._Table_Top {
@@ -3478,7 +3517,10 @@ label.error {
         width: 100%;
         padding: 1.2rem 1rem 1rem 1rem;
         height: auto;
-        box-shadow: 0 0 5px rgb(0, 0, 0, .2);
+        box-shadow: 0 0 5px rgb(0,0,0,.16);
+        -webkit-appearance: none;
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+        -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
         border-radius: .5rem;
     }
 
@@ -3509,7 +3551,10 @@ label.error {
 }
 
 .pageServiceDownItem .pageServiceDownItemTop {
-    box-shadow: 0 0 5px rgb(0, 0, 0, .2);
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     padding: .5rem 1rem;
     border-radius: .5rem;
 }
@@ -3526,6 +3571,9 @@ label.error {
 
 .passengerInputs {
     box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     border-radius: 5px !important;
     padding: 0 !important;
     width: 3rem !important;
@@ -3537,7 +3585,10 @@ label.error {
     margin: 0 0 1rem 0px;
     border-radius: 0.5rem;
     border: none;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 5px;
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     min-height: 100px;
     outline: none;
 }
