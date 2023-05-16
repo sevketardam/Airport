@@ -4,6 +4,11 @@
     Layout = "_PanelLayout";
 }
 
+
+@section pageCSSLink{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+}
+
 @section pageCss{
     <style>
         ._Step3_Item {
@@ -225,7 +230,7 @@
                                     </span>
                                 </div>
 
-                                <div class="_Form_Div _Info_Div">
+                                <div class="_Form_Div _Info_Div _Pos_Phone">
                                     <label class="_Form_Label">Phone</label>
                                     <input type="text" value="@Model.User?.PhoneNumber" name="Phone">
                                     <span>
@@ -318,8 +323,23 @@
 </section>
 
 
+@section pageJsScript{
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+}
+
 @section pageJs{
     <script>
+
+        const phoneInputField = document.querySelector("input[name='Phone']");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+
+
+
         $('#DiscountCodeBtn').on("click", function (e) {
             e.preventDefault()
             var code = $('#DiscountCode').val()
