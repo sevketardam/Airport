@@ -355,25 +355,23 @@ $("#_Passenger_Form").validate({
         },
     },
     submitHandler: function (form) {
-
         $("body").append(`
-        <div class="createLoader active">
-            <p>Creating</p>
-            <div class="words">
-                <span class="word">Reservation</span>
-                <span class="word">Voucher</span>
-            </div>
-        </div>
-        `)
+                        <div class="createLoader active">
+                            <p>Creating</p>
+                            <div class="words">
+                                <span class="word">Reservation</span>
+                                <span class="word">Voucher</span>
+                            </div>
+                        </div>
+                        `)
         $("html, body").css("overflow", "hidden");
-
-        form.submit();
     },
 });
 
 
 $("body").on("click", ".pageServiceDownItemTop", function (e) {
-    if ($(e.target).attr("class") != "passengerInputs" && $(e.target).attr("class") != "passengerInputs valid") {
+    console.log($(e.target).attr("class"))
+    if ($(e.target).attr("class") != "passengerInputs" && $(e.target).attr("class") != "passengerInputs valid" && $(e.target).attr("class") != "passengerInputs error")  {
         $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
         $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
     }
