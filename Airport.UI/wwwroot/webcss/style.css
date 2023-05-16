@@ -877,7 +877,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 }
 
     ._Car_Slider > div {
-        width: calc((100% / 9) - 0.45rem);
+        width: 100%;
     }
 
 ._Car_Types .swiper-slide {
@@ -2820,9 +2820,9 @@ input[type="number"]::-webkit-outer-spin-button {
         width: calc(25% - 0.75rem);
     }
 
-    ._Car_Slider > div {
+    /*._Car_Slider > div {
         width: calc((100% / 5) - 0.45rem);
-    }
+    }*/
 
 
 
@@ -2951,7 +2951,7 @@ input[type="number"]::-webkit-outer-spin-button {
     }*/
 
 
-    ._Table_Top, ._Bottom_Table {
+    ._Table_Top, .tableDatas {
         min-width: 40rem;
     }
 
@@ -3047,6 +3047,12 @@ input[type="number"]::-webkit-outer-spin-button {
 
     ._Down_Flex {
         gap: 2rem 1rem;
+    }
+
+    ._Profil_Trailer_Style {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 }
 
@@ -3166,7 +3172,7 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
     ._Car_Slider > div {
-        width: calc((100% / 3) - 0.45rem);
+        width: 100%;
     }
 
     ._Car_Slider {
@@ -3754,4 +3760,16 @@ label.error {
 ._Step_Travel_Form ._Pos_Rel{
     background: white;
     border-radius: 0.6rem;
+}
+
+.menu .sub-menu ul li a span {
+    font-size: .75rem !important;
+}
+
+.menu .main-menu ul li a {
+    font-size: 11px !important;
+}
+
+.menu .sub-menu ul li i {
+    margin-right: 3px !important;
 }

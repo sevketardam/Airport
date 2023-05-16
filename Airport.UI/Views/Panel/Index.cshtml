@@ -503,8 +503,14 @@
         });
 
         var _Cars_Body_Swiper = new Swiper("._Car_Slider", {
-            slidesPerView: 2,
-            spaceBetween: 12,
+            slidesPerView: 1,
+            spaceBetween: 20,
+            breakpoints: {
+                576: {
+                    slidesPerView: 2,
+                    spaceBetween: 12,
+                }
+            },
         });
         var _Location_Body_Swiper = new Swiper("._Location_Slider", {
             slidesPerView: 2,
