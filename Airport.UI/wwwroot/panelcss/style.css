@@ -658,3 +658,20 @@ input.selectPhoto {
         opacity: 1;
     }
 }
+
+#DiscountCode {
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    border-radius: .5rem;
+    width: 100%;
+    height: 2.4rem;
+    padding: 0 1rem;
+}
+
+#DiscountCodeBtn {
+    width: max-content;
+    white-space: nowrap;
+    margin-left: 1rem;
+}
