@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Hosting;
 using Airport.MessageExtension.VM;
 using iText.Layout.Element;
 using Airport.MessageExtension.Interfaces;
+using System.Globalization;
 
 namespace Airport.UI.Controllers
 {
@@ -207,12 +208,6 @@ namespace Airport.UI.Controllers
                                     if (a.IsOutZone)
                                     {
                                         price = a.Location.DropCharge + (minKm * a.Location.OutZonePricePerKM);
-
-                                        if (reservation.ReturnStatus)
-                                        {
-                                            price *= 2;
-                                        }
-
                                     }
                                     else
                                     {
@@ -222,48 +217,43 @@ namespace Airport.UI.Controllers
 
                                         b.LocationCarsFares.ForEach(c =>
                                         {
-
-                                            var fare = Convert.ToDouble(c.Fare.ToString().Replace(".", ","));
                                             if (c.StartFrom < minKm)
                                             {
                                                 if (c.PriceType == 2)
                                                 {
-                                                    price += fare * (c.UpTo - c.StartFrom);
+                                                    price += c.Fare * (c.UpTo - c.StartFrom);
                                                 }
                                                 else
                                                 {
                                                     if (minKm < (c.UpTo - c.StartFrom))
                                                     {
-                                                        price += fare * minKm;
+                                                        price += c.Fare * minKm;
                                                     }
                                                     else
                                                     {
-                                                        price += fare * (c.UpTo - c.StartFrom);
+                                                        price += c.Fare * (c.UpTo - c.StartFrom);
                                                     }
 
                                                 }
                                             }
 
                                             lastUp = c.UpTo;
-                                            lastPrice = fare;
+                                            lastPrice = c.Fare;
                                         });
-
 
                                         if (lastUp < minKm)
                                         {
                                             var plusPrice = minKm - lastUp;
                                             price += lastPrice * plusPrice;
                                         }
+                                    }
 
-                                        if (reservation.ReturnStatus)
-                                        {
-                                            price *= 2;
-                                        }
-
+                                    if (reservation.ReturnStatus)
+                                    {
+                                        price *= 2;
                                     }
 
                                     price = price / 10;
-                                    price = Math.Round(price,2);
                                     getreservation.Add(new GetReservationValues
                                     {
                                         LocationCars = b,
@@ -371,11 +361,6 @@ namespace Airport.UI.Controllers
                     if (selectedDatasMini.IsOutZone)
                     {
                         price = locationCar.Location.DropCharge + (datas.KM * locationCar.Location.OutZonePricePerKM);
-
-                        if (datas.ReservationValues.ReturnStatus)
-                        {
-                            price *= 2;
-                        }
                     }
                     else
                     {
@@ -412,13 +397,11 @@ namespace Airport.UI.Controllers
                             var plusPrice = datas.KM - lastUp;
                             price += lastPrice * plusPrice;
                         }
+                    }
 
-                        if (datas.ReservationValues.ReturnStatus)
-                        {
-                            price *= 2;
-                        }
-
-
+                    if (datas.ReservationValues.ReturnStatus)
+                    {
+                        price *= 2;
                     }
 
                     price = price / 10;
@@ -795,7 +778,6 @@ namespace Airport.UI.Controllers
                         minKm = Convert.ToInt32(lastKm / 100);
                         selectedLocations.ForEach(a =>
                         {
-
                             a.Location.LocationCars = _locationCar.SelectByFunc(b => b.LocationId == a.Location.Id);
 
                             a.Location.LocationCars.ForEach(b =>
@@ -813,11 +795,6 @@ namespace Airport.UI.Controllers
                                     if (a.IsOutZone)
                                     {
                                         price = a.Location.DropCharge + (minKm * a.Location.OutZonePricePerKM);
-
-                                        if (reservation.ReturnStatus)
-                                        {
-                                            price *= 2;
-                                        }
                                     }
                                     else
                                     {
@@ -858,17 +835,14 @@ namespace Airport.UI.Controllers
                                             var plusPrice = minKm - lastUp;
                                             price += lastPrice * plusPrice;
                                         }
+                                    }
 
-                                        if (reservation.ReturnStatus)
-                                        {
-                                            price *= 2;
-                                        }
-
-
+                                    if (reservation.ReturnStatus)
+                                    {
+                                        price *= 2;
                                     }
 
                                     price = price / 10;
-                                    price = Math.Round(price, 2);
 
                                     getreservation.Add(new GetReservationValues
                                     {
@@ -975,11 +949,6 @@ namespace Airport.UI.Controllers
                     if (selectedDatasMini.IsOutZone)
                     {
                         price = locationCar.Location.DropCharge + (datas.KM * locationCar.Location.OutZonePricePerKM);
-
-                        if (datas.ReservationValues.ReturnStatus)
-                        {
-                            price *= 2;
-                        }
                     }
                     else
                     {
@@ -990,23 +959,23 @@ namespace Airport.UI.Controllers
 
                             if (c.PriceType == 2)
                             {
-                                price += c.Fare * (c.UpTo - c.StartFrom);
+                                price += Convert.ToDouble(c.Fare) * (c.UpTo - c.StartFrom);
                             }
                             else
                             {
                                 if (datas.KM < (c.UpTo - c.StartFrom))
                                 {
-                                    price += c.Fare * datas.KM;
+                                    price += Convert.ToDouble(c.Fare) * datas.KM;
                                 }
                                 else
                                 {
-                                    price += c.Fare * (c.UpTo - c.StartFrom);
+                                    price += Convert.ToDouble(c.Fare) * (c.UpTo - c.StartFrom);
                                 }
 
                             }
 
                             lastUp = c.UpTo;
-                            lastPrice = c.Fare;
+                            lastPrice = Convert.ToDouble(c.Fare);
                         });
 
 
@@ -1015,14 +984,12 @@ namespace Airport.UI.Controllers
                             var plusPrice = datas.KM - lastUp;
                             price += lastPrice * plusPrice;
                         }
-
-                        if (datas.ReservationValues.ReturnStatus)
-                        {
-                            price *= 2;
-                        }
-
                     }
 
+                    if (datas.ReservationValues.ReturnStatus)
+                    {
+                        price *= 2;
+                    }
                     price = price / 10;
                     price = Math.Round(price, 2);
                     datas.LastPrice = price;

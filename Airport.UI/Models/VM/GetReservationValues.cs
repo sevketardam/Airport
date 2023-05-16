@@ -7,7 +7,7 @@ namespace Airport.UI.Models.VM
     public class GetReservationValues
     {
         public LocationCars LocationCars { get; set; }
-        public double LastPrice{ get; set; }
+        public double LastPrice { get; set; }
         public DateTime ReservationDate { get; set; }
         public string PickLocationName{ get; set; }
         public string DropLocationName{ get; set; }
