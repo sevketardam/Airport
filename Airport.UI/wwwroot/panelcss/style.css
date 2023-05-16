@@ -654,4 +654,7 @@ input.selectPhoto {
     .couponItem {
         width: 100%;
     }
+    .copuonUpdate {
+        opacity: 1;
+    }
 }
