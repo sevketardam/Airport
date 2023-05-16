@@ -30,6 +30,7 @@
                 <div class="_Form_Div _Pos_Phone">
                     <label class="_Form_Label">Phone Number</label>
                     <input type="text" id="_Personel_Number" name="PhoneNumber">
+                    <input type="hidden" name="RealPhone" id="realPhoneInpt">
                 </div>
                 <div class="_Form_Div">
                     <label class="_Form_Label">Profession (Optional)</label>
@@ -92,6 +93,7 @@
                 <div class="_Form_Div _Pos_Phone">
                     <label class="_Form_Label">Company Phone Number</label>
                     <input type="text" id="_Agency_Number" name="CompanyPhoneNumber">
+                    <input type="hidden" name="CompanyRealPhone" id="companyRealPhoneInpt">
                 </div>
                @* <div class="_Form_Div">
                     <div class="_Down_Flex">
@@ -194,6 +196,13 @@
         });
 
 
+        $('#_Personel_Number').on("change keypress keyup countrychange", function () {
+            $('#realPhoneInpt').val(phoneInput.getNumber().replace("+", ""))
+        })    
+
+        $('#_Agency_Number').on("change keypress keyup countrychange", function () {
+            $('#companyRealPhoneInpt').val(phoneInput.getNumber().replace("+", ""))
+        })
 
         var cleave = new Cleave('[name="CompanyPhoneNumber"]', {
             numericOnly: true,

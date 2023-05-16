@@ -262,11 +262,10 @@ namespace Airport.UI.Controllers
                                     }
 
                                     price = price / 10;
-                                    price = Convert.ToDouble(price.ToString("0.00"));
                                     getreservation.Add(new GetReservationValues
                                     {
                                         LocationCars = b,
-                                        LastPrice = price,
+                                        LastPrice = price.ToString("0.00"),
                                         ReservationDate = reservation.FlightTime,
                                         PickLocationName = contentJsonResult.Result.formatted_address,
                                         DropLocationName = contentJsonResult2.Result.formatted_address,
@@ -866,11 +865,10 @@ namespace Airport.UI.Controllers
                                     }
 
                                     price = price / 10;
-                                    price = Convert.ToDouble(price.ToString("0.00"));
                                     getreservation.Add(new GetReservationValues
                                     {
                                         LocationCars = b,
-                                        LastPrice = price,
+                                        LastPrice = price.ToString("0.00"),
                                         ReservationDate = reservation.FlightTime,
                                         PickLocationName = contentJsonResult.Result.formatted_address,
                                         DropLocationName = contentJsonResult2.Result.formatted_address,

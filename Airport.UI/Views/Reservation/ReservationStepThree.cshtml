@@ -231,7 +231,7 @@
                                 <div class="_Form_Div _Info_Div _Pos_Phone">
                                     <label class="_Form_Label">Phone</label>
 
-                                    <input type="text" value="@Model.User?.PhoneNumber" name="Phone" id="textPhone">
+                                    <input type="text" value="+@Model.User?.RealPhone" name="Phone" id="textPhone">
                                     <input type="hidden" name="RealPhone" id="realPhoneInpt" />
                                     <span>
                                         You will be receiving both text and phone calls from
@@ -330,9 +330,11 @@
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
 
-        $('#textPhone').on("change keypress keyup", function () {
+        $('#textPhone').on("change keypress keyup countrychange", function () {
             $('#realPhoneInpt').val(phoneInput.getNumber().replace("+", ""))
         })
+
+
 
         $('#DiscountCodeBtn').on("click", function (e) {
             e.preventDefault()
