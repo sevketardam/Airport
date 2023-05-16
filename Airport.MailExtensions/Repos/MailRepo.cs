@@ -27,6 +27,40 @@ namespace Airport.MessageExtensions.Repos
 
             var bodyBuilder = new BodyBuilder();
             mimeMessage.To.Add(mailboxAddressTo);
+            var carAttrHtml = "";
+            if (reservationDetail.LocationCars.Car.Armored)
+            {
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
+
+            }
+
+            if (reservationDetail.LocationCars.Car.Wifi)
+            {
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i4.png'>";
+            }
+
+            if (reservationDetail.LocationCars.Car.Water)   
+            {
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i1.png'>";
+            }
+
+            if (reservationDetail.LocationCars.Car.Partition)
+            {
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
+            }
+
+            if (reservationDetail.LocationCars.Car.Charger)
+            {
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
+            }
+
+            if (reservationDetail.LocationCars.Car.Charger)
+            {
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
+            }
+
+
+
 
             mimeMessage.Subject = "Reservation Information";
             bodyBuilder.HtmlBody = @$"<!DOCTYPE html>
@@ -46,7 +80,9 @@ namespace Airport.MessageExtensions.Repos
 <style>
     .section{{
         font-family: 'Poppins', sans-serif;
-        background-color: antiquewhite;
+        background-color: white;
+        border-left:1px solid ;
+        border-right: 1px solid;
     }}
     body{{
         margin: 0 auto;
@@ -105,11 +141,13 @@ namespace Airport.MessageExtensions.Repos
         padding: 1rem;
     }}
     .başarılı-text{{
-        font-size: 20px;
+        font-size: 26px;
+        margin: 0 0 .3rem 0;
     }}
     .başarılı-text-2{{
-        font-size: 16px;
+        font-size: 15px;
         color: rgb(62, 62, 62);
+        margin: 0;
     }}
     .date-text-icon{{
         background-color: #ff6709;
@@ -235,7 +273,9 @@ namespace Airport.MessageExtensions.Repos
         font-size: 14px;
     }}
     .date-text-date{{
-        font-size: 13px;
+        font-size: 12px;
+        font-weight: 300;
+
     }}
     .footer-alt-bilgi p:nth-child(1){{
         font-weight: 500;
@@ -246,8 +286,31 @@ namespace Airport.MessageExtensions.Repos
     }}
     .teklif-description, .istek-description{{
         color: black;
-        font-weight: 600;
+        font-weight: 500;
     }}
+
+
+    .teklif-item > span:first-child {{
+    width: 40%;
+    font-weight: 300;
+}}
+
+.attrs-item{{
+    margin-top: .3rem;
+}}
+.attrs-item .attrs{{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+   
+}}
+
+.attrs img{{
+    width: 2rem;
+    height: 2rem;
+object-fit: contain;
+}}
+
     @media screen and (max-width:468px){{
         body{{
             max-width: 30rem;
@@ -286,7 +349,7 @@ namespace Airport.MessageExtensions.Repos
                     <div class=""date-text-icon"">
                         A
                     </div>
-                    <span>{reservationDetail.PickFullName}</span> 
+                    <span>{reservationDetail.PickFullName}</span>
                 </div>
                 <i class=""fa-solid fa-arrow-down down""></i>
                 <div class=""data-text-icon-group"">
@@ -301,20 +364,56 @@ namespace Airport.MessageExtensions.Repos
         </div>
     </div>
     <div class=""teklif section"">
+        <h4 style=""
+    font-size: 2rem;
+    margin: 0 0 0.7rem 0;
+    text-align: center;
+    font-weight: 600;
+"">
+            Details
+        </h4>
         <div class=""teklif-bilgi"">
             <div class=""teklif-item"">
-                <span >Car : &nbsp; </span>
-                <span class=""teklif-description"">{reservationDetail.LocationCars.Car.Brand.CarBrandName} {reservationDetail.LocationCars.Car.Model.CarModelName} </span>
+                <span >Price : &nbsp; </span>
+                <span class=""teklif-description""> {reservationDetail.TotalPrice} € </span><!-- fiyat -->
             </div>
             <div class=""teklif-item"">
-                <span>Plate : &nbsp; </span>
-                <span class=""teklif-description"">{reservationDetail.LocationCars.Car.Plate}</span>
-            </div>     
+                <span>Passengers : &nbsp; </span>
+                <span class=""teklif-description"">{reservationDetail.PeopleCount}</span> <!-- yolcu sayısı -->
+            </div>   
             <div class=""teklif-item"">
-                <span>Price : &nbsp; </span>
-                <span class=""teklif-description"">{reservationDetail.TotalPrice} €</span>
-            </div>  
+                <span >Transport Types : &nbsp; </span>
+                <span class=""teklif-description""> Every </span>  <!-- every sabit kalacak  -->
+            </div> 
         </div>
+        <div style=""width: 80%; height: 1px; border-top: 2px dashed rgb(0, 0, 0, .3); margin: 1rem 0;""></div>
+        <div class=""teklif-bilgi"">
+            <div class=""teklif-item"">
+                <span >Transport Type : &nbsp; </span>
+                <span class=""teklif-description""> {reservationDetail.LocationCars.Car.Type.CarTypeName} {reservationDetail.LocationCars.Car.MaxPassenger} {reservationDetail.LocationCars.Car.SmallBags} {reservationDetail.LocationCars.Car.SuitCase} </span>
+              
+            </div>
+            <div class=""teklif-item"">
+                <span>Car : &nbsp; </span>
+                <span class=""teklif-description"">{reservationDetail.LocationCars.Car.Brand.CarBrandName} {reservationDetail.LocationCars.Car.Model.CarModelName} {reservationDetail.LocationCars.Car.Series.CarSeriesName} </span>
+            </div>   
+            <div class=""teklif-item"">
+                <span >Plate : &nbsp; </span>
+                <span class=""teklif-description""> {reservationDetail.LocationCars.Car.Plate} </span>
+                <!--  -->
+                
+            </div> 
+            <div class=""teklif-item attrs-item"">
+                <span >Attributes : &nbsp; </span>
+                <span class=""teklif-description attrs"">
+{carAttrHtml}
+
+</span> 
+                
+            </div> 
+            
+        </div>
+        <br>
         <div class=""btn"">
 
             <a href=""http://test.airportglobaltransfer.com/pdf/{reservationDetail.ReservationCode}-{reservationDetail.Id}.pdf"">Show Voucher</a>
