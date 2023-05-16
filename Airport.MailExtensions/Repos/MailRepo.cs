@@ -45,7 +45,7 @@ namespace Airport.MessageExtensions.Repos
     <link rel=""stylesheet"" href=""https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"" integrity=""sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="" crossorigin=""anonymous"" referrerpolicy=""no-referrer"" />
 </head>
 <style>
-    section{{
+    .section{{
         font-family: 'Poppins', sans-serif;
         background-color: antiquewhite;
     }}
@@ -78,7 +78,7 @@ namespace Airport.MessageExtensions.Repos
         padding-top: 2rem;
     }}
     /* Header */
-    header{{
+    .header{{
         width: 100%;
         height: auto;
         background-color: orangered;
@@ -182,7 +182,7 @@ namespace Airport.MessageExtensions.Repos
         align-items: flex-start;
     }}
     /* Footer */
-    footer{{
+    .footer{{
         background-color: orangered;
         display: flex;
         flex-direction: column;
@@ -194,7 +194,7 @@ namespace Airport.MessageExtensions.Repos
         font-family: 'Poppins', sans-serif;
         color: #320404;
     }}
-    footer a{{
+    .footer a{{
         color: #320404;
         text-decoration: none;
     }}
@@ -269,12 +269,12 @@ namespace Airport.MessageExtensions.Repos
 </style>
 <body>
     <!-- Header -->
-    <header>
+    <div class=""header"">
         <div class=""logo"">airportglobaltransfer.com</div>
         <div class=""header-text"">Succesful Created Reservation</div>
-    </header>
+    </div>
     <!-- Durum -->
-    <section class=""durum"">
+    <div class=""durum section"">
         <div class=""durum-text"">
             <p class=""başarılı-text"">Your {reservationDetail.ReservationCode} transfer order is successful</h5>
             <p class=""başarılı-text-2"">Have a Question? You can contact support from your account.</h6>
@@ -300,17 +300,17 @@ namespace Airport.MessageExtensions.Repos
                 </div>
             </div>
         </div>
-    </section>
+    </div>
     <!-- İstek Ayrıntı -->
-    <section class=""istek-ayrıntı"">
+    <div class=""istek-ayrıntı section"">
         <div class=""istek-ayrinti-head"">
             <i class=""fa-solid fa-stop""></i>
             <h2>Detail</h2>
             <div><p>{reservationDetail.Comment}</p></div>
         </div>     
-    </section>
+    </div>
     <!-- Teklif -->
-    <section class=""teklif"">
+    <div class=""teklif section"">
         <div class=""teklif-bilgi"">
             <div class=""teklif-item"">
                 <span >Car : &nbsp; </span>
@@ -326,9 +326,8 @@ namespace Airport.MessageExtensions.Repos
             <a href=""http://test.airportglobaltransfer.com/pdf/{reservationDetail.ReservationCode}-{reservationDetail.Id}.pdf"">Show Voucher</a>
         </div>
 
-    </section>
-    <!-- Footer -->
-    <footer>
+    </div>
+    <div class=""footer"">
         <div class=""footer-phone"">
             <p>Any Help?</p>
             <b><a href=""tel:+908502421901"">850 242 19014</a></b>
@@ -337,7 +336,7 @@ namespace Airport.MessageExtensions.Repos
 <p>or</p>
             <b><p>info@airportglobaltransfer.com</p></b> 
         </div>      
-    </footer> 
+    </div> 
 </body>
 </html>";
 

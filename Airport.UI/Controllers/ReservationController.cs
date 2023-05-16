@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Airport.MessageExtension.VM;
 using iText.Layout.Element;
+using Airport.MessageExtension.Interfaces;
 
 namespace Airport.UI.Controllers
 {
@@ -40,8 +41,9 @@ namespace Airport.UI.Controllers
         IServiceCategoriesDAL _serviceCategories;
         IReservationServicesTableDAL _reservationServicesTable;
         ICouponsDAL _coupons;
+        ISMS _sms;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons,ISMS sms)
         {
             _location = location;
             _locationCar = locationCar;
@@ -59,6 +61,7 @@ namespace Airport.UI.Controllers
             _serviceCategories = serviceCategories;
             _reservationServicesTable = reservationServicesTable;
             _coupons = coupons;
+            _sms = sms;
         }
 
         [HttpPost("reservation", Name = "getLocationValue")]
@@ -611,6 +614,18 @@ namespace Airport.UI.Controllers
 
 
                 _mail.SendReservationMail(item);
+
+                var allMessage = new List<Mesaj>();
+                allMessage.Add(new Mesaj
+                {
+                    dest = "905365278808",
+                    msg = "deneme mesaj1"
+                });
+
+                var mesaj = allMessage.ToArray();
+
+                _sms.SmsForReservation(mesaj);
+
                 item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
                 item.ReservationServicesTables.ForEach(a =>
                 {
