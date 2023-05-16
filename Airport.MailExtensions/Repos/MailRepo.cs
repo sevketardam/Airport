@@ -29,7 +29,6 @@ namespace Airport.MessageExtensions.Repos
             mimeMessage.To.Add(mailboxAddressTo);
 
             mimeMessage.Subject = "Reservation Information";
-
             bodyBuilder.HtmlBody = @$"<!DOCTYPE html>
 <html lang=""en"">
 <head>
@@ -81,7 +80,7 @@ namespace Airport.MessageExtensions.Repos
     .header{{
         width: 100%;
         height: auto;
-        background-color: orangered;
+        background-color: #ff6709;
         padding-top: 2rem;
         padding-bottom: 2rem;
         display: flex;
@@ -113,7 +112,7 @@ namespace Airport.MessageExtensions.Repos
         color: rgb(62, 62, 62);
     }}
     .date-text-icon{{
-        background-color: orangered;
+        background-color: #ff6709;
         border-radius: 50%;
         width: 25px;
         height: 25px;
@@ -128,7 +127,7 @@ namespace Airport.MessageExtensions.Repos
     }}
     .durum-date .down {{
         margin-left: .4rem;
-        color: orangered;
+        color: #ff6709;
     }}
     .date-text-icon{{
         margin-right: 1rem;
@@ -183,14 +182,14 @@ namespace Airport.MessageExtensions.Repos
     }}
     /* Footer */
     .footer{{
-        background-color: orangered;
+        background-color: #ff6709;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         border-bottom-left-radius: 2rem;
         border-bottom-right-radius: 2rem;    
-        padding-top: 2rem;
+        padding: 2rem 0;
         font-family: 'Poppins', sans-serif;
         color: #320404;
     }}
@@ -285,14 +284,14 @@ namespace Airport.MessageExtensions.Repos
                 <p class=""date-text-date"">{reservationDetail.ReservationDate}</p>
                 <div class=""data-text-icon-group"">
                     <div class=""date-text-icon"">
-                        <i class=""fa-solid fa-location-dot""></i>
+                        A
                     </div>
                     <span>{reservationDetail.PickFullName}</span> 
                 </div>
                 <i class=""fa-solid fa-arrow-down down""></i>
                 <div class=""data-text-icon-group"">
                     <div class=""date-text-icon"">
-                        <i class=""fa-solid fa-location-dot""></i>
+                        B
                     </div>
                     <div class=""span-group"">
                         <span>{reservationDetail.DropFullName}</span>
@@ -301,15 +300,6 @@ namespace Airport.MessageExtensions.Repos
             </div>
         </div>
     </div>
-    <!-- İstek Ayrıntı -->
-    <div class=""istek-ayrıntı section"">
-        <div class=""istek-ayrinti-head"">
-            <i class=""fa-solid fa-stop""></i>
-            <h2>Detail</h2>
-            <div><p>{reservationDetail.Comment}</p></div>
-        </div>     
-    </div>
-    <!-- Teklif -->
     <div class=""teklif section"">
         <div class=""teklif-bilgi"">
             <div class=""teklif-item"">
@@ -319,7 +309,11 @@ namespace Airport.MessageExtensions.Repos
             <div class=""teklif-item"">
                 <span>Plate : &nbsp; </span>
                 <span class=""teklif-description"">{reservationDetail.LocationCars.Car.Plate}</span>
-            </div>          
+            </div>     
+            <div class=""teklif-item"">
+                <span>Price : &nbsp; </span>
+                <span class=""teklif-description"">{reservationDetail.TotalPrice} €</span>
+            </div>  
         </div>
         <div class=""btn"">
 

@@ -560,7 +560,8 @@ namespace Airport.UI.Controllers
                     IsDelete = false,
                     HidePrice = reservation.HidePrice,
                     Coupon = getCoupon?.Id,
-                    TotalPrice = total
+                    TotalPrice = total,
+                    RealPhone = reservation.RealPhone,
                 });
 
                 item.Coupons = getCoupon;
@@ -618,8 +619,8 @@ namespace Airport.UI.Controllers
                 var allMessage = new List<Mesaj>();
                 allMessage.Add(new Mesaj
                 {
-                    dest = "905365278808",
-                    msg = "deneme mesaj1"
+                    dest = reservation.RealPhone,
+                    msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link http://test.airportglobaltransfer.com/pdf/{item.ReservationCode}-{item.Id}.pdf"
                 });
 
                 var mesaj = allMessage.ToArray();
