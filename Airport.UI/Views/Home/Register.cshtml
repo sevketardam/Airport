@@ -1,4 +1,9 @@
-﻿<section>
+﻿
+@section pageCSSLink{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+}
+
+<section>
     <div style="background: var(--orange);" class="register_banner">
            <div class="container">
                <p>
@@ -19,11 +24,11 @@
                     <label class="_Register_Label">E-mail</label>
                     <input type="text" name="eposta">
                 </div>
-                <div class="_Register_Input_Div">
+                <div class="_Register_Input_Div _Pos_Phone">
                     <label class="_Register_Label">Phone</label>
                     <input type="text" name="phoneNumber">
                 </div>
-                <div class="_Register_Input_Div">
+                <div class="_Register_Input_Div ">
                     <label class="_Register_Label">Password</label>
                     <input type="password" name="password">
                 </div>
@@ -51,9 +56,20 @@
     </div>
 </section>
 
+@section pageJsScript{
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+}
+
 @section pageJs{
     <script>
 
+         const phoneInputField = document.querySelector("input[name='phoneNumber']");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+
+        });
         @if (ViewBag.Message == "success")
         {
             <text>
