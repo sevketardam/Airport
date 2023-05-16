@@ -27,9 +27,42 @@ namespace Airport.MessageExtensions.Repos
 
             var bodyBuilder = new BodyBuilder();
             mimeMessage.To.Add(mailboxAddressTo);
+            var carAttrHtml = "";
+            if (reservationDetail.LocationCars.Car.Armored)
+            {
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
+
+            }
+
+            if (reservationDetail.LocationCars.Car.Wifi)
+            {
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i4.png'>";
+            }
+
+            if (reservationDetail.LocationCars.Car.Water)   
+            {
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i1.png'>";
+            }
+
+            if (reservationDetail.LocationCars.Car.Partition)
+            {
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
+            }
+
+            if (reservationDetail.LocationCars.Car.Charger)
+            {
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
+            }
+
+            if (reservationDetail.LocationCars.Car.Charger)
+            {
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
+            }
+
+
+
 
             mimeMessage.Subject = "Reservation Information";
-
             bodyBuilder.HtmlBody = @$"<!DOCTYPE html>
 <html lang=""en"">
 <head>
@@ -45,9 +78,11 @@ namespace Airport.MessageExtensions.Repos
     <link rel=""stylesheet"" href=""https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"" integrity=""sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="" crossorigin=""anonymous"" referrerpolicy=""no-referrer"" />
 </head>
 <style>
-    section{{
+    .section{{
         font-family: 'Poppins', sans-serif;
-        background-color: antiquewhite;
+        background-color: white;
+        border-left:1px solid ;
+        border-right: 1px solid;
     }}
     body{{
         margin: 0 auto;
@@ -78,10 +113,10 @@ namespace Airport.MessageExtensions.Repos
         padding-top: 2rem;
     }}
     /* Header */
-    header{{
+    .header{{
         width: 100%;
         height: auto;
-        background-color: orangered;
+        background-color: #ff6709;
         padding-top: 2rem;
         padding-bottom: 2rem;
         display: flex;
@@ -106,14 +141,16 @@ namespace Airport.MessageExtensions.Repos
         padding: 1rem;
     }}
     .başarılı-text{{
-        font-size: 20px;
+        font-size: 26px;
+        margin: 0 0 .3rem 0;
     }}
     .başarılı-text-2{{
-        font-size: 16px;
+        font-size: 15px;
         color: rgb(62, 62, 62);
+        margin: 0;
     }}
     .date-text-icon{{
-        background-color: orangered;
+        background-color: #ff6709;
         border-radius: 50%;
         width: 25px;
         height: 25px;
@@ -128,7 +165,7 @@ namespace Airport.MessageExtensions.Repos
     }}
     .durum-date .down {{
         margin-left: .4rem;
-        color: orangered;
+        color: #ff6709;
     }}
     .date-text-icon{{
         margin-right: 1rem;
@@ -182,19 +219,19 @@ namespace Airport.MessageExtensions.Repos
         align-items: flex-start;
     }}
     /* Footer */
-    footer{{
-        background-color: orangered;
+    .footer{{
+        background-color: #ff6709;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         border-bottom-left-radius: 2rem;
         border-bottom-right-radius: 2rem;    
-        padding-top: 2rem;
+        padding: 2rem 0;
         font-family: 'Poppins', sans-serif;
         color: #320404;
     }}
-    footer a{{
+    .footer a{{
         color: #320404;
         text-decoration: none;
     }}
@@ -236,7 +273,9 @@ namespace Airport.MessageExtensions.Repos
         font-size: 14px;
     }}
     .date-text-date{{
-        font-size: 13px;
+        font-size: 12px;
+        font-weight: 300;
+
     }}
     .footer-alt-bilgi p:nth-child(1){{
         font-weight: 500;
@@ -247,8 +286,31 @@ namespace Airport.MessageExtensions.Repos
     }}
     .teklif-description, .istek-description{{
         color: black;
-        font-weight: 600;
+        font-weight: 500;
     }}
+
+
+    .teklif-item > span:first-child {{
+    width: 40%;
+    font-weight: 300;
+}}
+
+.attrs-item{{
+    margin-top: .3rem;
+}}
+.attrs-item .attrs{{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+   
+}}
+
+.attrs img{{
+    width: 2rem;
+    height: 2rem;
+object-fit: contain;
+}}
+
     @media screen and (max-width:468px){{
         body{{
             max-width: 30rem;
@@ -269,12 +331,12 @@ namespace Airport.MessageExtensions.Repos
 </style>
 <body>
     <!-- Header -->
-    <header>
+    <div class=""header"">
         <div class=""logo"">airportglobaltransfer.com</div>
         <div class=""header-text"">Succesful Created Reservation</div>
-    </header>
+    </div>
     <!-- Durum -->
-    <section class=""durum"">
+    <div class=""durum section"">
         <div class=""durum-text"">
             <p class=""başarılı-text"">Your {reservationDetail.ReservationCode} transfer order is successful</h5>
             <p class=""başarılı-text-2"">Have a Question? You can contact support from your account.</h6>
@@ -285,14 +347,14 @@ namespace Airport.MessageExtensions.Repos
                 <p class=""date-text-date"">{reservationDetail.ReservationDate}</p>
                 <div class=""data-text-icon-group"">
                     <div class=""date-text-icon"">
-                        <i class=""fa-solid fa-location-dot""></i>
+                        A
                     </div>
-                    <span>{reservationDetail.PickFullName}</span> 
+                    <span>{reservationDetail.PickFullName}</span>
                 </div>
                 <i class=""fa-solid fa-arrow-down down""></i>
                 <div class=""data-text-icon-group"">
                     <div class=""date-text-icon"">
-                        <i class=""fa-solid fa-location-dot""></i>
+                        B
                     </div>
                     <div class=""span-group"">
                         <span>{reservationDetail.DropFullName}</span>
@@ -300,35 +362,65 @@ namespace Airport.MessageExtensions.Repos
                 </div>
             </div>
         </div>
-    </section>
-    <!-- İstek Ayrıntı -->
-    <section class=""istek-ayrıntı"">
-        <div class=""istek-ayrinti-head"">
-            <i class=""fa-solid fa-stop""></i>
-            <h2>Detail</h2>
-            <div><p>{reservationDetail.Comment}</p></div>
-        </div>     
-    </section>
-    <!-- Teklif -->
-    <section class=""teklif"">
+    </div>
+    <div class=""teklif section"">
+        <h4 style=""
+    font-size: 2rem;
+    margin: 0 0 0.7rem 0;
+    text-align: center;
+    font-weight: 600;
+"">
+            Details
+        </h4>
         <div class=""teklif-bilgi"">
             <div class=""teklif-item"">
-                <span >Car : &nbsp; </span>
-                <span class=""teklif-description"">{reservationDetail.LocationCars.Car.Brand.CarBrandName} {reservationDetail.LocationCars.Car.Model.CarModelName} </span>
+                <span >Price : &nbsp; </span>
+                <span class=""teklif-description""> {reservationDetail.TotalPrice} € </span><!-- fiyat -->
             </div>
             <div class=""teklif-item"">
-                <span>Plate : &nbsp; </span>
-                <span class=""teklif-description"">{reservationDetail.LocationCars.Car.Plate}</span>
-            </div>          
+                <span>Passengers : &nbsp; </span>
+                <span class=""teklif-description"">{reservationDetail.PeopleCount}</span> <!-- yolcu sayısı -->
+            </div>   
+            <div class=""teklif-item"">
+                <span >Transport Types : &nbsp; </span>
+                <span class=""teklif-description""> Every </span>  <!-- every sabit kalacak  -->
+            </div> 
         </div>
+        <div style=""width: 80%; height: 1px; border-top: 2px dashed rgb(0, 0, 0, .3); margin: 1rem 0;""></div>
+        <div class=""teklif-bilgi"">
+            <div class=""teklif-item"">
+                <span >Transport Type : &nbsp; </span>
+                <span class=""teklif-description""> {reservationDetail.LocationCars.Car.Type.CarTypeName} {reservationDetail.LocationCars.Car.MaxPassenger} {reservationDetail.LocationCars.Car.SmallBags} {reservationDetail.LocationCars.Car.SuitCase} </span>
+              
+            </div>
+            <div class=""teklif-item"">
+                <span>Car : &nbsp; </span>
+                <span class=""teklif-description"">{reservationDetail.LocationCars.Car.Brand.CarBrandName} {reservationDetail.LocationCars.Car.Model.CarModelName} {reservationDetail.LocationCars.Car.Series.CarSeriesName} </span>
+            </div>   
+            <div class=""teklif-item"">
+                <span >Plate : &nbsp; </span>
+                <span class=""teklif-description""> {reservationDetail.LocationCars.Car.Plate} </span>
+                <!--  -->
+                
+            </div> 
+            <div class=""teklif-item attrs-item"">
+                <span >Attributes : &nbsp; </span>
+                <span class=""teklif-description attrs"">
+{carAttrHtml}
+
+</span> 
+                
+            </div> 
+            
+        </div>
+        <br>
         <div class=""btn"">
 
             <a href=""http://test.airportglobaltransfer.com/pdf/{reservationDetail.ReservationCode}-{reservationDetail.Id}.pdf"">Show Voucher</a>
         </div>
 
-    </section>
-    <!-- Footer -->
-    <footer>
+    </div>
+    <div class=""footer"">
         <div class=""footer-phone"">
             <p>Any Help?</p>
             <b><a href=""tel:+908502421901"">850 242 19014</a></b>
@@ -337,7 +429,7 @@ namespace Airport.MessageExtensions.Repos
 <p>or</p>
             <b><p>info@airportglobaltransfer.com</p></b> 
         </div>      
-    </footer> 
+    </div> 
 </body>
 </html>";
 

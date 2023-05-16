@@ -225,6 +225,7 @@
                                 <div class="_Form_Div _Info_Div">
                                     <label class="_Form_Label">E-mail</label>
                                     <input type="text" value="@Model.User?.Eposta" name="Email">
+                                    
                                     <span>
                                         Your invoice will be sent to this e-mail address
                                     </span>
@@ -232,7 +233,8 @@
 
                                 <div class="_Form_Div _Info_Div _Pos_Phone">
                                     <label class="_Form_Label">Phone</label>
-                                    <input type="text" value="@Model.User?.PhoneNumber" name="Phone">
+                                    <input type="text" value="@Model.User?.PhoneNumber" name="Phone" id="textPhone">
+                                    <input type="hidden" name="RealPhone" id="realPhoneInpt"/>
                                     <span>
                                         You will be receiving both text and phone calls from
                                         the driver at this number.
@@ -338,7 +340,9 @@
         });
 
 
-
+        $('#textPhone').on("change keypress keyup",function(){
+            $('#realPhoneInpt').val(phoneInput.getNumber().replace("+", ""))
+        })
 
         $('#DiscountCodeBtn').on("click", function (e) {
             e.preventDefault()

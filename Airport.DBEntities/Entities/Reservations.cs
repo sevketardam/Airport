@@ -41,6 +41,7 @@ namespace Airport.DBEntities.Entities
         public bool HidePrice { get; set; }
         public int? Coupon { get; set; }
         public double TotalPrice { get; set; }
+        public string RealPhone { get; set; }
 
         public LocationCars LocationCars { get; set; }
         public UserDatas User { get; set; }
