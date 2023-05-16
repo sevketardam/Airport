@@ -226,7 +226,7 @@
                                         the driver at this number.
                                     </span>
                                 </div>
-
+                                <input name="Coupon" type="hidden" id="couponCode"/>
                                 @for (int i = 0; i < Model.SelectedData.ReservationValues.PeopleCount - 1; i++)
                                 {
                                     <div class="_Form_Div">
@@ -308,6 +308,8 @@
         $('#DiscountCodeBtn').on("click", function (e) {
             e.preventDefault()
             var code = $('#DiscountCode').val()
+            $('#couponCode').val(code)
+
             if (code != null && code != undefined && code.trim() != "") {
                 $.ajax({
                     url: '/Reservation/CheckCoupon',
@@ -316,6 +318,7 @@
                     success: function (response) {
                         if (response.result == 1) {
                             var discountPrice = response.data.discount;
+                            
                             $('#priceBox').text((parseFloat(currentPrice) - ((parseFloat(currentPrice) * discountPrice) / 100)).toFixed(2))
                         }
                     }

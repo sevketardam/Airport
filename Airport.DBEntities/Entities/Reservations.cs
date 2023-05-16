@@ -39,11 +39,14 @@ namespace Airport.DBEntities.Entities
         public int? DriverId { get; set; }
         public bool IsDelete { get; set; }
         public bool HidePrice { get; set; }
+        public int? Coupon { get; set; }
+        public double TotalPrice { get; set; }
 
         public LocationCars LocationCars { get; set; }
         public UserDatas User { get; set; }
         public List<ReservationPeople> ReservationPeoples { get; set; }
         public Drivers Driver { get; set; }
         public List<ReservationServicesTable> ReservationServicesTables { get; set; }
+        public Coupons Coupons { get; set; }
     }
 }

@@ -13,13 +13,13 @@ using System.Net;
 using System.Security.Policy;
 using iText.Layout.Element;
 using Microsoft.AspNetCore.Html;
+using Airport.DBEntitiesDAL.Interfaces;
 
 namespace Airport.UI.Models.Extendions
 {
     public class PdfCreator
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
-
         public PdfCreator(IWebHostEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
@@ -54,10 +54,52 @@ namespace Airport.UI.Models.Extendions
 
             var price = reservation.IsDiscount ? reservation.Discount : reservation.OfferPrice;
             var servicefee = reservation.ServiceFee;
-            var totalprice = reservation.IsDiscount ? price - servicefee : price + servicefee;
+
+            var totalprice = price + servicefee;
+
             var priceHtml = "";
+
             if (reservation.HidePrice == false)
             {
+                var discountHtml = "";
+                var specialDiscountHtml = "";
+
+                if (reservation.Coupons != null)
+                {
+                    totalprice = Math.Round(Convert.ToDouble(totalprice)- ((reservation.Coupons.Discount * Convert.ToDouble(totalprice)) / 100),2);
+                    discountHtml = @$"        <div style=""display: flex; justify-content: space-between;width:100%;"">
+            <div>
+                      <p style=""margin: 0px;"">Discount:</p>
+            </div>
+            <div>
+                      <p style=""margin: 0px;margin-left:.5rem;"">{reservation.Coupons.Discount}%</p>
+            </div>
+        </div>";
+                }
+
+                if (reservation.IsDiscount)
+                {
+                    specialDiscountHtml = @$"        <div style=""display: flex; justify-content: space-between;width:100%;"">
+            <div>
+                      <p style=""font-weight: bold;margin: 0px;"">Special Price:</p>
+            </div>
+            <div>
+                      <p style=""margin: 0px;margin-left:.5rem;"">{reservation.Discount} €</p>
+            </div>
+        </div>";
+                }
+                else
+                {
+                    specialDiscountHtml = $@" <div style=""display: flex; justify-content: space-between;width:100%;"">
+            <div>
+                      <p style=""font-weight: bold;margin: 0px;"">TOTAL:</p>
+            </div>
+            <div>
+                       <p style=""margin: 0px;margin-left:.5rem;"">€{totalprice}</p>
+            </div>
+        </div>";
+                }
+
                 priceHtml = @$"
         <h3 style=""font-size: 23px;text-align: center;"">PAYMENT DETAILS</h3>
 
@@ -77,15 +119,10 @@ namespace Airport.UI.Models.Extendions
                       <p style=""margin: 0px;margin-left:.5rem;"">€{servicefee}</p>
             </div>
         </div>
-        <div style=""display: flex; justify-content: space-between;width:100%;"">
-            <div>
-                      <p style=""font-weight: bold;margin: 0px;"">TOTAL:</p>
-            </div>
-            <div>
-                       <p style=""margin: 0px;margin-left:.5rem;"">€{totalprice}</p>
-            </div>
-        </div>
+        {discountHtml}
+        {specialDiscountHtml}
 ";
+
             }
 
             var serviceHtml = "";
@@ -131,6 +168,7 @@ namespace Airport.UI.Models.Extendions
                     text-align: center;
                     align-items: center; 
                     padding: 20px 0px;"">
+<img src=""http://www.test.airportglobaltransfer.com/images/Logo.png"" alt="""" style=""width:230px;height:auto;"">
         <h3 style=""font-size: 25px; font-weight: bold; margin: 0px;"">airportglobaltransfer.com</h3>
         <p style=""font-size: 13px; font-weight: 600;"">BOOKING CONFIRMATION</p>
     </div>

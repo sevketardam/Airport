@@ -469,7 +469,7 @@ namespace Airport.UI.Controllers
         }
 
         [HttpPost("reservation-get-code", Name = "getBookValues")]
-        public async Task<IActionResult> ReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, List<int> serviceItems, string selectedServiceItems)
+        public async Task<IActionResult> ReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, List<int> serviceItems, string selectedServiceItems,string coupon)
         {
             try
             {
@@ -516,6 +516,16 @@ namespace Airport.UI.Controllers
                     }
                 }
 
+                var getCoupon = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now
+                                                                                        && a.CouponFinishDate >= DateTime.Now).FirstOrDefault();
+                var total = createReservation.LastPrice + totalServiceFee;
+
+                if (getCoupon is not null)
+                {
+                    total = total - ((total * getCoupon.Discount) / 100);
+                }
+
+                total = Math.Round(total, 2);
 
                 var item = _reservations.Insert(new Reservations
                 {
@@ -546,7 +556,12 @@ namespace Airport.UI.Controllers
                     Status = 1,
                     IsDelete = false,
                     HidePrice = reservation.HidePrice,
+                    Coupon = getCoupon?.Id,
+                    TotalPrice = total
                 });
+
+                item.Coupons = getCoupon;
+
                 var reservationItemsList = new List<ReservationServicesTable>();
 
                 foreach (var item1 in services)
@@ -1008,7 +1023,7 @@ namespace Airport.UI.Controllers
 
                     price = price / 10;
                     price = Math.Round(price, 2);
-                    datas.LastPrice = Math.Round(price, 2);
+                    datas.LastPrice = price;
                     datas.LocationCar = locationCar;
                     datas.LocationCar.Car = _carDetail.CarDetail(locationCar.CarId);
                     datas.LocationCar.Car.Service = _services.SelectByID(datas.LocationCar.Car.ServiceId);
@@ -1110,6 +1125,10 @@ namespace Airport.UI.Controllers
                     kod += karakterler[index];
                 }
                 createReservation.LocationCar.Location = _location.SelectByID(createReservation.LocationCar.LocationId);
+
+
+                var totalprice = reservation.IsDiscount ? Convert.ToDouble(reservation.Discount) : createReservation.LastPrice + totalServiceFee;
+
                 var item = _reservations.Insert(new Reservations
                 {
                     DropLatLng = createReservation.DropLocationLatLng,
@@ -1139,6 +1158,7 @@ namespace Airport.UI.Controllers
                     Status = 1,
                     IsDelete = false,
                     HidePrice = reservation.HidePrice,
+                    TotalPrice = totalprice
                 });
 
                 var reservationItemsList = new List<ReservationServicesTable>();

@@ -270,7 +270,7 @@ namespace Airport.MessageExtensions.Repos
 <body>
     <!-- Header -->
     <header>
-        <div class=""logo"">GetTransfer.com</div>
+        <div class=""logo"">airportglobaltransfer.com</div>
         <div class=""header-text"">Succesful Created Reservation</div>
     </header>
     <!-- Durum -->
@@ -307,33 +307,17 @@ namespace Airport.MessageExtensions.Repos
             <i class=""fa-solid fa-stop""></i>
             <h2>Detail</h2>
             <div><p>{reservationDetail.Comment}</p></div>
-        </div>
-        <div class=""istek-ayrinti-bilgi"">
-            <div class=""istek-ayrinti-bilgi-item"">
-                <span>Drop Price: &nbsp;</span>
-                <span class=""istek-description"">{reservationDetail.OfferPrice} €</span>
-                
-            </div>
-            <div class=""istek-ayrinti-bilgi-item"">
-                <span>Service Fee : &nbsp;</span>
-                <span class=""istek-description"">{reservationDetail.ServiceFee} €</span>
-            </div>
-            <div class=""istek-ayrinti-bilgi-item"">
-                <span>Total Price : &nbsp;</span>
-                <span class=""istek-description"">{(reservationDetail.ServiceFee + reservationDetail.OfferPrice)} €</span>
-            </div>
-            
-        </div>
+        </div>     
     </section>
     <!-- Teklif -->
     <section class=""teklif"">
         <div class=""teklif-bilgi"">
             <div class=""teklif-item"">
-                <span >Araç : &nbsp; </span>
+                <span >Car : &nbsp; </span>
                 <span class=""teklif-description"">{reservationDetail.LocationCars.Car.Brand.CarBrandName} {reservationDetail.LocationCars.Car.Model.CarModelName} </span>
             </div>
             <div class=""teklif-item"">
-                <span>Plaka : &nbsp; </span>
+                <span>Plate : &nbsp; </span>
                 <span class=""teklif-description"">{reservationDetail.LocationCars.Car.Plate}</span>
             </div>          
         </div>

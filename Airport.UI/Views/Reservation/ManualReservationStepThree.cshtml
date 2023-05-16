@@ -171,10 +171,6 @@
                             <h5>@Model.SelectedData.ReservationValues.FlightTime</h5>
                         </div>
                         <div class="my-2">
-                            <input id="DiscountCode" type="text"/>
-                            <button class="btn btn-success" id="DiscountCodeBtn">Check Code</button>
-                        </div>
-                        <div class="my-2">
                             <div class="_Total_Flex">
                                 <h3>
                                     Total
@@ -348,7 +344,8 @@
         })
 
         $('#newPriceInput').on('change', function () {
-            $('input[name="Discount"]').val($(this).val())
+            $('input[name="Discount"]').val($(this).val().replace(".",","))
+            console.log(listCheckedItems)
         })
         var currentPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
 
@@ -373,9 +370,10 @@
                 }
             })
             currentPrice = lastPrice + price
-            $('#priceBox').text(lastPrice + price)
-            $('#newPriceInput').val(lastPrice + price)
+            $('#priceBox').text(currentPrice.toFixed(2))
+            $('#newPriceInput').val(currentPrice.toFixed(2))
             $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
+            $('input[name="Discount"]').val(currentPrice.toFixed(2))
         })
 
 
@@ -393,9 +391,10 @@
                 }
             })
             currentPrice = lastPrice + price
-            $('#priceBox').text(lastPrice + price)
-            $('#newPriceInput').val(lastPrice + price)
+            $('#priceBox').text(currentPrice.toFixed(2))
+            $('#newPriceInput').val(currentPrice.toFixed(2))
             $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
+            $('input[name="Discount"]').val(currentPrice.toFixed(2))
         })
 
 

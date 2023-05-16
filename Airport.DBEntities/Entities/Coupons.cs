@@ -24,5 +24,6 @@ namespace Airport.DBEntities.Entities
         public string Comment { get; set; }
 
         public UserDatas User{ get; set; }
+        public List<Reservations> Reservations { get; set; }
     }
 }
