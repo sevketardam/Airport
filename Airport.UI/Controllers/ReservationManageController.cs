@@ -418,10 +418,12 @@ namespace Airport.UI.Controllers
                                     }
 
                                     price = price / 10;
+
+                                    price = Math.Round(price, 2);
                                     getreservation.Add(new GetReservationValues
                                     {
                                         LocationCars = b,
-                                        LastPrice = price.ToString("0.00"),
+                                        LastPrice = price,
                                         ReservationDate = reservation.FlightTime,
                                         PickLocationName = contentJsonResult.Result.formatted_address,
                                         DropLocationName = contentJsonResult2.Result.formatted_address,

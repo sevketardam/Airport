@@ -223,28 +223,29 @@ namespace Airport.UI.Controllers
                                         b.LocationCarsFares.ForEach(c =>
                                         {
 
+                                            var fare = Convert.ToDouble(c.Fare.ToString().Replace(".", ","));
                                             if (c.StartFrom < minKm)
                                             {
                                                 if (c.PriceType == 2)
                                                 {
-                                                    price += c.Fare * (c.UpTo - c.StartFrom);
+                                                    price += fare * (c.UpTo - c.StartFrom);
                                                 }
                                                 else
                                                 {
                                                     if (minKm < (c.UpTo - c.StartFrom))
                                                     {
-                                                        price += c.Fare * minKm;
+                                                        price += fare * minKm;
                                                     }
                                                     else
                                                     {
-                                                        price += c.Fare * (c.UpTo - c.StartFrom);
+                                                        price += fare * (c.UpTo - c.StartFrom);
                                                     }
 
                                                 }
                                             }
 
                                             lastUp = c.UpTo;
-                                            lastPrice = c.Fare;
+                                            lastPrice = fare;
                                         });
 
 
@@ -262,10 +263,11 @@ namespace Airport.UI.Controllers
                                     }
 
                                     price = price / 10;
+                                    price = Math.Round(price,2);
                                     getreservation.Add(new GetReservationValues
                                     {
                                         LocationCars = b,
-                                        LastPrice = price.ToString("0.00"),
+                                        LastPrice = price,
                                         ReservationDate = reservation.FlightTime,
                                         PickLocationName = contentJsonResult.Result.formatted_address,
                                         DropLocationName = contentJsonResult2.Result.formatted_address,
@@ -382,25 +384,26 @@ namespace Airport.UI.Controllers
                         locationCar.LocationCarsFares.ForEach(c =>
                         {
 
+                            var fare = Convert.ToDouble(c.Fare.ToString().Replace(".", ","));
                             if (c.PriceType == 2)
                             {
-                                price += c.Fare * (c.UpTo - c.StartFrom);
+                                price += fare * (c.UpTo - c.StartFrom);
                             }
                             else
                             {
                                 if (datas.KM < (c.UpTo - c.StartFrom))
                                 {
-                                    price += c.Fare * datas.KM;
+                                    price += fare * datas.KM;
                                 }
                                 else
                                 {
-                                    price += c.Fare * (c.UpTo - c.StartFrom);
+                                    price += fare * (c.UpTo - c.StartFrom);
                                 }
 
                             }
 
                             lastUp = c.UpTo;
-                            lastPrice = c.Fare;
+                            lastPrice = fare;
                         });
 
 
@@ -865,10 +868,12 @@ namespace Airport.UI.Controllers
                                     }
 
                                     price = price / 10;
+                                    price = Math.Round(price, 2);
+
                                     getreservation.Add(new GetReservationValues
                                     {
                                         LocationCars = b,
-                                        LastPrice = price.ToString("0.00"),
+                                        LastPrice = price,
                                         ReservationDate = reservation.FlightTime,
                                         PickLocationName = contentJsonResult.Result.formatted_address,
                                         DropLocationName = contentJsonResult2.Result.formatted_address,

@@ -11,6 +11,12 @@
     margin: 5rem auto;
 }
 
+.logo-mobile {
+    width: 60px !important;
+    background: url(/images/Logo.png) no-repeat !important;
+    background-size: contain !important;
+}
+
 .logo {
     background: url(/images/Logo.png) no-repeat !important;
     background-size: contain !important;
