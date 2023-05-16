@@ -211,7 +211,7 @@
                     </div>
 
                     <div>
-                        <form id="_Passenger_Form" asp-route="getBookValues">
+                        <form id="_Passenger_Form" asp-route="getBookValues" method="post">
                             <div class="_Form_Flex_Style">
                                 <div class="_Form_Div">
                                     <label class="_Form_Label">Name</label>
@@ -291,7 +291,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="checkServiceDiv">
-                                                            <input type="checkbox" class="itemCheckbox" name="selectedValue" value="@item.Id" class="w-100" />
+                                                            <input type="checkbox" class="itemCheckbox w-100" name="selectedValue" value="@item.Id" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -300,7 +300,7 @@
                                     </div>
                                 }
                                 <div class="_Form_Div">
-                                    <button>
+                                    <button type="submit">
                                         CREATE RESERVATİON
                                     </button>
                                 </div>

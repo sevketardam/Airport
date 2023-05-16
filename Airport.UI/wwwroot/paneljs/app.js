@@ -296,60 +296,60 @@ $(".One_Way").on("click", function () {
 
 
 
-$("#_Passenger_Form").validate({
-    rules: {
-        Name: {
-            required: true,
-        },
-        Surname: {
-            required: true,
-        },
-        Email: {
-            required: true,
-            email: true,
-        },
-        Phone: {
-            required: true,
-        },
-    },
-    messages: {
-        Name: {
-            required: "!",
-        },
-        Surname: {
-            required: "!",
-        },
-        Email: {
-            required: "!",
-            email: "!",
-        },
-        Phone: {
-            required: "!",
-        },
-    },
-    submitHandler: function (form) {
+//$("#_Passenger_Form").validate({
+//    rules: {
+//        Name: {
+//            required: true,
+//        },
+//        Surname: {
+//            required: true,
+//        },
+//        Email: {
+//            required: true,
+//            email: true,
+//        },
+//        Phone: {
+//            required: true,
+//        },
+//    },
+//    messages: {
+//        Name: {
+//            required: "!",
+//        },
+//        Surname: {
+//            required: "!",
+//        },
+//        Email: {
+//            required: "!",
+//            email: "!",
+//        },
+//        Phone: {
+//            required: "!",
+//        },
+//    },
+//    submitHandler: function (form) {
 
-        $("body").append(`
-        <div class="createLoader active">
-            <p>Creating</p>
-            <div class="words">
-                <span class="word">Reservation</span>
-                <span class="word">Voucher</span>
-            </div>
-        </div>
-        `)
-        $("html, body").css("overflow", "hidden");
+//        $("body").append(`
+//        <div class="createLoader active">
+//            <p>Creating</p>
+//            <div class="words">
+//                <span class="word">Reservation</span>
+//                <span class="word">Voucher</span>
+//            </div>
+//        </div>
+//        `)
+//        $("html, body").css("overflow", "hidden");
 
-        form.submit();
-    },
-});
+//        form.submit();
+//    },
+//});
 
-$("body").on("click", ".pageServiceDownItemTop", function (e) {
-    if ($(e.target).attr("class") != "passengerInputs" && $(e.target).attr("class") != "passengerInputs valid") {
-        $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
-        $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
-    }
-})
+//$("body").on("click", ".pageServiceDownItemTop", function (e) {
+//    if ($(e.target).attr("class") != "passengerInputs" && $(e.target).attr("class") != "passengerInputs valid") {
+//        $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
+//        $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
+//    }
+//})
 
 $("._Dash_Right button").on("click", function () {
     location.pathname = `${$(this).attr("href") }`;
