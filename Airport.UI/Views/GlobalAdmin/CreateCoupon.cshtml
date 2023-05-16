@@ -6,24 +6,34 @@
 
 <a class="btn btn-primary" href="#" onclick="$('#addCouponModal').modal()">Add Coupon</a>
 
-<table>
-    <thead>
-        <tr>
-            <th>Code</th>
-            <th>Active</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var coupon in Model)
-        {
-            <tr>
-                <td>@coupon.CouponCode</td>
-                <td>@(coupon.Active ? "Active" : "Non Active")</td>
-                <td><a href="#" class="updateCoupon" data-id="@coupon.Id"><i class="simple-icon-pencil"></i></a></td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="couponGeneralFlex mt-4">
+    @foreach (var coupon in Model)
+    {
+        <div class="couponItem">
+            <div class="couponItemStyle">
+                <div class="couponStatus @(coupon.Active ? "active" : "deactive") ">
+                    @(coupon.Active ? "Active" : "DeActive")
+                </div>
+                <div class="copuonUpdate">
+                    <a href="javascript:;" class="updateCoupon" data-id="@coupon.Id"><i class="fa-solid fa-pencil"></i></a>
+                </div>
+                <div class="couponCodeDiv">
+                    Coupon Code : @coupon.CouponCode
+                </div>
+                <div class="couponStartDate couponDateFlex">
+                    <div class="bold">Start</div>
+                    <i class="fa-regular fa-horizontal-rule"></i>
+                    <div class="normal">@coupon.CouponStartDate.ToString().Split(" ")[0]</div>
+                </div>
+                <div class="couponFinishDate couponDateFlex">
+                    <div class="bold">Finish</div>
+                    <i class="fa-regular fa-horizontal-rule"></i>
+                    <div class="normal">@coupon.CouponStartDate.ToString().Split(" ")[0]</div>
+                </div>
+            </div>
+        </div>
+    }
+    </div>
 
 <div class="modal fade" id="addCouponModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">

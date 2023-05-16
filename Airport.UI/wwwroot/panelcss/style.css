@@ -530,4 +530,128 @@ input.selectPhoto {
     }
 }
 
-input:checked
+
+.couponGeneralFlex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.couponItem {
+    width: calc((100% / 5) - 1.2rem);
+    height: auto;
+    position: relative;
+    padding: 1.2rem 0 0 0;
+}
+
+.couponItemStyle {
+    border-radius: 0 10px 10px 10px;
+    box-shadow: 0 2px 5px rgb(0,0,0,.36);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, .36);
+    -moz-box-shadow: 0 2xp 5px rgba(0, 0, 0, .36);
+}
+
+.couponStatus {
+    position: absolute;
+    padding: 0 0.6rem;
+    display: flex;
+    height: 1.2rem;
+    border-radius: 10px 10px 0 0;
+    left: 0;
+    top: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+    .couponStatus.active {
+        color: white;
+        background: var(--orange);
+    }
+
+    .couponStatus.deactive {
+        color: black;
+        background: #cdcdcd;
+    }
+
+.couponCodeDiv {
+    height: 2rem;
+    border-bottom: 1px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #01375A;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 0 10px 0 0;
+}
+
+
+.couponDateFlex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+
+.couponStartDate.couponDateFlex {
+    background: white;
+}
+
+.couponFinishDate.couponDateFlex {
+    background: #cdcdcd54;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.normal {
+    font-weight: 500;
+}
+
+.copuonUpdate {
+    position: absolute;
+    right: -0.6rem;
+    top: 0.3rem;
+    background: white;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgb(0,0,0,.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+}
+
+    .copuonUpdate a {
+        color: var(--orange);
+    }
+
+    .couponItem:hover .copuonUpdate {
+        opacity: 1;
+    }
+
+@media only screen and (max-width: 1200px) {
+    .couponItem {
+        width: calc((100% / 4) - 1.13rem);
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .couponItem {
+        width: calc((100% / 2) - 0.75rem);
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .couponItem {
+        width: 100%;
+    }
+}
