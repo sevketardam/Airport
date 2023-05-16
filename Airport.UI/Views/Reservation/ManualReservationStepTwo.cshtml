@@ -72,7 +72,7 @@
                                     <div class="_Pos_Rel">
                                         <div class="@(Model.SelectedReservationValues.ReturnStatus ? "" : "d-none") Return_Arrival">
                                             <label for="">Return</label>
-                                            <input type="datetime-local" name="ReturnDate" value="@Model.SelectedReservationValues.ReturnDate.ToString("yyyy-MM-ddTHH:mm:ss")">
+                                            <input type="datetime-local" name="ReturnDate" value="@(Model.SelectedReservationValues.ReturnStatus ? Model.SelectedReservationValues.ReturnDate.ToString("yyyy-MM-ddTHH:mm:ss"):"")">
                                             <img src="~/img/calendar.png" class="calendarImage" />
 
                                             <input type="checkbox" name="ReturnStatus" value="true" @(Model.SelectedReservationValues.ReturnStatus ? "checked" : "") style="position:absolute; opacity: 0;visibility: visible; " />
