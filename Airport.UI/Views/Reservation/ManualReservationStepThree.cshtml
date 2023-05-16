@@ -171,7 +171,10 @@
                             <h5>@Model.SelectedData.ReservationValues.FlightTime</h5>
                         </div>
                         <div class="my-2">
-
+                            <input id="DiscountCode" type="text"/>
+                            <button class="btn btn-success" id="DiscountCodeBtn">Check Code</button>
+                        </div>
+                        <div class="my-2">
                             <div class="_Total_Flex">
                                 <h3>
                                     Total
@@ -206,7 +209,6 @@
                             you may be charged for any extra pack or not to be taken by driver without any refund
                         </p>
                     </div>
-
 
                     <div>
                         <form id="_Passenger_Form" asp-route="getManualBookValues">
@@ -249,15 +251,11 @@
                                         <input type="text" name="OthersSurname">
                                     </div>
                                 }
-
-
-
                             </div>
-
 
                             <input type="hidden" name="selectedServiceItems" />
 
-                            
+       
                             <div class="w-100">
                                 <label class="_Form_Label">Comment</label>
                                 <textarea class="formTextarea" name="comment"></textarea>
@@ -296,7 +294,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="checkServiceDiv">
-                                                        <input type="checkbox" class="itemCheckbox" name="selectedValue" value="@item.Id" class="w-100" />
+                                                        <input type="checkbox" class="itemCheckbox w-100" name="selectedValue" value="@item.Id" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -305,11 +303,9 @@
                                 </div>
                             }
                            
-
                             <div class="_Form_Div ml-2 mt-2">
                                 <input type="checkbox" name="hidePrice" value="true"/> <label for="name">Hide Price on Voucher</label>
                             </div>
-
 
                             <div class="_Form_Div">
                                 <button class="Form_Flex_Style_Button">
@@ -319,8 +315,6 @@
 
                         </form>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -330,6 +324,25 @@
 
 @section pageJs{
     <script>
+        $('#DiscountCodeBtn').on("click", function (e) {
+            e.preventDefault()
+            var code = $('#DiscountCode').val()
+            if (code != null && code != undefined && code.trim() != "") {
+                $.ajax({
+                    url: '/Reservation/CheckCoupon',
+                    type: "POST",
+                    data: { coupon: code },
+                    success: function (response) {
+                        if (response.result == 1) {
+                            var discountPrice = response.data.discount;
+                            $('#priceBox').text((parseFloat(currentPrice) - ((parseFloat(currentPrice) * discountPrice) / 100)).toFixed(2))
+                            $('#newPriceInput').val((parseFloat(currentPrice) - ((parseFloat(currentPrice) * discountPrice) / 100)).toFixed(2))
+                        }
+                    }
+                });
+            }
+        })
+
         $('#discountCheck').on("change", function () {
             $('input[name="IsDiscount"]').val($(this).is(":checked"))
         })
@@ -337,6 +350,7 @@
         $('#newPriceInput').on('change', function () {
             $('input[name="Discount"]').val($(this).val())
         })
+        var currentPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
 
         var cleave = new Cleave('[name="Phone"]', {
             numericOnly: true,
@@ -344,7 +358,7 @@
         });
 
         let listCheckedItems = []
-        const lastPrice =@Model.SelectedData.LastPrice.ToString().Replace(",",".");
+        let lastPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
         $('.itemCheckbox').on("click", function () {
             listCheckedItems = []
             var price = 0;
@@ -358,7 +372,7 @@
                     price += (parseFloat($(this).closest('.pageServiceDownItem').find(".servicePrice").text().trim()) * parseFloat($(this).closest('.pageServiceDownItem').find("#peopleCountInput").val()))
                 }
             })
-
+            currentPrice = lastPrice + price
             $('#priceBox').text(lastPrice + price)
             $('#newPriceInput').val(lastPrice + price)
             $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
@@ -378,7 +392,7 @@
                     price += (parseFloat($(this).closest('.pageServiceDownItem').find(".servicePrice").text().trim()) * parseFloat($(this).closest('.pageServiceDownItem').find("#peopleCountInput").val()))
                 }
             })
-
+            currentPrice = lastPrice + price
             $('#priceBox').text(lastPrice + price)
             $('#newPriceInput').val(lastPrice + price)
             $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))

@@ -158,6 +158,10 @@
                             </div>
                         }
                         <div class="my-2">
+                            <input id="DiscountCode" type="text" />
+                            <button class="btn btn-success" id="DiscountCodeBtn">Check Code</button>
+                        </div>
+                        <div class="my-2">
                             <h4>Passengers</h4>
                             <h5>@Model.SelectedData.ReservationValues.PeopleCount</h5>
                         </div>
@@ -285,22 +289,14 @@
                                         }
                                     </div>
                                 }
-
-
                                 <div class="_Form_Div">
                                     <button>
                                         CREATE RESERVATİON
                                     </button>
                                 </div>
-
                             </div>
-
-
-
                         </form>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -309,6 +305,26 @@
 
 @section pageJs{
     <script>
+        $('#DiscountCodeBtn').on("click", function (e) {
+            e.preventDefault()
+            var code = $('#DiscountCode').val()
+            if (code != null && code != undefined && code.trim() != "") {
+                $.ajax({
+                    url: '/Reservation/CheckCoupon',
+                    type: "POST",
+                    data: { coupon: code },
+                    success: function (response) {
+                        if (response.result == 1) {
+                            var discountPrice = response.data.discount;
+                            $('#priceBox').text((parseFloat(currentPrice) - ((parseFloat(currentPrice) * discountPrice) / 100)).toFixed(2))
+                        }
+                    }
+                });
+            }
+        })
+
+        var currentPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
+
         let listCheckedItems = []
         const lastPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
         $('.itemCheckbox').on("click", function () {
@@ -324,7 +340,7 @@
                     price += (parseFloat($(this).closest('.pageServiceDownItem').find(".servicePrice").text().trim()) * parseFloat($(this).closest('.pageServiceDownItem').find("#peopleCountInput").val()))
                 }
             })
-
+            currentPrice = lastPrice + price;
             $('#priceBox').text(lastPrice + price)
             $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
         })
@@ -343,7 +359,7 @@
                     price += (parseFloat($(this).closest('.pageServiceDownItem').find(".servicePrice").text().trim()) * parseFloat($(this).closest('.pageServiceDownItem').find("#peopleCountInput").val()))
                 }
             })
-
+            currentPrice = lastPrice + price;
             $('#priceBox').text(lastPrice + price)
             $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
         })
