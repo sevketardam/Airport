@@ -20,6 +20,7 @@ using Airport.MessageExtension.VM;
 using iText.Layout.Element;
 using Airport.MessageExtension.Interfaces;
 using System.Globalization;
+using System.IO;
 
 namespace Airport.UI.Controllers
 {
@@ -454,6 +455,7 @@ namespace Airport.UI.Controllers
         {
             try
             {
+
                 var createReservation = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
                 if (createReservation == null)
@@ -613,9 +615,16 @@ namespace Airport.UI.Controllers
                 });
                 return View(item);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                ViewBag.Error = "Error";
+                string dosyaYolu = "wwwroot/error.txt";
+
+                using (StreamWriter yazici = new StreamWriter(dosyaYolu))
+                {
+                    string metin = ex.ToString();
+                    yazici.WriteLine(metin);
+                }
+
                 return RedirectToAction("Index", "Home");
             }
 
@@ -1271,7 +1280,6 @@ namespace Airport.UI.Controllers
         {
             try
             {
-
                 var coupons = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now 
                                                                                         && a.CouponFinishDate >= DateTime.Now).FirstOrDefault();
                 if (coupons != null)
