@@ -52,33 +52,33 @@ namespace Airport.UI.Controllers
         }
 
 
-        public IActionResult SMSDeneme()
-        {
-            var allMessage = new List<Mesaj>();
-            allMessage.Add(new Mesaj
-            {
-                dest = "905365278808",
-                msg = "deneme mesaj1"
-            });
-            allMessage.Add(new Mesaj
-            {
-                dest = "905531878855",
-                msg = "deneme mesaj1"
-            });
-            var mesaj = allMessage.ToArray();
+        //public IActionResult SMSDeneme()
+        //{
+        //    var allMessage = new List<Mesaj>();
+        //    allMessage.Add(new Mesaj
+        //    {
+        //        dest = "905365278808",
+        //        msg = "deneme mesaj1"
+        //    });
+        //    allMessage.Add(new Mesaj
+        //    {
+        //        dest = "905531878855",
+        //        msg = "deneme mesaj1"
+        //    });
+        //    var mesaj = allMessage.ToArray();
 
-            _sms.SmsForReservation(mesaj);
+        //    _sms.SmsForReservation(mesaj);
 
 
-            return View();
-        }
+        //    return View();
+        //}
 
 
         [HttpGet("panel/my-cars")]
         public IActionResult Index()
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-            var myCars = _myCars.SelectByFunc(a => a.UserId == userId);
+            var myCars = _myCars.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
             myCars.ForEach(a =>
             {
                 a.Brand = _carBrands.SelectByID(a.BrandId);
