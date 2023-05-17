@@ -34,7 +34,6 @@ namespace Airport.DBEntities.Entities
         public string? AboutUs { get; set; }
         public string? Title { get; set; }
         public string RealPhone { get; set; }
-        public string? Test { get; set; }
 
         public List<Services> Services { get; set; }
         public List<MyCars> MyCars { get; set; }
