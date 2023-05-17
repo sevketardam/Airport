@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Airport.DBEntities.Context
 {
@@ -18,14 +20,14 @@ namespace Airport.DBEntities.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //var connectionString = "server=localhost;port=3306;database=wr7076624_;user=globalairport_db;password=Ljfv7789#;Allow Zero Datetime=True;Convert Zero Datetime=True";
-            //optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            var connectionString = "server=localhost;port=3306;database=wr7076624_;user=globalairport_db;password=Ljfv7789#;Allow Zero Datetime=True;Convert Zero Datetime=True";
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
             //var connectionString = "Server =.\\SQLEXPRESS01; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
             //optionsBuilder.UseSqlServer(connectionString);
 
-            var connectionString = "Server =.\\SQLEXPRESS; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
-            optionsBuilder.UseSqlServer(connectionString);
+            //var connectionString = "Server =.\\SQLEXPRESS; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
+            //optionsBuilder.UseSqlServer(connectionString);
 
             base.OnConfiguring(optionsBuilder);
         }

@@ -244,7 +244,6 @@ namespace Airport.UI.Controllers
                                                     {
                                                         price += fare * (c.UpTo - c.StartFrom);
                                                     }
-
                                                 }
                                             }
 
@@ -1143,7 +1142,9 @@ namespace Airport.UI.Controllers
                     Status = 1,
                     IsDelete = false,
                     HidePrice = reservation.HidePrice,
-                    TotalPrice = totalprice
+                    TotalPrice = totalprice,
+                    RealPhone = reservation.RealPhone,
+                    
                 });
 
                 var reservationItemsList = new List<ReservationServicesTable>();
@@ -1194,11 +1195,20 @@ namespace Airport.UI.Controllers
 
 
                 PdfCreator pdfCreator = new PdfCreator(_env);
-
-
                 pdfCreator.CreateReservationPDF(kod + "-" + item.Id, item);
 
                 _mail.SendReservationMail(item);
+
+                var allMessage = new List<Mesaj>();
+                allMessage.Add(new Mesaj
+                {
+                    dest = reservation.RealPhone,
+                    msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link http://test.airportglobaltransfer.com/pdf/{item.ReservationCode}-{item.Id}.pdf"
+                });
+
+                var mesaj = allMessage.ToArray();
+
+                _sms.SmsForReservation(mesaj);
 
                 item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
                 item.ReservationServicesTables.ForEach(a =>
