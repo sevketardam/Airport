@@ -312,6 +312,7 @@ namespace Airport.UI.Controllers
 
 
 
+                    ViewBag.test = locationCars;
                     return View(lastVM);
                 }
 
@@ -609,7 +610,6 @@ namespace Airport.UI.Controllers
                     a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
                     a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
                 });
-
                 return View(item);
             }
             catch (Exception)
