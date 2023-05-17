@@ -880,6 +880,10 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
         width: 100%;
     }
 
+._Car_Types ._Car_Slider > div {
+    width: calc((100% / 9) - 0.445rem);
+}
+
 ._Car_Types .swiper-slide {
     text-align: center;
     font-size: 18px;
@@ -2956,9 +2960,14 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
 
+    ._Car_Types ._Car_Slider > div {
+        width: calc((100% / 5) - 0.445rem);
+    }
 
-
-
+    ._Car_Types ._Car_Slider {
+        justify-content: center;
+        align-items: center;
+    }
 
 
 
