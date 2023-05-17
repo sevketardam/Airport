@@ -231,24 +231,24 @@ namespace Airport.UI.Controllers
                                             {
                                                 if (c.PriceType == 2)
                                                 {
-                                                    price += c.Fare * (c.UpTo - c.StartFrom);
+                                                    price += Convert.ToDouble(c.Fare) * (c.UpTo - c.StartFrom);
                                                 }
                                                 else
                                                 {
                                                     if (minKm < (c.UpTo - c.StartFrom))
                                                     {
-                                                        price += c.Fare * minKm;
+                                                        price += Convert.ToDouble(c.Fare) * minKm;
                                                     }
                                                     else
                                                     {
-                                                        price += c.Fare * (c.UpTo - c.StartFrom);
+                                                        price += Convert.ToDouble(c.Fare) * (c.UpTo - c.StartFrom);
                                                     }
 
                                                 }
                                             }
 
                                             lastUp = c.UpTo;
-                                            lastPrice = c.Fare;
+                                            lastPrice = Convert.ToDouble(c.Fare);
                                         });
 
                                         if (lastUp < minKm)
@@ -819,24 +819,24 @@ namespace Airport.UI.Controllers
                                             {
                                                 if (c.PriceType == 2)
                                                 {
-                                                    price += c.Fare * (c.UpTo - c.StartFrom);
+                                                    price += Convert.ToDouble(c.Fare) * (c.UpTo - c.StartFrom);
                                                 }
                                                 else
                                                 {
                                                     if (minKm < (c.UpTo - c.StartFrom))
                                                     {
-                                                        price += c.Fare * minKm;
+                                                        price += Convert.ToDouble(c.Fare) * minKm;
                                                     }
                                                     else
                                                     {
-                                                        price += c.Fare * (c.UpTo - c.StartFrom);
+                                                        price += Convert.ToDouble(c.Fare) * (c.UpTo - c.StartFrom);
                                                     }
 
                                                 }
                                             }
 
                                             lastUp = c.UpTo;
-                                            lastPrice = c.Fare;
+                                            lastPrice = Convert.ToDouble(c.Fare);
                                         });
 
 

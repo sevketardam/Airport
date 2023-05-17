@@ -179,7 +179,7 @@ namespace Airport.UI.Controllers
                             LocationCarId = addedLocationCars.Id,
                             StartFrom = car.StartKm,
                             UpTo = car.UpToKm,
-                            Fare = car.Price,
+                            Fare = car.Price.ToString(),
                             PriceType  = car.PriceType,
                         });
                     });
@@ -271,7 +271,7 @@ namespace Airport.UI.Controllers
                         LocationCarId = addedLocationCars.Id,
                         StartFrom = car.StartKm,
                         UpTo = car.UpToKm,
-                        Fare = car.Price,
+                        Fare = car.Price.ToString(),
                         PriceType = car.PriceType
                     });
                 });
