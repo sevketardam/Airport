@@ -12,8 +12,7 @@
 }
 
 .logo-mobile {
-    width: 60px !important;
-    background: url(/images/Logo.png) no-repeat !important;
+    background: url(/img/airglobal-icon-black.png) no-repeat !important;
     background-size: contain !important;
 }
 
