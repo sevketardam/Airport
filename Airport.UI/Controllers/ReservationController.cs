@@ -70,6 +70,16 @@ namespace Airport.UI.Controllers
         {
             try
             {
+
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var user = _userDatas.SelectByID(userId);
+                if (user != null)
+                {
+                    user.Test = (1.3 * 5).ToString();
+                    _userDatas.Update(user);
+                }
+
+
                 var api_key = "AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg";
 
                 var httpClient = new HttpClient();
