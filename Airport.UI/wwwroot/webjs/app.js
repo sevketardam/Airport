@@ -163,9 +163,6 @@ $('form[id="_Agency_Form"]').validate({
             required: "Contracts Must Be Approved",
         },
     },
-    submitHandler: function (form) {
-        form.submit();
-    },
 });
 
 // İletişim sayfasındaki formun validasyonu

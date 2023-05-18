@@ -19,7 +19,7 @@
                         </p>
                     </div>
                     <div>
-                        <form id="_Profile_Form" asp-route="updateCompanyDatas">
+                        <form id="_Profile_Form">
                             <div class="_Form_Flex_Style">
 
                                 <div class="_Form_Div _Two _Info">
@@ -78,30 +78,35 @@
 
 
 @section pageJs{
-    @if (ViewBag.Message != null)
-    {
-        <script>
-            @if(ViewBag.Message == "success")
-            {
-                <text>
-                      Swal.fire({
-                    icon: 'success',
-                    title: 'Succesful',
-                    text: 'Successfully changed your company information',
-                })
-                </text>
-            }
-            else
-            {
-                               <text>
-                    Swal.fire({
-                    icon: 'error',
-                    title: 'Error!!',
-                    text: 'Something went wrong!! Try again ',
-                    })
-                </text> 
-            }
 
-        </script>
-    }
+    <script>
+
+        $('#_Profile_Form').on("submit", function (e) {
+            e.preventDefault();
+            if ($(this).valid()) {
+                var formData = $(this).serialize()
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.WebProfileController.Company))',
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Succesful',
+                                text: 'Successfully changed your company information',
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!!',
+                                text: 'Something went wrong!! Try again ',
+                            })
+                        }
+                    }
+                });
+            }
+        })
+    </script>
+
 }

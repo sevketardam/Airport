@@ -23,11 +23,11 @@ namespace Airport.DBEntities.Context
             //var connectionString = "server=localhost;port=3306;database=wr7076624_;user=globalairport_db;password=Ljfv7789#;Allow Zero Datetime=True;Convert Zero Datetime=True";
             //optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
-            //var connectionString = "Server =.\\SQLEXPRESS01; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
-            //optionsBuilder.UseSqlServer(connectionString);
-
-            var connectionString = "Server =.\\SQLEXPRESS; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
+            var connectionString = "Server =.\\SQLEXPRESS01; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
             optionsBuilder.UseSqlServer(connectionString);
+
+            //var connectionString = "Server =.\\SQLEXPRESS; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
+            //optionsBuilder.UseSqlServer(connectionString);
 
             base.OnConfiguring(optionsBuilder);
         }
@@ -158,6 +158,14 @@ namespace Airport.DBEntities.Context
                 .HasOne<Coupons>(a => a.Coupons)
                 .WithMany(a => a.Reservations)
                 .HasForeignKey(a => a.Coupon);
+
+            modelBuilder.Entity<LoginAuth>()
+                .HasOne<UserDatas>(a => a.User)
+                .WithOne(a => a.LoginAuth);
+
+            modelBuilder.Entity<LoginAuth>()
+                .HasOne<Drivers>(a => a.Driver)
+                .WithOne(a => a.LoginAuth);
 
             base.OnModelCreating(modelBuilder);
         }

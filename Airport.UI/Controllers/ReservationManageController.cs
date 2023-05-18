@@ -38,7 +38,8 @@ namespace Airport.UI.Controllers
         IServiceCategoriesDAL _serviceCategories;
         IReservationServicesTableDAL _reservationServicesTable;
         IMail _mail;
-        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail)
+        ILoginAuthDAL _loginAuth;
+        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -55,6 +56,7 @@ namespace Airport.UI.Controllers
             _reservationServicesTable = reservationServicesTable;
             _env = env;
             _mail = mail;
+            _loginAuth = loginAuth;
         }
 
 
@@ -77,7 +79,6 @@ namespace Airport.UI.Controllers
 
                 return BadRequest(ex.ToString());
             }
-
         }
 
         [HttpGet("panel/reservation-detail/{id}")]
@@ -705,7 +706,8 @@ namespace Airport.UI.Controllers
 
                 item.LocationCars = _locationCars.SelectByID(item.LocationCarId);
                 item.LocationCars.Car = _carDetail.CarDetail(item.LocationCars.CarId);
-                item.User = _userDatas.SelectByID(item.UserId);
+                var loginAuth = _loginAuth.SelectByID(item.UserId);
+                item.User = _userDatas.SelectByID(loginAuth.UserId);
 
                 var reservationPeople = new List<ReservationPeople>();
 

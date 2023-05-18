@@ -15,9 +15,13 @@ namespace Airport.UI.Controllers
     public class LoginController : Controller
     {
         IUserDatasDAL _user;
-        public LoginController(IUserDatasDAL user)
+        IDriversDAL _drivers;
+        ILoginAuthDAL _loginAuth;
+        public LoginController(IUserDatasDAL user, IDriversDAL drivers, ILoginAuthDAL loginAuth)
         {
             _user = user;
+            _drivers = drivers;
+            _loginAuth = loginAuth;
         }
 
         [HttpGet("login")]
@@ -34,7 +38,7 @@ namespace Airport.UI.Controllers
                 try
                 {
                     var convertPassword = GetMD5(loginValues.UserPassword);
-                    var userData = _user.SelectByFunc(a => a.Eposta == loginValues.UserEposta && a.Password == convertPassword).FirstOrDefault();
+                    var userData = _loginAuth.SelectByFunc(a => a.Email == loginValues.UserEposta && a.Password == convertPassword).FirstOrDefault();
                     if (userData != null)
                     {
                         var claims = new List<Claim>()
@@ -59,7 +63,6 @@ namespace Airport.UI.Controllers
                             });
                         }
 
-
                         return new JsonResult(new { status = 200 });
                     }
                 }
@@ -67,10 +70,7 @@ namespace Airport.UI.Controllers
                 {
                     return new JsonResult(new { status = 400 });
                 }
-
-
             }
-
             return new JsonResult(new { status = 404 });
         }
 

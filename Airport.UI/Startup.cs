@@ -58,6 +58,7 @@ namespace Airport.UI
             services.AddScoped<ICouponsDAL, CouponsDAL>();
             services.AddScoped<IMail, MailRepo>();
             services.AddScoped<ISMS, SMSRepo>();
+            services.AddScoped<ILoginAuthDAL, LoginAuthDAL>();
 
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>

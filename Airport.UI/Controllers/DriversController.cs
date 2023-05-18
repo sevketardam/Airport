@@ -14,11 +14,13 @@ namespace Airport.UI.Controllers
         IDriversDAL _drivers;
         IMyCarsDAL _myCars;
         IReservationsDAL _reservations;
-        public DriversController(IDriversDAL drivers, IMyCarsDAL myCars, IReservationsDAL reservations)
+        ILoginAuthDAL _loginAuth;
+        public DriversController(IDriversDAL drivers, IMyCarsDAL myCars, IReservationsDAL reservations, ILoginAuthDAL loginAuth)
         {
             _drivers = drivers;
             _myCars = myCars;
             _reservations = reservations;
+            _loginAuth = loginAuth;
         }
 
         [HttpGet("panel/my-drivers")]
@@ -32,7 +34,7 @@ namespace Airport.UI.Controllers
 
         [HttpGet("panel/add-driver")]
         public IActionResult AddDriverPage()
-        {        
+        {
             return View();
         }
 
@@ -41,34 +43,46 @@ namespace Airport.UI.Controllers
         {
             try
             {
-                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-
-                if (newDriver == null) { return BadRequest(); }
-
-                var driver = new Drivers()
+                var datas = _loginAuth.SelectByFunc(a => a.Email == newDriver.Email).FirstOrDefault();
+                if (datas == null)
                 {
-                    Financial = newDriver.Financial,
-                    Booking = newDriver.Booking,
-                    Email = newDriver.Email,
-                    Name = newDriver.Name,
-                    Password = GetMD5(newDriver.Password),
-                    Phone = newDriver.Phone,
-                    UserId = userId,
-                    DateOfBirth = newDriver.DateOfBirth,
-                    PhotoFront = newDriver.PhotoFront,
-                    PhotoBack = newDriver.PhotoBack,
-                    Surname = newDriver.Surname,
-                    DriverId = newDriver.DriverId,
-                    IsDelete = false
-                };
+                    var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
 
-                _drivers.Insert(driver);
+                    if (newDriver == null) { return BadRequest(); }
 
-                return Json(new { result = 1 });
+                    var driver = new Drivers()
+                    {
+                        Financial = newDriver.Financial,
+                        Booking = newDriver.Booking,
+                        Name = newDriver.Name,
+                        Phone = newDriver.Phone,
+                        UserId = userId,
+                        DateOfBirth = newDriver.DateOfBirth,
+                        PhotoFront = newDriver.PhotoFront,
+                        PhotoBack = newDriver.PhotoBack,
+                        Surname = newDriver.Surname,
+                        DriverId = newDriver.DriverId,
+                        IsDelete = false
+                    };
+
+                    var addedDriver = _drivers.Insert(driver);
+
+                    _loginAuth.Insert(new LoginAuth
+                    {
+                        Email = newDriver.Email,
+                        Password = GetMD5(newDriver.Password),
+                        DriverId = addedDriver.Id,
+                        UserId = 0,
+                        Type = 3
+                    });
+
+                    return Json(new { result = 1 });
+                }
+
+                return Json(new { result = 2 });
             }
             catch (System.Exception)
             {
-
                 return BadRequest();
             }
         }
@@ -82,6 +96,7 @@ namespace Airport.UI.Controllers
                 var myDriver = _drivers.SelectByFunc(a => a.Id == id && a.UserId == userId && !a.IsDelete).FirstOrDefault();
                 if (myDriver != null)
                 {
+                    myDriver.LoginAuth = _loginAuth.SelectByFunc(a => a.DriverId == id).FirstOrDefault();
                     return View(myDriver);
                 }
                 return BadRequest();
@@ -98,27 +113,33 @@ namespace Airport.UI.Controllers
         {
             try
             {
-                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var myDriver = _drivers.SelectByFunc(a => a.Id == id && a.UserId == userId && !a.IsDelete).FirstOrDefault();
-                if (myDriver != null)
+                var checkEmail = _loginAuth.SelectByFunc(a => a.Email == updatedValue.Email && a.DriverId != id).FirstOrDefault();
+                if (checkEmail is null)
                 {
-                    myDriver.Financial = updatedValue.Financial;
-                    myDriver.Booking = updatedValue.Booking;
-                    myDriver.Name = updatedValue.Name;
-                    myDriver.Email = updatedValue.Email;
-                    myDriver.Phone = updatedValue.Phone;
-                    myDriver.PhotoBack = updatedValue.PhotoBack;
-                    myDriver.PhotoFront = updatedValue.PhotoFront;
-                    myDriver.DriverId = updatedValue.DriverId;  
-                    myDriver.Surname = updatedValue.Surname;
-                    myDriver.DateOfBirth = updatedValue.DateOfBirth;
+                    var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                    var myDriver = _drivers.SelectByFunc(a => a.Id == id && a.UserId == userId && !a.IsDelete).FirstOrDefault();
+                    if (myDriver != null)
+                    {
+                        myDriver.Financial = updatedValue.Financial;
+                        myDriver.Booking = updatedValue.Booking;
+                        myDriver.Name = updatedValue.Name;
+                        myDriver.Phone = updatedValue.Phone;
+                        myDriver.PhotoBack = updatedValue.PhotoBack;
+                        myDriver.PhotoFront = updatedValue.PhotoFront;
+                        myDriver.DriverId = updatedValue.DriverId;
+                        myDriver.Surname = updatedValue.Surname;
+                        myDriver.DateOfBirth = updatedValue.DateOfBirth;
 
+                        _drivers.Update(myDriver);
 
-                    _drivers.Update(myDriver);
+                        var login = _loginAuth.SelectByFunc(a => a.DriverId == myDriver.Id).FirstOrDefault();
+                        login.Email = updatedValue.Email;
+                        _loginAuth.Update(login);
 
-                    return Json(new { result = 1 });
+                        return Json(new { result = 1 });
+                    }
                 }
-                return BadRequest();
+                return Json(new { result = 2 });
             }
             catch (System.Exception)
             {
@@ -135,14 +156,14 @@ namespace Airport.UI.Controllers
                 var myDriver = _drivers.SelectByFunc(a => a.Id == id && a.UserId == userId && !a.IsDelete).FirstOrDefault();
                 if (myDriver != null)
                 {
-                    var myCars = _myCars.SelectByFunc(a=>a.DriverId == myDriver.Id && !a.IsDelete);
+                    var myCars = _myCars.SelectByFunc(a => a.DriverId == myDriver.Id && !a.IsDelete);
                     myCars.ForEach(a =>
                     {
                         a.DriverId = null;
                         _myCars.Update(a);
                     });
 
-                    var reservations = _reservations.SelectByFunc(a=>a.DriverId == myDriver.Id);
+                    var reservations = _reservations.SelectByFunc(a => a.DriverId == myDriver.Id);
 
                     if (reservations.Any())
                     {
@@ -159,7 +180,7 @@ namespace Airport.UI.Controllers
             }
             catch (System.Exception)
             {
-                return Json(new {  });
+                return Json(new { });
             }
         }
 

@@ -7,7 +7,7 @@
 
 <section class="_Module_Margin">
     <div class="container">
-        <form id="_Agency_Form" asp-route="agenciesForm">
+        <form id="_Agency_Form">
             <div class="_Agency_Flex _Form_Flex_Style">
                 <div class="_Form_Div _Form_Title">
                     <h3>
@@ -79,7 +79,7 @@
                         </div>
                     </div>
                 </div>
-               
+
                 <div class="_Form_Div">
                     <div class="_Down_Flex">
                         <div class="_Pos_Rel">
@@ -97,28 +97,6 @@
                     <input type="text" id="_Agency_Number" name="CompanyPhoneNumber">
                     <input type="hidden" name="CompanyRealPhone" id="companyRealPhoneInpt">
                 </div>
-               @* <div class="_Form_Div">
-                    <div class="_Down_Flex">
-                        <div>
-                            <p>Certificate</p>
-                            <p>
-                                Please upload your business registration
-                                certificate.
-                            </p>
-                        </div>
-                        <div class="_Pos_Rel _File_Main">
-                            <label class="_Form_Label">Transfer Requested Locations</label>
-                            <input type="file" name="file" class="_File" accept=".pdf,.jpg,.png">
-                            <div class="_Clone_Input">
-                                <img src="img/file.png" alt="file">
-                                <p>
-                                    Browse
-                                </p>
-                                <span class="_Attr_File">.pdf, .jpg, .png files accepted (max. 4 MB)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
 
                 <div class="_Form_Div _Last_Input">
                     <label class="_Form_Label">Tell us Phone Number</label>
@@ -142,7 +120,7 @@
                     </div>
                 </div>
                 <div class="_Form_Div">
-                    <button>
+                    <button type="submit">
                         Submit
                     </button>
                 </div>
@@ -162,27 +140,35 @@
 
     <script>
 
-        @if (ViewBag.Message == "success")
-        {
-            <text>
-                Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Successfully Created Your Agency Account',
-                })
-            </text>
-        }
-        else if(ViewBag.Message == "have")
-        {
-                        <text>
-                Swal.fire({
-                icon: 'warning',
-                title: 'Error',
-                text: 'This email is already registered',
-                })
-            </text>
-        }
 
+        $('#_Agency_Form').on("submit", function (e) {
+            e.preventDefault();
+            if ($(this).valid()) {
+                var formData = $(this).serialize()
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.HomeController.Agencies))',
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully Created Your Agency Account',
+                            }).then(() => {
+                                location.href = "/";
+                            })
+                        } else if (response.result == 2) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Error',
+                                text: 'This email is already registered',
+                            })
+                        }
+                    }
+                });
+            }
+        })
 
 
 
@@ -200,7 +186,7 @@
 
         $('#_Personel_Number').on("change keypress keyup countrychange", function () {
             $('#realPhoneInpt').val(phoneInput.getNumber().replace("+", ""))
-        })    
+        })
 
         $('#_Agency_Number').on("change keypress keyup countrychange", function () {
             $('#companyRealPhoneInpt').val(phoneInput.getNumber().replace("+", ""))
@@ -220,7 +206,7 @@
             numericOnly: true,
             blocks: [15]
         });
-        
+
 
     </script>
 }

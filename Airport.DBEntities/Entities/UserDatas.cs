@@ -15,11 +15,8 @@ namespace Airport.DBEntities.Entities
     {
         [Key]
         public int Id { get; set; }
-        public string Eposta { get; set; }
-        public string Password { get; set; }
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
-        public byte Type { get; set; }
         public string? Profession { get; set; }
         public string? Address { get; set; }
         public string? CompanyWebsite { get; set; }
@@ -42,5 +39,6 @@ namespace Airport.DBEntities.Entities
         public List<ServiceCategories> ServiceCategories{ get; set; }
         public List<Reservations> Reservations { get; set; }
         public List<Coupons> Coupons { get; set; }
+        public LoginAuth LoginAuth { get; set; }
     }
 }

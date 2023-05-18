@@ -44,8 +44,9 @@ namespace Airport.UI.Controllers
         IReservationServicesTableDAL _reservationServicesTable;
         ICouponsDAL _coupons;
         ISMS _sms;
+        ILoginAuthDAL _loginAuth;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons,ISMS sms)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons,ISMS sms, ILoginAuthDAL loginAuth)
         {
             _location = location;
             _locationCar = locationCar;
@@ -64,6 +65,7 @@ namespace Airport.UI.Controllers
             _reservationServicesTable = reservationServicesTable;
             _coupons = coupons;
             _sms = sms;
+            _loginAuth = loginAuth;
         }
 
         [HttpPost("reservation", Name = "getLocationValue")]
@@ -327,7 +329,9 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var user = _userDatas.SelectByID(userId);
+                var loginAuth = _loginAuth.SelectByID(userId);
+                var user = _userDatas.SelectByID(loginAuth.UserId);
+                user.LoginAuth = loginAuth;
 
                 var datas = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
@@ -549,7 +553,9 @@ namespace Airport.UI.Controllers
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
                 item.LocationCars.Car = _getCar.CarDetail(item.LocationCars.CarId);
-                item.User = _userDatas.SelectByID(item.UserId);
+
+                var loginAuth = _loginAuth.SelectByID(item.UserId);
+                item.User = _userDatas.SelectByID(loginAuth.UserId);
 
 
                 var reservationPeople = new List<ReservationPeople>();
@@ -910,7 +916,9 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var user = _userDatas.SelectByID(userId);
+                var loginAuth = _loginAuth.SelectByID(userId);
+                var user = _userDatas.SelectByID(loginAuth.UserId);
+                user.LoginAuth = loginAuth;
 
                 var datas = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
@@ -1134,7 +1142,9 @@ namespace Airport.UI.Controllers
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
                 item.LocationCars.Car = _getCar.CarDetail(item.LocationCars.CarId);
-                item.User = _userDatas.SelectByID(item.UserId);
+
+                var loginAuth = _loginAuth.SelectByID(item.UserId);
+                item.User = _userDatas.SelectByID(loginAuth.UserId);
 
                 var reservationPeople = new List<ReservationPeople>();
 

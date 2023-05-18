@@ -182,6 +182,12 @@
                             }).then(() => {
                                 location.href = "/panel/my-drivers";
                             })
+                        } else if (response.result == 2){
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Warning',
+                                text: 'An account has already been created with this email.',
+                            })
                         }
                     }
                 });

@@ -12,9 +12,11 @@ namespace Airport.UI.Controllers
     public class WebProfileController : BaseController
     {
         IUserDatasDAL _user;
-        public WebProfileController(IUserDatasDAL user)
+        ILoginAuthDAL _loginAuth;
+        public WebProfileController(IUserDatasDAL user, ILoginAuthDAL loginAuth)
         {
             _user = user;
+            _loginAuth = loginAuth;
         }
 
         [HttpGet("profile")]
@@ -22,20 +24,26 @@ namespace Airport.UI.Controllers
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
 
-            var user = _user.SelectByID(userId);
+            var loginAuth = _loginAuth.SelectByID(userId);
+
+            var user = _user.SelectByID(loginAuth.UserId);
+
             if (user == null) { return NotFound(); }
+            user.LoginAuth = loginAuth;
 
             return View(user);
         }
 
-        [HttpPost("profile",Name = "updateUserDatas")]
+        [HttpPost("profile")]
         public IActionResult Index(UserDatas updateUser)
         {
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
 
-                var user = _user.SelectByID(userId);
+                var loginAuth = _loginAuth.SelectByID(userId);
+                var user = _user.SelectByID(loginAuth.UserId);
+                
                 if (user == null) { return NotFound(); }
 
                 user.Name = updateUser.Name;
@@ -44,13 +52,12 @@ namespace Airport.UI.Controllers
 
                 _user.Update(user);
 
-                ViewBag.Message = "success";
 
-                return View(user);
+                return Json(new {result = 1});
             }
             catch (Exception)
             {
-                return BadRequest();
+                return Json(new { });
             }
 
         }
@@ -74,13 +81,13 @@ namespace Airport.UI.Controllers
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
 
-                var user = _user.SelectByID(userId);
+                var user = _loginAuth.SelectByID(userId);
                 if (user == null) { return NotFound(); }
 
                 if (GetMD5(oldPassword) == user.Password)
                 {
                     user.Password = GetMD5(newPassword);
-                    _user.Update(user);
+                    _loginAuth.Update(user);
                     ViewBag.Message = "success";
 
                     return View();
@@ -114,22 +121,23 @@ namespace Airport.UI.Controllers
         public IActionResult Company()
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-
-            var user = _user.SelectByID(userId);
+            var loginAuth = _loginAuth.SelectByID(userId);
+            var user = _user.SelectByID(loginAuth.UserId);
             if (user == null) { return NotFound(); }
-
+            user.LoginAuth = loginAuth;
             return View(user);
         }
 
         [Authorize(Roles = "2")]
-        [HttpPost("profile/my-company", Name = "updateCompanyDatas")]
+        [HttpPost("profile/my-company")]
         public IActionResult Company(UserDatas updateUser)
         {
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
 
-                var user = _user.SelectByID(userId);
+                var loginAuth = _loginAuth.SelectByID(userId);
+                var user = _user.SelectByID(loginAuth.UserId);
                 if (user == null) { return NotFound(); }
 
                 user.AboutUs = updateUser.AboutUs;
@@ -144,13 +152,11 @@ namespace Airport.UI.Controllers
 
                 _user.Update(user);
 
-                ViewBag.Message = "success";
-                return View(user);
+                return Json(new { result = 1 });
             }
             catch (Exception)
             {
-                ViewBag.Message = "Error";
-                return RedirectToAction("Company","WebProfile");
+                return Json(new { });
             }
 
         }

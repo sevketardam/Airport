@@ -19,16 +19,16 @@
                         </p>
                     </div>
                     <div>
-                        <form id="_Profile_Form" asp-route="updateUserDatas">
+                        <form id="_Profile_Form">
                             <div class="_Form_Flex_Style">
-                              @*<div class="_Form_Div">
-                                    <label class="_Form_Label">Title</label>
-                                    <input type="text" name="Title">
+                                @*<div class="_Form_Div">
+                                <label class="_Form_Label">Title</label>
+                                <input type="text" name="Title">
                                 </div>*@
 
                                 <div class="_Form_Div _Two">
                                     <label class="_Form_Label">E-mail</label>
-                                    <input type="text" value="@Model.Eposta" disabled>
+                                    <input type="text" value="@Model.LoginAuth?.Email" disabled>
                                 </div>
 
                                 <div class="_Form_Div _Two">
@@ -45,13 +45,13 @@
                                     <label class="_Form_Label">Mobile Phone</label>
                                     <input type="text" value="@Model.PhoneNumber" name="PhoneNumber">
                                 </div>
-@*
+                                @*
                                 <div class="_Form_Div _Two">
-                                    <button class="_Verify_Number">
-                                        Verify Number
-                                    </button>
+                                <button class="_Verify_Number">
+                                Verify Number
+                                </button>
                                 </div>
-*@
+                                *@
 
                                 <div class="_Form_Div _Two">
                                     <button class="_Form_Button" type="submit">
@@ -69,30 +69,38 @@
 
 
 @section pageJs{
-    @if (ViewBag.Message != null)
-    {
-        <script>
-            @if(ViewBag.Message == "success")
-            {
-                <text>
-                    Swal.fire({
-                    icon: 'success',
-                    title: 'Succesful',
-                    text: 'Successfully changed your information',
-                    })
-                </text>
-            }
-            else
-            {
-                               <text>
-                    Swal.fire({
-                    icon: 'error',
-                    title: 'Error!!',
-                    text: 'Something went wrong!! Try again ',
-                    })
-                </text> 
-            }
 
-        </script>
-    }
+    <script>
+
+        $('#_Profile_Form').on("submit", function (e) {
+            e.preventDefault();
+            if ($(this).valid()) {
+                var formData = $(this).serialize()
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.WebProfileController.Index))',
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Succesful',
+                                text: 'Successfully changed your information',
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!!',
+                                text: 'Something went wrong!! Try again ',
+                            })
+                        }
+                    }
+                });
+            }
+        })
+
+
+
+    </script>
+
 }
