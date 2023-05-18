@@ -15,7 +15,7 @@
 
 @section pageCSS{
     <style>
-        #assignDriverBtn{
+        #assignDriverBtn {
             white-space: nowrap;
             border-radius: 0;
             margin-left: 1rem;
@@ -283,16 +283,157 @@
                     margin-left: 1rem;
                 }
 
+        h4.infosTitle {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: var(--orange);
+        }
+
+        .infosP {
+            font-size: 0.9rem;
+            font-weight: 400;
+            margin: 0.2rem 0 0 0;
+            background: var(--bg);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .stepOneForm {
+            padding: 0;
+        }
+
+        .detailServicesItem {
+            background: var(--bg);
+            width: 100%;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        .detailServicesFlexDiv {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .detailServiceDownItemTopFlex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0.5rem;
+        }
+
+        .detailServicePrice p {
+            margin: 0;
+            font-size: 0.8rem;
+            font-weight: 900;
+            width: 10rem;
+            text-align: end;
+        }
+
+        .detailServiceName p {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .detailServiceDownItemBottom {
+            padding: 0 0.8rem;
+            margin: 0;
+        }
+
+        .detailInfosFlex{
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .topInfos, .bottomInfos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+            .topInfos > div {
+                width: calc(50% - .5rem)
+            }
+
+            .bottomInfos > div {
+                width: calc((100% / 3) - .67rem)
+            }
+
+
+        .pricingFlex h4 {
+            font-size: 1rem;
+        }
+
+        .pricingFlex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pricingFlex > div{
+                width: calc((100% / 3) - .67rem)
+        }
+
+        @@media (max-width:992px) {
+            .topInfos > div, .bottomInfos > div, .pricingFlex > div {
+                width: 100%;
+            }
+        }
+
     </style>
 }
-<a href="/panel/update-reservation/@Model.Reservation.Id">Update Reservation</a>
+<a class="btn btn-primary" href="/panel/update-reservation/@Model.Reservation.Id">Update Reservation</a>
 <section>
     <div class="container my-5">
         <div style="width: 100%; height: 350px;" id="map">map</div>
 
+
+        <div class="detailInfosFlex">
+            <div class="topInfos">
+                <div>
+                    <h4 class="infosTitle">Pick Up</h4>
+                    <p class="infosP">
+                        Ayazağa, 34396 Sarıyer/İstanbul, Türkiye
+                    </p>
+                </div>
+                <div>
+                    <h4 class="infosTitle">Drop Off</h4>
+                    <p class="infosP">
+                        Kâğıthane/İstanbul, Türkiye
+                    </p>
+                </div>
+            </div>
+
+            <div class="bottomInfos">
+                <div>
+                    <h4 class="infosTitle">Flight Arrival</h4>
+                    <p class="infosP">
+                        10.05.2023 - 15:20
+                    </p>
+                </div>
+                <div>
+                    <h4 class="infosTitle">Return</h4>
+                    <p class="infosP">
+                        Empty
+                    </p>
+                </div>
+                <div>
+                    <h4 class="infosTitle">Passengers</h4>
+                    <p class="infosP">
+                        1
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
         <!-- Müşterilerin Bilgileri -->
         <div class="my-4">
-            <div class="resPeople">
+            <h4 class="infosTitle">Information of Persons</h4>
+            <div class="resPeople mt-2">
                 <div class="firstPeople">
                     @Model.Reservation.Name
                 </div>
@@ -315,6 +456,73 @@
 
             </div>
         </div>
+
+        <div class="my-4">
+            <h4 class="infosTitle">Services Received</h4>
+            <div class="detailServicesFlexDiv mt-2">
+                <div class="detailServicesItem">
+                    <div class="detailServiceDownItemTopFlex">
+                        <div class="detailServiceName">
+                            <p>
+                                deneme 123
+                            </p>
+                        </div>
+                        <div class="detailServicePrice">
+                            <p>€35 x <i class="fa-solid fa-user" style="font-size: 0.7rem;"></i> 1 = €35</p>
+                        </div>
+                    </div>
+                    <div class="detailServiceDownItemBottom " style="display: none;">
+                        <div class="detailServiceDesc">
+                            <div class="mt-2">
+                                <p>denemedenemedenemedenemedenemedenemedenemedeneme denemedenemedenemedenemedenemedeneme denemedenemedenemedeneme deneme</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="detailServicesItem">
+                    <div class="detailServiceDownItemTopFlex">
+                        <div class="detailServiceName">
+                            <p>
+                                deneme 123
+                            </p>
+                        </div>
+                        <div class="detailServicePrice">
+                            <p>€35 x <i class="fa-solid fa-user" style="font-size: 0.7rem;"></i> 1 = €35</p>
+                        </div>
+                    </div>
+                    <div class="detailServiceDownItemBottom " style="display: none;">
+                        <div class="detailServiceDesc">
+                            <div class="mt-2">
+                                <p>denemedenemedenemedenemedenemedenemedenemedeneme denemedenemedenemedenemedenemedeneme denemedenemedenemedeneme deneme</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="pricingFlex">
+            <div>
+                <h4 class="infosTitle">Vehicle Fee</h4>
+                <p class="infosP">
+                    €1234
+                </p>
+            </div>
+            <div>
+                <h4 class="infosTitle">Total Service Fee</h4>
+                <p class="infosP">
+                    €1234
+                </p>
+            </div>
+            <div>
+                <h4 class="infosTitle">Total Fee</h4>
+                <p class="infosP">
+                    €1234
+                </p>
+            </div>
+        </div>
+        
 
         <!-- Araç Bilgileri -->
         <div class="my-4">
@@ -505,7 +713,18 @@
 
 @section pageJs{
     <script>
-        $('#assignDriverBtn').on("click",function(){
+
+
+
+        $(".detailServicesItem").on("click", function () {
+            $(this).find(".detailServiceDownItemBottom").slideToggle(150);
+        })
+
+
+
+
+
+        $('#assignDriverBtn').on("click", function () {
             var driverId = $('#driverSelectbox').val();
             $.ajax({
                 url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.AssignDriver))',
@@ -555,7 +774,7 @@
             streetViewControl: false,
                 zoomControl: false,
                     fullscreenControl: false
-                    });
+                                                                                    });
 
         directionsRenderer.setMap(map);
 
@@ -573,7 +792,7 @@
                 directionsRenderer.setDirections(result);
             }
         });
-                }
+                                                                                }
 
 
         window.onload = () => {
