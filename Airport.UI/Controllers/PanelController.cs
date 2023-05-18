@@ -32,7 +32,7 @@ namespace Airport.UI.Controllers
                 var today = DateTime.Today;
                 var lastWeek = today.AddDays(7);
 
-                var myCars = _myCars.SelectByFunc(a => a.UserId == userId);
+                var myCars = _myCars.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
                 myCars.ForEach(a =>
                 {
                     a = _getCarDetail.CarDetail(a.Id);

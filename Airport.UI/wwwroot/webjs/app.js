@@ -370,10 +370,10 @@ $("#_Passenger_Form").validate({
 });
 
 
-//$("body").on("click", ".pageServiceDownItemTop", function (e) {
-//    console.log($(e.target).attr("class"))
-//    if ($(e.target).attr("class") != "passengerInputs" && $(e.target).attr("class") != "passengerInputs valid" && $(e.target).attr("class") != "passengerInputs error")  {
-//        $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
-//        $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
-//    }
-//})
+$("body").on("click", ".pageServiceDownItemTop", function (e) {
+    console.log($(e.target).attr("class"))
+    if ($(e.target).attr("class") != "passengerInputs" && $(e.target).attr("class") != "passengerInputs valid" && $(e.target).attr("class") != "passengerInputs error")  {
+        $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
+        $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
+    }
+})

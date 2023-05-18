@@ -79,7 +79,7 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var myDriver = _drivers.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
+                var myDriver = _drivers.SelectByFunc(a => a.Id == id && a.UserId == userId && !a.IsDelete).FirstOrDefault();
                 if (myDriver != null)
                 {
                     return View(myDriver);
@@ -99,7 +99,7 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var myDriver = _drivers.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
+                var myDriver = _drivers.SelectByFunc(a => a.Id == id && a.UserId == userId && !a.IsDelete).FirstOrDefault();
                 if (myDriver != null)
                 {
                     myDriver.Financial = updatedValue.Financial;
@@ -132,10 +132,10 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var myDriver = _drivers.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
+                var myDriver = _drivers.SelectByFunc(a => a.Id == id && a.UserId == userId && !a.IsDelete).FirstOrDefault();
                 if (myDriver != null)
                 {
-                    var myCars = _myCars.SelectByFunc(a=>a.DriverId == myDriver.Id);
+                    var myCars = _myCars.SelectByFunc(a=>a.DriverId == myDriver.Id && !a.IsDelete);
                     myCars.ForEach(a =>
                     {
                         a.DriverId = null;

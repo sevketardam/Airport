@@ -106,7 +106,7 @@
 <div class="servicecard-container row">
     @foreach (var item in Model.ServicePriceDatas)
     {
-        <div class="col-md-6 service-items" data-id="@item.CategoryId">
+        <div class="col-md-6 service-items mb-3" data-id="@item.CategoryId">
             <div class="card">
                 <div class="card-body">
                     <div>
@@ -122,24 +122,26 @@
                             @foreach (var item2 in item.serviceCategoryPrices)
                             {
                                 <div class="row mt-2 service-category-item" data-id="@item2.ServiceProperties.Id">
-                                    <div class="col-md-5">
-                                        <b class="list-item-heading mb-0 pt-1">@item2.ServiceProperties.ServicePropertyName</b>
-                                        <p class="m-0">@Html.Raw(item2.ServiceProperties.ServicePropertyDescription)</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">$</span>
+                                    <div class="col-md-12 mb-3">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <b class="list-item-heading mb-0 pt-1">@item2.ServiceProperties.ServicePropertyName</b>
+                                            </div><div class="col-md-4">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">€</span>
+                                                    </div>
+                                                    <input type="number" id="priceValue" class="form-control" min="0" value="@item2.Price" aria-describedby="basic-addon1">
+                                                </div>
+                                            </div><div class="col-md-3">
+                                                <button type="button" class="btn btn-warning deleteServiceItem" data-id="@item2.PropId" style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
                                             </div>
-                                            <input type="number" id="priceValue" class="form-control" min="0" value="@item2.Price" aria-describedby="basic-addon1">
                                         </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button type="button" class="btn btn-warning deleteServiceItem" data-id="@item2.CategoryId" style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
+                                    </div><div class="col-md-12">
+                                        <p>@Html.Raw(item2.ServiceProperties.ServicePropertyDescription)</p>
                                     </div>
                                 </div>
                             }
-
                         </div>
                     </div>
                 </div>
@@ -237,41 +239,43 @@
                             if (!serviceList2.includes(value.serviceCategoryId)) {
 
                                 $('.servicecard-container').append(`
-                                                                                                <div class="col-md-4 service-items" data-id="${value.serviceCategoryId}">
-                                                                                                    <div class="card">
-                                                                                                        <div class="card-body">
-                                                                                                            <div>
-                                                                                                                <div class="row">
-                                                                                                                    <div class="col-md-12">
-                                                                                                                        <div class="serviceBoxHead">
-                                                                                                                                    <b>${value.serviceCategoryName}</b>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </div>
 
-                                                                                                                <div class="service-category-items">
-                                                                                                                                         <div class="row mt-2 service-category-item" data-id="${value.categoryItems[0].id}">
-                                                                                                                                <div class="col-md-5">
-                                                                                                                                            <b class="list-item-heading mb-0 pt-1">${value.categoryItems[0].serviceName}</b>
-                                                                                                                                            <p class="m-0">${value.categoryItems[0].serviceDescripton}</p>
-                                                                                                                                </div>
-                                                                                                                                <div class="col-md-4">
-                                                                                                                                    <div class="input-group">
-                                                                                                                                        <div class="input-group-prepend">
-                                                                                                                                            <span class="input-group-text" id="basic-addon1">$</span>
+                                                                <div class="col-md-6 service-items mb-3" data-id="${value.serviceCategoryId}">
+                                                                                                                            <div class="card">
+                                                                                                                                <div class="card-body">
+                                                                                                                                    <div>
+                                                                                                                                        <div class="row">
+                                                                                                                                            <div class="col-md-12">
+                                                                                                                                                <div class="serviceBoxHead">
+                                                                                                                                                                    <b>${value.serviceCategoryName}</b>
+                                                                                                                                                </div>
+                                                                                                                                            </div>
                                                                                                                                         </div>
-                                                                                                                                        <input type="number" id="priceValue" class="form-control" min="0" value="0" aria-describedby="basic-addon1">
+
+                                                                                                                                        <div class="service-category-items">
+                                                                                                                                                                         <div class="row mt-2 service-category-item" data-id="${value.categoryItems[0].id}">
+                                                                                                                                                        <div class="col-md-12 mb-3"><div class="row">
+                                                          <div class="col-md-5">                                                                                                                  <b class="list-item-heading mb-0 pt-1">${value.categoryItems[0].serviceName}</b>
+                                                                                                                                                                    </div><div class="col-md-4">
+                                                                                                                                                            <div class="input-group">
+                                                                                                                                                                <div class="input-group-prepend">
+                                                                                                                                                                    <span class="input-group-text" id="basic-addon1">$</span>
+                                                                                                                                                                </div>
+                                                                                                                                                                <input type="number" id="priceValue" class="form-control" min="0" value="0" aria-describedby="basic-addon1">
+                                                                                                                                                            </div>
+                                                                                                                                                        </div><div class="col-md-3">
+                                                                                                                                <button type="button" class="btn btn-warning deleteServiceItem" data-id="${value.categoryItems[0].id}" style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
+                                                                                                    </div></div></div><div class="col-md-12">
+                        ${value.categoryItems[0].serviceDescripton}
+                        </div>
+
+
+                                                                                                                                                    </div>
+                                                                                                                                        </div>
                                                                                                                                     </div>
                                                                                                                                 </div>
-                                                                                                                                                                    <div class="col-md-3">
-                                                                                                <button type="button" class="btn btn-warning deleteServiceItem" data-id="${value.categoryItems[0].id}" style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
-                                                                            </div>
                                                                                                                             </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>`)
+                                                                                                                        </div>`)
 
                             }
                             else {
@@ -285,23 +289,24 @@
                                     $.each(value.categoryItems, function (key, value2) {
                                         if (!serviceList3.includes(value2.id)) {
                                             $('.servicecard-container .service-items[data-id="' + value.serviceCategoryId + '"] .service-category-items').append(`
-                                                                                                                                                                                                <div class="row mt-2 service-category-item" data-id="${value2.id}">
-                                                                                                                                        <div class="col-md-5">
-                                                                                                                                                    <b class="list-item-heading mb-0 pt-1">${value2.serviceName}</b>
-                                                                                                                                                    <p class="m-0">${value2.serviceDescripton}</p>
-                                                                                                                                        </div>
-                                                                                                                                        <div class="col-md-4">
-                                                                                                                                            <div class="input-group">
-                                                                                                                                                <div class="input-group-prepend">
-                                                                                                                                                    <span class="input-group-text" id="basic-addon1">$</span>
-                                                                                                                                                </div>
-                                                                                                                                                <input type="number" id="priceValue" class="form-control" min="0" value="0" aria-describedby="basic-addon1">
-                                                                                                                                            </div>
-                                                                                                                                        </div>
-                                                                                                                                                                                                                                            <div class="col-md-3">
-                                                                                                <button type="button" class="btn btn-warning deleteServiceItem" data-id="${value2.id}" style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
-                                                                                    </div>
-                                                                                                                                    </div>`)
+                                                                            <div class="row mt-2 service-category-item" data-id="${value2.id}">
+                                                                                                                                                        <div class="col-md-12 mb-3"><div class="row">
+                                                          <div class="col-md-5">                                                                                                                  <b class="list-item-heading mb-0 pt-1">${value2.serviceName}</b>
+                                                                                                                                                                    </div><div class="col-md-4">
+                                                                                                                                                            <div class="input-group">
+                                                                                                                                                                <div class="input-group-prepend">
+                                                                                                                                                                    <span class="input-group-text" id="basic-addon1">$</span>
+                                                                                                                                                                </div>
+                                                                                                                                                                <input type="number" id="priceValue" class="form-control" min="0" value="0" aria-describedby="basic-addon1">
+                                                                                                                                                            </div>
+                                                                                                                                                        </div><div class="col-md-3">
+                                                                                                                                <button type="button" class="btn btn-warning deleteServiceItem" data-id="${value2.id}" style="border-radius: 0;"><i class="simple-icon-trash"></i></button>
+                                                                                                    </div></div></div><div class="col-md-12">
+                        ${value2.serviceDescripton}
+                        </div>
+
+
+                                                                                                                                                    </div>`)
                                         }
                                     })
                                 }
@@ -331,6 +336,22 @@
                     }
                 }
             });
+        })
+
+        $('body').on("click", ".deleteServiceItem", function () {
+            var dataId = $(this).attr("data-id")
+            let array = $('#serviceList').val();
+            let value = dataId;
+            let index = array.indexOf(value);
+
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+
+            $('#serviceList').val(array)
+
+            $('#serviceList').trigger('change')
+
         })
 
         $('body').on("click", ".deleteServiceItem", function () {
@@ -377,7 +398,7 @@
                     serviceDescription: String(description.root.innerHTML),
                     priceData: datas,
                     id: @Model.Service.Id
-                                }
+                                                }
 
                 $.ajax({
                     url: '@Url.Action(nameof(Airport.UI.Controllers.ServiceController.UpdateService))',

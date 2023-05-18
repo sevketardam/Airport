@@ -67,7 +67,7 @@ namespace Airport.UI.Controllers
                 var reservationVM = new ReservationsIndexVM()
                 {
                     Reservations = _reservations.SelectByFunc(a => a.UserId == userId),
-                    Drivers = _drivers.SelectByFunc(a => a.UserId == userId)
+                    Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete)
                 };
 
                 return View(reservationVM);
@@ -96,7 +96,7 @@ namespace Airport.UI.Controllers
                     var reservationVM = new ReservationManagementVM()
                     {
                         Reservation = reservation,
-                        Drivers = _drivers.SelectByFunc(a => a.UserId == userId)
+                        Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete)
                     };
 
 
@@ -144,7 +144,7 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var driver = _drivers.SelectByFunc(a => a.Id == driverId && a.UserId == userId).FirstOrDefault();
+                var driver = _drivers.SelectByFunc(a => a.Id == driverId && a.UserId == userId && !a.IsDelete).FirstOrDefault();
                 var reservation = _reservations.SelectByFunc(a => a.Id == reservationId && a.UserId == userId).FirstOrDefault();
                 if (driver is not null && reservation is not null)
                 {
@@ -341,7 +341,7 @@ namespace Airport.UI.Controllers
                     if (betweenLocation.rows[0].elements[0].status == "OK")
                     {
 
-                        var lastKm = Math.Floor(Convert.ToDouble(betweenLocation.rows[0].elements[0].distance.value) / 100) * 100;
+                        var lastKm = Math.Round(Convert.ToDouble(betweenLocation.rows[0].elements[0].distance.value) / 100) * 100;
                         minKm = lastKm / 1000;
                         selectedLocations.ForEach(a =>
                         {
@@ -377,19 +377,12 @@ namespace Airport.UI.Controllers
                                             {
                                                 if (c.PriceType == 2)
                                                 {
-                                                    price += fare * (minKm - c.StartFrom);
+                                                    price += fare * (c.UpTo - c.StartFrom);
                                                 }
                                                 else
                                                 {
-                                                    if (minKm < (c.UpTo - c.StartFrom))
-                                                    {
-                                                        price += fare * minKm;
-                                                    }
-                                                    else
-                                                    {
-                                                        price += fare * (c.UpTo - c.StartFrom);
-                                                    }
 
+                                                    price += fare;
                                                 }
                                             }
 
@@ -529,18 +522,11 @@ namespace Airport.UI.Controllers
                             {
                                 if (c.PriceType == 2)
                                 {
-                                    price += fare * (datas.KM - c.StartFrom);
+                                    price += fare * (c.UpTo - c.StartFrom);
                                 }
                                 else
                                 {
-                                    if (datas.KM < (c.UpTo - c.StartFrom))
-                                    {
-                                        price += fare * datas.KM;
-                                    }
-                                    else
-                                    {
-                                        price += fare * (c.UpTo - c.StartFrom);
-                                    }
+                                    price += fare;
                                 }
                             }
 
