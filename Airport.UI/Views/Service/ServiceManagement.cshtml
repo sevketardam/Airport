@@ -433,12 +433,12 @@
         $('#updateServicePropertyForm').on("submit", function (e) {
             e.preventDefault();
             $('.formLoader').removeClass("deActive")
-            var formData = $(this).serialize()
-
+            var propName = $(this).find("input[name='ServicePropertyName']").val()
+            
             $.ajax({
                 url: '/Service/UpdateServiceProperty',
                 type: "POST",
-                data: formData + "&Id=" + propId + "&ServicePropertyDescription=" + updateDescription.root.innerHTML,
+                data: { id: propId, servicePropertyDescription: updateDescription.root.innerHTML, servicePropertyName: propName },
                 success: function (response) {
                     if (response.result == 1) {
                         Swal.fire({
@@ -461,8 +461,6 @@
         $('#updateServiceProperty').on("click", function () {
             $('#updateServicePropertyForm').submit();
         })
-
-
 
         $('.updateServiceProp').on("click", function () {
             $('.formLoader').removeClass("deActive")
@@ -501,6 +499,7 @@
         });
 
 
+
         $('#addServiceProperty').on("click", function () {
             $('#addServicePropertyForm').submit();
         })
@@ -512,11 +511,11 @@
         $('#addServicePropertyForm').on("submit", function (e) {
             e.preventDefault();
             if ($('#addServicePropertyForm').valid()) {
-                var formData = $(this).serialize() + "&PropertyDescription=" + description.root.innerHTML
+                var propName = $(this).find("input[name='PropertyName']").val()
                 $.ajax({
                     url: '/Service/AddServiceProperty',
                     type: "POST",
-                    data: formData + "&ServiceCategoryId=" + categoryId,
+                    data: { PropertyDescription: description.root.innerHTML, PropertyName: propName, ServiceCategoryId: categoryId },
                     success: function (response) {
                         if (response.result == 1) {
                             Swal.fire({

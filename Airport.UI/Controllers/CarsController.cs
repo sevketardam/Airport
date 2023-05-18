@@ -97,7 +97,7 @@ namespace Airport.UI.Controllers
             addCarVM.CarBrands = _carBrands.Select();
 
             var myService = _services.SelectByFunc(a => a.UserId == userId);
-            addCarVM.Drivers = _drivers.SelectByFunc(a => a.UserId == userId);
+            addCarVM.Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
             addCarVM.CarTypes = _carTypes.Select();
 
 
@@ -207,7 +207,7 @@ namespace Airport.UI.Controllers
                     var Series = _carSeries.SelectByFunc(a => a.CarModelId == myCar.ModelId);
                     var Types = _carTypes.Select().ToImmutableList();
                     var Services = _services.SelectByFunc(a => a.UserId == userId);
-                    var Drivers = _drivers.SelectByFunc(a => a.UserId == userId);
+                    var Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
 
 
                     var updateBrand = new UpdateMyCarVM()

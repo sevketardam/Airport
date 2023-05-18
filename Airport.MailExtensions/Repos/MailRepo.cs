@@ -77,44 +77,10 @@ namespace Airport.MessageExtensions.Repos
     <!-- Font Awesome -->
     <link rel=""stylesheet"" href=""https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"" integrity=""sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="" crossorigin=""anonymous"" referrerpolicy=""no-referrer"" />
 </head>
-<style>
-    .section{{
-        font-family: 'Poppins', sans-serif;
-        background-color: white;
-        border-left:1px solid ;
-        border-right: 1px solid;
-    }}
-    body{{
-        margin: 0 auto;
-        max-width: 35rem;
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-        /* border: 1px solid black; */
-    }}
-    .btn a {{
-        padding: 1rem 3rem;
-        background-color: rgb(13, 188, 13);
-        border-radius: 3rem;
-        color: white;
-        text-decoration: none;
-        transition: 200ms;
-    }}
-    .btn a:hover {{
-        padding: 1rem 3rem;
-        background-color: white ;
-        /* border: 2px solid rgb(13, 188, 13); */
-        border-radius: 3rem;
-        color: rgb(13, 188, 13);
-        text-decoration: none;
-    }}
-    .btn{{
-        display: flex;
-        justify-content: center;
-        padding-top: 2rem;
-    }}
-    /* Header */
-    .header{{
-        width: 100%;
+<body>
+    <!-- Header -->
+    <div style=""
+    width: 100%;
         height: auto;
         background-color: #ff6709;
         padding-top: 2rem;
@@ -125,245 +91,68 @@ namespace Airport.MessageExtensions.Repos
         flex-direction: column;
         border-top-right-radius: 2rem;
         border-top-left-radius: 2rem;
-        font-family: 'Poppins', sans-serif;
-    }}
-    .logo{{
+        font-family: 'Poppins', sans-serif;"">
+        <div style=""
         font-weight: 800;
         font-style: italic;
         font-size: 30px;
-        padding-bottom: 1rem;
-    }}
-    .header-text{{
-        font-size: 20px;
-    }}
-    /* Durum */
-    .durum {{
-        padding: 1rem;
-    }}
-    .başarılı-text{{
-        font-size: 26px;
-        margin: 0 0 .3rem 0;
-    }}
-    .başarılı-text-2{{
-        font-size: 15px;
-        color: rgb(62, 62, 62);
-        margin: 0;
-    }}
-    .date-text-icon{{
-        background-color: #ff6709;
-        border-radius: 50%;
-        width: 25px;
-        height: 25px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }}
-    .data-text-icon-group{{
-        display: flex;
-        align-items: center;
-
-    }}
-    .durum-date .down {{
-        margin-left: .4rem;
-        color: #ff6709;
-    }}
-    .date-text-icon{{
-        margin-right: 1rem;
-
-    }}
-    .km {{
-        display: inline;
-    }}
-    .span-group{{
-        display: flex;
-        flex-direction: column;
-    }}
-    /* İstek */
-    .istek-ayrıntı {{
-        padding: 1rem;
-    }}
-    .istek-ayrinti-head{{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        /* padding: 1rem; */
-    }}
-    .istek-ayrinti-head h2 {{
-        margin: 0;
-    }}
-    .istek-ayrinti-head i {{
-        font-size: 20px;
-    }}
-    .istek-ayrinti-bilgi-item{{
-        display: flex;
-        align-items: flex-start;
-    }}
-    /* Teklif */
-    .teklif{{
-        padding: 1rem;
-    }}
-    .teklif-head{{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }}
-    .teklif-head h2 {{
-        margin: 0;
-    }}
-    .teklif-head i {{
-        font-size: 20px;
-        margin-right: 1rem;
-    }}
-    .teklif-item{{
-        display: flex;
-        align-items: flex-start;
-    }}
-    /* Footer */
-    .footer{{
-        background-color: #ff6709;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border-bottom-left-radius: 2rem;
-        border-bottom-right-radius: 2rem;    
-        padding: 2rem 0;
-        font-family: 'Poppins', sans-serif;
-        color: #320404;
-    }}
-    .footer a{{
-        color: #320404;
-        text-decoration: none;
-    }}
-    .footer-phone{{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        padding-bottom: .5rem;
-    }}
-    .footer-phone p {{
-        margin: 0;
-    }}
-    .footer-mail {{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-    }}
-    .footer-mail p {{
-        margin: 0;
-    }}
-    .footer-alt-bilgi{{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        padding: 2rem;
-        text-align: center;
-
-    }}
-    .footer-alt-bilgi p {{
-        margin: 0;
-    }}
-    .footer-alt-bilgi p:first-child {{
-        margin-bottom: .5rem ;
-    }}
-    .footer-alt-bilgi p:nth-child(2) {{
-        font-size: 14px;
-    }}
-    .date-text-date{{
-        font-size: 12px;
-        font-weight: 300;
-
-    }}
-    .footer-alt-bilgi p:nth-child(1){{
-        font-weight: 500;
-    }}
-    mark {{
-        background-color: wheat;
-        border-radius: 5px;
-    }}
-    .teklif-description, .istek-description{{
-        color: black;
-        font-weight: 500;
-    }}
-
-
-    .teklif-item > span:first-child {{
-    width: 40%;
-    font-weight: 300;
-}}
-
-.attrs-item{{
-    margin-top: .3rem;
-}}
-.attrs-item .attrs{{
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-   
-}}
-
-.attrs img{{
-    width: 2rem;
-    height: 2rem;
-object-fit: contain;
-}}
-
-    @media screen and (max-width:468px){{
-        body{{
-            max-width: 30rem;
-        }}
-        .footer-phone:nth-child(1){{
-            padding-left: .5rem;
-            padding-right: .5rem;
-            text-align: center;
-
-        }}
-    }}
-    @media screen and (max-width:310px){{
-        .btn a {{
-            padding: .7rem 2rem;
-        }}
-    }}
-
-</style>
-<body>
-    <!-- Header -->
-    <div class=""header"">
-        <div class=""logo"">airportglobaltransfer.com</div>
-        <div class=""header-text"">Succesful Created Reservation</div>
+        padding-bottom: 1rem;"">airportglobaltransfer.com</div>
+        <div  style=""
+         font-size: 20px;"">Succesful Created Reservation</div>
     </div>
     <!-- Durum -->
-    <div class=""durum section"">
-        <div class=""durum-text"">
-            <p class=""başarılı-text"">Your {reservationDetail.ReservationCode} transfer order is successful</h5>
-            <p class=""başarılı-text-2"">Have a Question? You can contact support from your account.</h6>
-            <p class=""başarılı-text-2"">Do you have a problem? Contact us for solution.</h6>
+    <div  style=""padding: 1rem;"">
+        <div >
+            <p style=""
+                 font-size: 26px;
+        margin: 0 0 .3rem 0;"">Your {reservationDetail.ReservationCode} transfer order is successful</h5>
+            <p style=""
+            font-size: 15px;
+        color: rgb(62, 62, 62);
+        margin: 0;"">Have a Question? You can contact support from your account.</h6>
+            <p  style=""
+                font-size: 15px;
+        color: rgb(62, 62, 62);
+        margin: 0;"">Do you have a problem? Contact us for solution.</h6>
         </div>
-        <div class=""durum-date"">
-            <div class=""date-text"">
-                <p class=""date-text-date"">{reservationDetail.ReservationDate}</p>
-                <div class=""data-text-icon-group"">
-                    <div class=""date-text-icon"">
+        <div >
+            <div>
+                <p style=""  font-size: 12px;
+                font-weight: 300;"">{reservationDetail.ReservationDate}</p>
+                <div style=""display: flex;
+                align-items: center;"">
+                    <div style=""background-color: #ff6709;
+                    border-radius: 50%;
+                    width: 25px;
+                    height: 25px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;"">
                         A
                     </div>
                     <span>{reservationDetail.PickFullName}</span>
                 </div>
-                <i class=""fa-solid fa-arrow-down down""></i>
-                <div class=""data-text-icon-group"">
-                    <div class=""date-text-icon"">
+                <i></i>
+                <div style=""display: flex;
+                align-items: center;"">
+                    <div style=""background-color: #ff6709;
+                    border-radius: 50%;
+                    width: 25px;
+                    height: 25px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;"">
                         B
                     </div>
-                    <div class=""span-group"">
+                    <div style=""display: flex;
+                    flex-direction: column;"">
                         <span>{reservationDetail.DropFullName}</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class=""teklif section"">
+    <div>
         <h4 style=""
     font-size: 2rem;
     margin: 0 0 0.7rem 0;
@@ -372,40 +161,46 @@ object-fit: contain;
 "">
             Details
         </h4>
-        <div class=""teklif-bilgi"">
-            <div class=""teklif-item"">
+        <div>
+            <div style=""display: flex;
+            align-items: flex-start;"">
                 <span >Price : &nbsp; </span>
-                <span class=""teklif-description""> {reservationDetail.TotalPrice} € </span><!-- fiyat -->
+                <span> {reservationDetail.TotalPrice} € </span><!-- fiyat -->
             </div>
-            <div class=""teklif-item"">
+            <div style=""display: flex;
+            align-items: flex-start;"">
                 <span>Passengers : &nbsp; </span>
-                <span class=""teklif-description"">{reservationDetail.PeopleCount}</span> <!-- yolcu sayısı -->
+                <span>{reservationDetail.PeopleCount}</span> <!-- yolcu sayısı -->
             </div>   
-            <div class=""teklif-item"">
-                <span >Transport Types : &nbsp; </span>
-                <span class=""teklif-description""> Every </span>  <!-- every sabit kalacak  -->
+            <div  style=""display: flex;
+            align-items: flex-start;"">
+                <span>Transport Types : &nbsp; </span>
+                <span> Every </span>  <!-- every sabit kalacak  -->
             </div> 
         </div>
         <div style=""width: 80%; height: 1px; border-top: 2px dashed rgb(0, 0, 0, .3); margin: 1rem 0;""></div>
-        <div class=""teklif-bilgi"">
-            <div class=""teklif-item"">
-                <span >Transport Type : &nbsp; </span>
-                <span class=""teklif-description""> {reservationDetail.LocationCars.Car.Type.CarTypeName} {reservationDetail.LocationCars.Car.MaxPassenger} {reservationDetail.LocationCars.Car.SmallBags} {reservationDetail.LocationCars.Car.SuitCase} </span>
+        <div >
+            <div style=""display: flex;
+            align-items: flex-start;"">
+                <span>Transport Type : &nbsp; </span>
+                <span> {reservationDetail.LocationCars.Car.Type.CarTypeName} {reservationDetail.LocationCars.Car.MaxPassenger} {reservationDetail.LocationCars.Car.SmallBags} {reservationDetail.LocationCars.Car.SuitCase} </span>
               
             </div>
-            <div class=""teklif-item"">
+            <div style=""display: flex;
+            align-items: flex-start;"">
                 <span>Car : &nbsp; </span>
-                <span class=""teklif-description"">{reservationDetail.LocationCars.Car.Brand.CarBrandName} {reservationDetail.LocationCars.Car.Model.CarModelName} {reservationDetail.LocationCars.Car.Series.CarSeriesName} </span>
+                <span>{reservationDetail.LocationCars.Car.Brand.CarBrandName} {reservationDetail.LocationCars.Car.Model.CarModelName} {reservationDetail.LocationCars.Car.Series.CarSeriesName} </span>
             </div>   
-            <div class=""teklif-item"">
+            <div  style=""display: flex;
+            align-items: flex-start;"">
                 <span >Plate : &nbsp; </span>
-                <span class=""teklif-description""> {reservationDetail.LocationCars.Car.Plate} </span>
+                <span  {reservationDetail.LocationCars.Car.Plate} </span>
                 <!--  -->
                 
             </div> 
-            <div class=""teklif-item attrs-item"">
+            <div style=""margin-top: .3rem;"">
                 <span >Attributes : &nbsp; </span>
-                <span class=""teklif-description attrs"">
+                <span>
 {carAttrHtml}
 
 </span> 
@@ -414,18 +209,53 @@ object-fit: contain;
             
         </div>
         <br>
-        <div class=""btn"">
+        <div style=""  display: flex;
+        justify-content: center;
+        padding-top: 2rem;
+        "">
 
-            <a href=""http://test.airportglobaltransfer.com/pdf/{reservationDetail.ReservationCode}-{reservationDetail.Id}.pdf"">Show Voucher</a>
+            <a style=""  
+            margin-bottom: 20px;
+             border-radius: 3rem;
+            color: rgb(13, 188, 13);
+            text-decoration: none;
+      display: flex;
+            justify-content: center;
+            padding-top: 2rem;
+            padding: 1rem 3rem;
+            background-color: white ;
+            padding: 1rem 3rem;
+            background-color: rgb(13, 188, 13);
+            border-radius: 3rem;
+            color: white;
+            text-decoration: none;
+            transition: 200ms;"" href=""http://test.airportglobaltransfer.com/pdf/{reservationDetail.ReservationCode}-{reservationDetail.Id}.pdf"">Show Voucher</a>
         </div>
 
+
     </div>
-    <div class=""footer"">
-        <div class=""footer-phone"">
+    <div style=""      background-color: #ff6709;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-bottom-left-radius: 2rem;
+    border-bottom-right-radius: 2rem;    
+    padding: 2rem 0;
+    font-family: 'Poppins', sans-serif;
+    color: #320404;"">
+        <div style=""   display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding-bottom: .5rem;"">
             <p>Any Help?</p>
             <b><a href=""tel:+908502421901"">850 242 19014</a></b>
         </div>
-        <div class=""footer-mail"">
+        <div style=""      display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;"">
 <p>or</p>
             <b><p>info@airportglobaltransfer.com</p></b> 
         </div>      

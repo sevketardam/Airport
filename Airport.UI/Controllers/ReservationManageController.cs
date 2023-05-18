@@ -67,7 +67,7 @@ namespace Airport.UI.Controllers
                 var reservationVM = new ReservationsIndexVM()
                 {
                     Reservations = _reservations.SelectByFunc(a => a.UserId == userId),
-                    Drivers = _drivers.SelectByFunc(a => a.UserId == userId)
+                    Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete)
                 };
 
                 return View(reservationVM);
@@ -96,7 +96,7 @@ namespace Airport.UI.Controllers
                     var reservationVM = new ReservationManagementVM()
                     {
                         Reservation = reservation,
-                        Drivers = _drivers.SelectByFunc(a => a.UserId == userId)
+                        Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete)
                     };
 
 
@@ -144,7 +144,7 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var driver = _drivers.SelectByFunc(a => a.Id == driverId && a.UserId == userId).FirstOrDefault();
+                var driver = _drivers.SelectByFunc(a => a.Id == driverId && a.UserId == userId && !a.IsDelete).FirstOrDefault();
                 var reservation = _reservations.SelectByFunc(a => a.Id == reservationId && a.UserId == userId).FirstOrDefault();
                 if (driver is not null && reservation is not null)
                 {
