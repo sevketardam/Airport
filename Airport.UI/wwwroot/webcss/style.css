@@ -3681,7 +3681,7 @@ label.error {
 .pageServiceDownItemTop .pageServicePrice p {
     font-size: 1.5rem;
     font-weight: 700;
-    min-width: 2rem;
+    min-width: 3rem;
 }
 
 .pageServiceDownItemBottom p {
@@ -3781,4 +3781,39 @@ label.error {
 
 .menu .sub-menu ul li i {
     margin-right: 3px !important;
+}
+
+
+@media only screen and (max-width: 768px){
+    .pageServiceDownItemTop .pageServicePrice p{
+        font-size: 1.1rem !important;
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .pageServiceDownItemTop .pageServicePrice p {
+        font-size: 1rem !important;
+        font-weight: 500;
+    }
+
+    .pageServiceName p {
+        font-size: .9rem !important;
+        font-weight: 500 !important;
+        margin: 0 !important;
+    }
+
+    .pageServiceAngle{
+        display: none !important;
+    }
+
+    .pageServiceDownItemTop .pageServicePrice p{
+        font-size: 1.1rem;
+        min-width: 2rem ;
+        text-align: center;
+    }
+
+    .passengerInputs {
+        width: 2rem !important;
+        font-size: 0.7rem;
+    }
 }
