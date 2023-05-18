@@ -7,6 +7,9 @@ using System;
 using System.Security.Claims;
 using Airport.DBEntitiesDAL.Interfaces;
 using System.Collections.Generic;
+using Airport.MessageExtensions.Interfaces;
+using Airport.UI.Models.Interface;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Airport.UI.Controllers
 {
@@ -15,17 +18,36 @@ namespace Airport.UI.Controllers
     {
         IReservationsDAL _reservations;
         IDriversDAL _drivers;
-        IMyCarsDAL _myCars;
+        IGetCarDetail _carDetail;
         ILocationCarsDAL _locationCars;
+        IReservationPeopleDAL _reservationPeople;
+        ILocationsDAL _location;
+        ILocationCarsFareDAL _locationCarsFare;
+        IUserDatasDAL _userDatas;
+        IServicesDAL _services;
+        IServiceItemsDAL _serviceItems;
+        IServicePropertiesDAL _serviceProperties;
+        IServiceCategoriesDAL _serviceCategories;
+        IReservationServicesTableDAL _reservationServicesTable;
         ILoginAuthDAL _loginAuth;
-        public DriverReservationController(IReservationsDAL reservations, IDriversDAL drivers,IMyCarsDAL myCars, ILocationCarsDAL locationCars, ILoginAuthDAL loginAuth)
+        IMyCarsDAL _myCars;
+        public DriverReservationController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, IMyCarsDAL myCars)
         {
-            _reservations = reservations;
             _drivers = drivers;
-            _myCars = myCars;
+            _reservations = reservations;
+            _carDetail = carDetail;
             _locationCars = locationCars;
+            _reservationPeople = reservationPeople;
+            _location = locations;
+            _locationCarsFare = locationCarsFare;
+            _userDatas = userDatas;
+            _services = services;
+            _serviceItems = serviceItems;
+            _serviceProperties = serviceProperties;
+            _serviceCategories = serviceCategories;
+            _reservationServicesTable = reservationServicesTable;
             _loginAuth = loginAuth;
-
+            _myCars = myCars;
         }
 
         [HttpGet("driver-reservations")]
@@ -108,6 +130,56 @@ namespace Airport.UI.Controllers
                 return Json(new { result = 1 });
             }
             return BadRequest();
+        }
+
+        [HttpGet("reservation-driver-detail/{id}")]
+        public IActionResult ReservationDetail(int id)
+        {
+            try
+            {
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var reservation = _reservations.SelectByFunc(a => a.Id == id).FirstOrDefault();
+                if (reservation is not null)
+                {
+                    reservation.LocationCars = _locationCars.SelectByID(reservation.LocationCarId);
+                    reservation.LocationCars.Car = _carDetail.CarDetail(reservation.LocationCars.CarId);
+                    reservation.LocationCars.Car.Service = _services.SelectByID(reservation.LocationCars.Car.SeriesId);
+
+
+
+                    reservation.Driver = _drivers.SelectByID(reservation.DriverId);
+                    if (reservation.Driver != null)
+                    {
+                        var loginAuth = _loginAuth.SelectByFunc(a => a.DriverId == reservation.DriverId).FirstOrDefault();
+                        reservation.Driver.LoginAuth = loginAuth;
+                    }
+                    reservation.ReservationPeoples = _reservationPeople.SelectByFunc(a => a.ReservationId == reservation.Id);
+
+                    var ReservationServicesTable = _reservationServicesTable.SelectByFunc(a => a.ReservationId == id);
+                    ReservationServicesTable.ForEach(a =>
+                    {
+                        a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
+                        a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
+                        a.ServiceItem.Service = _services.SelectByID(a.ServiceItem.ServiceId);
+                        a.ServiceItem.ServiceProperty.ServiceCategory = _serviceCategories.SelectByID(a.ServiceItem.ServiceProperty.ServiceCategoryId);
+                    });
+
+
+                    var reservationVM = new ReservationManagementVM()
+                    {
+                        Reservation = reservation,
+                        ReservationServicesTable = ReservationServicesTable
+                    };
+
+
+                    return View(reservationVM);
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
     }
 }

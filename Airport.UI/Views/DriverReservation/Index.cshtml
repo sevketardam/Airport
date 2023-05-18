@@ -102,7 +102,7 @@
                     }
                 </td>
                 <td>
-                    <a title="Go to detail" href="/panel/reservation-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
+                    <a title="Go to detail" href="/reservation-driver-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
                     <a title="Leave a note" class="open-note reservation-table-icon"><i class="iconsminds-file-edit"></i></a>
                     <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://test.airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
                         <i class="iconsminds-file"></i>
@@ -256,7 +256,7 @@
         $('.goDetail td:not(:last-child) ').on("click", function () {
             $('.formLoader').removeClass("deActive")
             var id = $(this).closest("tr").attr("data-id")
-            //location.href = "/panel/reservation-detail/" + id;
+            location.href = "/reservation-driver-detail/" + id;
         })
     </script>
 }

@@ -385,7 +385,7 @@
 
     </style>
 }
-<a class="btn btn-primary" href="/panel/update-reservation/@Model.Reservation.Id">Update Reservation</a>
+
 <section>
     <div class="container my-5">
         <div style="width: 100%; height: 350px;" id="map"></div>
@@ -620,33 +620,7 @@
         </div>
 
         <!-- Sürücü Bilgileri -->
-        <div class="my-4">
-            <div class="driverFlex">
-                <div class="driverLeft topStyle"></div>
-                <div class="driverRight topStyle">
-                    <div class="w-100">
-                        <select name="DriverId" class="form-control" id="driverSelectbox">
-                            <option value="null" selected disabled>Select Driver</option>
-                            @foreach (var item in Model.Drivers)
-                            {
-                                if (Model.Reservation.DriverId == item.Id)
-                                {
-                                    <option value="@item.Id" selected>@item.Name @item.Surname</option>
-                                }
-                                else
-                                {
-                                    <option value="@item.Id">@item.Name @item.Surname</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                    <div>
-                        <button class="btn btn-primary" id="assignDriverBtn">
-                            Get Driver
-                        </button>
-                    </div>
-                </div>
-            </div>
+        <div class="my-4">         
             <div class="driverFlex">
 
                 <div class="driverLeft">
@@ -705,41 +679,8 @@
 @section pageJs{
     <script>
 
-
-
         $(".detailServicesItem").on("click", function () {
             $(this).find(".detailServiceDownItemBottom").slideToggle(150);
-        })
-
-
-
-
-
-        $('#assignDriverBtn').on("click", function () {
-            var driverId = $('#driverSelectbox').val();
-            $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.AssignDriver))',
-                type: "POST",
-                data: { reservationId: @Model.Reservation.Id, driverId: driverId },
-                success: function (response) {
-                    if (response.result == 1) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Successfully Assign Driver',
-                        })
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'Something went wrong',
-                        }).then(() => {
-                            location.reload()
-                        })
-                    }
-                    $('.formLoader').addClass("deActive")
-                }
-            });
         })
 
         $('.slideDriverPhotos').slick({
@@ -765,7 +706,7 @@
             streetViewControl: false,
                 zoomControl: false,
                     fullscreenControl: false
-                                                                                                    });
+                                                                                                            });
 
         directionsRenderer.setMap(map);
 
@@ -783,7 +724,7 @@
                 directionsRenderer.setDirections(result);
             }
         });
-                                                                                                }
+                                                                                                        }
 
 
         window.onload = () => {
