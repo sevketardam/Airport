@@ -400,7 +400,14 @@ namespace Airport.UI.Controllers
                                             {
                                                 if (c.PriceType == 2)
                                                 {
-                                                    price += fare * (c.UpTo - c.StartFrom);
+                                                    if (c.UpTo < minKm)
+                                                    {
+                                                        price += fare * (c.UpTo - c.StartFrom);
+                                                    }
+                                                    else
+                                                    {
+                                                        price += fare * minKm;
+                                                    }
                                                 }
                                                 else
                                                 {
@@ -545,7 +552,14 @@ namespace Airport.UI.Controllers
                             {
                                 if (c.PriceType == 2)
                                 {
-                                    price += fare * (c.UpTo - c.StartFrom);
+                                    if (c.UpTo < datas.KM)
+                                    {
+                                        price += fare * (c.UpTo - c.StartFrom);
+                                    }
+                                    else
+                                    {
+                                        price += fare * datas.KM;
+                                    }
                                 }
                                 else
                                 {
