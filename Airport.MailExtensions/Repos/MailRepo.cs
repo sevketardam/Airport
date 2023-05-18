@@ -164,8 +164,18 @@ namespace Airport.MessageExtensions.Repos
         <div>
             <div style=""display: flex;
             align-items: flex-start;"">
+                <span >Service Fee : &nbsp; </span>
+                <span> {reservationDetail.ServiceFee} €
+            </div>
+            <div style=""display: flex;
+            align-items: flex-start;"">
+                <span >Offer Price : &nbsp; </span>
+                <span> {reservationDetail.OfferPrice} € 
+            </div>
+            <div style=""display: flex;
+            align-items: flex-start;"">
                 <span >Price : &nbsp; </span>
-                <span> {reservationDetail.TotalPrice} € </span><!-- fiyat -->
+                <span> {reservationDetail.TotalPrice} €
             </div>
             <div style=""display: flex;
             align-items: flex-start;"">
