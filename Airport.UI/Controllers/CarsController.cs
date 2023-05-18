@@ -142,7 +142,8 @@ namespace Airport.UI.Controllers
                     Water = myCar.Water,
                     Wifi = myCar.Wifi,
                     DriverId = myCar.Driver,
-                    Plate = myCar.Plate
+                    Plate = myCar.Plate,
+                    IsDelete = false
                 });
 
                 return RedirectToAction("Index", "Cars");
@@ -178,7 +179,6 @@ namespace Airport.UI.Controllers
                     myCar.Disabled = updateMyCar.Disabled;
                     myCar.DriverId = updateMyCar.Driver;
                     myCar.Plate = updateMyCar.Plate;
-
                     _myCars.Update(myCar);
                     return new JsonResult(new { result = 1 });
                 }
@@ -270,7 +270,7 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var myCar = _myCars.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
+                var myCar = _myCars.SelectByFunc(a => a.Id == id && a.UserId == userId && !a.IsDelete).FirstOrDefault();
                 if (myCar != null)
                 {
                     var check = false;

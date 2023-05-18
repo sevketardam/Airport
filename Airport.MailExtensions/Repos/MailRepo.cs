@@ -46,17 +46,17 @@ namespace Airport.MessageExtensions.Repos
 
             if (reservationDetail.LocationCars.Car.Partition)
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i6.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Charger)
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i3.png'>";
             }
 
-            if (reservationDetail.LocationCars.Car.Charger)
+            if (reservationDetail.LocationCars.Car.Disabled)
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i2.png'>";
             }
 
 

@@ -97,7 +97,7 @@ namespace Airport.UI.Controllers
 
                 TempData["modelresult"] = JsonConvert.SerializeObject(model);
 
-                var myCarsList = _myCars.SelectByFunc(a => a.UserId == userId);
+                var myCarsList = _myCars.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
                 myCarsList.ForEach(a =>
                 {
                     a.Brand = _myBrands.SelectByID(a.BrandId);

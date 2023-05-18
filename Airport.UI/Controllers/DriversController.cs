@@ -135,7 +135,7 @@ namespace Airport.UI.Controllers
                 var myDriver = _drivers.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
                 if (myDriver != null)
                 {
-                    var myCars = _myCars.SelectByFunc(a=>a.DriverId == myDriver.Id);
+                    var myCars = _myCars.SelectByFunc(a=>a.DriverId == myDriver.Id && !a.IsDelete);
                     myCars.ForEach(a =>
                     {
                         a.DriverId = null;

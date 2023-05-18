@@ -341,7 +341,7 @@ namespace Airport.UI.Controllers
                     if (betweenLocation.rows[0].elements[0].status == "OK")
                     {
 
-                        var lastKm = Math.Floor(Convert.ToDouble(betweenLocation.rows[0].elements[0].distance.value) / 100) * 100;
+                        var lastKm = Math.Round(Convert.ToDouble(betweenLocation.rows[0].elements[0].distance.value) / 100) * 100;
                         minKm = lastKm / 1000;
                         selectedLocations.ForEach(a =>
                         {
@@ -377,19 +377,12 @@ namespace Airport.UI.Controllers
                                             {
                                                 if (c.PriceType == 2)
                                                 {
-                                                    price += fare * (minKm - c.StartFrom);
+                                                    price += fare * (c.UpTo - c.StartFrom);
                                                 }
                                                 else
                                                 {
-                                                    if (minKm < (c.UpTo - c.StartFrom))
-                                                    {
-                                                        price += fare * minKm;
-                                                    }
-                                                    else
-                                                    {
-                                                        price += fare * (c.UpTo - c.StartFrom);
-                                                    }
 
+                                                    price += fare;
                                                 }
                                             }
 
@@ -529,18 +522,11 @@ namespace Airport.UI.Controllers
                             {
                                 if (c.PriceType == 2)
                                 {
-                                    price += fare * (datas.KM - c.StartFrom);
+                                    price += fare * (c.UpTo - c.StartFrom);
                                 }
                                 else
                                 {
-                                    if (datas.KM < (c.UpTo - c.StartFrom))
-                                    {
-                                        price += fare * datas.KM;
-                                    }
-                                    else
-                                    {
-                                        price += fare * (c.UpTo - c.StartFrom);
-                                    }
+                                    price += fare;
                                 }
                             }
 
