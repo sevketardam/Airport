@@ -336,9 +336,19 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var loginAuth = _loginAuth.SelectByID(userId);
-                var user = _userDatas.SelectByID(loginAuth.UserId);
-                user.LoginAuth = loginAuth;
+                var user = new UserDatas();
+
+                if (userId != 0)
+                {
+                    var loginAuth = _loginAuth.SelectByID(userId);
+                    user = _userDatas.SelectByID(loginAuth?.UserId);
+                    user.LoginAuth = loginAuth;
+                }
+                else
+                {
+                    user = null;
+                }
+
 
                 var datas = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
@@ -937,9 +947,18 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var loginAuth = _loginAuth.SelectByID(userId);
-                var user = _userDatas.SelectByID(loginAuth.UserId);
-                user.LoginAuth = loginAuth;
+                var user = new UserDatas();
+
+                if (userId != 0)
+                {
+                    var loginAuth = _loginAuth.SelectByID(userId);
+                    user = _userDatas.SelectByID(loginAuth?.UserId);
+                    user.LoginAuth = loginAuth;
+                }
+                else
+                {
+                    user = null;
+                }
 
                 var datas = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
@@ -1116,7 +1135,7 @@ namespace Airport.UI.Controllers
 
 
                 var totalprice = reservation.IsDiscount ? Convert.ToDouble(reservation.Discount) : createReservation.LastPrice + totalServiceFee;
-
+                totalprice = Math.Round(totalprice, 2);
                 var item = _reservations.Insert(new Reservations
                 {
                     DropLatLng = createReservation.DropLocationLatLng,

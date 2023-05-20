@@ -497,19 +497,25 @@
             <div>
                 <h4 class="infosTitle">Vehicle Fee</h4>
                 <p class="infosP">
-                    @Model.Reservation.OfferPrice
+                    @Model.Reservation.OfferPrice €
                 </p>
             </div>
             <div>
                 <h4 class="infosTitle">Total Service Fee</h4>
                 <p class="infosP">
-                    @Model.Reservation.ServiceFee
+                    @Model.Reservation.ServiceFee €
                 </p>
             </div>
             <div>
-                <h4 class="infosTitle">@(Model.Reservation.IsDiscount || Model.Reservation.Coupon != null ? "Special Discount" : "Total Fee")</h4>
+                <h4 class="infosTitle">@(Model.Reservation.IsDiscount ? "Special Discount" : Model.Reservation.Coupon != null ? "Total Fee" : "")</h4>
                 <p class="infosP">
-                    @Model.Reservation.TotalPrice
+                    @Model.Reservation.TotalPrice €
+                </p>
+            </div>
+            <div>
+                <h4 class="infosTitle">Total Price</h4>
+                <p class="infosP">
+                    @Model.Reservation.TotalPrice €
                 </p>
             </div>
         </div>
