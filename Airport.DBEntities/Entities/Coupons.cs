@@ -22,6 +22,7 @@ namespace Airport.DBEntities.Entities
         public int UserId { get; set; }
         public double Discount { get; set; }
         public string Comment { get; set; }
+        public int UsingCount { get; set; }
 
         public UserDatas User{ get; set; }
         public List<Reservations> Reservations { get; set; }

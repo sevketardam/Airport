@@ -40,7 +40,8 @@ namespace Airport.UI.Controllers
         IReservationServicesTableDAL _reservationServicesTable;
         IMail _mail;
         ILoginAuthDAL _loginAuth;
-        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth)
+        ICouponsDAL _coupons;
+        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth,ICouponsDAL coupons)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -58,6 +59,7 @@ namespace Airport.UI.Controllers
             _env = env;
             _mail = mail;
             _loginAuth = loginAuth;
+            _coupons = coupons;
         }
 
 
@@ -95,8 +97,7 @@ namespace Airport.UI.Controllers
                     reservation.LocationCars.Car = _carDetail.CarDetail(reservation.LocationCars.CarId);
                     reservation.LocationCars.Car.Service = _services.SelectByID(reservation.LocationCars.Car.SeriesId);
 
-           
-
+          
                     reservation.Driver = _drivers.SelectByID(reservation.DriverId);
                     if (reservation.Driver != null)
                     {
@@ -114,6 +115,10 @@ namespace Airport.UI.Controllers
                         a.ServiceItem.ServiceProperty.ServiceCategory = _serviceCategories.SelectByID(a.ServiceItem.ServiceProperty.ServiceCategoryId);
                     });
 
+                    if (reservation.Coupon != 0 && reservation.Coupon != null)
+                    {
+                        reservation.Coupons = _coupons.SelectByID(reservation.Coupon);
+                    }
 
                     var reservationVM = new ReservationManagementVM()
                     {
@@ -701,6 +706,8 @@ namespace Airport.UI.Controllers
                 }
 
                 createReservation.LocationCar.Location = _location.SelectByID(createReservation.LocationCar.LocationId);
+                var totalprice = reservation.IsDiscount ? Convert.ToDouble(reservation.Discount) : createReservation.LastPrice + totalServiceFee;
+                totalprice = Math.Round(totalprice, 2);
 
                 var updatedService = createReservation.UpdateReservation;
                 updatedService.DropLatLng = createReservation.DropLocationLatLng;
@@ -723,9 +730,9 @@ namespace Airport.UI.Controllers
                 updatedService.Discount = reservation.Discount;
                 updatedService.ServiceFee = totalServiceFee;
                 updatedService.Comment = reservation.Comment;
-                updatedService.Discount = reservation.Discount;
                 updatedService.HidePrice = reservation.HidePrice;
                 updatedService.LocationCarId = createReservation.LocationCar.Id;
+                updatedService.TotalPrice = totalprice;
 
                 var item = _reservations.Update(updatedService);
 

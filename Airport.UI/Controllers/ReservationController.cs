@@ -513,12 +513,20 @@ namespace Airport.UI.Controllers
                 }
 
                 var getCoupon = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now
-                                                                                        && a.CouponFinishDate >= DateTime.Now).FirstOrDefault();
+                                                                        && a.CouponFinishDate >= DateTime.Now && a.IsPerma).FirstOrDefault();
+                if (getCoupon == null)
+                {
+                    getCoupon = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now
+                                                                       && a.CouponFinishDate >= DateTime.Now && (a.CouponLimit > a.UsingCount && !a.IsPerma)).FirstOrDefault();
+                }
+
                 var total = createReservation.LastPrice + totalServiceFee;
 
                 if (getCoupon is not null)
                 {
                     total = total - ((total * getCoupon.Discount) / 100);
+                    getCoupon.UsingCount = getCoupon.UsingCount + 1;
+                    _coupons.Update(getCoupon);
                 }
 
                 total = Math.Round(total, 2);
@@ -1307,7 +1315,13 @@ namespace Airport.UI.Controllers
             try
             {
                 var coupons = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now 
-                                                                                        && a.CouponFinishDate >= DateTime.Now).FirstOrDefault();
+                                                                                        && a.CouponFinishDate >= DateTime.Now && a.IsPerma).FirstOrDefault();
+                if (coupons == null)
+                {
+                     coupons = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now
+                                                                        && a.CouponFinishDate >= DateTime.Now && (a.CouponLimit > a.UsingCount && !a.IsPerma)).FirstOrDefault();
+                }
+
                 if (coupons != null)
                 {
                     return new JsonResult(new { result = 1, data = coupons });
