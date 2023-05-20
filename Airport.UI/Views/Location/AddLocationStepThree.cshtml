@@ -146,11 +146,15 @@
 
         $("body").on("click", "#addDistance", function () {
             let data_id = $(this).closest(".carCard").attr("data-id");
-            if ($(this).closest(".carCard").find(".carFareCard:last-child input#upTo").val() == "" || Number($(this).closest(".carCard").find(".carFareCard:last-child input#upTo").val()) < Number($(this).closest(".carCard").find(".carFareCard:last-child input#upTo").attr("min"))) {
-                $(this).closest(".carCard").find(".carFareCard:last-child input#upTo").addClass("err_block");
+
+            
+
+            if ($(this).closest(".card-body").find(".carFareCard:last-child input#upTo").val() == "" || Number($(this).closest(".card-body").find(".carFareCard:last-child input#upTo").val()) < Number($(this).closest(".card-body").find(".carFareCard:last-child input#upTo").attr("min"))) {
+                $(this).closest(".card-body").find(".carFareCard:last-child input#upTo").addClass("err_block");
+                console.log($(this).closest(".carCard").find(".carFareCard:last-child input#upTo").val());
             }
             else {
-                $(this).closest(".carCard").find(".carFareCard select").each(function (key, data) {
+                $(this).closest(".card-body").find(".carFareCard select").each(function (key, data) {
                     if (key == $(this).closest(".carCard").find(".carFareCard").length - 1) {
                         if ($(data).val() == "1" || $(data).val() == "2") {
                             $(this).closest(".carCard").find(".carFareCard:last-child input#upTo").removeClass("err_block");
@@ -177,11 +181,11 @@
                                                                     </div>
                                                                     <div class="col-md-3 mb-3">
                                                                         <label>Starting From</label>
-                                                                                                                        <input type="number" class="form-control" id="startingFrom" disabled placeholder="0km" value="${$("body .carFareCard:last-child input#upTo").val()}" />
+                                                                                                                                <input type="number" class="form-control" id="startingFrom" disabled placeholder="0" value="${$(this).closest(".card-body").find(".carFareCard:last-child input#upTo").val()}" />
                                                                     </div>
                                                                     <div class="col-md-3 mb-3">
                                                                         <label>Up To</label>
-                                                                                                        <input type="number" class="form-control" id="upTo" value="" min="${Number($("body .carFareCard:last-child input#upTo").val()) + 1} " />
+                                                                                                                <input type="number" class="form-control" id="upTo" value="" min="${Number($(this).closest(".card-body").find(".carFareCard:last-child input#upTo").val()) + 1} " />
                                                                     </div>
                                                                     <div class="col-md-2 mb-3">
                                                                         <label>Fare</label>
