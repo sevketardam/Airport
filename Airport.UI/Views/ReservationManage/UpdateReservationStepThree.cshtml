@@ -331,6 +331,15 @@
 
 @section pageJs{
     <script>
+
+        $("body").on("click", ".pageServiceDownItemTop", function (e) {
+            if ($(e.target).attr("class") != "passengerInputs" && $(e.target).attr("class") != "passengerInputs valid" && $(e.target).attr("class") != "passengerInputs error") {
+                $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
+                $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
+            }
+        })
+
+
         $('#discountCheck').on("change", function () {
             $('input[name="IsDiscount"]').val($(this).is(":checked"))
         })
