@@ -500,24 +500,29 @@
                     @Model.Reservation.OfferPrice €
                 </p>
             </div>
+
             <div>
                 <h4 class="infosTitle">Total Service Fee</h4>
                 <p class="infosP">
                     @Model.Reservation.ServiceFee €
                 </p>
             </div>
-            <div>
-                <h4 class="infosTitle">@(Model.Reservation.IsDiscount ? "Special Discount" : Model.Reservation.Coupon != null ? "Total Fee" : "")</h4>
-                <p class="infosP">
-                    @Model.Reservation.TotalPrice €
-                </p>
-            </div>
+
             <div>
                 <h4 class="infosTitle">Total Price</h4>
                 <p class="infosP">
-                    @Model.Reservation.TotalPrice €
+                    @(Math.Round(Convert.ToDouble(Model.Reservation.OfferPrice + Model.Reservation.ServiceFee), 2)) €
                 </p>
             </div>
+
+            <div>
+                <h4 class="infosTitle">@(Model.Reservation.IsDiscount ? "Special Discount" : Model.Reservation.Coupon != null ? "Total Fee" : "Amount to be paid")</h4>
+                <p class="infosP">
+                    @Model.Reservation.TotalPrice  <text> € </text>
+                </p>
+            </div>
+
+
         </div>
 
 
@@ -771,7 +776,7 @@
             streetViewControl: false,
                 zoomControl: false,
                     fullscreenControl: false
-                                                                                                    });
+                                                                                                                            });
 
         directionsRenderer.setMap(map);
 
@@ -789,7 +794,7 @@
                 directionsRenderer.setDirections(result);
             }
         });
-                                                                                                }
+                                                                                                                        }
 
 
         window.onload = () => {
