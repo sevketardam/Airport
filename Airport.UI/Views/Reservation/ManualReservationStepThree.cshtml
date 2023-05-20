@@ -267,6 +267,7 @@
                                 <label class="_Form_Label">Comment</label>
                                 <textarea class="formTextarea" name="comment"></textarea>
                             </div>
+
                             @if (Model.SelectedData.LocationCar.Car.Service != null)
                             {
                                 <div class="servicesFlexDiv">
@@ -337,6 +338,14 @@
 @section pageJs{
     <script>
 
+        $("body").on("click", ".pageServiceDownItemTop", function (e) {
+    console.log($(e.target).attr("class"))
+    if ($(e.target).attr("class") != "passengerInputs" && $(e.target).attr("class") != "passengerInputs valid" && $(e.target).attr("class") != "passengerInputs error")  {
+        $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
+        $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
+    }
+
+})
         const phoneInputField = document.querySelector("input[name='Phone']");
         const phoneInput = window.intlTelInput(phoneInputField, {
             utilsScript:
