@@ -517,7 +517,18 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var user = _userDatas.SelectByID(userId);
+                var user = new UserDatas();
+
+                if (userId != 0)
+                {
+                    var loginAuth = _loginAuth.SelectByID(userId);
+                    user = _userDatas.SelectByID(loginAuth?.UserId);
+                    user.LoginAuth = loginAuth;
+                }
+                else
+                {
+                    user = null;
+                }
 
                 var datas = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
