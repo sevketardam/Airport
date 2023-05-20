@@ -183,6 +183,7 @@ namespace Airport.UI.Models.Extendions
 
         <div>
             <h4 style=""font-weight: bold; margin: 5px 0px;"">CARRIER INFORMATION</h4>
+            <p style=""margin: 0px;"">GLOBAL TRANSFER</p>
             <p style=""margin: 0px;"">Phone number:{reservation.User.CompanyPhoneNumber}</p>
         </div>
         <div>

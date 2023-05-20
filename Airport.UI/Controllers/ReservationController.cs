@@ -1116,7 +1116,7 @@ namespace Airport.UI.Controllers
 
 
                 var totalprice = reservation.IsDiscount ? Convert.ToDouble(reservation.Discount) : createReservation.LastPrice + totalServiceFee;
-
+                totalprice = Math.Round(totalprice, 2);
                 var item = _reservations.Insert(new Reservations
                 {
                     DropLatLng = createReservation.DropLocationLatLng,
