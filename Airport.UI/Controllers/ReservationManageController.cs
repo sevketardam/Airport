@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Airport.MessageExtensions.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using System.Data;
+using System.IO;
 
 namespace Airport.UI.Controllers
 {
@@ -71,7 +72,7 @@ namespace Airport.UI.Controllers
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
                 var reservationVM = new ReservationsIndexVM()
                 {
-                    Reservations = _reservations.SelectByFunc(a => a.UserId == userId),
+                    Reservations = _reservations.SelectByFunc(a => a.UserId == userId).OrderByDescending(a=>a.ReservationDate).ToList(),
                     Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete)
                 };
 
@@ -93,7 +94,9 @@ namespace Airport.UI.Controllers
                 var reservation = _reservations.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
                 if (reservation is not null)
                 {
-                    reservation.LocationCars = _locationCars.SelectByID(reservation.LocationCarId);
+                    var reservationLocationCars = _locationCars.SelectByID(reservation.LocationCarId);
+
+                    reservation.LocationCars = reservationLocationCars;
                     reservation.LocationCars.Car = _carDetail.CarDetail(reservation.LocationCars.CarId);
                     reservation.LocationCars.Car.Service = _services.SelectByID(reservation.LocationCars.Car.SeriesId);
 
@@ -107,6 +110,7 @@ namespace Airport.UI.Controllers
                     reservation.ReservationPeoples = _reservationPeople.SelectByFunc(a => a.ReservationId == reservation.Id);
 
                     var ReservationServicesTable = _reservationServicesTable.SelectByFunc(a=>a.ReservationId == id);
+
                     ReservationServicesTable.ForEach(a =>
                     {
                         a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
@@ -134,7 +138,15 @@ namespace Airport.UI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.ToString());
+                string dosyaYolu = "wwwroot/error.txt";
+
+                using (StreamWriter yazici = new StreamWriter(dosyaYolu))
+                {
+                    string metin = ex.ToString();
+                    yazici.WriteLine(metin);
+                }
+
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -411,7 +423,7 @@ namespace Airport.UI.Controllers
                                                     }
                                                     else
                                                     {
-                                                        price += fare * minKm;
+                                                        price += fare * (minKm - c.StartFrom);
                                                     }
                                                 }
                                                 else
@@ -574,7 +586,7 @@ namespace Airport.UI.Controllers
                                     }
                                     else
                                     {
-                                        price += fare * datas.KM;
+                                        price += fare * (datas.KM - c.StartFrom);
                                     }
                                 }
                                 else

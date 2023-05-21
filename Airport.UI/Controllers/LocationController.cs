@@ -282,7 +282,6 @@ namespace Airport.UI.Controllers
             return RedirectToAction("Index", "Location");
         }
 
-
         public IActionResult DeleteLocation(int id)
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());

@@ -231,7 +231,7 @@ namespace Airport.UI.Controllers
                                                     }
                                                     else
                                                     {
-                                                        price += fare * minKm;
+                                                        price += fare * (minKm - c.StartFrom);
                                                     }
                                                 }
                                                 else
@@ -395,7 +395,7 @@ namespace Airport.UI.Controllers
                                     }
                                     else
                                     {
-                                        price += fare * datas.KM;
+                                        price += fare * (datas.KM - c.StartFrom);
                                     }
                                 }
                                 else
@@ -848,7 +848,7 @@ namespace Airport.UI.Controllers
                                                     }
                                                     else
                                                     {
-                                                        price += fare * minKm;
+                                                        price += fare * (minKm - c.StartFrom);
                                                     }
                                                 }
                                                 else
@@ -1011,7 +1011,7 @@ namespace Airport.UI.Controllers
                                     }
                                     else
                                     {
-                                        price += fare * datas.KM;
+                                        price += fare * (datas.KM - c.StartFrom);
                                     }
                                 }
                                 else

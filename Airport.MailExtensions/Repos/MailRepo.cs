@@ -78,20 +78,19 @@ namespace Airport.MessageExtensions.Repos
     <link rel=""stylesheet"" href=""https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"" integrity=""sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="" crossorigin=""anonymous"" referrerpolicy=""no-referrer"" />
 </head>
 <body>
-    <!-- Header -->
-    <div style=""
-    width: 100%;
-        height: auto;
-        background-color: #ff6709;
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        border-top-right-radius: 2rem;
-        border-top-left-radius: 2rem;
-        font-family: 'Poppins', sans-serif;"">
+    <div style=""width: 100%;
+    height: auto;
+    background-color: #ff6709;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    display: flex;
+    border-top-right-radius: 2rem;
+    border-top-left-radius: 2rem;
+    font-family: 'Poppins',sans-serif;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;"">
+
         <div style=""
         font-weight: 800;
         font-style: italic;

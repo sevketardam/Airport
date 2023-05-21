@@ -38,7 +38,11 @@ namespace Airport.UI.Models.Extendions
 
             var convertLocationValue = DecodePolylinePoints(point);
 
-            var str = "https://maps.googleapis.com/maps/api/staticmap?markers=color%3Ared%7Clabel%3AA%7C41.1307027%2C28.9877942&markers=color%3Ared%7Clabel%3AB%7C41.081402%2C28.9819771&size=303x156&key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&path=color%3Ablue%7Cweight%3A5%7C";
+            var pickLatLng = reservation.PickLatLng.Replace("lat:", "").Replace("lng:", "").Replace(",", "%2C");
+            var dropLatLng = reservation.DropLatLng.Replace("lat:", "").Replace("lng:", "").Replace(",", "%2C");
+
+
+            var str = "https://maps.googleapis.com/maps/api/staticmap?markers=color%3Ared%7Clabel%3AA%7C"+pickLatLng+"&markers=color%3Ared%7Clabel%3AB%7C"+ dropLatLng + "&size=303x156&key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&path=color%3Ablue%7Cweight%3A5%7C";
 
             convertLocationValue.ForEach(a =>
             {
@@ -183,7 +187,6 @@ namespace Airport.UI.Models.Extendions
 
         <div>
             <h4 style=""font-weight: bold; margin: 5px 0px;"">CARRIER INFORMATION</h4>
-            <p style=""margin: 0px;"">GLOBAL TRANSFER</p>
             <p style=""margin: 0px;"">Phone number:{reservation.User.CompanyPhoneNumber}</p>
         </div>
         <div>
