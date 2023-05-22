@@ -18,13 +18,15 @@ namespace Airport.UI.Controllers
         IServicesDAL _services;
         IServiceItemsDAL _items;
         IMyCarsDAL _myCars;
-        public ServiceController(IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IServicesDAL services, IServiceItemsDAL items, IMyCarsDAL myCars)
+        IReservationServicesTableDAL _reservationServicesTable;
+        public ServiceController(IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IServicesDAL services, IServiceItemsDAL items, IMyCarsDAL myCars, IReservationServicesTableDAL reservationServicesTable)
         {
             _serviceCategory = serviceCategories;
             _serviceProperties = serviceProperties;
             _services = services;
             _items = items;
             _myCars = myCars;
+            _reservationServicesTable = reservationServicesTable;
         }
 
         [HttpGet("panel/service")]
@@ -284,19 +286,45 @@ namespace Airport.UI.Controllers
                 var serviceProps = _serviceProperties.SelectByID(id);
                 if (serviceProps != null)
                 {
-                    var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                    serviceProps.ServiceCategory = _serviceCategory.SelectByID(serviceProps.ServiceCategoryId);
-                    if (serviceProps.ServiceCategory.UserId == userId)
-                    {
-                        var items = _items.SelectByFunc(b => b.ServicePropertyId == id);
-                        items.ForEach(b =>
-                        {
-                            _items.HardDelete(b);
-                        });
+                    var deleteCont = false;
+                    var serviceItems = _items.SelectByFunc(a=>a.ServicePropertyId == id);
+                    var reservationServices = _reservationServicesTable.Select();
 
-                        _serviceProperties.HardDelete(serviceProps);
-                        return new JsonResult(new { result = 1 });
+                    var reservationServiceItemIds = new List<int>();
+
+                    reservationServices.ForEach(a =>
+                    {
+                        reservationServiceItemIds.Add(a.ServiceItemId);
+                    });
+
+                    serviceItems.ForEach(a =>
+                    {
+                        if (reservationServiceItemIds.Contains(a.Id))
+                        {
+                            deleteCont = true;
+                        }
+                    });
+
+                    if (!deleteCont)
+                    {
+                        var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                        serviceProps.ServiceCategory = _serviceCategory.SelectByID(serviceProps.ServiceCategoryId);
+                        if (serviceProps.ServiceCategory.UserId == userId)
+                        {
+                            var items = _items.SelectByFunc(b => b.ServicePropertyId == id);
+                            items.ForEach(b =>
+                            {
+                                _items.HardDelete(b);
+                            });
+
+                            _serviceProperties.HardDelete(serviceProps);
+                            return new JsonResult(new { result = 1 });
+                        }
                     }
+                    else
+                    {
+                        return new JsonResult(new { result = 3 });
+                    }                  
                 }
 
                 return new JsonResult(new { result = 2 });
@@ -316,9 +344,36 @@ namespace Airport.UI.Controllers
                 var service = _serviceCategory.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
                 if (service != null)
                 {
+
+                    var reservationServices = _reservationServicesTable.Select();
                     var serviceProps = _serviceProperties.SelectByFunc(a => a.ServiceCategoryId == service.Id);
-                    serviceProps.ForEach(a =>
+
+                    var deleteCont = false;
+                    foreach (var a in serviceProps)
                     {
+                        var serviceItems = _items.SelectByFunc(a => a.ServicePropertyId == a.Id);
+
+
+                        var reservationServiceItemIds = new List<int>();
+                        reservationServices.ForEach(b =>
+                        {
+                            reservationServiceItemIds.Add(b.ServiceItemId);
+                        });
+
+                        serviceItems.ForEach(b =>
+                        {
+                            if (reservationServiceItemIds.Contains(b.Id))
+                            {
+                                deleteCont = true;
+                                
+                            }
+                        });
+
+                        if (deleteCont)
+                        {
+                            break;
+                        }
+
                         var items = _items.SelectByFunc(b => b.ServicePropertyId == a.Id);
                         items.ForEach(b =>
                         {
@@ -339,9 +394,16 @@ namespace Airport.UI.Controllers
 
 
                         _serviceProperties.HardDelete(a);
-                    });
+                    }
 
-                    _serviceCategory.HardDelete(service);
+                    if (deleteCont)
+                    {
+                        return new JsonResult(new { result = 2 });
+                    }
+                    else
+                    {
+                        _serviceCategory.HardDelete(service);
+                    }
 
                 }
 

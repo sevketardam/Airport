@@ -3629,6 +3629,7 @@ label.error {
     -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
     padding: .5rem 1rem;
     border-radius: .5rem;
+    background-color: white;
 }
 
 .checkServiceDiv {
@@ -3679,8 +3680,8 @@ label.error {
 }
 
 .pageServiceDownItemTop .pageServicePrice p {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 1.2rem;
+    font-weight: 400;
     min-width: 3rem;
 }
 

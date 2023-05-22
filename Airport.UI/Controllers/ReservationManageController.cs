@@ -16,6 +16,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Airport.MessageExtensions.Interfaces;
 using Microsoft.AspNetCore.Hosting;
+using System.Data;
+using System.IO;
 
 namespace Airport.UI.Controllers
 {
@@ -38,7 +40,9 @@ namespace Airport.UI.Controllers
         IServiceCategoriesDAL _serviceCategories;
         IReservationServicesTableDAL _reservationServicesTable;
         IMail _mail;
-        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail)
+        ILoginAuthDAL _loginAuth;
+        ICouponsDAL _coupons;
+        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth,ICouponsDAL coupons)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -55,6 +59,8 @@ namespace Airport.UI.Controllers
             _reservationServicesTable = reservationServicesTable;
             _env = env;
             _mail = mail;
+            _loginAuth = loginAuth;
+            _coupons = coupons;
         }
 
 
@@ -66,7 +72,7 @@ namespace Airport.UI.Controllers
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
                 var reservationVM = new ReservationsIndexVM()
                 {
-                    Reservations = _reservations.SelectByFunc(a => a.UserId == userId),
+                    Reservations = _reservations.SelectByFunc(a => a.UserId == userId).OrderByDescending(a=>a.ReservationDate).ToList(),
                     Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete)
                 };
 
@@ -77,7 +83,6 @@ namespace Airport.UI.Controllers
 
                 return BadRequest(ex.ToString());
             }
-
         }
 
         [HttpGet("panel/reservation-detail/{id}")]
@@ -89,14 +94,41 @@ namespace Airport.UI.Controllers
                 var reservation = _reservations.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
                 if (reservation is not null)
                 {
-                    reservation.LocationCars = _locationCars.SelectByID(reservation.LocationCarId);
+                    var reservationLocationCars = _locationCars.SelectByID(reservation.LocationCarId);
+
+                    reservation.LocationCars = reservationLocationCars;
                     reservation.LocationCars.Car = _carDetail.CarDetail(reservation.LocationCars.CarId);
+                    reservation.LocationCars.Car.Service = _services.SelectByID(reservation.LocationCars.Car.SeriesId);
+
+          
                     reservation.Driver = _drivers.SelectByID(reservation.DriverId);
+                    if (reservation.Driver != null)
+                    {
+                        var loginAuth = _loginAuth.SelectByFunc(a => a.DriverId == reservation.DriverId).FirstOrDefault();
+                        reservation.Driver.LoginAuth = loginAuth;
+                    }
                     reservation.ReservationPeoples = _reservationPeople.SelectByFunc(a => a.ReservationId == reservation.Id);
+
+                    var ReservationServicesTable = _reservationServicesTable.SelectByFunc(a=>a.ReservationId == id);
+
+                    ReservationServicesTable.ForEach(a =>
+                    {
+                        a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
+                        a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
+                        a.ServiceItem.Service = _services.SelectByID(a.ServiceItem.ServiceId);
+                        a.ServiceItem.ServiceProperty.ServiceCategory = _serviceCategories.SelectByID(a.ServiceItem.ServiceProperty.ServiceCategoryId);
+                    });
+
+                    if (reservation.Coupon != 0 && reservation.Coupon != null)
+                    {
+                        reservation.Coupons = _coupons.SelectByID(reservation.Coupon);
+                    }
+
                     var reservationVM = new ReservationManagementVM()
                     {
                         Reservation = reservation,
-                        Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete)
+                        Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
+                        ReservationServicesTable = ReservationServicesTable
                     };
 
 
@@ -106,7 +138,15 @@ namespace Airport.UI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.ToString());
+                string dosyaYolu = "wwwroot/error.txt";
+
+                using (StreamWriter yazici = new StreamWriter(dosyaYolu))
+                {
+                    string metin = ex.ToString();
+                    yazici.WriteLine(metin);
+                }
+
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -377,7 +417,14 @@ namespace Airport.UI.Controllers
                                             {
                                                 if (c.PriceType == 2)
                                                 {
-                                                    price += fare * (c.UpTo - c.StartFrom);
+                                                    if (c.UpTo < minKm)
+                                                    {
+                                                        price += fare * (c.UpTo - c.StartFrom);
+                                                    }
+                                                    else
+                                                    {
+                                                        price += fare * (minKm - c.StartFrom);
+                                                    }
                                                 }
                                                 else
                                                 {
@@ -487,7 +534,18 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var user = _userDatas.SelectByID(userId);
+                var user = new UserDatas();
+
+                if (userId != 0)
+                {
+                    var loginAuth = _loginAuth.SelectByID(userId);
+                    user = _userDatas.SelectByID(loginAuth?.UserId);
+                    user.LoginAuth = loginAuth;
+                }
+                else
+                {
+                    user = null;
+                }
 
                 var datas = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
@@ -522,7 +580,14 @@ namespace Airport.UI.Controllers
                             {
                                 if (c.PriceType == 2)
                                 {
-                                    price += fare * (c.UpTo - c.StartFrom);
+                                    if (c.UpTo < datas.KM)
+                                    {
+                                        price += fare * (c.UpTo - c.StartFrom);
+                                    }
+                                    else
+                                    {
+                                        price += fare * (datas.KM - c.StartFrom);
+                                    }
                                 }
                                 else
                                 {
@@ -653,6 +718,8 @@ namespace Airport.UI.Controllers
                 }
 
                 createReservation.LocationCar.Location = _location.SelectByID(createReservation.LocationCar.LocationId);
+                var totalprice = reservation.IsDiscount ? Convert.ToDouble(reservation.Discount) : createReservation.LastPrice + totalServiceFee;
+                totalprice = Math.Round(totalprice, 2);
 
                 var updatedService = createReservation.UpdateReservation;
                 updatedService.DropLatLng = createReservation.DropLocationLatLng;
@@ -675,9 +742,9 @@ namespace Airport.UI.Controllers
                 updatedService.Discount = reservation.Discount;
                 updatedService.ServiceFee = totalServiceFee;
                 updatedService.Comment = reservation.Comment;
-                updatedService.Discount = reservation.Discount;
                 updatedService.HidePrice = reservation.HidePrice;
                 updatedService.LocationCarId = createReservation.LocationCar.Id;
+                updatedService.TotalPrice = totalprice;
 
                 var item = _reservations.Update(updatedService);
 
@@ -705,7 +772,8 @@ namespace Airport.UI.Controllers
 
                 item.LocationCars = _locationCars.SelectByID(item.LocationCarId);
                 item.LocationCars.Car = _carDetail.CarDetail(item.LocationCars.CarId);
-                item.User = _userDatas.SelectByID(item.UserId);
+                var loginAuth = _loginAuth.SelectByID(item.UserId);
+                item.User = _userDatas.SelectByID(loginAuth.UserId);
 
                 var reservationPeople = new List<ReservationPeople>();
 

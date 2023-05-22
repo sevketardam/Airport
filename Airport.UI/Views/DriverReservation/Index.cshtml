@@ -1,9 +1,9 @@
 ﻿@model ReservationsIndexVM
 @{
     Layout = "_PanelLayout";
-
-    ViewData["title"] = "Reservation Management";
+    ViewData["title"] = "Driver Reservations";
 }
+
 @section pageCss{
     <style>
 
@@ -60,7 +60,7 @@
             font-size: 1.3rem;
         }
 
-        .reservation-delete{
+        .reservation-delete {
             color: red !important;
             font-size: 1.1rem;
             filter: drop-shadow(0 0 1px);
@@ -77,7 +77,6 @@
             <th style="text-align:center">Name</th>
             <th style="text-align:center">Date</th>
             <th style="text-align:center">Situation</th>
-            <th style="text-align:center">Driver Situation</th>
             <th style="text-align:center">Transactions</th>
         </tr>
     </thead>
@@ -97,25 +96,14 @@
                     {
                         <span class="badge badge-info">Finished Reservation</span>
                     }
-                    else if(item.Status == 4)
+                    else if (item.Status == 4)
                     {
                         <span class="badge badge-danger">Cancel Reservation</span>
                     }
                 </td>
                 <td>
-                    @if (item.DriverId != null && item.DriverId != 0)
-                    {
-                        <span class="badge badge-success">Driver Assigned</span>
-                    }
-                    else
-                    {
-                        <span class="badge badge-warning">Driver Not Assigned</span>
-                    }
-                </td>
-                <td>
-                    <a title="Go to detail" href="/panel/reservation-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
+                    <a title="Go to detail" href="/reservation-driver-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
                     <a title="Leave a note" class="open-note reservation-table-icon"><i class="iconsminds-file-edit"></i></a>
-                    <a title="Select Driver" class="select-driver reservation-table-icon"><i class="iconsminds-doctor"></i></a>
                     <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://test.airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
                         <i class="iconsminds-file"></i>
                     </a>
@@ -125,44 +113,6 @@
         }
     </tbody>
 </table>
-
-
-<div class="modal fade" id="SelectDriverModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Select Driver</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="selectDriver">
-                    <div>
-                        <label for="reservationDriver">Drivers</label>
-                        <select class="form-control" name="DriverId" id="reservationDriver">
-                            <option value="0" selected disabled>Select Driver</option>
-                            @foreach (var item in Model.Drivers)
-                            {
-                                <option value="@item.Id">@item.Name @item.Surname</option>
-                            }
-                        </select>
-                    </div>
-                    <div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                        data-dismiss="modal">
-                    Close
-                </button>
-                <button type="button" class="btn btn-primary" onclick="$('#selectDriver').submit()" id="saveNote">Assign Driver</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <div class="modal fade" id="reservationNoteModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -204,7 +154,7 @@
 @section pageJs{
     <script>
 
-        $('.reservation-delete').on("click",function(){
+        $('.reservation-delete').on("click", function () {
             var reservationId = $(this).closest("tr").attr("data-id")
             Swal.fire({
                 title: 'Are you sure you want to cancel the reservation?',
@@ -218,7 +168,7 @@
                 if (result.isConfirmed == true) {
                     $('.formLoader').removeClass("deActive")
                     $.ajax({
-                        url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.CancelReservation))',
+                        url: '@Url.Action(nameof(Airport.UI.Controllers.DriverReservationController.CancelReservation))',
                         type: "POST",
                         data: "id=" + reservationId,
                         success: function (response) {
@@ -247,67 +197,12 @@
             })
         })
 
-        $('#selectDriver').on("submit", function (e) {
-            e.preventDefault();
-            var driverId = $('#selectDriver #reservationDriver').val()
-            $('.formLoader').removeClass("deActive")
-            $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.AssignDriver))',
-                type: "POST",
-                data: { reservationId: selectedReservationId, driverId: driverId },
-                success: function (response) {
-                    if (response.result == 1) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Successfully Assign Driver',
-                        }).then(() => {
-                            location.reload()
-                        })
-
-                        $('#SelectDriverModal').modal("hide")
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'Something went wrong',
-                        }).then(() => {
-                            location.reload()
-                        })
-                    }
-                    $('.formLoader').addClass("deActive")
-                }
-            });
-        })
-
-        $('.select-driver').on("click", function () {
-            selectedReservationId = $(this).closest("tr").attr("data-id")
-            $('#SelectDriverModal #reservationDriver').val(0)
-            $('.formLoader').removeClass("deActive")
-            $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.GetDriverDetail))',
-                type: "POST",
-                data: { id: selectedReservationId },
-                success: function (response) {
-                    if (response.result == 1) {
-                        if (response.data.driverId != 0 && response.data.driverId != null) {
-                            $('#SelectDriverModal #reservationDriver').val(response.data.driverId)
-                        }
-
-                        $('#SelectDriverModal').modal()
-                    }
-                    $('.formLoader').addClass("deActive")
-                }
-            });
-        })
-
-
         let selectedReservationId = 0;
         $('.open-note').on("click", function () {
             $('.formLoader').removeClass("deActive")
             selectedReservationId = $(this).closest("tr").attr("data-id")
             $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.GetReservationNote))',
+                url: '@Url.Action(nameof(Airport.UI.Controllers.DriverReservationController.GetReservationNote))',
                 type: "POST",
                 data: { id: selectedReservationId },
                 success: function (response) {
@@ -327,7 +222,7 @@
             var formData = $(this).serialize();
             $('.formLoader').removeClass("deActive")
             $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.UpdateReservationStatus))',
+                url: '@Url.Action(nameof(Airport.UI.Controllers.DriverReservationController.UpdateReservationStatus))',
                 type: "POST",
                 data: formData + "&id=" + selectedReservationId,
                 success: function (response) {
@@ -361,7 +256,7 @@
         $('.goDetail td:not(:last-child) ').on("click", function () {
             $('.formLoader').removeClass("deActive")
             var id = $(this).closest("tr").attr("data-id")
-            location.href = "/panel/reservation-detail/" + id;
+            location.href = "/reservation-driver-detail/" + id;
         })
     </script>
 }

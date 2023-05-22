@@ -218,7 +218,7 @@
                                 </div>
                                 <div class="_Form_Div">
                                     <label class="_Form_Label">Surname</label>
-                                    <input type="text" name="Surname">
+                                    <input type="text" name="Surname" value="@Model.UpdateReservation.Surname">
                                 </div>
                                 <div class="_Form_Div _Info_Div">
                                     <label class="_Form_Label">E-mail</label>
@@ -251,14 +251,8 @@
                                     </div>
                                 }
 
-
-
                             </div>
-
-
                             <input type="hidden" name="selectedServiceItems" />
-
-
                             <div class="w-100">
                                 <label class="_Form_Label">Comment</label>
                                 <textarea class="formTextarea" name="comment">@Model.UpdateReservation.Comment</textarea>
@@ -331,6 +325,15 @@
 
 @section pageJs{
     <script>
+
+        $("body").on("click", ".pageServiceDownItemTop", function (e) {
+            if ($(e.target).attr("class") != "passengerInputs" && $(e.target).attr("class") != "passengerInputs valid" && $(e.target).attr("class") != "passengerInputs error") {
+                $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
+                $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
+            }
+        })
+
+
         $('#discountCheck').on("change", function () {
             $('input[name="IsDiscount"]').val($(this).is(":checked"))
         })

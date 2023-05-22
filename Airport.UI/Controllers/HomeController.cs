@@ -18,9 +18,11 @@ namespace Airport.UI.Controllers
     public class HomeController : Controller
     {
         IUserDatasDAL _userdata;
-        public HomeController(IUserDatasDAL userdata,IMail mail)
+        ILoginAuthDAL _loginAuth;
+        public HomeController(IUserDatasDAL userdata,IMail mail, ILoginAuthDAL loginAuth)
         {
             _userdata = userdata;
+            _loginAuth = loginAuth;
         }
 
         public IActionResult Index()
@@ -46,38 +48,48 @@ namespace Airport.UI.Controllers
             return View();
         }
 
-        [HttpPost("agencies",Name ="agenciesForm")]
-        public IActionResult Agencies(UserDatas data)
+        [HttpPost("agencies")]
+        public IActionResult Agencies(UserDatas data,string Eposta,string Password)
         {
-            var datas = _userdata.SelectByFunc(a => a.Eposta == data.Eposta).FirstOrDefault();
-            if (datas == null)
+            if (data != null)
             {
-                var newUser = new UserDatas
+                var datas = _loginAuth.SelectByFunc(a => a.Email == Eposta).FirstOrDefault();
+                if (datas == null)
                 {
-                    Linkedin = data.Linkedin,
-                    Name = data.Name,
-                    AboutUs = data.AboutUs,
-                    Address = data.Address,
-                    CompanyEmail = data.CompanyEmail,
-                    CompanyName = data.CompanyName,
-                    CompanyPhoneNumber = data.CompanyPhoneNumber,
-                    CompanyWebsite = data.CompanyWebsite,
-                    Eposta = data.Eposta,
-                    Facebook = data.Facebook,
-                    Password = GetMD5(data.Password),
-                    Type = 2,
-                    Profession = data.Profession,
-                    TransferRequest = data.TransferRequest,
-                    TransferRequestLocation = data.TransferRequestLocation,
-                    PhoneNumber = data.PhoneNumber,
-                };
+                    var newAgencies = new UserDatas
+                    {
+                        Linkedin = data.Linkedin,
+                        Name = data.Name,
+                        AboutUs = data.AboutUs,
+                        Address = data.Address,
+                        CompanyEmail = data.CompanyEmail,
+                        CompanyName = data.CompanyName,
+                        CompanyPhoneNumber = data.CompanyPhoneNumber,
+                        CompanyWebsite = data.CompanyWebsite,
+                        Facebook = data.Facebook,
+                        Profession = data.Profession,
+                        TransferRequest = data.TransferRequest,
+                        TransferRequestLocation = data.TransferRequestLocation,
+                        PhoneNumber = data.PhoneNumber,
+                    };
 
-                _userdata.Insert(newUser);
+                    var addedAgencies = _userdata.Insert(newAgencies);
 
-                ViewBag.Message = "success";
+                    _loginAuth.Insert(new LoginAuth
+                    {
+                        Email = Eposta,
+                        Password = GetMD5(Password),
+                        Type = 2,
+                        UserId = addedAgencies.Id,
+                        DriverId = 0
+                    });
+
+                    return Json(new { result = 1 });
+                }
+
+                return Json(new { result = 2 });
             }
 
-            ViewBag.Message = "have";
             return View();
         }
 
@@ -104,15 +116,26 @@ namespace Airport.UI.Controllers
         }
 
         [HttpPost("register",Name = "personRegister")]
-        public IActionResult Register(UserDatas user)
+        public IActionResult Register(UserDatas user,string Eposta,string Password)
         {
-            var checkUser = _userdata.SelectByFunc(a=>a.Eposta == user.Eposta).FirstOrDefault();
+            var checkUser = _loginAuth.SelectByFunc(a=>a.Email == Eposta).FirstOrDefault();
             if (checkUser == null)
             {
-                user.Type = 1;
-                user.Password = GetMD5(user.Password);
-                _userdata.Insert(user);
+                var addedUser = _userdata.Insert(new UserDatas
+                {
+                    Name = user.Name,
+                    PhoneNumber = user.PhoneNumber,
+                    RealPhone = user.RealPhone,
+                });
 
+                _loginAuth.Insert(new LoginAuth
+                {
+                    Email = Eposta,
+                    Password = GetMD5(Password),
+                    Type = 1,
+                    DriverId = 0,
+                    UserId = addedUser.Id
+                });
 
                 ViewBag.Message = "success";
                 return View();

@@ -38,7 +38,7 @@
         <div class="col-md-6 mb-3 _Pos_Rel">
             <div class="form-group position-relative error-l-50">
                 <label>Email</label>
-                <input type="text" class="form-control" placeholder="Email" value="@Model.Email" name="Email" required="">
+                <input type="text" class="form-control" placeholder="Email" value="@Model.LoginAuth.Email" name="Email" required="">
             </div>
         </div>
 
@@ -216,6 +216,12 @@
                                 text: 'Successfully Update Driver',
                             }).then(() => {
                                 location.href = "/panel/my-drivers";
+                            })
+                        } else if (response.result == 2) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Warning',
+                                text: 'An account has already been created with this email.',
                             })
                         }
                     }

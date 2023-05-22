@@ -44,8 +44,9 @@ namespace Airport.UI.Controllers
         IReservationServicesTableDAL _reservationServicesTable;
         ICouponsDAL _coupons;
         ISMS _sms;
+        ILoginAuthDAL _loginAuth;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons,ISMS sms)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons,ISMS sms, ILoginAuthDAL loginAuth)
         {
             _location = location;
             _locationCar = locationCar;
@@ -64,6 +65,7 @@ namespace Airport.UI.Controllers
             _reservationServicesTable = reservationServicesTable;
             _coupons = coupons;
             _sms = sms;
+            _loginAuth = loginAuth;
         }
 
         [HttpPost("reservation", Name = "getLocationValue")]
@@ -223,7 +225,14 @@ namespace Airport.UI.Controllers
                                             {
                                                 if (c.PriceType == 2)
                                                 {
-                                                    price += fare * (c.UpTo - c.StartFrom);
+                                                    if (c.UpTo < minKm)
+                                                    {
+                                                        price += fare * (c.UpTo - c.StartFrom);
+                                                    }
+                                                    else
+                                                    {
+                                                        price += fare * (minKm - c.StartFrom);
+                                                    }
                                                 }
                                                 else
                                                 {
@@ -327,7 +336,19 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var user = _userDatas.SelectByID(userId);
+                var user = new UserDatas();
+
+                if (userId != 0)
+                {
+                    var loginAuth = _loginAuth.SelectByID(userId);
+                    user = _userDatas.SelectByID(loginAuth?.UserId);
+                    user.LoginAuth = loginAuth;
+                }
+                else
+                {
+                    user = null;
+                }
+
 
                 var datas = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
@@ -368,7 +389,14 @@ namespace Airport.UI.Controllers
                             {
                                 if (c.PriceType == 2)
                                 {
-                                    price += fare * (c.UpTo - c.StartFrom);
+                                    if (c.UpTo < datas.KM)
+                                    {
+                                        price += fare * (c.UpTo - c.StartFrom);
+                                    }
+                                    else
+                                    {
+                                        price += fare * (datas.KM - c.StartFrom);
+                                    }
                                 }
                                 else
                                 {
@@ -485,12 +513,20 @@ namespace Airport.UI.Controllers
                 }
 
                 var getCoupon = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now
-                                                                                        && a.CouponFinishDate >= DateTime.Now).FirstOrDefault();
+                                                                        && a.CouponFinishDate >= DateTime.Now && a.IsPerma).FirstOrDefault();
+                if (getCoupon == null)
+                {
+                    getCoupon = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now
+                                                                       && a.CouponFinishDate >= DateTime.Now && (a.CouponLimit > a.UsingCount && !a.IsPerma)).FirstOrDefault();
+                }
+
                 var total = createReservation.LastPrice + totalServiceFee;
 
                 if (getCoupon is not null)
                 {
                     total = total - ((total * getCoupon.Discount) / 100);
+                    getCoupon.UsingCount = getCoupon.UsingCount + 1;
+                    _coupons.Update(getCoupon);
                 }
 
                 total = Math.Round(total, 2);
@@ -549,7 +585,9 @@ namespace Airport.UI.Controllers
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
                 item.LocationCars.Car = _getCar.CarDetail(item.LocationCars.CarId);
-                item.User = _userDatas.SelectByID(item.UserId);
+
+                var loginAuth = _loginAuth.SelectByID(item.UserId);
+                item.User = _userDatas.SelectByID(loginAuth.UserId);
 
 
                 var reservationPeople = new List<ReservationPeople>();
@@ -804,7 +842,14 @@ namespace Airport.UI.Controllers
                                             {
                                                 if (c.PriceType == 2)
                                                 {
-                                                    price += fare * (c.UpTo - c.StartFrom);
+                                                    if (c.UpTo < minKm)
+                                                    {
+                                                        price += fare * (c.UpTo - c.StartFrom);
+                                                    }
+                                                    else
+                                                    {
+                                                        price += fare * (minKm - c.StartFrom);
+                                                    }
                                                 }
                                                 else
                                                 {
@@ -910,7 +955,18 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var user = _userDatas.SelectByID(userId);
+                var user = new UserDatas();
+
+                if (userId != 0)
+                {
+                    var loginAuth = _loginAuth.SelectByID(userId);
+                    user = _userDatas.SelectByID(loginAuth?.UserId);
+                    user.LoginAuth = loginAuth;
+                }
+                else
+                {
+                    user = null;
+                }
 
                 var datas = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
@@ -949,7 +1005,14 @@ namespace Airport.UI.Controllers
                             {
                                 if (c.PriceType == 2)
                                 {
-                                    price += fare * (c.UpTo - c.StartFrom);
+                                    if (c.UpTo < datas.KM)
+                                    {
+                                        price += fare * (c.UpTo - c.StartFrom);
+                                    }
+                                    else
+                                    {
+                                        price += fare * (datas.KM - c.StartFrom);
+                                    }
                                 }
                                 else
                                 {
@@ -1080,7 +1143,7 @@ namespace Airport.UI.Controllers
 
 
                 var totalprice = reservation.IsDiscount ? Convert.ToDouble(reservation.Discount) : createReservation.LastPrice + totalServiceFee;
-
+                totalprice = Math.Round(totalprice, 2);
                 var item = _reservations.Insert(new Reservations
                 {
                     DropLatLng = createReservation.DropLocationLatLng,
@@ -1134,7 +1197,9 @@ namespace Airport.UI.Controllers
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
                 item.LocationCars.Car = _getCar.CarDetail(item.LocationCars.CarId);
-                item.User = _userDatas.SelectByID(item.UserId);
+
+                var loginAuth = _loginAuth.SelectByID(item.UserId);
+                item.User = _userDatas.SelectByID(loginAuth.UserId);
 
                 var reservationPeople = new List<ReservationPeople>();
 
@@ -1250,7 +1315,13 @@ namespace Airport.UI.Controllers
             try
             {
                 var coupons = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now 
-                                                                                        && a.CouponFinishDate >= DateTime.Now).FirstOrDefault();
+                                                                                        && a.CouponFinishDate >= DateTime.Now && a.IsPerma).FirstOrDefault();
+                if (coupons == null)
+                {
+                     coupons = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now
+                                                                        && a.CouponFinishDate >= DateTime.Now && (a.CouponLimit > a.UsingCount && !a.IsPerma)).FirstOrDefault();
+                }
+
                 if (coupons != null)
                 {
                     return new JsonResult(new { result = 1, data = coupons });

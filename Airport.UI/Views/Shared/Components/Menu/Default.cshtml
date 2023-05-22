@@ -1,4 +1,4 @@
-﻿@model UserDatas
+﻿@model RecognizerUserVM
 
 
 
@@ -14,7 +14,15 @@
                 <a href="/panel" class="dropdown-item" type="button">Dashboard</a>
             }
 
-            <a href="/profile" class="dropdown-item" type="button">Profile</a>
+            @if (Model.Type == 3)
+            {
+                <a href="/driver-reservations" class="dropdown-item" type="button">Dashboard</a>
+            }
+
+            @if (Model.Type != 3)
+            {
+                <a href="/profile" class="dropdown-item" type="button">Profile</a>
+            }
             <a href="/logout" class="dropdown-item" type="button">Logout</a>
         </div>
     </div>

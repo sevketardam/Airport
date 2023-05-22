@@ -399,7 +399,7 @@
                         type: "POST",
                         data: { id: propId },
                         success: function (data) {
-                            if (data.result == "1") {
+                            if (data.result == 1) {
                                 Swal.fire({
                                     title: 'Success',
                                     html: 'Successfully deleted property',
@@ -407,6 +407,13 @@
                                     confirmButtonText: 'Okey'
                                 }).then(() => {
                                     location.reload();
+                                })
+                            } else if (data.result == 3) {
+                                Swal.fire({
+                                    title: 'Warning!',
+                                    html: 'You cannot delete this service because it is used in a reservation',
+                                    icon: 'error',
+                                    confirmButtonText: 'Okey'
                                 })
                             } else {
                                 Swal.fire({
@@ -582,6 +589,13 @@
                                     confirmButtonText: 'Okey'
                                 }).then(() => {
                                     location.reload();
+                                })
+                            } else if (data.result == 2) {
+                                Swal.fire({
+                                    title: 'Warning!',
+                                    html: 'You cannot delete this service because it is used in a reservation',
+                                    icon: 'error',
+                                    confirmButtonText: 'Okey'
                                 })
                             } else {
                                 Swal.fire({

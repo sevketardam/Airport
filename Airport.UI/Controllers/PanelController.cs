@@ -16,19 +16,24 @@ namespace Airport.UI.Controllers
         ILocationsDAL _locations;
         IGetCarDetail _getCarDetail;
         IReservationsDAL _reservations;
-        public PanelController(IMyCarsDAL myCars, IUserDatasDAL userDatas, ILocationsDAL locations, IGetCarDetail getCarDetail,IReservationsDAL reservations)
+        ILoginAuthDAL _loginAuth;
+        public PanelController(IMyCarsDAL myCars, IUserDatasDAL userDatas, ILocationsDAL locations, IGetCarDetail getCarDetail,IReservationsDAL reservations, ILoginAuthDAL loginAuth)
         {
             _myCars = myCars;
             _userDatas = userDatas;
             _locations = locations;
             _getCarDetail = getCarDetail;
             _reservations = reservations;   
+            _loginAuth = loginAuth;
         }
         public IActionResult Index()
         {
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+
+                var loginAuth = _loginAuth.SelectByID(userId);
+
                 var today = DateTime.Today;
                 var lastWeek = today.AddDays(7);
 

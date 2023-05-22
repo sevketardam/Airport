@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace Airport.UI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="0,2")]
     public class PanelAuthController : Controller
     {
         //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
