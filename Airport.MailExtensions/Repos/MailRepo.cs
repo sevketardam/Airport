@@ -116,7 +116,7 @@ namespace Airport.MessageExtensions.Repos
         </div>
         <div >
             <div>
-                <p style=""  font-size: 12px;
+                <p style=""font-size: 12px;
                 font-weight: 300;"">{reservationDetail.ReservationDate}</p>
                 <div style=""display: flex;
                 align-items: center;"">
@@ -156,8 +156,7 @@ namespace Airport.MessageExtensions.Repos
     font-size: 2rem;
     margin: 0 0 0.7rem 0;
     text-align: center;
-    font-weight: 600;
-"">
+    font-weight: 600;"">
             Details
         </h4>
         <div>
@@ -203,12 +202,10 @@ namespace Airport.MessageExtensions.Repos
             <div  style=""display: flex;
             align-items: flex-start;"">
                 <span >Plate : &nbsp; </span>
-                <span  {reservationDetail.LocationCars.Car.Plate} </span>
-                <!--  -->
-                
+                <span>{reservationDetail.LocationCars.Car.Plate} </span>       
             </div> 
             <div style=""margin-top: .3rem;"">
-                <span >Attributes : &nbsp; </span>
+                <span>Attributes : &nbsp; </span>
                 <span>
 {carAttrHtml}
 

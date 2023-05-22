@@ -46,8 +46,8 @@ namespace Airport.UI.Controllers
                 var myDashboard = new DashboardVM()
                 {
                     MyCars = myCars,
-                    MyLocations = _locations.SelectByFunc(a => a.UserId == userId),
-                    User = _userDatas.SelectByID(loginAuth.UserId),
+                    MyLocations = _locations.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
+                    User = _userDatas.SelectByID(userId),
                     Reservations = _reservations.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
                     AWeekReservations = _reservations.SelectByFunc(a => a.ReservationDate >= today && a.ReservationDate < lastWeek && a.UserId == userId && !a.IsDelete)
                 };
