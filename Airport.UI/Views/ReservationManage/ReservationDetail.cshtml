@@ -511,9 +511,9 @@
             <div>
                 <h4 class="infosTitle">Amount to be paid</h4>
                 <p class="infosP">
-                    @if (Model.Reservation.IsDiscount || Model.Reservation.Coupon != null)
+                    @if (Model.Reservation.IsDiscount || (Model.Reservation.Coupon != null && Model.Reservation.Coupon != 0))
                     {
-                        if (Model.Reservation.Coupon != null)
+                        if (Model.Reservation.Coupon != 0)
                         {
                             <span><b>Coupon:</b>@Model.Reservation.Coupons.CouponCode - @(Model.Reservation.Coupons.Discount)% |</span>
                         }

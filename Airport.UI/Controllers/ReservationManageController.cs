@@ -97,42 +97,46 @@ namespace Airport.UI.Controllers
                     var reservationLocationCars = _locationCars.SelectByID(reservation.LocationCarId);
 
                     reservation.LocationCars = reservationLocationCars;
-                    reservation.LocationCars.Car = _carDetail.CarDetail(reservation.LocationCars.CarId);
-                    reservation.LocationCars.Car.Service = _services.SelectByID(reservation.LocationCars.Car.SeriesId);
-
-          
-                    reservation.Driver = _drivers.SelectByID(reservation.DriverId);
-                    if (reservation.Driver != null)
+                    if (reservationLocationCars != null)
                     {
-                        var loginAuth = _loginAuth.SelectByFunc(a => a.DriverId == reservation.DriverId).FirstOrDefault();
-                        reservation.Driver.LoginAuth = loginAuth;
+                        reservation.LocationCars.Car = _carDetail.CarDetail(reservation.LocationCars.CarId);
+                        reservation.LocationCars.Car.Service = _services.SelectByID(reservation.LocationCars?.Car?.SeriesId);
+
+
+                        reservation.Driver = _drivers.SelectByID(reservation.DriverId);
+                        if (reservation.Driver != null)
+                        {
+                            var loginAuth = _loginAuth.SelectByFunc(a => a.DriverId == reservation.DriverId).FirstOrDefault();
+                            reservation.Driver.LoginAuth = loginAuth;
+                        }
+                        reservation.ReservationPeoples = _reservationPeople.SelectByFunc(a => a.ReservationId == reservation.Id);
+
+                        var ReservationServicesTable = _reservationServicesTable.SelectByFunc(a => a.ReservationId == id);
+
+                        ReservationServicesTable.ForEach(a =>
+                        {
+                            a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
+                            a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem?.ServicePropertyId);
+                            a.ServiceItem.Service = _services.SelectByID(a.ServiceItem?.ServiceId);
+                            a.ServiceItem.ServiceProperty.ServiceCategory = _serviceCategories.SelectByID(a.ServiceItem?.ServiceProperty?.ServiceCategoryId);
+                        });
+
+                        if (reservation.Coupon != 0 && reservation.Coupon != null)
+                        {
+                            reservation.Coupons = _coupons.SelectByID(reservation.Coupon);
+                        }
+
+                        var reservationVM = new ReservationManagementVM()
+                        {
+                            Reservation = reservation,
+                            Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
+                            ReservationServicesTable = ReservationServicesTable
+                        };
+                        return View(reservationVM);
                     }
-                    reservation.ReservationPeoples = _reservationPeople.SelectByFunc(a => a.ReservationId == reservation.Id);
 
-                    var ReservationServicesTable = _reservationServicesTable.SelectByFunc(a=>a.ReservationId == id);
+                    return RedirectToAction("Index", "Home");
 
-                    ReservationServicesTable.ForEach(a =>
-                    {
-                        a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
-                        a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
-                        a.ServiceItem.Service = _services.SelectByID(a.ServiceItem.ServiceId);
-                        a.ServiceItem.ServiceProperty.ServiceCategory = _serviceCategories.SelectByID(a.ServiceItem.ServiceProperty.ServiceCategoryId);
-                    });
-
-                    if (reservation.Coupon != 0 && reservation.Coupon != null)
-                    {
-                        reservation.Coupons = _coupons.SelectByID(reservation.Coupon);
-                    }
-
-                    var reservationVM = new ReservationManagementVM()
-                    {
-                        Reservation = reservation,
-                        Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
-                        ReservationServicesTable = ReservationServicesTable
-                    };
-
-
-                    return View(reservationVM);
                 }
                 return NotFound();
             }
