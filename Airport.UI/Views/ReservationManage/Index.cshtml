@@ -359,7 +359,6 @@
         })
 
         $('.goDetail td:not(:last-child) ').on("click", function () {
-            $('.formLoader').removeClass("deActive")
             var id = $(this).closest("tr").attr("data-id")
             location.href = "/panel/reservation-detail/" + id;
         })

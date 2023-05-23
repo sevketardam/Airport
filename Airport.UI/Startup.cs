@@ -64,6 +64,9 @@ namespace Airport.UI
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
             {
                 opt.LoginPath = "/";
+                opt.SlidingExpiration = false;
+                opt.ExpireTimeSpan = TimeSpan.FromHours(6);
+                opt.AccessDeniedPath = "/";
             });
 
         }
@@ -85,8 +88,8 @@ namespace Airport.UI
             app.UseRouting();
 
             app.UseAuthentication();
-
             app.UseAuthorization();
+            app.UseCookiePolicy();
 
             app.UseSession();
 

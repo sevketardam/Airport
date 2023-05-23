@@ -678,12 +678,14 @@ namespace Airport.UI.Controllers
 
         }
 
+        [Authorize(Roles = "0,2")]
         [HttpGet("panel/manual-reservation-one")]
         public async Task<IActionResult> ManualReservationStepOne()
         {
             return View();
         }
 
+        [Authorize(Roles = "0,2")]
         [HttpPost("panel/manual-reservation-two", Name = "getManualLocationValue")]
         public async Task<IActionResult> ManualReservationStepTwo(GetResevationIM reservation)
         {
@@ -949,6 +951,7 @@ namespace Airport.UI.Controllers
 
         }
 
+        [Authorize(Roles = "0,2")]
         [HttpGet("panel/manual-reservation-three/{id}")]
         public IActionResult ManualReservationStepThree(int id)
         {
@@ -1094,6 +1097,7 @@ namespace Airport.UI.Controllers
 
         }
 
+        [Authorize(Roles = "0,2")]
         [HttpPost("panel/manual-reservation-three/{id}", Name = "getManualBookValues")]
         public IActionResult ManualReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, List<int> serviceItems, string selectedServiceItems)
         {

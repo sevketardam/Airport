@@ -99,13 +99,7 @@ namespace Airport.UI.Controllers
                     reservation.LocationCars = reservationLocationCars;
                     if (reservationLocationCars != null)
                     {
-                        string dosyaYolu = "wwwroot/error.txt";
 
-                        using (StreamWriter yazici = new StreamWriter(dosyaYolu))
-                        {
-                            string metin = JsonConvert.SerializeObject(reservation);
-                            yazici.WriteLine(metin);
-                        }
                         reservation.LocationCars.Car = _carDetail.CarDetail(reservation.LocationCars.CarId);
                         reservation.LocationCars.Car.Service = _services.SelectByID(reservation.LocationCars?.Car?.SeriesId);
 
@@ -149,13 +143,13 @@ namespace Airport.UI.Controllers
             }
             catch (Exception ex)
             {
-                //string dosyaYolu = "wwwroot/error.txt";
+                string dosyaYolu = "wwwroot/error.txt";
 
-                //using (StreamWriter yazici = new StreamWriter(dosyaYolu))
-                //{
-                //    string metin = ex.ToString();
-                //    yazici.WriteLine(metin);
-                //}
+                using (StreamWriter yazici = new StreamWriter(dosyaYolu))
+                {
+                    string metin = ex.ToString();
+                    yazici.WriteLine(metin);
+                }
 
                 return RedirectToAction("Index", "Home");
             }
