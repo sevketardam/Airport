@@ -277,7 +277,6 @@ margin: 0 auto;
         <div class=""header-text"" style=""
         font-size: 20px;"">Succesful Created Reservation</div>
     </div>
-    <!-- Durum -->
     <div class=""durum section"" style=""
     font-family: 'Poppins', sans-serif;
         background-color: white;
@@ -288,7 +287,7 @@ margin: 0 auto;
             <p class=""başarılı-text"" style=""
                 font-size: 26px;
         margin: 0 0 .3rem 0;
-        "">Your 123456 transfer order is successful</h5> <!--  {{reservationDetail.ReservationCode}} -->
+        "">Your {reservationDetail.ReservationCode} transfer order is successful</h5> 
             <p class=""başarılı-text-2"" style=""
             font-size: 15px;
         color: rgb(62, 62, 62);
@@ -301,7 +300,7 @@ margin: 0 auto;
         <div class=""durum-date"">
             <div class=""date-text"">
                 <p class=""date-text-date"" style="" font-size: 12px;
-                font-weight: 300;"">10.10.1010</p><!--  {{reservationDetail.ReservationDate}} -->
+                font-weight: 300;"">{reservationDetail.ReservationDate}</p>
                 <div class=""data-text-icon-group"" style=""
                  display: flex;
                  "">
