@@ -42,7 +42,7 @@ namespace Airport.UI.Models.Extendions
             var dropLatLng = reservation.DropLatLng.Replace("lat:", "").Replace("lng:", "").Replace(",", "%2C");
 
 
-            var str = "https://maps.googleapis.com/maps/api/staticmap?markers=color%3Ared%7Clabel%3AA%7C"+pickLatLng+"&markers=color%3Ared%7Clabel%3AB%7C"+ dropLatLng + "&size=303x156&key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&path=color%3Ablue%7Cweight%3A5%7C";
+            var str = "https://maps.googleapis.com/maps/api/staticmap?markers=color%3Ared%7Clabel%3AA%7C" + pickLatLng + "&markers=color%3Ared%7Clabel%3AB%7C" + dropLatLng + "&size=303x156&key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&path=color%3Ablue%7Cweight%3A5%7C";
 
             convertLocationValue.ForEach(a =>
             {
@@ -70,8 +70,10 @@ namespace Airport.UI.Models.Extendions
 
                 if (reservation.Coupons != null)
                 {
-                    totalprice = Math.Round(Convert.ToDouble(totalprice)- ((reservation.Coupons.Discount * Convert.ToDouble(totalprice)) / 100),2);
-                    discountHtml = @$"        <div style=""display: flex; justify-content: space-between;width:100%;"">
+                    totalprice = Math.Round(Convert.ToDouble(totalprice) - ((reservation.Coupons.Discount * Convert.ToDouble(totalprice)) / 100), 2);
+                    discountHtml = @$"       
+
+<div style=""display: flex; justify-content: space-between;width:100%;"">
             <div>
                       <p style=""margin: 0px;"">Discount:</p>
             </div>
@@ -83,7 +85,16 @@ namespace Airport.UI.Models.Extendions
 
                 if (reservation.IsDiscount)
                 {
-                    specialDiscountHtml = @$"        <div style=""display: flex; justify-content: space-between;width:100%;"">
+                    specialDiscountHtml = @$"       
+<div style=""display: flex; justify-content: space-between;width:100%;    text-decoration: line-through;"">
+            <div>
+                      <p style=""font-weight: bold;margin: 0px;"">Total:</p>
+            </div>
+            <div>
+                      <p style=""margin: 0px;margin-left:.5rem;"">{reservation.TotalPrice} €</p>
+            </div>
+        </div>
+<div style=""display: flex; justify-content: space-between;width:100%;"">
             <div>
                       <p style=""font-weight: bold;margin: 0px;"">Special Price:</p>
             </div>
@@ -139,12 +150,9 @@ namespace Airport.UI.Models.Extendions
                 {
                     serviceHtml += @$" <div>
             <div>
-                      <p style=""margin: 0px;font-weight: bold;"">{item.ServiceItem.ServiceProperty.ServicePropertyName}</p>
+                      <p style=""margin: 0px;font-weight: bold;"">{item.ServiceItem.ServiceProperty.ServicePropertyName} {item.Price * item.PeopleCount} €</p>
             </div>
-            <div style=""margin: 0px;margin-left:.5rem;font-size: 10px;!important;"">
-                     {item.ServiceItem.ServiceProperty.ServicePropertyDescription}
-            </div>
-        </div>"; 
+        </div>";
                 }
                 serviceHtml += "</div></div>";
             }

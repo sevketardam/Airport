@@ -42,7 +42,7 @@ namespace Airport.UI.Controllers
         IMail _mail;
         ILoginAuthDAL _loginAuth;
         ICouponsDAL _coupons;
-        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth,ICouponsDAL coupons)
+        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -72,7 +72,7 @@ namespace Airport.UI.Controllers
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
                 var reservationVM = new ReservationsIndexVM()
                 {
-                    Reservations = _reservations.SelectByFunc(a => a.UserId == userId).OrderByDescending(a=>a.ReservationDate).ToList(),
+                    Reservations = _reservations.SelectByFunc(a => a.UserId == userId).OrderByDescending(a => a.ReservationDate).ToList(),
                     Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete)
                 };
 
@@ -447,7 +447,7 @@ namespace Airport.UI.Controllers
                                         {
                                             var plusPrice = minKm - lastUp;
                                             price += lastPrice * plusPrice;
-                                        }                                    
+                                        }
                                     }
 
                                     if (reservation.ReturnStatus)
@@ -455,25 +455,29 @@ namespace Airport.UI.Controllers
                                         price *= 2;
                                     }
 
-                                    price = Math.Round(price,2);
-                                    getreservation.Add(new GetReservationValues
+                                    price = Math.Round(price, 2);
+                                    if (price > 0)
                                     {
-                                        LocationCars = b,
-                                        LastPrice = price,
-                                        ReservationDate = reservation.FlightTime,
-                                        PickLocationName = contentJsonResult.Result.formatted_address,
-                                        DropLocationName = contentJsonResult2.Result.formatted_address,
-                                        PassangerCount = reservation.PeopleCount,
-                                        DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
-                                        PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
-                                        DropLocationPlaceId = reservation.DropValue,
-                                        PickLocationPlaceId = reservation.PickValue,
-                                    });
+                                        getreservation.Add(new GetReservationValues
+                                        {
+                                            LocationCars = b,
+                                            LastPrice = price,
+                                            ReservationDate = reservation.FlightTime,
+                                            PickLocationName = contentJsonResult.Result.formatted_address,
+                                            DropLocationName = contentJsonResult2.Result.formatted_address,
+                                            PassangerCount = reservation.PeopleCount,
+                                            DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
+                                            PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
+                                            DropLocationPlaceId = reservation.DropValue,
+                                            PickLocationPlaceId = reservation.PickValue,
+                                        });
+                                    }
+                                  
                                 }
                             });
                         });
                     }
-                      
+
                     var updateReservation = _reservations.SelectByID(id);
 
                     getreservation = getreservation.Distinct().ToList();
@@ -654,7 +658,7 @@ namespace Airport.UI.Controllers
                     HttpContext.Session.MySet("reservationData", datas);
 
                     var updateServices = new List<ServiceItems>();
-                    datas.UpdateReservation.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a=>a.ReservationId == datas.UpdateReservation.Id);
+                    datas.UpdateReservation.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == datas.UpdateReservation.Id);
                     datas.UpdateReservation.ReservationServicesTables.ForEach(a =>
                     {
                         updateServices.Add(_serviceItems.SelectByID(a.ServiceItemId));
@@ -767,7 +771,7 @@ namespace Airport.UI.Controllers
                     });
                 }
 
-                var deleteServiceTable = _reservationServicesTable.SelectByFunc(a=>a.ReservationId == updatedService.Id);
+                var deleteServiceTable = _reservationServicesTable.SelectByFunc(a => a.ReservationId == updatedService.Id);
                 deleteServiceTable.ForEach(a =>
                 {
                     _reservationServicesTable.HardDelete(a);

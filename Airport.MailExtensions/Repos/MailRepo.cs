@@ -340,7 +340,7 @@ margin: 0 auto;
                     <div class=""span-group"" style=""
                      display: flex;
         flex-direction: column;"">
-                        <span>{reservationDetail.DropFullName}</span><!--   -->
+                        <span>{reservationDetail.DropFullName}</span>
                     </div>
                 </div>
             </div>
@@ -353,20 +353,18 @@ margin: 0 auto;
         <h4 style=""
     font-size: 2rem;
     margin: 0 0 0.7rem 0;
-    font-weight: 600;
-"">
+    font-weight: 600;"">
             Details
         </h4>
         <div class=""teklif-bilgi"">
             <div class=""teklif-item"" style=""
                 display: flex;
-        align-items: flex-start;
-        "">
+        align-items: flex-start;"">
                 <span style=""width: 40%;
                 font-weight: 300;"">Price : &nbsp; </span>
                 <span class=""teklif-description"" style=""color: black;
         font-weight: 500;
-        ""> {reservationDetail.TotalPrice} € </span><!--  -->
+        ""> {reservationDetail.TotalPrice} € </span>
             </div>
             <div class=""teklif-item"" style=""
             display: flex;
@@ -376,7 +374,7 @@ margin: 0 auto;
                 font-weight: 300;"">Passengers : &nbsp; </span>
                 <span class=""teklif-description"" style=""color: black;
         font-weight: 500;
-        "">{reservationDetail.PeopleCount}</span> <!--  -->
+        "">{reservationDetail.PeopleCount}</span>
             </div>
             <div class=""teklif-item"" style=""
             display: flex;
@@ -386,7 +384,7 @@ margin: 0 auto;
                 font-weight: 300;"">Transport Types : &nbsp; </span>
                 <span class=""teklif-description"" style=""color: black;
         font-weight: 500;
-        ""> Every </span> <!-- every sabit kalacak  -->
+        ""> Every </span> 
             </div>
         </div>
         <div style=""width: 80%; height: 1px; border-top: 2px dashed rgb(0, 0, 0, .3); margin: 1rem 0;""></div>
@@ -408,8 +406,7 @@ margin: 0 auto;
                 <span style=""width: 40%;
                 font-weight: 300;"">Car : &nbsp; </span>
                 <span class=""teklif-description"" style=""color: black;
-        font-weight: 500;
-        "">  {reservationDetail.LocationCars.Car.Brand.CarBrandName} {reservationDetail.LocationCars.Car.Model.CarModelName}{reservationDetail.LocationCars.Car.Series.CarSeriesName} </span>
+        font-weight: 500;"">  {reservationDetail.LocationCars.Car.Brand.CarBrandName} {reservationDetail.LocationCars.Car.Model.CarModelName}{reservationDetail.LocationCars.Car.Series.CarSeriesName} </span>
                
             </div>
             <div class=""teklif-item"" style=""

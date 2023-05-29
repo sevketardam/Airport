@@ -256,19 +256,23 @@ namespace Airport.UI.Controllers
                                         price *= 2;
                                     }
                                     price = Math.Round(price, 2);
-                                    getreservation.Add(new GetReservationValues
+                                    if (price > 0)
                                     {
-                                        LocationCars = b,
-                                        LastPrice = price,
-                                        ReservationDate = reservation.FlightTime,
-                                        PickLocationName = contentJsonResult.Result.formatted_address,
-                                        DropLocationName = contentJsonResult2.Result.formatted_address,
-                                        PassangerCount = reservation.PeopleCount,
-                                        DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
-                                        PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
-                                        DropLocationPlaceId = reservation.DropValue,
-                                        PickLocationPlaceId = reservation.PickValue,
-                                    });
+                                        getreservation.Add(new GetReservationValues
+                                        {
+                                            LocationCars = b,
+                                            LastPrice = price,
+                                            ReservationDate = reservation.FlightTime,
+                                            PickLocationName = contentJsonResult.Result.formatted_address,
+                                            DropLocationName = contentJsonResult2.Result.formatted_address,
+                                            PassangerCount = reservation.PeopleCount,
+                                            DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
+                                            PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
+                                            DropLocationPlaceId = reservation.DropValue,
+                                            PickLocationPlaceId = reservation.PickValue,
+                                        });
+                                    }
+                                   
                                 }
                             });
                         });
@@ -878,19 +882,22 @@ namespace Airport.UI.Controllers
                                     }
 
                                     price = Math.Round(price, 2);
-                                    getreservation.Add(new GetReservationValues
+                                    if (price > 0)
                                     {
-                                        LocationCars = b,
-                                        LastPrice = price,
-                                        ReservationDate = reservation.FlightTime,
-                                        PickLocationName = contentJsonResult.Result.formatted_address,
-                                        DropLocationName = contentJsonResult2.Result.formatted_address,
-                                        PassangerCount = reservation.PeopleCount,
-                                        DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
-                                        PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
-                                        DropLocationPlaceId = reservation.DropValue,
-                                        PickLocationPlaceId = reservation.PickValue,
-                                    });
+                                        getreservation.Add(new GetReservationValues
+                                        {
+                                            LocationCars = b,
+                                            LastPrice = price,
+                                            ReservationDate = reservation.FlightTime,
+                                            PickLocationName = contentJsonResult.Result.formatted_address,
+                                            DropLocationName = contentJsonResult2.Result.formatted_address,
+                                            PassangerCount = reservation.PeopleCount,
+                                            DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
+                                            PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
+                                            DropLocationPlaceId = reservation.DropValue,
+                                            PickLocationPlaceId = reservation.PickValue,
+                                        });
+                                    }                        
                                 }
 
                             });
@@ -1312,7 +1319,6 @@ namespace Airport.UI.Controllers
                 return new JsonResult(new { });
             }
         }
-
 
         public JsonResult CheckCoupon(string coupon)
         {
