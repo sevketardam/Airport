@@ -30,33 +30,33 @@ namespace Airport.MessageExtensions.Repos
             var carAttrHtml = "";
             if (reservationDetail.LocationCars.Car.Armored)
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
+                carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i5.png'>";
 
             }
 
             if (reservationDetail.LocationCars.Car.Wifi)
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i4.png'>";
+                carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i4.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Water)   
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i1.png'>";
+                carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i1.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Partition)
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i6.png'>";
+                carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i6.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Charger)
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i3.png'>";
+                carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i3.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Disabled)
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i2.png'>";
+                carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i2.png'>";
             }
 
 
@@ -235,7 +235,7 @@ namespace Airport.MessageExtensions.Repos
             border-radius: 3rem;
             color: white;
             text-decoration: none;
-            transition: 200ms;"" href=""http://test.airportglobaltransfer.com/pdf/{reservationDetail.ReservationCode}-{reservationDetail.Id}.pdf"">Show Voucher</a>
+            transition: 200ms;"" href=""http://airportglobaltransfer.com/pdf/{reservationDetail.ReservationCode}-{reservationDetail.Id}.pdf"">Show Voucher</a>
         </div>
 
 

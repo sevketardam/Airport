@@ -623,7 +623,7 @@ namespace Airport.UI.Controllers
                 allMessage.Add(new Mesaj
                 {
                     dest = reservation.RealPhone,
-                    msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link http://test.airportglobaltransfer.com/pdf/{item.ReservationCode}-{item.Id}.pdf"
+                    msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{item.ReservationCode}-{item.Id}.pdf"
                 });
 
                 var mesaj = allMessage.ToArray();
@@ -1240,7 +1240,7 @@ namespace Airport.UI.Controllers
                 allMessage.Add(new Mesaj
                 {
                     dest = reservation.RealPhone,
-                    msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link http://test.airportglobaltransfer.com/pdf/{item.ReservationCode}-{item.Id}.pdf"
+                    msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{item.ReservationCode}-{item.Id}.pdf"
                 });
 
                 var mesaj = allMessage.ToArray();
