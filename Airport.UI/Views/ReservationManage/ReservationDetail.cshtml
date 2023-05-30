@@ -516,15 +516,15 @@
                 <p class="infosP">
                     @if (Model.Reservation.IsDiscount || (Model.Reservation.Coupon != null && Model.Reservation.Coupon != 0))
                     {
-                        if (Model.Reservation.Coupon != 0 && Model.Reservation.Coupon != null)
-                        {
-                            <span><b>Coupon:</b>@Model.Reservation.Coupons.CouponCode - @(Model.Reservation.Coupons.Discount)% |</span>
-                        }
                         <span style="text-decoration: line-through;opacity: .5;font-size: 1rem;font-weight: 700;">@(Math.Round(Convert.ToDouble(Model.Reservation.OfferPrice + Model.Reservation.ServiceFee), 2)) €</span>
                     }
 
                     <b>@Model.Reservation.TotalPrice €</b>
                 </p>
+                @if (Model.Reservation.Coupon != 0 && Model.Reservation.Coupon != null)
+                {
+                <span><b>Discount Description:</b>@Model.Reservation.Coupons.CouponCode - @(Model.Reservation.Coupons.Discount)% |</span>
+                }
             </div>
 
 
