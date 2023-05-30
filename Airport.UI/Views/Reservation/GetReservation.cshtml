@@ -1,59 +1,218 @@
 ﻿@model Reservations
 @{
 
-    ViewData["title"] = "Reservation Detail";
+    ViewData["title"] = "Reservation";
 }
-<section class="mt-5 _Module_Margin">
-    <div class="container">
-        <h1 class="_Page_Title mb-4">
-            Reservation information
-        </h1>
-        <div class="_Page_Flex">
-            <div class="_Page_Left">
-                <img src="@Model.LocationCars.Car.Type.CarImageURL" alt="">
+
+@section pageCss{
+    <style>
+
+        .infosList {
+            padding: 0;
+            list-style: none;
+        }
+
+            .infosList li.active p {
+                color: orange;
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+
+
+
+        p {
+            margin: 0;
+        }
+
+        .price p {
+            font-size: 1.85rem;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .leftDetail {
+            height: 100%;
+            background-color: #eeeeee;
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .rightPhotos {
+            height: 300px;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #eeeeee;
+            border-radius: 10px;
+        }
+
+        .rightMap {
+            height: 300px;
+            border-radius: 10px;
+        }
+
+        li.detail {
+            font-size: 0.8rem;
+            margin-top: -0.4rem;
+            border-bottom: 1px solid #00000033;
+            padding-bottom: .5rem;
+        }
+
+    </style>
+}
+
+<section>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-6 mt-3">
+                <div class="leftDetail">
+
+                    <div>
+                        <h2>
+                            Reservation Code : <span>@Model.ReservationCode</span>
+                        </h2>
+                        <p>@Model.LocationCars.Car.Brand.CarBrandName @Model.LocationCars.Car.Model.CarModelName @Model.LocationCars.Car.Series.CarSeriesName</p>
+                        <p>Max @Model.LocationCars.Car.MaxPassenger Suitcase @Model.LocationCars.Car.SuitCase Small Bags @Model.LocationCars.Car.SmallBags</p>
+                    </div>
+
+                    <ul class="infosList">
+                        <li class="active">
+                            <p>
+                                Pick Up
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                @Model.PickFullName
+                            </p>
+                        </li>
+
+                        <li class="active">
+                            <p>
+                                Drop Off
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                @Model.DropFullName
+                            </p>
+                        </li>
+
+                        <li class="active">
+                            <p>
+                                Passengers
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                @Model.PeopleCount Adult
+                            </p>
+                        </li>
+
+                        @if (Model.ReservationServicesTables != null && Model.ReservationServicesTables.Count > 0)
+                        {
+                            <li class="active">
+                                <p>
+                                    Services
+                                </p>
+                            </li>
+
+
+                            @foreach (var item in Model.ReservationServicesTables)
+                            {
+                                <li>
+                                    <p>
+                                        @item.ServiceItem.ServiceProperty.ServicePropertyName : <b>@item.Price €</b>
+                                    </p>
+                                </li>
+                            }
+                        }
+
+
+                        <li class="active">
+                            <p>
+                                Date
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                @Model.ReservationDate.ToString("dd.MM.yyyy HH:mm")
+                            </p>
+                        </li>
+
+                        <li class="price">
+                            <p>
+                                Price: @Model.TotalPrice €
+                            </p>
+
+                        </li>
+                    </ul>
+
+                    <a class="_Btn_Style btn" href="http://airportglobaltransfer.com/pdf/@(Model.ReservationCode)-@(Model.Id).pdf" target="_blank">Download Voucher</a>
+                </div>
             </div>
-            <div class="_Page_Right">
-                <div class="_Page_Right_Style">
-                    <h2>
-                        @Model.LocationCars.Car.Brand.CarBrandName 
-                    </h2>
-                  <h3>Reservation Code: @Model.ReservationCode</h3>
-                    <div class="my-4">
-                        <p>Min 1 Max @Model.LocationCars.Car.MaxPassenger Passengers</p>
-                        <p>Max @Model.LocationCars.Car.SuitCase Suitcase+ @Model.LocationCars.Car.SmallBags Small Bags</p>
-                    </div>
-                    <div class="my-2">
-                        <h4>Pick Up</h4>
-                        <h5>@Model.PickFullName</h5>
-                    </div>
-                    <div class="my-2">
-                        <h4>Drop Off</h4>
-                        <h5>@Model.DropFullName</h5>
-                    </div>
-                    @if (Model.ReturnStatus)
-                    {
-                        <div class="my-2">
-                            <h4>Return Date</h4>
-                            <h5>@Model.ReturnDate.ToString("dd.MM.yyyy HH:mm")</h5>
-                        </div>
-                    }
-                    <div class="my-2">
-                        <h4>Passengers</h4>
-                        <h5>@Model.PeopleCount Adult</h5>
-                    </div>
-                    <div class="my-2">
-                        <h4>Date</h4>
-                        <h5>@Model.ReservationDate.ToString("dd.MM.yyyy HH:mm")</h5>
-                    </div>
 
-                    @if (Model.IsDiscount)
-                    {
-                        <h6>Price:<span style="text-decoration: line-through;">@Model.OfferPrice €</span></h6>
-                    }
-
-                    <h3>@(Model.IsDiscount ? "Discount Price" : "Price"):@(Model.IsDiscount ? Model.Discount : (Model.OfferPrice + Model.ServiceFee)) €</h3>
+            <div class="col-md-6 mt-3">
+                <div class="rightMap" id="map">
+                </div>
+                <div class="rightPhotos">
+                    <img src="@Model.LocationCars.Car.Type.CarImageURL" width="100%" height="100%"
+                         style="object-fit: contain;" alt="">
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+
+@section  pageJsScript{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"
+            integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&libraries=places&callback=initMap"></script>
+                }
+
+@section pageJs{
+    <script>
+
+
+        function initMap() {
+            var directionsService = new google.maps.DirectionsService();
+            var directionsRenderer = new google.maps.DirectionsRenderer({
+                polylineOptions: {
+                    strokeColor: 'red' // Yolun rengini burada belirleyebilirsiniz
+                }
+            });
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: {@Model.PickLatLng}, // Başlangıç noktası için koordinatlar
+        mapTypeControl: false,
+            streetViewControl: false,
+                zoomControl: false,
+                    fullscreenControl: false
+                                                                    });
+
+        directionsRenderer.setMap(map);
+
+        var startPlaceId = "@Model.PickPlaceId";
+        var endPlaceId = "@Model.DropPlaceId";
+
+        var request = {
+            origin: { placeId: startPlaceId },
+            destination: { placeId: endPlaceId },
+            travelMode: 'DRIVING' // Yürüyüş, bisiklet, transit veya araç seçeneklerinden birini seçin
+        };
+
+        directionsService.route(request, function (result, status) {
+            if (status == 'OK') {
+                directionsRenderer.setDirections(result);
+            }
+        });
+                                                                }
+
+
+        window.onload = () => {
+            initMap();
+        }
+    </script>
+                        }
