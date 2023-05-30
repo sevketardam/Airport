@@ -69,62 +69,64 @@
     </style>
 }
 
-
-<table id="recourseTable">
-    <thead>
-        <tr>
-            <th style="text-align:center">Reservation Code</th>
-            <th style="text-align:center">Name</th>
-            <th style="text-align:center">Date</th>
-            <th style="text-align:center">Situation</th>
-            <th style="text-align:center">Driver Situation</th>
-            <th style="text-align:center">Transactions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Reservations)
-        {
-            <tr class="goDetail" data-id="@item.Id">
-                <td>@item.ReservationCode</td>
-                <td>@item.Name @item.Surname</td>
-                <td>@item.ReservationDate</td>
-                <td>
-                    @if (item.Status == 1)
-                    {
-                        <span class="badge badge-success">Waiting For Transaction</span>
-                    }
-                    else if (item.Status == 3)
-                    {
-                        <span class="badge badge-info">Finished Reservation</span>
-                    }
-                    else if(item.Status == 4)
-                    {
-                        <span class="badge badge-danger">Cancel Reservation</span>
-                    }
-                </td>
-                <td>
-                    @if (item.DriverId != null && item.DriverId != 0)
-                    {
-                        <span class="badge badge-success">Driver Assigned</span>
-                    }
-                    else
-                    {
-                        <span class="badge badge-warning">Driver Not Assigned</span>
-                    }
-                </td>
-                <td>
-                    <a title="Go to detail" href="/panel/reservation-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
-                    <a title="Leave a note" class="open-note reservation-table-icon"><i class="iconsminds-file-edit"></i></a>
-                    <a title="Select Driver" class="select-driver reservation-table-icon"><i class="iconsminds-doctor"></i></a>
-                    <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
-                        <i class="iconsminds-file"></i>
-                    </a>
-                    <a title="Cancel Reservation" class="reservation-delete"><i class="fa-regular fa-xmark"></i></a>
-                </td>
+<div style=" overflow-x: auto;">
+    <table id="recourseTable">
+        <thead>
+            <tr>
+                <th style="text-align:center">Reservation Code</th>
+                <th style="text-align:center">Name</th>
+                <th style="text-align:center">Date</th>
+                <th style="text-align:center">Situation</th>
+                <th style="text-align:center">Driver Situation</th>
+                <th style="text-align:center">Transactions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Reservations)
+            {
+                <tr class="goDetail" data-id="@item.Id">
+                    <td>@item.ReservationCode</td>
+                    <td>@item.Name @item.Surname</td>
+                    <td>@item.ReservationDate.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>
+                        @if (item.Status == 1)
+                        {
+                            <span class="badge badge-success">Waiting For Transaction</span>
+                        }
+                        else if (item.Status == 3)
+                        {
+                            <span class="badge badge-info">Finished Reservation</span>
+                        }
+                        else if (item.Status == 4)
+                        {
+                            <span class="badge badge-danger">Cancel Reservation</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.DriverId != null && item.DriverId != 0)
+                        {
+                            <span class="badge badge-success">Driver Assigned</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-warning">Driver Not Assigned</span>
+                        }
+                    </td>
+                    <td>
+                        <a title="Go to detail" href="/panel/reservation-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
+                        <a title="Leave a note" class="open-note reservation-table-icon"><i class="iconsminds-file-edit"></i></a>
+                        <a title="Select Driver" class="select-driver reservation-table-icon"><i class="iconsminds-doctor"></i></a>
+                        <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
+                            <i class="iconsminds-file"></i>
+                        </a>
+                        <a title="Cancel Reservation" class="reservation-delete"><i class="fa-regular fa-xmark"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
 
 
 <div class="modal fade" id="SelectDriverModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -162,7 +164,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="modal fade" id="reservationNoteModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -301,7 +302,6 @@
             });
         })
 
-
         let selectedReservationId = 0;
         $('.open-note').on("click", function () {
             $('.formLoader').removeClass("deActive")
@@ -320,7 +320,6 @@
                 }
             });
         })
-
 
         $('#statusForm').on("submit", function (e) {
             e.preventDefault();
@@ -359,7 +358,6 @@
         })
 
         $('.goDetail td:not(:last-child) ').on("click", function () {
-            $('.formLoader').removeClass("deActive")
             var id = $(this).closest("tr").attr("data-id")
             location.href = "/panel/reservation-detail/" + id;
         })

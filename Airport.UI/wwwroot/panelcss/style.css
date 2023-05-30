@@ -550,7 +550,7 @@ input.selectPhoto {
     box-shadow: 0 2px 5px rgb(0,0,0,.36);
     -webkit-appearance: none;
     -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, .36);
-    -moz-box-shadow: 0 2xp 5px rgba(0, 0, 0, .36);
+    -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, .36);
 }
 
 .couponStatus {
@@ -676,3 +676,24 @@ input.selectPhoto {
     white-space: nowrap;
     margin-left: 1rem;
 }
+
+.mobile_Menu_Item{
+    display: none;
+}
+
+#_Passenger_Form textarea{
+    padding: .5rem;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .mobile_Menu_Item {
+        display: block;
+    }
+    nav.navbar .navbar-right {
+        display: none;
+    }
+    a.navbar-logo .logo {
+        width: 8rem;
+    }
+ }

@@ -31,7 +31,6 @@ namespace Airport.MessageExtensions.Repos
             if (reservationDetail.LocationCars.Car.Armored)
             {
                 carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i5.png'>";
-
             }
 
             if (reservationDetail.LocationCars.Car.Wifi)
@@ -39,7 +38,7 @@ namespace Airport.MessageExtensions.Repos
                 carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i4.png'>";
             }
 
-            if (reservationDetail.LocationCars.Car.Water)   
+            if (reservationDetail.LocationCars.Car.Water)
             {
                 carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i1.png'>";
             }
@@ -59,12 +58,18 @@ namespace Airport.MessageExtensions.Repos
                 carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i2.png'>";
             }
 
-
-
+            var returnIcon = "https://storage.acerapps.io/app-1348/asd/altok.png";
+            var isReturn = false;
+            if (reservationDetail.ReturnStatus)
+            {
+                returnIcon = "https://storage.acerapps.io/app-1348/asd/gelgit.png";
+                isReturn = true;
+            }
 
             mimeMessage.Subject = "Reservation Information";
             bodyBuilder.HtmlBody = @$"<!DOCTYPE html>
 <html lang=""en"">
+
 <head>
     <meta charset=""UTF-8"">
     <meta http-equiv=""X-UA-Compatible"" content=""IE=edge"">
@@ -72,201 +77,250 @@ namespace Airport.MessageExtensions.Repos
     <title>Document</title>
     <!-- Google Fonts -->
     <link rel=""preconnect"" href=""https://fonts.googleapis.com"">
-<link rel=""preconnect"" href=""https://fonts.gstatic.com"" crossorigin>
-<link href=""https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"" rel=""stylesheet"">
+    <link rel=""preconnect"" href=""https://fonts.gstatic.com"" crossorigin>
+    <link
+        href=""https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap""
+        rel=""stylesheet"">
     <!-- Font Awesome -->
-    <link rel=""stylesheet"" href=""https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"" integrity=""sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="" crossorigin=""anonymous"" referrerpolicy=""no-referrer"" />
+    <link rel=""stylesheet"" href=""https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css""
+        integrity=""sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==""
+        crossorigin=""anonymous"" referrerpolicy=""no-referrer"" />
 </head>
-<body>
-    <div style=""width: 100%;
-    height: auto;
-    background-color: #ff6709;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    display: flex;
-    border-top-right-radius: 2rem;
-    border-top-left-radius: 2rem;
-    font-family: 'Poppins',sans-serif;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;"">
 
-        <div style=""
+<body style=""
+margin: 0 auto;
+        max-width: 35rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;"">
+    <!-- Header -->
+    <div class=""header"" style=""
+    width: 100%;
+        height: auto;
+        padding: 1rem 1rem 0 1rem;
+        border-top-right-radius: 2rem;
+        border-top-left-radius: 2rem;
+        font-family: 'Poppins', sans-serif;"">
+        <div class=""logo"" style=""
         font-weight: 800;
         font-style: italic;
         font-size: 30px;
-        padding-bottom: 1rem;"">airportglobaltransfer.com</div>
-        <div  style=""
-         font-size: 20px;"">Succesful Created Reservation</div>
+        ""><img src=""http://test.airportglobaltransfer.com/images/Logo.png""></div>
+        <div class=""header-text"" style=""
+        font-size: 20px;"">Succesful Created Reservation</div>
     </div>
-    <!-- Durum -->
-    <div  style=""padding: 1rem;"">
-        <div >
-            <p style=""
-                 font-size: 26px;
-        margin: 0 0 .3rem 0;"">Your {reservationDetail.ReservationCode} transfer order is successful</h5>
-            <p style=""
+    <div class=""durum section"" style=""
+    font-family: 'Poppins', sans-serif;
+        background-color: white;
+        padding: 1rem 1rem 0 1rem; 
+        "">
+        <div class=""durum-text"">
+
+            <p class=""başarılı-text"" style=""
+                font-size: 26px;
+        margin: 0 0 .3rem 0;
+        "">Your {reservationDetail.ReservationCode} transfer order is successful</h5> 
+            <p class=""başarılı-text-2"" style=""
             font-size: 15px;
         color: rgb(62, 62, 62);
         margin: 0;"">Have a Question? You can contact support from your account.</h6>
-            <p  style=""
+            <p class=""başarılı-text-2"" style=""
                 font-size: 15px;
         color: rgb(62, 62, 62);
         margin: 0;"">Do you have a problem? Contact us for solution.</h6>
         </div>
-        <div >
-            <div>
-                <p style=""font-size: 12px;
-                font-weight: 300;"">{reservationDetail.ReservationDate}</p>
-                <div style=""display: flex;
-                align-items: center;"">
-                    <div style=""background-color: #ff6709;
-                    border-radius: 50%;
-                    width: 25px;
-                    height: 25px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;"">
-                        A
+        <div class=""durum-date"">
+            <div class=""date-text"">
+                <p class=""date-text-date"" style="" font-size: 12px;
+                font-weight: 300;"">{reservationDetail.ReservationDate.ToString("dd.MM.yyyy HH:mm")}</p>
+
+               <div class=""data-text-icon-group"" style=""
+                 display: flex;
+                 "">
+                    <div class=""date-text-icon"" style=""
+        width: 25px;
+        height: 25px;
+        margin-right: .5rem;
+        "">
+                        <img src=""https://storage.acerapps.io/app-1348/asd/A.png"" width=""100%"" alt="""">
                     </div>
                     <span>{reservationDetail.PickFullName}</span>
                 </div>
-                <i></i>
-                <div style=""display: flex;
-                align-items: center;"">
-                    <div style=""background-color: #ff6709;
-                    border-radius: 50%;
-                    width: 25px;
-                    height: 25px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;"">
-                        B
-                    </div>
-                    <div style=""display: flex;
-                    flex-direction: column;"">
-                        <span>{reservationDetail.DropFullName}</span>
-                    </div>
-                </div>
+                <img src=""{returnIcon}"" style=""
+                width: 25px;
+    height: 18px;
+    object-fit: contain;
+    margin-top: .4rem;
+    "" alt="""">
+                <div class=""data-text-icon-group"" style=""
+                display: flex;
+                "">
+                   <div class=""date-text-icon"" style=""
+       width: 25px;
+       height: 25px;
+       margin-right: .5rem;
+       "">
+                       <img src=""https://storage.acerapps.io/app-1348/asd/B.png"" width=""100%"" alt="""">
+                   </div>
+                   <span>{reservationDetail.PickFullName}</span>
+               </div>
+                
             </div>
         </div>
     </div>
-    <div>
+    <div class=""teklif section"" style=""
+    font-family: 'Poppins', sans-serif;
+        background-color: white;
+        padding: 1rem 1rem 0 1rem;"">
         <h4 style=""
     font-size: 2rem;
     margin: 0 0 0.7rem 0;
-    text-align: center;
     font-weight: 600;"">
             Details
         </h4>
-        <div>
-            <div style=""display: flex;
-            align-items: flex-start;"">
-                <span >Service Fee : &nbsp; </span>
-                <span> {reservationDetail.ServiceFee} €
+        <div class=""teklif-bilgi"">
+            <div class=""teklif-item"" style=""
+                display: flex;
+        align-items: flex-start;"">
+                <span style=""width: 40%;
+                font-weight: 300;"">Price : &nbsp; </span>
+                <span class=""teklif-description"" style=""color: black;
+        font-weight: 500;
+        ""> {reservationDetail.TotalPrice} € </span>
             </div>
-            <div style=""display: flex;
-            align-items: flex-start;"">
-                <span >Offer Price : &nbsp; </span>
-                <span> {reservationDetail.OfferPrice} € 
+            <div class=""teklif-item"" style=""
+            display: flex;
+        align-items: flex-start;
+        "">
+                <span style=""width: 40%;
+                font-weight: 300;"">Passengers : &nbsp; </span>
+                <span class=""teklif-description"" style=""color: black;
+        font-weight: 500;
+        "">{reservationDetail.PeopleCount}</span>
             </div>
-            <div style=""display: flex;
-            align-items: flex-start;"">
-                <span >Price : &nbsp; </span>
-                <span> {reservationDetail.TotalPrice} €
+            <div class=""teklif-item"" style=""
+            display: flex;
+        align-items: flex-start;
+        "">
+                <span style=""width: 40%;
+                font-weight: 300;"">Transport Types : &nbsp; </span>
+                <span class=""teklif-description"" style=""color: black;
+        font-weight: 500;
+        ""> Every </span> 
             </div>
-            <div style=""display: flex;
-            align-items: flex-start;"">
-                <span>Passengers : &nbsp; </span>
-                <span>{reservationDetail.PeopleCount}</span> <!-- yolcu sayısı -->
-            </div>   
-            <div  style=""display: flex;
-            align-items: flex-start;"">
-                <span>Transport Types : &nbsp; </span>
-                <span> Every </span>  <!-- every sabit kalacak  -->
-            </div> 
         </div>
         <div style=""width: 80%; height: 1px; border-top: 2px dashed rgb(0, 0, 0, .3); margin: 1rem 0;""></div>
-        <div >
-            <div style=""display: flex;
-            align-items: flex-start;"">
-                <span>Transport Type : &nbsp; </span>
-                <span> {reservationDetail.LocationCars.Car.Type.CarTypeName} {reservationDetail.LocationCars.Car.MaxPassenger} {reservationDetail.LocationCars.Car.SmallBags} {reservationDetail.LocationCars.Car.SuitCase} </span>
-              
+        <div class=""teklif-bilgi"">
+            <div class=""teklif-item"" style=""
+                display: flex;
+        align-items: flex-start;
+        "">
+                <span style=""width: 40%;
+                font-weight: 300;"">Transport Type : &nbsp; </span>
+                <span class=""teklif-description"" style=""color: black;
+        font-weight: 500;
+        ""> {reservationDetail.LocationCars.Car.Type.CarTypeName} {reservationDetail.LocationCars.Car.MaxPassenger} {reservationDetail.LocationCars.Car.SmallBags} {reservationDetail.LocationCars.Car.SuitCase} </span>
             </div>
-            <div style=""display: flex;
-            align-items: flex-start;"">
-                <span>Car : &nbsp; </span>
-                <span>{reservationDetail.LocationCars.Car.Brand.CarBrandName} {reservationDetail.LocationCars.Car.Model.CarModelName} {reservationDetail.LocationCars.Car.Series.CarSeriesName} </span>
-            </div>   
-            <div  style=""display: flex;
-            align-items: flex-start;"">
-                <span >Plate : &nbsp; </span>
-                <span>{reservationDetail.LocationCars.Car.Plate} </span>       
-            </div> 
-            <div style=""margin-top: .3rem;"">
-                <span>Attributes : &nbsp; </span>
-                <span>
-{carAttrHtml}
+            <div class=""teklif-item"" style=""
+            display: flex;
+        align-items: flex-start;
+        "">
+                <span style=""width: 40%;
+                font-weight: 300;"">Car : &nbsp; </span>
+                <span class=""teklif-description"" style=""color: black;
+        font-weight: 500;"">  {reservationDetail.LocationCars.Car.Brand.CarBrandName} {reservationDetail.LocationCars.Car.Model.CarModelName}{reservationDetail.LocationCars.Car.Series.CarSeriesName} </span>
+               
+            </div>
+            <div class=""teklif-item"" style=""
+            display: flex;
+        align-items: flex-start;
+        "">
+                <span style=""width: 40%;
+                font-weight: 300;"">Plate : &nbsp; </span>
+                <span class=""teklif-description"" style=""color: black;
+        font-weight: 500;
+        "">  {reservationDetail.LocationCars.Car.Plate} </span>
 
-</span> 
-                
-            </div> 
-            
+            </div>
+            <div class=""teklif-item attrs-item"" style=""
+            display: flex;
+        align-items: flex-start;
+        margin-top: .3rem;
+        "">
+                <span style=""width: 40%;
+                font-weight: 300;"">Attributes : &nbsp; </span>
+                <span class=""teklif-description attrs"" style=""color: black;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        "">
+                    {carAttrHtml}
+                </span>
+
+            </div>
+
+        </div>
+    </div>
+<div class=""teklif section"" style=""
+    font-family: 'Poppins', sans-serif;
+        background-color: white;
+        padding: 1rem 1rem 0 1rem;"">
+        <h4 style=""
+    font-size: 2rem;
+    margin: 0 0 0.7rem 0;
+    font-weight: 600;
+"">
+            Services
+        </h4>
+        <div class=""teklif-bilgi"">
+            <div class=""teklif-item"">
+                <span style=""
+                font-weight: 600;"">Price</span>
+                <p style=""font-weight: 400; font-size: .8rem;"">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis saepe et placeat fugiat necessitatibus repellendus similique? Mollitia quibusdam, fuga aperiam porro dolores vero voluptatem nulla asperiores voluptas id at autem eum exercitationem. Provident dolore doloremque non enim facilis repellendus, architecto repellat maiores accusantium quis reiciendis fugiat esse dicta, necessitatibus quam?
+                </p>
+            </div>
+        </div>
+        <div class=""teklif-bilgi"">
+            <div class=""teklif-item"">
+                <span style=""
+                font-weight: 600;"">Price</span>
+                <p style=""font-weight: 400; font-size: .8rem;"">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis saepe et placeat fugiat necessitatibus repellendus similique? Mollitia quibusdam, fuga aperiam porro dolores vero voluptatem nulla asperiores voluptas id at autem eum exercitationem. Provident dolore doloremque non enim facilis repellendus, architecto repellat maiores accusantium quis reiciendis fugiat esse dicta, necessitatibus quam?
+                </p>
+            </div>
         </div>
         <br>
-        <div style=""  display: flex;
-        justify-content: center;
-        padding-top: 2rem;
-        "">
+        <div class=""btn"" style=""
+        padding: 2rem 0;"">
 
-            <a style=""  
-            margin-bottom: 20px;
-             border-radius: 3rem;
-            color: rgb(13, 188, 13);
-            text-decoration: none;
-      display: flex;
-            justify-content: center;
-            padding-top: 2rem;
-            padding: 1rem 3rem;
-            background-color: white ;
-            padding: 1rem 3rem;
-            background-color: rgb(13, 188, 13);
-            border-radius: 3rem;
-            color: white;
-            text-decoration: none;
-            transition: 200ms;"" href=""http://airportglobaltransfer.com/pdf/{reservationDetail.ReservationCode}-{reservationDetail.Id}.pdf"">Show Voucher</a>
+            <a href=""http://test.airportglobaltransfer.com/pdf/{{reservationDetail.ReservationCode}}-{{reservationDetail.Id}}.pdf""
+                style=""
+                padding: 1rem 3rem;
+        background-color: rgb(13, 188, 13);
+        border-radius: 3rem;
+        color: white;
+        text-decoration: none;
+        transition: 200ms;"">Show Voucher</a>
         </div>
-
-
     </div>
-    <div style=""      background-color: #ff6709;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-bottom-left-radius: 2rem;
-    border-bottom-right-radius: 2rem;    
-    padding: 2rem 0;
+    <div class=""footer"" style="" padding: 1rem 1rem;
     font-family: 'Poppins', sans-serif;
     color: #320404;"">
-        <div style=""   display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        padding-bottom: .5rem;"">
-            <p>Any Help?</p>
-            <b><a href=""tel:+908502421901"">850 242 19014</a></b>
+        <div class=""footer-phone"" style="" padding-bottom: .5rem;"">
+            <p style=""margin: 0;"">Any Help?</p>
+            <b><a href=""tel:+908502421901"" style=""color: #320404;
+                text-decoration: none;"">+90 850 242 19014</a></b>
         </div>
-        <div style=""      display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;"">
-<p>or</p>
-            <b><p>info@airportglobaltransfer.com</p></b> 
-        </div>      
-    </div> 
+        <div class=""footer-mail"">
+            <p style="" margin: 0;"">or</p>
+            <b>
+                <p style="" margin: 0;"">info@airportglobaltransfer.com</p>
+            </b>
+        </div>
+    </div>
 </body>
+
 </html>";
 
 

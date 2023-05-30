@@ -31,7 +31,7 @@ namespace Airport.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> Login(LoginVM loginValues,bool rememberMe)
+        public async Task<JsonResult> Login(LoginVM loginValues, bool rememberMe)
         {
             if (loginValues != null)
             {
@@ -53,13 +53,17 @@ namespace Airport.UI.Controllers
 
                         if (rememberMe)
                         {
-                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, pri);
+                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, pri, new AuthenticationProperties
+                            {
+                                IsPersistent = true,
+                            });
                         }
                         else
                         {
                             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, pri, new AuthenticationProperties
                             {
-                                ExpiresUtc = DateTime.UtcNow.AddHours(2)
+                                ExpiresUtc = DateTime.UtcNow.AddHours(2),
+                                IsPersistent = true,
                             });
                         }
 
@@ -78,7 +82,7 @@ namespace Airport.UI.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
         public static string GetMD5(string value)

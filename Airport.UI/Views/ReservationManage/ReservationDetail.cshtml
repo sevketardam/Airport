@@ -411,7 +411,7 @@
                 <div>
                     <h4 class="infosTitle">Flight Arrival</h4>
                     <p class="infosP">
-                        @Model.Reservation.ReservationDate
+                        @Model.Reservation.ReservationDate.ToString("dd.MM.yyyy HH:mm")
                     </p>
                 </div>
                 @if (Model.Reservation.ReturnStatus)
@@ -419,7 +419,7 @@
                     <div>
                         <h4 class="infosTitle">Return</h4>
                         <p class="infosP">
-                            @Model.Reservation.ReturnDate
+                            @Model.Reservation.ReturnDate.ToString("dd.MM.yyyy HH:mm")
                         </p>
                     </div>
                 }
@@ -450,16 +450,19 @@
                 <div class="firstPeople">
                     @Model.Reservation.Email
                 </div>
-                @foreach (var item in Model.Reservation.ReservationPeoples)
+                @if (Model.Reservation.ReservationPeoples != null && Model.Reservation.ReservationPeoples.Count > 0)
                 {
-                    <div class="otherPeople">
-                        @item.Name @item.Surname
-                    </div>
-                }
+                    @foreach (var item in Model.Reservation.ReservationPeoples)
+                    {
+                        <div class="otherPeople">
+                            @item.Name @item.Surname
+                        </div>
+                    }
+                }        
             </div>
         </div>
 
-        @if (Model.ReservationServicesTable != null)
+        @if (Model.ReservationServicesTable != null && Model.ReservationServicesTable.Count > 0)
         {
             <div class="my-4">
                 <h4 class="infosTitle">Services Received</h4>
@@ -513,17 +516,23 @@
                 <p class="infosP">
                     @if (Model.Reservation.IsDiscount || (Model.Reservation.Coupon != null && Model.Reservation.Coupon != 0))
                     {
-                        if (Model.Reservation.Coupon != 0)
-                        {
-                            <span><b>Coupon:</b>@Model.Reservation.Coupons.CouponCode - @(Model.Reservation.Coupons.Discount)% |</span>
-                        }
                         <span style="text-decoration: line-through;opacity: .5;font-size: 1rem;font-weight: 700;">@(Math.Round(Convert.ToDouble(Model.Reservation.OfferPrice + Model.Reservation.ServiceFee), 2)) €</span>
                     }
 
                     <b>@Model.Reservation.TotalPrice €</b>
                 </p>
-            </div>
 
+                @if (Model.Reservation.Coupon != 0 && Model.Reservation.Coupon != null)
+                {
+                    <span><b>Discount Description:</b>@Model.Reservation.Coupons.CouponCode - @(Model.Reservation.Coupons.Discount)% | @Model.Reservation.DiscountText</span>
+                }
+                else if (Model.Reservation.IsDiscount)
+                {
+                    <span>
+                        <b>Discount Description:</b>@Model.Reservation.DiscountText
+                    </span>
+                }
+                </div>
 
         </div>
 
@@ -532,38 +541,38 @@
         <div class="my-4">
             <div class="carFlex">
                 <div class="carLeft">
-                    <img src="@Model.Reservation.LocationCars.Car.Type.CarImageURL" alt="">
+                    <img src="@Model.Reservation.LocationCars.Car?.Type.CarImageURL" alt="">
                 </div>
                 <div class="carRight">
                     <h2>Car Infos</h2>
                     <div class="carInputs">
                         <div>
                             <label>Type</label>
-                            <div>@Model.Reservation.LocationCars.Car.Type.CarTypeName</div>
+                            <div>@Model.Reservation.LocationCars.Car?.Type.CarTypeName</div>
                         </div>
                         <div>
                             <label>Model</label>
-                            <div>@Model.Reservation.LocationCars.Car.Model.CarModelName</div>
+                            <div>@Model.Reservation.LocationCars.Car?.Model.CarModelName</div>
                         </div>
                         <div>
                             <label>Series</label>
-                            <div>@Model.Reservation.LocationCars.Car.Series.CarSeriesName</div>
+                            <div>@Model.Reservation.LocationCars.Car?.Series.CarSeriesName</div>
                         </div>
                         <div>
                             <label>Mas Passengers</label>
-                            <div>@Model.Reservation.LocationCars.Car.MaxPassenger</div>
+                            <div>@Model.Reservation.LocationCars.Car?.MaxPassenger</div>
                         </div>
                         <div>
                             <label>Suitcase</label>
-                            <div>@Model.Reservation.LocationCars.Car.SuitCase</div>
+                            <div>@Model.Reservation.LocationCars.Car?.SuitCase</div>
                         </div>
                         <div>
                             <label>Small Bags</label>
-                            <div>@Model.Reservation.LocationCars.Car.SmallBags</div>
+                            <div>@Model.Reservation.LocationCars.Car?.SmallBags</div>
                         </div>
                         <div>
                             <label>Plate</label>
-                            <div>@Model.Reservation.LocationCars.Car.Plate</div>
+                            <div>@Model.Reservation.LocationCars.Car?.Plate</div>
                         </div>
                     </div>
 
@@ -640,17 +649,21 @@
                     <div class="w-100">
                         <select name="DriverId" class="form-control" id="driverSelectbox">
                             <option value="null" selected disabled>Select Driver</option>
-                            @foreach (var item in Model.Drivers)
+                            @if (Model.Drivers != null && Model.Drivers.Count > 0)
                             {
-                                if (Model.Reservation.DriverId == item.Id)
+                                foreach (var item in Model.Drivers)
                                 {
-                                    <option value="@item.Id" selected>@item.Name @item.Surname</option>
-                                }
-                                else
-                                {
-                                    <option value="@item.Id">@item.Name @item.Surname</option>
+                                    if (Model.Reservation.DriverId == item.Id)
+                                    {
+                                        <option value="@item.Id" selected>@item.Name @item.Surname</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Id">@item.Name @item.Surname</option>
+                                    }
                                 }
                             }
+
                         </select>
                     </div>
                     <div>

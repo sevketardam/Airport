@@ -59,6 +59,12 @@
             justify-content: space-between;
         }
 
+            ._Total_Flex._Price_Flex {
+                align-items: flex-start;
+                justify-content: center;
+                flex-direction: column;
+            }
+
         #_Passenger_Form span {
             font-size: 12px;
         }
@@ -78,7 +84,7 @@
         }
 
             ._Total_Flex div.price.active {
-                padding: .5rem .5rem 2.5rem .5rem;
+                padding: .5rem .5rem 8rem .5rem;
             }
 
 
@@ -90,7 +96,7 @@
             transition: font-size 250ms, font-weight 250ms, text-decoration 250ms;
         }
 
-        .newPriceInput {
+        .newPriceInput, .newPriveDesc {
             width: 89%;
             padding: 0 1rem;
             height: 2rem;
@@ -107,12 +113,18 @@
             transition: opacity 250ms, visibility 250ms;
         }
 
-        div.price.active .newPriceInput {
+        div.price.active .newPriceInput, div.price.active .newPriveDesc {
             opacity: 1;
             visibility: visible;
         }
 
-        .discountP {
+        .newPriveDesc{
+            height: 5rem;
+            top: 4.2rem;
+            padding: 0.5rem !important;
+        }
+
+        .discountP, .price.active p {
             text-decoration: line-through;
             font-size: .9rem !important;
             font-weight: 200 !important;
@@ -168,7 +180,7 @@
                         {
                             <div class="my-2">
                                 <h4>Return Date</h4>
-                                <h5>@Model.SelectedData.ReservationValues.ReturnDate</h5>
+                                <h5>@Model.SelectedData.ReservationValues.ReturnDate.ToString("dd.MM.yyyy HH:mm")</h5>
                             </div>
                         }
                         <div class="my-2">
@@ -177,22 +189,25 @@
                         </div>
                         <div class="my-2">
                             <h4>Date</h4>
-                            <h5>@Model.SelectedData.ReservationValues.FlightTime</h5>
+                            <h5>@Model.SelectedData.ReservationValues.FlightTime.ToString("dd.MM.yyyy HH:mm")</h5>
                         </div>
                         <div class="my-2">
                             <div class="_Total_Flex">
                                 <h3>
                                     Total
                                 </h3>
+                                
+                            </div>
+                            <div class="_Total_Flex _Price_Flex">
+                                <div class="price">
+                                    <p><span> <span id="priceBox">@Model.SelectedData.LastPrice</span> €</span></p>
+                                    <input class="newPriceInput" type="number" id="newPriceInput" value="@Model.SelectedData.LastPrice">
+                                    <textarea class="newPriveDesc" placeholder="Discount Description" id="discountDescription"></textarea>
+                                </div>
                                 <div>
-                                    <div class="price">
-                                        <p><span>€ <span id="priceBox">@Model.SelectedData.LastPrice</span></span></p>
-                                        <input class="newPriceInput" type="number" id="newPriceInput" value="@Model.SelectedData.LastPrice">
-                                    </div>
                                     <input id="discountCheck" type="checkbox"> Discount
                                 </div>
                             </div>
-
                             <p>
                                 Free Cancellation <br>
                                 All Taxes included
@@ -245,6 +260,7 @@
                                     </span>
                                     <input type="hidden" name="IsDiscount" value="false" />
                                     <input type="hidden" name="Discount" value="@Model.SelectedData.LastPrice" />
+                                    <input type="hidden" name="DiscountText" id="discountDescriptionWR" />
                                 </div>
 
                                 @for (int i = 0; i < Model.SelectedData.ReservationValues.PeopleCount - 1; i++)
@@ -338,6 +354,11 @@
 @section pageJs{
     <script>
 
+        $('#discountDescription').on("click keyup change keydown",function(){
+            $('#discountDescriptionWR').val($(this).val())
+        })
+
+
         $("body").on("click", ".pageServiceDownItemTop", function (e) {
             if ($(e.target).attr("class") != "passengerInputs" && $(e.target).attr("class") != "passengerInputs valid" && $(e.target).attr("class") != "passengerInputs error") {
                 $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
@@ -380,9 +401,8 @@
             $('input[name="IsDiscount"]').val($(this).is(":checked"))
         })
 
-        $('#newPriceInput').on('change', function () {
+        $('#newPriceInput').on('change keyup keypress', function () {
             $('input[name="Discount"]').val($(this).val().replace(".", ","))
-            console.log(listCheckedItems)
         })
         var currentPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
 

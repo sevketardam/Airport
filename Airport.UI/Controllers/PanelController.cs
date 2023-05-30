@@ -26,6 +26,7 @@ namespace Airport.UI.Controllers
             _reservations = reservations;   
             _loginAuth = loginAuth;
         }
+
         public IActionResult Index()
         {
             try
