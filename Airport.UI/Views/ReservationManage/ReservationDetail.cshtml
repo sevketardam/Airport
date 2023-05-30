@@ -521,12 +521,18 @@
 
                     <b>@Model.Reservation.TotalPrice €</b>
                 </p>
+
                 @if (Model.Reservation.Coupon != 0 && Model.Reservation.Coupon != null)
                 {
-                <span><b>Discount Description:</b>@Model.Reservation.Coupons.CouponCode - @(Model.Reservation.Coupons.Discount)% |</span>
+                    <span><b>Discount Description:</b>@Model.Reservation.Coupons.CouponCode - @(Model.Reservation.Coupons.Discount)% | @Model.Reservation.DiscountText</span>
                 }
-            </div>
-
+                else if (Model.Reservation.IsDiscount)
+                {
+                    <span>
+                        <b>Discount Description:</b>@Model.Reservation.TotalPrice | @Model.Reservation.DiscountText
+                    </span>
+                }
+                </div>
 
         </div>
 
