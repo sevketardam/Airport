@@ -38,7 +38,7 @@ namespace Airport.MessageExtensions.Repos
                 carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i4.png'>";
             }
 
-            if (reservationDetail.LocationCars.Car.Water)   
+            if (reservationDetail.LocationCars.Car.Water)
             {
                 carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i1.png'>";
             }
@@ -58,8 +58,13 @@ namespace Airport.MessageExtensions.Repos
                 carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i2.png'>";
             }
 
-
-
+            var returnIcon = "https://storage.acerapps.io/app-1348/asd/altok.png";
+            var isReturn = false;
+            if (reservationDetail.ReturnStatus)
+            {
+                returnIcon = "https://storage.acerapps.io/app-1348/asd/gelgit.png";
+                isReturn = true;
+            }
 
             mimeMessage.Subject = "Reservation Information";
             bodyBuilder.HtmlBody = @$"<!DOCTYPE html>
@@ -99,7 +104,7 @@ margin: 0 auto;
         font-weight: 800;
         font-style: italic;
         font-size: 30px;
-        "">airportglobaltransfer.com</div>
+        ""><img src=""http://test.airportglobaltransfer.com/images/Logo.png""></div>
         <div class=""header-text"" style=""
         font-size: 20px;"">Succesful Created Reservation</div>
     </div>
@@ -127,48 +132,38 @@ margin: 0 auto;
             <div class=""date-text"">
                 <p class=""date-text-date"" style="" font-size: 12px;
                 font-weight: 300;"">{reservationDetail.ReservationDate.ToString("dd.MM.yyyy HH:mm")}</p>
-                <div class=""data-text-icon-group"" style=""
+
+               <div class=""data-text-icon-group"" style=""
                  display: flex;
                  "">
                     <div class=""date-text-icon"" style=""
-                        background-color: #ff6709;
-        border-radius: 50%;
         width: 25px;
         height: 25px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 1rem;
+        margin-right: .5rem;
         "">
-                        A
+                        <img src=""https://storage.acerapps.io/app-1348/asd/A.png"" width=""100%"" alt="""">
                     </div>
-                    <span>{reservationDetail.PickFullName}</span><!--   -->
+                    <span>{reservationDetail.PickFullName}</span>
                 </div>
-                <i class=""fa-solid fa-arrow-down down"" style=""
-                margin-left: .4rem;
-        color: #ff6709;
-        ""></i>
+                <img src=""{returnIcon}"" style=""
+                width: 25px;
+    height: 18px;
+    object-fit: contain;
+    margin-top: .4rem;
+    "" alt="""">
                 <div class=""data-text-icon-group"" style=""
-                        align-items: center;
-                        "">
-                    <div class=""date-text-icon"" style=""
-                        background-color: #ff6709;
-        border-radius: 50%;
-        width: 25px;
-        height: 25px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 1rem;
-        "">
-                        B
-                    </div>
-                    <div class=""span-group"" style=""
-                     display: flex;
-        flex-direction: column;"">
-                        <span>{reservationDetail.DropFullName}</span>
-                    </div>
-                </div>
+                display: flex;
+                "">
+                   <div class=""date-text-icon"" style=""
+       width: 25px;
+       height: 25px;
+       margin-right: .5rem;
+       "">
+                       <img src=""https://storage.acerapps.io/app-1348/asd/B.png"" width=""100%"" alt="""">
+                   </div>
+                   <span>{reservationDetail.PickFullName}</span>
+               </div>
+                
             </div>
         </div>
     </div>
@@ -265,6 +260,36 @@ margin: 0 auto;
             </div>
 
         </div>
+    </div>
+<div class=""teklif section"" style=""
+    font-family: 'Poppins', sans-serif;
+        background-color: white;
+        padding: 1rem 1rem 0 1rem;"">
+        <h4 style=""
+    font-size: 2rem;
+    margin: 0 0 0.7rem 0;
+    font-weight: 600;
+"">
+            Services
+        </h4>
+        <div class=""teklif-bilgi"">
+            <div class=""teklif-item"">
+                <span style=""
+                font-weight: 600;"">Price</span>
+                <p style=""font-weight: 400; font-size: .8rem;"">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis saepe et placeat fugiat necessitatibus repellendus similique? Mollitia quibusdam, fuga aperiam porro dolores vero voluptatem nulla asperiores voluptas id at autem eum exercitationem. Provident dolore doloremque non enim facilis repellendus, architecto repellat maiores accusantium quis reiciendis fugiat esse dicta, necessitatibus quam?
+                </p>
+            </div>
+        </div>
+        <div class=""teklif-bilgi"">
+            <div class=""teklif-item"">
+                <span style=""
+                font-weight: 600;"">Price</span>
+                <p style=""font-weight: 400; font-size: .8rem;"">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis saepe et placeat fugiat necessitatibus repellendus similique? Mollitia quibusdam, fuga aperiam porro dolores vero voluptatem nulla asperiores voluptas id at autem eum exercitationem. Provident dolore doloremque non enim facilis repellendus, architecto repellat maiores accusantium quis reiciendis fugiat esse dicta, necessitatibus quam?
+                </p>
+            </div>
+        </div>
         <br>
         <div class=""btn"" style=""
         padding: 2rem 0;"">
@@ -278,7 +303,6 @@ margin: 0 auto;
         text-decoration: none;
         transition: 200ms;"">Show Voucher</a>
         </div>
-
     </div>
     <div class=""footer"" style="" padding: 1rem 1rem;
     font-family: 'Poppins', sans-serif;
