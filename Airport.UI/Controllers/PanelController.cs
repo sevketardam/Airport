@@ -208,6 +208,13 @@ namespace Airport.UI.Controllers
 
         }
 
+        [HttpGet("user-management")]
+        public IActionResult UserManagement()
+        {
+
+            return View();
+        }
+
         public static string GetMD5(string value)
         {
             MD5 md5 = MD5.Create();
