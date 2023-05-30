@@ -9,15 +9,19 @@
             @Model.Name
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-            @if (Model.Type == 0 || Model.Type == 2)
+            @if (Model.Type == 2 || Model.Type == 0)
             {
                 <a href="/panel" class="dropdown-item" type="button">Dashboard</a>
             }
-
-            @if (Model.Type == 3)
+            else if (Model.Type == 3)
             {
                 <a href="/driver-reservations" class="dropdown-item" type="button">Dashboard</a>
             }
+            else if(Model.Type == 1)
+            {
+                <a href="/user-management" class="dropdown-item" type="button">Dashboard</a>
+            }
+
 
             @if (Model.Type != 3)
             {

@@ -208,11 +208,41 @@ namespace Airport.UI.Controllers
 
         }
 
+
+        [Authorize(Roles = "1")]
         [HttpGet("user-management")]
         public IActionResult UserManagement()
         {
+            try
+            {
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
 
-            return View();
+                var loginAuth = _loginAuth.SelectByID(userId);
+
+                var today = DateTime.Today;
+                var lastWeek = today.AddDays(7);
+
+                var myCars = _myCars.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
+                myCars.ForEach(a =>
+                {
+                    a = _getCarDetail.CarDetail(a.Id);
+                });
+
+                var myDashboard = new DashboardVM()
+                {
+                    MyCars = myCars,
+                    MyLocations = _locations.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
+                    User = _userDatas.SelectByID(userId),
+                    Reservations = _reservations.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
+                    AWeekReservations = _reservations.SelectByFunc(a => a.ReservationDate >= today && a.ReservationDate < lastWeek && a.UserId == userId && !a.IsDelete)
+                };
+
+                return View(myDashboard);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
         public static string GetMD5(string value)
