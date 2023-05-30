@@ -34,7 +34,7 @@
                     {
                         <div class="my-2">
                             <h4>Return Date</h4>
-                            <h5>@Model.ReturnDate</h5>
+                            <h5>@Model.ReturnDate.ToString("dd.MM.yyyy HH:mm")</h5>
                         </div>
                     }
                     <div class="my-2">
@@ -43,7 +43,7 @@
                     </div>
                     <div class="my-2">
                         <h4>Date</h4>
-                        <h5>@Model.ReservationDate</h5>
+                        <h5>@Model.ReservationDate.ToString("dd.MM.yyyy HH:mm")</h5>
                     </div>
 
                     @if (Model.IsDiscount)
