@@ -49,5 +49,10 @@ namespace Airport.UI.Models.VM
         public string DisanceValue { get; set; }
         public string DurationeValue { get; set; }
         public string Destinationaddresses { get; set; }
+        public string DropLng { get; set; }
+        public string DropLat { get; set; }
+        public string DropDisanceValue { get; set; }
+        public string DropDurationeValue { get; set; }
+        public string DropDestinationaddresses { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace Airport.UI.Models.VM
         public double OutZonePerKmPrice { get; set; }
         public string LocationName { get; set; }
         public string LocationZone { get; set; }
+        public bool IsOutsideWork { get; set; }
         public List<GetLocationCarsPriceVM> CarsPrice { get; set; }
     }
 }

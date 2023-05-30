@@ -21,6 +21,7 @@ using iText.Layout.Element;
 using Airport.MessageExtension.Interfaces;
 using System.Globalization;
 using System.IO;
+using System.Collections;
 
 namespace Airport.UI.Controllers
 {
@@ -121,6 +122,7 @@ namespace Airport.UI.Controllers
                     }
 
                     var allDatas = new List<AllDatas>();
+                    var allDatas2 = new List<AllDatas>();
                     locationCars.ForEach(a =>
                     {
                         string carLatLngString = "";
@@ -133,13 +135,19 @@ namespace Airport.UI.Controllers
                         var arrayResponse = httpClient.GetAsync(apiArrayUrl).Result;
                         var arrayContent = arrayResponse.Content.ReadAsStringAsync().Result;
                         var data = JsonConvert.DeserializeObject<DistanceMatrixApiResponse>(arrayContent);
+
+
+                        var apiArrayUrl2 = $"https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins={contentJsonResult2.Result.Geometry.Location.lat + "," + contentJsonResult2.Result.Geometry.Location.lng}&destinations={carLatLngString}&key=" + api_key;
+                        var arrayResponse2 = httpClient.GetAsync(apiArrayUrl2).Result;
+                        var arrayContent2 = arrayResponse2.Content.ReadAsStringAsync().Result;
+                        var data2 = JsonConvert.DeserializeObject<DistanceMatrixApiResponse>(arrayContent2);
                         if (data.status == "OK")
                         {
                             int i2 = 0;
                             var locationdatas = carLatLngString.Split("|");
                             data.destination_addresses.ForEach(a =>
                             {
-                                if (data.rows[0].elements[i2].status == "OK")
+                                if (data.rows[0].elements[i2].status == "OK" && data2.rows[0].elements[i2].status == "OK")
                                 {
                                     allDatas.Add(new AllDatas
                                     {
@@ -147,12 +155,37 @@ namespace Airport.UI.Controllers
                                         DurationeValue = data.rows[0].elements[i2].distance.value.ToString(),
                                         Lat = locationdatas[i2].Split(",")[0],
                                         Lng = locationdatas[i2].Split(",")[1],
-                                        Destinationaddresses = data.destination_addresses[i2]
+                                        Destinationaddresses = data.destination_addresses[i2],
+                                        DropDisanceValue = data2.rows[0].elements[i2].distance.value.ToString(),
+                                        DropDurationeValue = data2.rows[0].elements[i2].distance.value.ToString(),
+                                        DropLat = locationdatas[i2].Split(",")[0],
+                                        DropLng = locationdatas[i2].Split(",")[1],
+                                        DropDestinationaddresses = data2.destination_addresses[i2]
                                     });
                                 }
                                 i2++;
                             });
                         }
+
+
+
+
+                        //if (data2.status == "OK")
+                        //{
+                        //    int i2 = 0;
+                        //    var locationdatas = carLatLngString.Split("|");
+                        //    data2.destination_addresses.ForEach(a =>
+                        //    {
+                        //        if (data2.rows[0].elements[i2].status == "OK")
+                        //        {
+                        //            allDatas2.Add(new AllDatas
+                        //            {
+
+                        //            });
+                        //        }
+                        //        i2++;
+                        //    });
+                        //}
                     });
 
                     var selectedLocations = new List<LocationIsOutVM>();
@@ -165,20 +198,46 @@ namespace Airport.UI.Controllers
                             var realRadiusValue = Convert.ToInt32(b.LocationRadius) * 1000;
                             if (realRadiusValue > Convert.ToInt32(a.DisanceValue))
                             {
-                                selectedLocations.Add(new LocationIsOutVM
+                                if (realRadiusValue > Convert.ToInt32(a.DropDisanceValue))
                                 {
-                                    IsOutZone = false,
-                                    Location = b
-                                });
-
+                                    selectedLocations.Add(new LocationIsOutVM
+                                    {
+                                        IsOutZone = false,
+                                        Location = b,
+                                        IsOutZoneOutside = false
+                                    });
+                                }
+                                else
+                                {
+                                    selectedLocations.Add(new LocationIsOutVM
+                                    {
+                                        IsOutZone = false,
+                                        Location = b,
+                                        IsOutZoneOutside = true
+                                    });
+                                }
                             }
                             else if (b.OutZonePricePerKM > 0 && realRadiusValue < Convert.ToInt32(a.DisanceValue))
                             {
-                                selectedLocations.Add(new LocationIsOutVM
+                                if (realRadiusValue > Convert.ToInt32(a.DropDisanceValue))
                                 {
-                                    IsOutZone = true,
-                                    Location = b
-                                });
+                                    selectedLocations.Add(new LocationIsOutVM
+                                    {
+                                        IsOutZone = true,
+                                        Location = b,
+                                        IsOutZoneOutside = false
+                                    });
+                                }
+                                else
+                                {
+                                    selectedLocations.Add(new LocationIsOutVM
+                                    {
+                                        IsOutZone = true,
+                                        Location = b,
+                                        IsOutZoneOutside = true
+                                    });
+                                }
+
                             }
                         });
                     });
@@ -255,24 +314,76 @@ namespace Airport.UI.Controllers
                                     {
                                         price *= 2;
                                     }
+
+
+
                                     price = Math.Round(price, 2);
-                                    if (price > 0)
+                                    var checkCar = getreservation.Where(c => c.LocationCars == c.LocationCars).FirstOrDefault();
+                                    if (checkCar != null)
                                     {
-                                        getreservation.Add(new GetReservationValues
+                                        if (checkCar.LastPrice < price)
                                         {
-                                            LocationCars = b,
-                                            LastPrice = price,
-                                            ReservationDate = reservation.FlightTime,
-                                            PickLocationName = contentJsonResult.Result.formatted_address,
-                                            DropLocationName = contentJsonResult2.Result.formatted_address,
-                                            PassangerCount = reservation.PeopleCount,
-                                            DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
-                                            PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
-                                            DropLocationPlaceId = reservation.DropValue,
-                                            PickLocationPlaceId = reservation.PickValue,
-                                        });
+                                            checkCar.LastPrice = price;
+                                            checkCar.ReservationDate = reservation.FlightTime;
+                                            checkCar.PickLocationName = contentJsonResult.Result.formatted_address;
+                                            checkCar.DropLocationName = contentJsonResult2.Result.formatted_address;
+                                            checkCar.PassangerCount = reservation.PeopleCount;
+                                            checkCar.DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}";
+                                            checkCar.PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}";
+                                            checkCar.DropLocationPlaceId = reservation.DropValue;
+                                            checkCar.PickLocationPlaceId = reservation.PickValue;
+
+                                            getreservation[getreservation.IndexOf(checkCar)] = checkCar;
+                                        }
+                                      
                                     }
-                                   
+                                    else
+                                    {
+                                        if (a.IsOutZoneOutside)
+                                        {
+                                            if (a.Location.IsOkeyOut)
+                                            {
+                                                if (price > 0)
+                                                {
+                                                    getreservation.Add(new GetReservationValues
+                                                    {
+                                                        LocationCars = b,
+                                                        LastPrice = price,
+                                                        ReservationDate = reservation.FlightTime,
+                                                        PickLocationName = contentJsonResult.Result.formatted_address,
+                                                        DropLocationName = contentJsonResult2.Result.formatted_address,
+                                                        PassangerCount = reservation.PeopleCount,
+                                                        DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
+                                                        PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
+                                                        DropLocationPlaceId = reservation.DropValue,
+                                                        PickLocationPlaceId = reservation.PickValue,
+                                                    });
+                                                }
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            if (price > 0)
+                                            {
+                                                getreservation.Add(new GetReservationValues
+                                                {
+                                                    LocationCars = b,
+                                                    LastPrice = price,
+                                                    ReservationDate = reservation.FlightTime,
+                                                    PickLocationName = contentJsonResult.Result.formatted_address,
+                                                    DropLocationName = contentJsonResult2.Result.formatted_address,
+                                                    PassangerCount = reservation.PeopleCount,
+                                                    DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
+                                                    PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
+                                                    DropLocationPlaceId = reservation.DropValue,
+                                                    PickLocationPlaceId = reservation.PickValue,
+                                                });
+                                            }
+                                        }
+                                    }
+
+                         
                                 }
                             });
                         });
@@ -280,6 +391,17 @@ namespace Airport.UI.Controllers
                     
 
                     getreservation = getreservation.Distinct().ToList();
+
+                    //Arabalarda 1 den fazla aynı araba varsa büyük olanı alıyor
+                    //getreservation.ForEach(a => {
+                    //    var s = getreservation.Where(b=>b.LocationCars == a.LocationCars).ToList();
+                    //    if (s.Count > 1)
+                    //    {
+                    //        s=s.OrderBy(b => b.LastPrice).ToList();
+                    //        getreservation.Remove(s[0]);
+                    //    }
+                    //});
+
 
                     var lastVM = new ReservationStepTwoVM()
                     {
@@ -326,9 +448,16 @@ namespace Airport.UI.Controllers
                 return RedirectToAction("Index", "Home");
                 //return View(lastVM);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                ViewBag.Error = "Error";
+                string dosyaYolu = "wwwroot/error.txt";
+
+                using (StreamWriter yazici = new StreamWriter(dosyaYolu))
+                {
+                    string metin = ex.ToString();
+                    yazici.WriteLine(metin);
+                }
+
                 return RedirectToAction("Index", "Home");
             }
 
@@ -459,9 +588,16 @@ namespace Airport.UI.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                ViewBag.Error = "Error";
+                string dosyaYolu = "wwwroot/error.txt";
+
+                using (StreamWriter yazici = new StreamWriter(dosyaYolu))
+                {
+                    string metin = ex.ToString();
+                    yazici.WriteLine(metin);
+                }
+
                 return RedirectToAction("Index", "Home");
             }
 

@@ -7,6 +7,8 @@ namespace Airport.UI.Models.IM
     {
         public string LocationName { get; set; }
         public string LocationRadius { get; set; }
+        public string LocationLat { get; set; }
+        public string LocationLng { get; set; }
         public int[] LocationCars { get; set; }
 
 

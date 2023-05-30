@@ -460,7 +460,7 @@ margin: 0 auto;
         <div class=""footer-phone"" style="" padding-bottom: .5rem;"">
             <p style=""margin: 0;"">Any Help?</p>
             <b><a href=""tel:+908502421901"" style=""color: #320404;
-                text-decoration: none;"">850 242 19014</a></b>
+                text-decoration: none;"">+90 850 242 19014</a></b>
         </div>
         <div class=""footer-mail"">
             <p style="" margin: 0;"">or</p>
