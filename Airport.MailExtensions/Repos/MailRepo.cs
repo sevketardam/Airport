@@ -27,6 +27,28 @@ namespace Airport.MessageExtensions.Repos
 
             var bodyBuilder = new BodyBuilder();
             mimeMessage.To.Add(mailboxAddressTo);
+
+            var serviceText = "";
+
+            if (reservationDetail.ReservationServicesTables != null && reservationDetail.ReservationServicesTables.Count > 0)
+            {
+                serviceText += @"<h4 style=""font-size: 2rem;margin: 0 0 0.7rem 0;font-weight: 600;"">Services</h4>";
+                reservationDetail.ReservationServicesTables.ForEach(a =>
+                {
+                    serviceText += @$"        <div class=""teklif-bilgi"">
+            <div class=""teklif-item"">
+                <span style=""
+                font-weight: 600;"">{a.ServiceItem.ServiceProperty.ServicePropertyName}</span>
+                <p style=""font-weight: 400; font-size: .8rem;"">
+                    {a.ServiceItem.ServiceProperty.ServicePropertyDescription}
+                </p>
+            </div>
+        </div>";
+                });
+                
+            }
+
+
             var carAttrHtml = "";
             if (reservationDetail.LocationCars.Car.Armored)
             {
@@ -265,31 +287,9 @@ margin: 0 auto;
     font-family: 'Poppins', sans-serif;
         background-color: white;
         padding: 1rem 1rem 0 1rem;"">
-        <h4 style=""
-    font-size: 2rem;
-    margin: 0 0 0.7rem 0;
-    font-weight: 600;
-"">
-            Services
-        </h4>
-        <div class=""teklif-bilgi"">
-            <div class=""teklif-item"">
-                <span style=""
-                font-weight: 600;"">Price</span>
-                <p style=""font-weight: 400; font-size: .8rem;"">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis saepe et placeat fugiat necessitatibus repellendus similique? Mollitia quibusdam, fuga aperiam porro dolores vero voluptatem nulla asperiores voluptas id at autem eum exercitationem. Provident dolore doloremque non enim facilis repellendus, architecto repellat maiores accusantium quis reiciendis fugiat esse dicta, necessitatibus quam?
-                </p>
-            </div>
-        </div>
-        <div class=""teklif-bilgi"">
-            <div class=""teklif-item"">
-                <span style=""
-                font-weight: 600;"">Price</span>
-                <p style=""font-weight: 400; font-size: .8rem;"">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis saepe et placeat fugiat necessitatibus repellendus similique? Mollitia quibusdam, fuga aperiam porro dolores vero voluptatem nulla asperiores voluptas id at autem eum exercitationem. Provident dolore doloremque non enim facilis repellendus, architecto repellat maiores accusantium quis reiciendis fugiat esse dicta, necessitatibus quam?
-                </p>
-            </div>
-        </div>
+
+        {serviceText}
+        
         <br>
         <div class=""btn"" style=""
         padding: 2rem 0;"">
