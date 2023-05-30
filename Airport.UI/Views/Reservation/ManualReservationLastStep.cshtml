@@ -128,13 +128,8 @@
                             {
                                 <li>
                                     <p>
-                                        @item.ServiceItem.ServiceProperty.ServicePropertyName : <b>€@item.Price</b>
+                                        @item.ServiceItem.ServiceProperty.ServicePropertyName : <b>@item.Price €</b>
                                     </p>
-                                </li>
-                                <li class="detail">
-
-                                    @Html.Raw(item.ServiceItem.ServiceProperty.ServicePropertyDescription)
-
                                 </li>
                             }
                         }
@@ -146,7 +141,7 @@
                         </li>
                         <li>
                             <p>
-                                @Model.ReservationDate
+                                @Model.ReservationDate.ToString("dd.MM.yyyy HH:mm")
                             </p>
                         </li>
 

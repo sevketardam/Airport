@@ -87,7 +87,7 @@
             <tr class="goDetail" data-id="@item.Id">
                 <td>@item.ReservationCode</td>
                 <td>@item.Name @item.Surname</td>
-                <td>@item.ReservationDate</td>
+                <td>@item.ReservationDate.ToString("dd.MM.yyyy HH:mm")</td>
                 <td>
                     @if (item.Status == 1)
                     {
@@ -162,7 +162,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="modal fade" id="reservationNoteModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -301,7 +300,6 @@
             });
         })
 
-
         let selectedReservationId = 0;
         $('.open-note').on("click", function () {
             $('.formLoader').removeClass("deActive")
@@ -320,7 +318,6 @@
                 }
             });
         })
-
 
         $('#statusForm').on("submit", function (e) {
             e.preventDefault();

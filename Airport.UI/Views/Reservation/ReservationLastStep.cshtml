@@ -120,12 +120,9 @@
                             @foreach (var item in Model.ReservationServicesTables)
                             {
                                 <li>
-                                    <b>
-                                        @item.ServiceItem.ServiceProperty.ServicePropertyName
-                                    </b>
-                                </li>
-                                <li class="detail">
-                                    @Html.Raw(item.ServiceItem.ServiceProperty.ServicePropertyDescription)
+                                    <p>
+                                        @item.ServiceItem.ServiceProperty.ServicePropertyName : <b>@item.Price €</b>
+                                    </p>
                                 </li>
                             }
                         }
@@ -138,7 +135,7 @@
                         </li>
                         <li>
                             <p>
-                                @Model.ReservationDate
+                                @Model.ReservationDate.ToString("dd.MM.yyyy HH:mm")
                             </p>
                         </li>
 

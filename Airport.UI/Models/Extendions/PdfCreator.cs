@@ -223,7 +223,7 @@ font-family: 'Montserrat';
             <div style=""float: right;"">
                 <p style=""font-weight: bold; margin: 0;"">RIDE DATE</p>
                 <div>
-                    <p style=""margin: 0 0 10px 0px;"">{reservation.ReservationDate.ToString("d 'of' MMMM, yyyy")} {reservation.ReservationDate.ToShortTimeString()}</p>
+                    <p style=""margin: 0 0 10px 0px;"">{reservation.ReservationDate.ToString("dd.MM.yyyy HH:mm")} </p>
                 </div>
 
                 <p style=""font-weight: bold; margin: 0px;"">FROM</p>

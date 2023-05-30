@@ -411,7 +411,7 @@
                 <div>
                     <h4 class="infosTitle">Flight Arrival</h4>
                     <p class="infosP">
-                        @Model.Reservation.ReservationDate
+                        @Model.Reservation.ReservationDate.ToString("dd.MM.yyyy HH:mm")
                     </p>
                 </div>
                 @if (Model.Reservation.ReturnStatus)
@@ -419,7 +419,7 @@
                     <div>
                         <h4 class="infosTitle">Return</h4>
                         <p class="infosP">
-                            @Model.Reservation.ReturnDate
+                            @Model.Reservation.ReturnDate.ToString("dd.MM.yyyy HH:mm")
                         </p>
                     </div>
                 }
