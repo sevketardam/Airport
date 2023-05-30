@@ -1,3 +1,209 @@
-﻿@{
+﻿@model ReservationsIndexVM
+@{
     Layout = "_PanelLayout";
+}
+@section pageCss{
+    <style>
+
+        .reservation-table-icon {
+            color: orange !important;
+            font-size: 1.3rem;
+            filter: drop-shadow(0 0 1px);
+        }
+
+            .reservation-table-icon:hover {
+                filter: drop-shadow(0 0 7px);
+            }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0 1rem;
+            margin-top: -10px; /* correct offset on first border spacing if desired */
+            width: 100%;
+        }
+
+        tbody tr {
+            background: rgb(0 0 0 / 10%);
+        }
+
+            tbody tr:hover {
+                background: rgb(0 0 0 / 18%) !important;
+            }
+
+
+        tbody td {
+            border-style: solid none;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+            tbody td:first-child {
+                border-left-style: solid;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+
+            tbody td:last-child {
+                border-right-style: solid;
+                border-bottom-right-radius: 10px;
+                border-top-right-radius: 10px;
+            }
+
+        .get-member {
+            font-size: 1.3rem;
+        }
+
+        .delete-member {
+            font-size: 1.3rem;
+        }
+
+        .reservation-delete {
+            color: red !important;
+            font-size: 1.1rem;
+            filter: drop-shadow(0 0 1px);
+        }
+
+    </style>
+}
+
+<div style=" overflow-x: auto;">
+    <table id="recourseTable">
+        <thead>
+            <tr>
+                <th style="text-align:center">Reservation Code</th>
+                <th style="text-align:center">Name</th>
+                <th style="text-align:center">Date</th>
+                <th style="text-align:center">Situation</th>
+                <th style="text-align:center">Transactions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Reservations)
+            {
+                <tr class="goDetail" data-id="@item.Id">
+                    <td>@item.ReservationCode</td>
+                    <td>@item.Name @item.Surname</td>
+                    <td>@item.ReservationDate.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>
+                        @if (item.Status == 1)
+                        {
+                            <span class="badge badge-success">Waiting For Transaction</span>
+                        }
+                        else if (item.Status == 3)
+                        {
+                            <span class="badge badge-info">Finished Reservation</span>
+                        }
+                        else if (item.Status == 4)
+                        {
+                            <span class="badge badge-danger">Cancel Reservation</span>
+                        }
+                    </td>
+                    <td>
+                        <a title="Go to detail" href="/panel/reservation-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
+                        <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
+                            <i class="iconsminds-file"></i>
+                        </a>
+                        <a title="Cancel Reservation" class="reservation-delete"><i class="fa-regular fa-xmark"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+
+
+
+@section pageJs{
+    <script>
+
+        $('.reservation-delete').on("click", function () {
+            var reservationId = $(this).closest("tr").attr("data-id")
+            Swal.fire({
+                title: 'Are you sure you want to cancel the reservation?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed == true) {
+                    $('.formLoader').removeClass("deActive")
+                    $.ajax({
+                        url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.CancelReservation))',
+                        type: "POST",
+                        data: "id=" + reservationId,
+                        success: function (response) {
+                            if (response.result == 1) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Successfully Cancel Reservation',
+                                }).then(() => {
+                                    location.reload()
+                                })
+                            }
+                            else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    html: 'Something went wrong',
+                                    icon: 'error',
+                                    confirmButtonText: 'Okey'
+                                }).then(() => {
+                                    location.reload()
+                                })
+                            }
+                        }
+                    });
+                }
+            })
+        })
+
+       
+      
+        $('#statusForm').on("submit", function (e) {
+            e.preventDefault();
+            var formData = $(this).serialize();
+            $('.formLoader').removeClass("deActive")
+            $.ajax({
+                url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.UpdateReservationStatus))',
+                type: "POST",
+                data: formData + "&id=" + selectedReservationId,
+                success: function (response) {
+                    if (response.result == 1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Successfully updated reservation',
+                        }).then(() => {
+                            location.reload()
+                        })
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Something went wrong',
+                        }).then(() => {
+                            location.reload()
+                        })
+                    }
+                    $('.formLoader').addClass("deActive")
+                    $('#reservationNoteModal').modal("hide")
+                    $('#reservationNoteModal #reservationNote').val("")
+                    $('#reservationNoteModal #reservationNote').val(null)
+
+                }
+            });
+        })
+
+        $('.goDetail td:not(:last-child) ').on("click", function () {
+            var id = $(this).closest("tr").attr("data-id")
+            location.href = "/panel/reservation-detail/" + id;
+        })
+    </script>
 }
