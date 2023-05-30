@@ -58,23 +58,34 @@ namespace Airport.UI.Controllers
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
                 var loginAuth = _loginAuth.SelectByID(userId);
                 var myCars = _myCars.SelectByFunc(a=>a.DriverId == loginAuth.DriverId);
-                var reservations = new List<Reservations>();
-                myCars.ForEach(a =>
+                //var reservations = new List<Reservations>();
+
+                var myReservations = _reservations.SelectByFunc(a => a.DriverId == loginAuth.DriverId);
+
+
+                myReservations.ForEach(a =>
                 {
-                    a.LocationCars = _locationCars.SelectByFunc(b=>b.CarId == a.Id);
-                    a.LocationCars.ForEach(b =>
-                    {
-                        b.Reservations = _reservations.SelectByFunc(c => c.LocationCarId == b.Id);
-                        if (b.Reservations != null && b.Reservations.Count > 0)
-                        {
-                            reservations.AddRange(b.Reservations);
-                        }
-                    });
+                    a.LocationCars = _locationCars.SelectByID(a.LocationCarId);
+                    a.LocationCars.Car = _carDetail.CarDetail(a.LocationCars.CarId);
+                    a.LocationCars.LocationCarsFares = _locationCarsFare.SelectByFunc(b => b.LocationCarId == a.LocationCarId);
                 });
+
+                //myCars.ForEach(a =>
+                //{
+                //    a.LocationCars = _locationCars.SelectByFunc(b=>b.CarId == a.Id);
+                //    a.LocationCars.ForEach(b =>
+                //    {
+                //        b.Reservations = _reservations.SelectByFunc(c => c.LocationCarId == b.Id);
+                //        if (b.Reservations != null && b.Reservations.Count > 0)
+                //        {
+                //            reservations.AddRange(b.Reservations);
+                //        }
+                //    });
+                //});
 
                 var reservationVM = new ReservationsIndexVM()
                 {
-                    Reservations = reservations
+                    Reservations = myReservations
                 };
 
                 return View(reservationVM);

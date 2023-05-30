@@ -141,7 +141,7 @@ namespace Airport.UI.Controllers
                         var arrayResponse2 = httpClient.GetAsync(apiArrayUrl2).Result;
                         var arrayContent2 = arrayResponse2.Content.ReadAsStringAsync().Result;
                         var data2 = JsonConvert.DeserializeObject<DistanceMatrixApiResponse>(arrayContent2);
-                        if (data.status == "OK")
+                        if (data.status == "OK" && data2.status == "OK")
                         {
                             int i2 = 0;
                             var locationdatas = carLatLngString.Split("|");
@@ -677,6 +677,7 @@ namespace Airport.UI.Controllers
                     Coupon = getCoupon?.Id,
                     TotalPrice = total,
                     RealPhone = reservation.RealPhone,
+                    DiscountText = getCoupon?.Comment
                 });
 
                 item.Coupons = getCoupon;
@@ -1349,7 +1350,6 @@ namespace Airport.UI.Controllers
                 }
                 createReservation.LocationCar.Location = _location.SelectByID(createReservation.LocationCar.LocationId);
 
-
                 var totalprice = reservation.IsDiscount ? Convert.ToDouble(reservation.Discount) : createReservation.LastPrice + totalServiceFee;
                 totalprice = Math.Round(totalprice, 2);
                 var item = _reservations.Insert(new Reservations
@@ -1383,7 +1383,7 @@ namespace Airport.UI.Controllers
                     HidePrice = reservation.HidePrice,
                     TotalPrice = totalprice,
                     RealPhone = reservation.RealPhone,
-                    
+                    DiscountText = reservation.DiscountText
                 });
 
                 var reservationItemsList = new List<ReservationServicesTable>();

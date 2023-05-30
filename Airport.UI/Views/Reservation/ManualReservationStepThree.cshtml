@@ -200,9 +200,9 @@
                             </div>
                             <div class="_Total_Flex _Price_Flex">
                                 <div class="price">
-                                    <p><span>€ <span id="priceBox">@Model.SelectedData.LastPrice</span></span></p>
+                                    <p><span> <span id="priceBox">@Model.SelectedData.LastPrice</span> €</span></p>
                                     <input class="newPriceInput" type="number" id="newPriceInput" value="@Model.SelectedData.LastPrice">
-                                    <textarea class="newPriveDesc" placeholder="Discount Description"></textarea>
+                                    <textarea class="newPriveDesc" placeholder="Discount Description" id="discountDescription"></textarea>
                                 </div>
                                 <div>
                                     <input id="discountCheck" type="checkbox"> Discount
@@ -260,6 +260,7 @@
                                     </span>
                                     <input type="hidden" name="IsDiscount" value="false" />
                                     <input type="hidden" name="Discount" value="@Model.SelectedData.LastPrice" />
+                                    <input type="hidden" name="DiscountText" id="discountDescriptionWR" />
                                 </div>
 
                                 @for (int i = 0; i < Model.SelectedData.ReservationValues.PeopleCount - 1; i++)
@@ -352,6 +353,11 @@
 
 @section pageJs{
     <script>
+
+        $('#discountDescription').on("click keyup change keydown",function(){
+            $('#discountDescriptionWR').val($(this).val())
+        })
+
 
         $("body").on("click", ".pageServiceDownItemTop", function (e) {
             if ($(e.target).attr("class") != "passengerInputs" && $(e.target).attr("class") != "passengerInputs valid" && $(e.target).attr("class") != "passengerInputs error") {
