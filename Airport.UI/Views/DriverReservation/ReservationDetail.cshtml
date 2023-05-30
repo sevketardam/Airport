@@ -385,7 +385,7 @@
 
     </style>
 }
-
+<a class="btn btn-primary" href="/panel/update-reservation/@Model.Reservation.Id">Update Reservation</a>
 <section>
     <div class="container my-5">
         <div style="width: 100%; height: 350px;" id="map"></div>
@@ -450,16 +450,19 @@
                 <div class="firstPeople">
                     @Model.Reservation.Email
                 </div>
-                @foreach (var item in Model.Reservation.ReservationPeoples)
+                @if (Model.Reservation.ReservationPeoples != null && Model.Reservation.ReservationPeoples.Count > 0)
                 {
-                    <div class="otherPeople">
-                        @item.Name @item.Surname
-                    </div>
+                    @foreach (var item in Model.Reservation.ReservationPeoples)
+                    {
+                        <div class="otherPeople">
+                            @item.Name @item.Surname
+                        </div>
+                    }
                 }
             </div>
         </div>
 
-        @if (Model.ReservationServicesTable != null)
+        @if (Model.ReservationServicesTable != null && Model.ReservationServicesTable.Count > 0)
         {
             <div class="my-4">
                 <h4 class="infosTitle">Services Received</h4>
@@ -497,21 +500,40 @@
             <div>
                 <h4 class="infosTitle">Vehicle Fee</h4>
                 <p class="infosP">
-                    @Model.Reservation.OfferPrice
+                    @Model.Reservation.OfferPrice €
                 </p>
             </div>
+
             <div>
                 <h4 class="infosTitle">Total Service Fee</h4>
                 <p class="infosP">
-                    @Model.Reservation.ServiceFee
+                    @Model.Reservation.ServiceFee €
                 </p>
             </div>
+
             <div>
-                <h4 class="infosTitle">@(Model.Reservation.IsDiscount || Model.Reservation.Coupon != null ? "Special Discount" : "Total Fee")</h4>
+                <h4 class="infosTitle">Amount to be paid</h4>
                 <p class="infosP">
-                    @Model.Reservation.TotalPrice
+                    @if (Model.Reservation.IsDiscount || (Model.Reservation.Coupon != null && Model.Reservation.Coupon != 0))
+                    {
+                        <span style="text-decoration: line-through;opacity: .5;font-size: 1rem;font-weight: 700;">@(Math.Round(Convert.ToDouble(Model.Reservation.OfferPrice + Model.Reservation.ServiceFee), 2)) €</span>
+                    }
+
+                    <b>@Model.Reservation.TotalPrice €</b>
                 </p>
+
+                @if (Model.Reservation.Coupon != 0 && Model.Reservation.Coupon != null)
+                {
+                    <span><b>Discount Description:</b>@Model.Reservation.Coupons.CouponCode - @(Model.Reservation.Coupons.Discount)% | @Model.Reservation.DiscountText</span>
+                }
+                else if (Model.Reservation.IsDiscount)
+                {
+                    <span>
+                        <b>Discount Description:</b>@Model.Reservation.DiscountText
+                    </span>
+                }
             </div>
+
         </div>
 
 
@@ -519,38 +541,38 @@
         <div class="my-4">
             <div class="carFlex">
                 <div class="carLeft">
-                    <img src="@Model.Reservation.LocationCars.Car.Type.CarImageURL" alt="">
+                    <img src="@Model.Reservation.LocationCars.Car?.Type.CarImageURL" alt="">
                 </div>
                 <div class="carRight">
                     <h2>Car Infos</h2>
                     <div class="carInputs">
                         <div>
                             <label>Type</label>
-                            <div>@Model.Reservation.LocationCars.Car.Type.CarTypeName</div>
+                            <div>@Model.Reservation.LocationCars.Car?.Type.CarTypeName</div>
                         </div>
                         <div>
                             <label>Model</label>
-                            <div>@Model.Reservation.LocationCars.Car.Model.CarModelName</div>
+                            <div>@Model.Reservation.LocationCars.Car?.Model.CarModelName</div>
                         </div>
                         <div>
                             <label>Series</label>
-                            <div>@Model.Reservation.LocationCars.Car.Series.CarSeriesName</div>
+                            <div>@Model.Reservation.LocationCars.Car?.Series.CarSeriesName</div>
                         </div>
                         <div>
                             <label>Mas Passengers</label>
-                            <div>@Model.Reservation.LocationCars.Car.MaxPassenger</div>
+                            <div>@Model.Reservation.LocationCars.Car?.MaxPassenger</div>
                         </div>
                         <div>
                             <label>Suitcase</label>
-                            <div>@Model.Reservation.LocationCars.Car.SuitCase</div>
+                            <div>@Model.Reservation.LocationCars.Car?.SuitCase</div>
                         </div>
                         <div>
                             <label>Small Bags</label>
-                            <div>@Model.Reservation.LocationCars.Car.SmallBags</div>
+                            <div>@Model.Reservation.LocationCars.Car?.SmallBags</div>
                         </div>
                         <div>
                             <label>Plate</label>
-                            <div>@Model.Reservation.LocationCars.Car.Plate</div>
+                            <div>@Model.Reservation.LocationCars.Car?.Plate</div>
                         </div>
                     </div>
 
@@ -620,7 +642,7 @@
         </div>
 
         <!-- Sürücü Bilgileri -->
-        <div class="my-4">         
+        <div class="my-4">
             <div class="driverFlex">
 
                 <div class="driverLeft">
@@ -679,8 +701,41 @@
 @section pageJs{
     <script>
 
+
+
         $(".detailServicesItem").on("click", function () {
             $(this).find(".detailServiceDownItemBottom").slideToggle(150);
+        })
+
+
+
+
+
+        $('#assignDriverBtn').on("click", function () {
+            var driverId = $('#driverSelectbox').val();
+            $.ajax({
+                url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.AssignDriver))',
+                type: "POST",
+                data: { reservationId: @Model.Reservation.Id, driverId: driverId },
+                success: function (response) {
+                    if (response.result == 1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Successfully Assign Driver',
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Something went wrong',
+                        }).then(() => {
+                            location.reload()
+                        })
+                    }
+                    $('.formLoader').addClass("deActive")
+                }
+            });
         })
 
         $('.slideDriverPhotos').slick({
@@ -706,7 +761,7 @@
             streetViewControl: false,
                 zoomControl: false,
                     fullscreenControl: false
-                                                                                                            });
+                                                                                                                                            });
 
         directionsRenderer.setMap(map);
 
@@ -724,7 +779,7 @@
                 directionsRenderer.setDirections(result);
             }
         });
-                                                                                                        }
+                                                                                                                                        }
 
 
         window.onload = () => {
