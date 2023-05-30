@@ -2,9 +2,10 @@
 
 <nav class="navbar fixed-top">
 
-    @if (Model.Type != 3)
-    {
-        <div class="d-flex align-items-center navbar-left">
+
+    <div class="d-flex align-items-center navbar-left">
+        @if (Model.Type != 3 && Model.Type != 1)
+        {
             <a href="#" class="menu-button d-none d-md-block">
                 <svg class="main" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 17">
                     <rect x="0.48" y="0.5" width="7" height="1" />
@@ -24,19 +25,19 @@
                     <rect x="0.5" y="15.5" width="25" height="1" />
                 </svg>
             </a>
-
-            <div class="search" data-search-path="Pages.Search.html?q=">
-                <input placeholder="Search...">
-                <span class="search-icon">
-                    <i class="simple-icon-magnifier"></i>
-                </span>
-            </div>
-
-
+        }
+        <div class="search" data-search-path="Pages.Search.html?q=" style="margin-left: 1rem;">
+            <input placeholder="Search...">
+            <span class="search-icon">
+                <i class="simple-icon-magnifier"></i>
+            </span>
         </div>
-    }
 
-    <a class="navbar-logo @(Model.Type == 3 ? "ml-3" : "")" href="@(Model.Type == 3 ? "/driver-reservations" : "/panel")">
+
+    </div>
+
+
+    <a class="navbar-logo @(Model.Type == 3 ? "ml-3" : "")" href="@(Model.Type == 3 ? "/driver-reservations" : Model.Type == 1 ? "/" : "/panel")">
         <span class="logo d-none d-xs-block"></span>
         <span class="logo-mobile d-block d-xs-none"></span>
     </a>
@@ -106,7 +107,10 @@
             </button>
 
             <div class="dropdown-menu dropdown-menu-right mt-3">
-                <a class="dropdown-item" href="/panel/profile">Account</a>
+                @if (Model.Type != 3)
+                {
+                    <a class="dropdown-item" href="@(Model.Type == 1 ? "/profile" : "/panel/profile")">Account</a>
+                }
                 <a class="dropdown-item" href="/">Website</a>
                 <a class="dropdown-item" href="/logout">Sign out</a>
             </div>

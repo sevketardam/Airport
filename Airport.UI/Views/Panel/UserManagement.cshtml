@@ -1,4 +1,7 @@
-﻿@model DashboardVM
+﻿@model ReservationsIndexVM
+@{
+    Layout = "_PanelLayout";
+}
 
 @section pageCss{
     <style>
@@ -73,6 +76,7 @@
                 <th style="text-align:center">Name</th>
                 <th style="text-align:center">Date</th>
                 <th style="text-align:center">Situation</th>
+                <th style="text-align:center">Driver Situation</th>
                 <th style="text-align:center">Transactions</th>
             </tr>
         </thead>
@@ -97,8 +101,18 @@
                             <span class="badge badge-danger">Cancel Reservation</span>
                         }
                     </td>
+                     <td>
+                        @if (item.DriverId != null && item.DriverId != 0)
+                        {
+                            <span class="badge badge-success">Driver Assigned</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-warning">Driver Not Assigned</span>
+                        }
+                    </td>
                     <td>
-                        <a title="Go to detail" href="/panel/reservation-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
+                        <a title="Go to detail" href="/user-management/detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
                         <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
                             <i class="iconsminds-file"></i>
                         </a>
@@ -110,10 +124,6 @@
     </table>
 
 </div>
-
-
-
-
 
 @section pageJs{
     <script>
@@ -159,49 +169,11 @@
                     });
                 }
             })
-        })
-
-       
-      
-        $('#statusForm').on("submit", function (e) {
-            e.preventDefault();
-            var formData = $(this).serialize();
-            $('.formLoader').removeClass("deActive")
-            $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.UpdateReservationStatus))',
-                type: "POST",
-                data: formData + "&id=" + selectedReservationId,
-                success: function (response) {
-                    if (response.result == 1) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Successfully updated reservation',
-                        }).then(() => {
-                            location.reload()
-                        })
-                    }
-                    else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'Something went wrong',
-                        }).then(() => {
-                            location.reload()
-                        })
-                    }
-                    $('.formLoader').addClass("deActive")
-                    $('#reservationNoteModal').modal("hide")
-                    $('#reservationNoteModal #reservationNote').val("")
-                    $('#reservationNoteModal #reservationNote').val(null)
-
-                }
-            });
-        })
+        }) 
 
         $('.goDetail td:not(:last-child) ').on("click", function () {
             var id = $(this).closest("tr").attr("data-id")
-            location.href = "/panel/reservation-detail/" + id;
+                location.href = "/user-management/detail/" + id;
         })
     </script>
 }

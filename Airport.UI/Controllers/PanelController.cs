@@ -8,29 +8,54 @@ using System.Security.Claims;
 using Airport.UI.Models.Interface;
 using Airport.DBEntities.Entities;
 using System.Security.Cryptography;
+using System.IO;
+using Airport.MessageExtensions.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Airport.UI.Controllers
 {
     public class PanelController : PanelAuthController
     {
-        IMyCarsDAL _myCars;
-        IUserDatasDAL _userDatas;
-        ILocationsDAL _locations;
-        IGetCarDetail _getCarDetail;
         IReservationsDAL _reservations;
-        ILoginAuthDAL _loginAuth;
+        IDriversDAL _drivers;
+        IGetCarDetail _carDetail;
+        ILocationCarsDAL _locationCars;
+        IReservationPeopleDAL _reservationPeople;
+        ILocationsDAL _location;
+        ILocationCarsFareDAL _locationCarsFare;
         IUserDatasDAL _user;
-        public PanelController(IMyCarsDAL myCars, IUserDatasDAL userDatas, ILocationsDAL locations, IGetCarDetail getCarDetail,IReservationsDAL reservations, ILoginAuthDAL loginAuth,IUserDatasDAL user)
+        IServicesDAL _services;
+        IServiceItemsDAL _serviceItems;
+        IServicePropertiesDAL _serviceProperties;
+        IServiceCategoriesDAL _serviceCategories;
+        IReservationServicesTableDAL _reservationServicesTable;
+        IMail _mail;
+        ILoginAuthDAL _loginAuth;
+        ICouponsDAL _coupons;
+        IMyCarsDAL _myCars;
+        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars)
         {
-            _myCars = myCars;
-            _userDatas = userDatas;
-            _locations = locations;
-            _getCarDetail = getCarDetail;
-            _reservations = reservations;   
+            _drivers = drivers;
+            _reservations = reservations;
+            _carDetail = carDetail;
+            _locationCars = locationCars;
+            _reservationPeople = reservationPeople;
+            _location = locations;
+            _locationCarsFare = locationCarsFare;
+            _user = userDatas;
+            _services = services;
+            _serviceItems = serviceItems;
+            _serviceProperties = serviceProperties;
+            _serviceCategories = serviceCategories;
+            _reservationServicesTable = reservationServicesTable;
+            _mail = mail;
             _loginAuth = loginAuth;
-            _user = user;
+            _coupons = coupons;
+            _myCars = myCars;
         }
 
+
+        [Authorize(Roles = "0,2")]
         public IActionResult Index()
         {
             try
@@ -45,14 +70,14 @@ namespace Airport.UI.Controllers
                 var myCars = _myCars.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
                 myCars.ForEach(a =>
                 {
-                    a = _getCarDetail.CarDetail(a.Id);
+                    a = _carDetail.CarDetail(a.Id);
                 });
 
                 var myDashboard = new DashboardVM()
                 {
                     MyCars = myCars,
-                    MyLocations = _locations.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
-                    User = _userDatas.SelectByID(userId),
+                    MyLocations = _location.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
+                    User = _user.SelectByID(userId),
                     Reservations = _reservations.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
                     AWeekReservations = _reservations.SelectByFunc(a => a.ReservationDate >= today && a.ReservationDate < lastWeek && a.UserId == userId && !a.IsDelete)
                 };
@@ -66,6 +91,8 @@ namespace Airport.UI.Controllers
             
         }
 
+
+        [Authorize(Roles = "0,2")]
         [HttpGet("panel/profile")]
         public IActionResult Profile()
         {
@@ -81,6 +108,8 @@ namespace Airport.UI.Controllers
             return View(user);
         }
 
+
+        [Authorize(Roles = "0,2")]
         [HttpPost("panel/profile")]
         public IActionResult Profile(UserDatas updateUser)
         {
@@ -109,18 +138,22 @@ namespace Airport.UI.Controllers
 
         }
 
+
+        [Authorize(Roles = "0,2")]
         [HttpGet("panel/settings")]
         public IActionResult Settings()
         {
             return View();
         }
 
+        [Authorize(Roles = "0,2")]
         [HttpGet("panel/change-password")]
         public IActionResult ChangePassword()
         {
             return View();
         }
 
+        [Authorize(Roles = "0,2")]
         [HttpPost("panel/change-password", Name = "panelChangePassword")]
         public IActionResult ChangePassword(string oldPassword, string newPassword)
         {
@@ -151,12 +184,16 @@ namespace Airport.UI.Controllers
 
         }
 
+
+        [Authorize(Roles = "0,2")]
         [HttpGet("panel/bank-account")]
         public IActionResult BankAccount()
         {
             return View();
         }
 
+
+        [Authorize(Roles = "0,2")]
         [HttpGet("panel/agreements")]
         public IActionResult Agreement()
         {
@@ -219,29 +256,99 @@ namespace Airport.UI.Controllers
 
                 var loginAuth = _loginAuth.SelectByID(userId);
 
-                var today = DateTime.Today;
-                var lastWeek = today.AddDays(7);
+                var myReservations = _reservations.SelectByFunc(a => a.ReservationUserId == loginAuth.UserId);
 
-                var myCars = _myCars.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
-                myCars.ForEach(a =>
+
+                myReservations.ForEach(a =>
                 {
-                    a = _getCarDetail.CarDetail(a.Id);
+                    a.LocationCars = _locationCars.SelectByID(a.LocationCarId);
+                    a.LocationCars.Car = _carDetail.CarDetail(a.LocationCars.CarId);
+                    a.LocationCars.LocationCarsFares = _locationCarsFare.SelectByFunc(b => b.LocationCarId == a.LocationCarId);
                 });
 
-                var myDashboard = new DashboardVM()
+                var reservationVM = new ReservationsIndexVM()
                 {
-                    MyCars = myCars,
-                    MyLocations = _locations.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
-                    User = _userDatas.SelectByID(userId),
-                    Reservations = _reservations.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
-                    AWeekReservations = _reservations.SelectByFunc(a => a.ReservationDate >= today && a.ReservationDate < lastWeek && a.UserId == userId && !a.IsDelete)
+                    Reservations = myReservations
                 };
 
-                return View(myDashboard);
+                return View(reservationVM);
+
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.ToString());
+            }
+        }
+
+
+        [Authorize(Roles = "1")]
+        [HttpGet("user-management/detail/{id}")]
+        public IActionResult UserManagementDetail(int id)
+        {
+            try
+            {
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var reservation = _reservations.SelectByFunc(a => a.Id == id).FirstOrDefault();
+                if (reservation is not null)
+                {
+                    var reservationLocationCars = _locationCars.SelectByID(reservation.LocationCarId);
+
+                    reservation.LocationCars = reservationLocationCars;
+                    if (reservationLocationCars != null)
+                    {
+
+                        reservation.LocationCars.Car = _carDetail.CarDetail(reservation.LocationCars.CarId);
+                        reservation.LocationCars.Car.Service = _services.SelectByID(reservation.LocationCars?.Car?.SeriesId);
+
+
+                        reservation.Driver = _drivers.SelectByID(reservation.DriverId);
+                        if (reservation.Driver != null)
+                        {
+                            var loginAuth = _loginAuth.SelectByFunc(a => a.DriverId == reservation.DriverId).FirstOrDefault();
+                            reservation.Driver.LoginAuth = loginAuth;
+                        }
+                        reservation.ReservationPeoples = _reservationPeople.SelectByFunc(a => a.ReservationId == reservation.Id);
+
+                        var ReservationServicesTable = _reservationServicesTable.SelectByFunc(a => a.ReservationId == id);
+
+                        ReservationServicesTable.ForEach(a =>
+                        {
+                            a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
+                            a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem?.ServicePropertyId);
+                            a.ServiceItem.Service = _services.SelectByID(a.ServiceItem?.ServiceId);
+                            a.ServiceItem.ServiceProperty.ServiceCategory = _serviceCategories.SelectByID(a.ServiceItem?.ServiceProperty?.ServiceCategoryId);
+                        });
+
+                        if (reservation.Coupon != 0 && reservation.Coupon != null)
+                        {
+                            reservation.Coupons = _coupons.SelectByID(reservation.Coupon);
+                        }
+
+                        var reservationVM = new ReservationManagementVM()
+                        {
+                            Reservation = reservation,
+                            Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
+                            ReservationServicesTable = ReservationServicesTable
+                        };
+                        return View(reservationVM);
+                    }
+
+                    return RedirectToAction("Index", "Home");
+
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                string dosyaYolu = "wwwroot/error.txt";
+
+                using (StreamWriter yazici = new StreamWriter(dosyaYolu))
+                {
+                    string metin = ex.ToString();
+                    yazici.WriteLine(metin);
+                }
+
+                return RedirectToAction("Index", "Home");
             }
         }
 

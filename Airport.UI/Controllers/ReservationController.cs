@@ -643,6 +643,20 @@ namespace Airport.UI.Controllers
                     _coupons.Update(getCoupon);
                 }
 
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var user = new UserDatas();
+
+                if (userId != 0)
+                {
+                    var loginAuth = _loginAuth.SelectByID(userId);
+                    user = _userDatas.SelectByID(loginAuth?.UserId);
+                    user.LoginAuth = loginAuth;
+                }
+                else
+                {
+                    user = null;
+                }
+
                 total = Math.Round(total, 2);
 
                 var item = _reservations.Insert(new Reservations
@@ -677,7 +691,8 @@ namespace Airport.UI.Controllers
                     Coupon = getCoupon?.Id,
                     TotalPrice = total,
                     RealPhone = reservation.RealPhone,
-                    DiscountText = getCoupon?.Comment
+                    DiscountText = getCoupon?.Comment,
+                    ReservationUserId = user?.Id
                 });
 
                 item.Coupons = getCoupon;
@@ -701,8 +716,8 @@ namespace Airport.UI.Controllers
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
                 item.LocationCars.Car = _getCar.CarDetail(item.LocationCars.CarId);
 
-                var loginAuth = _loginAuth.SelectByID(item.UserId);
-                item.User = _userDatas.SelectByID(loginAuth.UserId);
+                var loginAuth2 = _loginAuth.SelectByID(item.UserId);
+                item.User = _userDatas.SelectByID(loginAuth2.UserId);
 
 
                 var reservationPeople = new List<ReservationPeople>();
@@ -1350,6 +1365,22 @@ namespace Airport.UI.Controllers
                 }
                 createReservation.LocationCar.Location = _location.SelectByID(createReservation.LocationCar.LocationId);
 
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var user = new UserDatas();
+
+
+                if (userId != 0)
+                {
+                    var loginAuth = _loginAuth.SelectByID(userId);
+                    user = _userDatas.SelectByID(loginAuth?.UserId);
+                    user.LoginAuth = loginAuth;
+                }
+                else
+                {
+                    user = null;
+                }
+
+
                 var totalprice = reservation.IsDiscount ? Convert.ToDouble(reservation.Discount) : createReservation.LastPrice + totalServiceFee;
                 totalprice = Math.Round(totalprice, 2);
                 var item = _reservations.Insert(new Reservations
@@ -1383,7 +1414,8 @@ namespace Airport.UI.Controllers
                     HidePrice = reservation.HidePrice,
                     TotalPrice = totalprice,
                     RealPhone = reservation.RealPhone,
-                    DiscountText = reservation.DiscountText
+                    DiscountText = reservation.DiscountText,
+                    ReservationUserId = user?.Id
                 });
 
                 var reservationItemsList = new List<ReservationServicesTable>();
@@ -1406,8 +1438,8 @@ namespace Airport.UI.Controllers
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
                 item.LocationCars.Car = _getCar.CarDetail(item.LocationCars.CarId);
 
-                var loginAuth = _loginAuth.SelectByID(item.UserId);
-                item.User = _userDatas.SelectByID(loginAuth.UserId);
+                var loginAuth2 = _loginAuth.SelectByID(item.UserId);
+                item.User = _userDatas.SelectByID(loginAuth2.UserId);
 
                 var reservationPeople = new List<ReservationPeople>();
 

@@ -648,10 +648,6 @@
                     <h2>Driver Infos</h2>
                     <div class="carInputs">
                         <div>
-                            <label>Driver ID</label>
-                            <div>@Model.Reservation.Driver?.DriverId</div>
-                        </div>
-                        <div>
                             <label>Name</label>
                             <div>@Model.Reservation.Driver?.Name</div>
                         </div>
@@ -660,16 +656,8 @@
                             <div>@Model.Reservation.Driver?.Surname</div>
                         </div>
                         <div>
-                            <label>E-Mail</label>
-                            <div>@Model.Reservation.Driver?.LoginAuth?.Email</div>
-                        </div>
-                        <div>
                             <label>Phone</label>
                             <div>@Model.Reservation.Driver?.Phone</div>
-                        </div>
-                        <div>
-                            <label>Date Of Birth</label>
-                            <div>@Model.Reservation.Driver?.DateOfBirth</div>
                         </div>
                     </div>
                 </div>
@@ -704,37 +692,6 @@
 
         $(".detailServicesItem").on("click", function () {
             $(this).find(".detailServiceDownItemBottom").slideToggle(150);
-        })
-
-
-
-
-
-        $('#assignDriverBtn').on("click", function () {
-            var driverId = $('#driverSelectbox').val();
-            $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.AssignDriver))',
-                type: "POST",
-                data: { reservationId: @Model.Reservation.Id, driverId: driverId },
-                success: function (response) {
-                    if (response.result == 1) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Successfully Assign Driver',
-                        })
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'Something went wrong',
-                        }).then(() => {
-                            location.reload()
-                        })
-                    }
-                    $('.formLoader').addClass("deActive")
-                }
-            });
         })
 
         $('.slideDriverPhotos').slick({
