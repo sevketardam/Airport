@@ -18,6 +18,8 @@
             <div class="card-body">
 
                 <form class="row mb-3" onsubmit="document.getElementById('submit').disabled=true; processFormData();">
+
+
                     <div class="col-md-12">
                         <h4 class="mb-2">Location Detail</h4>
                     </div>
@@ -33,6 +35,15 @@
                     </div>
                     <div class="col-md-12">
                         <h4 class="mb-2">Out of Zone</h4>
+                    </div>
+
+                    <div class="col-md-12 _Pos_Rel">
+                        <div class="custom-control custom-checkbox mb-2">
+                            <input type="checkbox" class="custom-control-input" id="isOutsideWork" @(Model.Location.IsOkeyOut ? "checked" : "") >
+                            <label class="custom-control-label" for="isOutsideWork">
+                                Work Out of Zone
+                            </label>
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -233,6 +244,7 @@
             var outZonePerKmPrice = $('#outZonePerKmPrice').val()
             var locationName = $('#locationName').val()
             var zoneRadius = $('#zoneRadius').val()
+            var isOutsideWork = $('#isOutsideWork').is(":checked")
 
             let locationJson = {
                 locationId: @Model.Location.Id,
@@ -240,7 +252,8 @@
                 outZonePerKmPrice: outZonePerKmPrice,
                 locationName: locationName,
                 locationZone: zoneRadius,
-                carsPrice: []
+                carsPrice: [],
+                isOutsideWork: isOutsideWork
             }
 
             $.each($('.carCard'), function (key, value) {

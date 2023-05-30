@@ -125,7 +125,8 @@ namespace Airport.UI.Controllers
 
                 result.Result.LocationRadius = convertMapValues.LocationRadius;
                 result.Result.LocationName = convertMapValues.LocationName;
-
+                result.Result.Geometry.Location.lat = convertMapValues.LocationLat;
+                result.Result.Geometry.Location.lng = convertMapValues.LocationLng;
 
                 TempData["result"] = JsonConvert.SerializeObject(result);
 
@@ -159,7 +160,8 @@ namespace Airport.UI.Controllers
                     OutZonePricePerKM = convertData.OutZonePerKmPrice,
                     Lat = result.Result.Geometry.Location.lat,
                     Lng = result.Result.Geometry.Location.lng,
-                    IsDelete = false
+                    IsDelete = false,
+                    IsOkeyOut = convertData.IsOutsideWork
                 });
 
                 var carLocationFareList = new List<LocationCarsFare>();
@@ -240,6 +242,7 @@ namespace Airport.UI.Controllers
             location.DropCharge = convertData.DropCharge;
             location.LocationName = convertData.LocationName;
             location.LocationRadius = convertData.LocationZone;
+            location.IsOkeyOut = convertData.IsOutsideWork;
             _locations.Update(location);
 
             var oldLocationCar = _locationCars.SelectByFunc(a => a.LocationId == location.Id);

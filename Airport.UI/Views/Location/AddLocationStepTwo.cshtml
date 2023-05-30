@@ -104,7 +104,6 @@
         var mapEvent;
         var firstEvent;
         var checkPost;
-
         // Daire ekleme işlemi
         function addCircle(event, km) {
             // Daha önce oluşturulmuş daire varsa sil
@@ -117,10 +116,12 @@
                 center: event.latLng,
                 radius: (km / 2) * 1000,
                 map: map,
-                //draggable: true,
-                //editable: true,
             });
-            console.log(circle)
+
+            locationJson.locationLat = circle.getCenter().lat()
+            locationJson.locationLng = circle.getCenter().lng()
+
+            console.log(event.latLng)
             // Daire üzerine tıklandığında bilgileri göster
             circle.addListener("click", showInfo);
 
@@ -148,21 +149,21 @@
         }
 
         // Daire içindeki yerleri listeleme işlemi
-        function listPlaces() {
-            // PlacesService oluştur
-            placesService = new google.maps.places.PlacesService(map);
+        //function listPlaces() {
+        //    // PlacesService oluştur
+        //    placesService = new google.maps.places.PlacesService(map);
 
-            const request = {
-                location: circle.getCenter(),
-                radius: circle.getRadius(),
-            };
+        //    const request = {
+        //        location: circle.getCenter(),
+        //        radius: circle.getRadius(),
+        //    };
 
-            placesService.nearbySearch(request, (results, status) => {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    console.log(JSON.stringify(results));
-                }
-            });
-        }
+        //    placesService.nearbySearch(request, (results, status) => {
+        //        if (status === google.maps.places.PlacesServiceStatus.OK) {
+        //            console.log(JSON.stringify(results));
+        //        }
+        //    });
+        //}
 
         window.onload = () => {
             initMap();
@@ -171,7 +172,9 @@
         var locationJson = {
             locationName: "",
             locationRadius: 0,
-            locationCars: ""
+            locationCars: "",
+            locationLat: "",
+            locationLng: "",
         };
 
         $('#saveLocation').on("click", function () {

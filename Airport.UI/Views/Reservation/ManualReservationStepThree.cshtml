@@ -380,9 +380,8 @@
             $('input[name="IsDiscount"]').val($(this).is(":checked"))
         })
 
-        $('#newPriceInput').on('change', function () {
+        $('#newPriceInput').on('change keyup keypress', function () {
             $('input[name="Discount"]').val($(this).val().replace(".", ","))
-            console.log(listCheckedItems)
         })
         var currentPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
 
