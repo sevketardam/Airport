@@ -105,7 +105,7 @@
                 <td>
                     <a title="Go to detail" href="/reservation-driver-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
                     <a title="Leave a note" class="open-note reservation-table-icon"><i class="iconsminds-file-edit"></i></a>
-                    <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
+                        <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://test.airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
                         <i class="iconsminds-file"></i>
                     </a>
                     <a title="Cancel Reservation" class="reservation-delete"><i class="fa-regular fa-xmark"></i></a>
@@ -114,6 +114,22 @@
         }
     </tbody>
 </table>
+    @if (Model.Reservations.Count <= 0)
+    {
+        <div style="
+    width: 100%;
+    height: 7rem;
+    background: #ffffff6e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .8rem;
+    text-align: center;
+">
+            No Data
+
+        </div>
+    }
 </div>
 <div class="modal fade" id="reservationNoteModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">

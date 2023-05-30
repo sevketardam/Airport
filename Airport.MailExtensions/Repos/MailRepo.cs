@@ -52,32 +52,32 @@ namespace Airport.MessageExtensions.Repos
             var carAttrHtml = "";
             if (reservationDetail.LocationCars.Car.Armored)
             {
-                carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i5.png'>";
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Wifi)
             {
-                carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i4.png'>";
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i4.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Water)
             {
-                carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i1.png'>";
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i1.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Partition)
             {
-                carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i6.png'>";
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i6.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Charger)
             {
-                carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i3.png'>";
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i3.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Disabled)
             {
-                carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i2.png'>";
+                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i2.png'>";
             }
 
             var returnIcon = "https://storage.acerapps.io/app-1348/asd/altok.png";

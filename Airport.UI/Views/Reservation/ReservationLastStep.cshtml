@@ -121,7 +121,7 @@
                             {
                                 <li>
                                     <p>
-                                        @item.ServiceItem.ServiceProperty.ServicePropertyName : <b>@item.Price €</b>
+                                        @item.ServiceItem.ServiceProperty.ServicePropertyName : <b>@(Math.Round(item.Price * item.PeopleCount, 2)) €</b>
                                     </p>
                                 </li>
                             }
@@ -147,7 +147,7 @@
                         </li>
                     </ul>
 
-                    <a class="_Btn_Style btn" href="http://airportglobaltransfer.com/pdf/@(Model.ReservationCode)-@(Model.Id).pdf" target="_blank">Download Voucher</a>
+                    <a class="_Btn_Style btn" href="http://test.airportglobaltransfer.com/pdf/@(Model.ReservationCode)-@(Model.Id).pdf" target="_blank">Download Voucher</a>
                 </div>
             </div>
 

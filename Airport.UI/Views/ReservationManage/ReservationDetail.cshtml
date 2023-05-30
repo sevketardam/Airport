@@ -477,7 +477,7 @@
                                     </p>
                                 </div>
                                 <div class="detailServicePrice">
-                                    <p>€@item.ServiceItem.Price x <i class="fa-solid fa-user" style="font-size: 0.7rem;"></i> @item.PeopleCount = €@item.Price</p>
+                                    <p>@item.ServiceItem.Price € x <i class="fa-solid fa-user" style="font-size: 0.7rem;"></i> @item.PeopleCount = @(Math.Round(item.Price * item.PeopleCount, 2))€</p>
                                 </div>
                             </div>
                             <div class="detailServiceDownItemBottom " style="display: none;">

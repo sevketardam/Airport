@@ -140,13 +140,14 @@
                                     <i class="iconsminds-calendar-1"></i> Create Reservation
                                 </a>
                             </li>
-
-                            <li>
-                                <a href="#">
-                                    <i class="iconsminds-digital-drawing"></i> Pages
-                                </a>
-                            </li>
-
+                            @if (userRole == "0")
+                            {
+                                <li>
+                                    <a href="#">
+                                        <i class="iconsminds-digital-drawing"></i> Pages
+                                    </a>
+                                </li>
+                            }
                             <li>
                                 <a href="/panel/my-cars">
                                     <i class="iconsminds-car"></i> My Cars
