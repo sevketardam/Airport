@@ -83,18 +83,54 @@ namespace Airport.UI.Models.Extendions
 
                 if (reservation.IsDiscount)
                 {
-                    specialDiscountHtml = @$"        <div style=""display: flex; justify-content: space-between;width:100%;"">
+                    specialDiscountHtml = @$" 
+ <div style=""display: flex; justify-content: space-between;width:100%;text-decoration: line-through;"">
+            <div>
+                      <p style=""font-weight: bold;margin: 0px;"">Total Price:</p>
+            </div>
+            <div>
+                      <p style=""margin: 0px;margin-left:.5rem;"">{reservation.ServiceFee + reservation.OfferPrice} €</p>
+            </div>
+        </div>
+
+<div style=""display: flex; justify-content: space-between;width:100%;"">
             <div>
                       <p style=""font-weight: bold;margin: 0px;"">Special Price:</p>
             </div>
             <div>
                       <p style=""margin: 0px;margin-left:.5rem;"">{reservation.Discount} €</p>
             </div>
-        </div>";
+        </div>
+       ";
                 }
                 else
                 {
-                    specialDiscountHtml = $@" <div style=""display: flex; justify-content: space-between;width:100%;"">
+                    if (reservation.Coupons != null)
+                    {
+                        specialDiscountHtml = $@"
+
+<div style=""display: flex; justify-content: space-between;width:100%;text-decoration: line-through;"">
+            <div>
+                      <p style=""font-weight: bold;margin: 0px;"">TOTAL:</p>
+            </div>
+            <div>
+                       <p style=""margin: 0px;margin-left:.5rem;"">{reservation.ServiceFee + reservation.OfferPrice} €</p>
+            </div>
+        </div>
+<div style=""display: flex; justify-content: space-between;width:100%;"">
+            <div>
+                      <p style=""font-weight: bold;margin: 0px;"">Discount Price:</p>
+            </div>
+            <div>
+                       <p style=""margin: 0px;margin-left:.5rem;"">€{totalprice} €</p>
+            </div>
+        </div>
+
+";
+                    }
+                    else
+                    {
+                        specialDiscountHtml = $@" <div style=""display: flex; justify-content: space-between;width:100%;"">
             <div>
                       <p style=""font-weight: bold;margin: 0px;"">TOTAL:</p>
             </div>
@@ -102,6 +138,8 @@ namespace Airport.UI.Models.Extendions
                        <p style=""margin: 0px;margin-left:.5rem;"">€{totalprice}</p>
             </div>
         </div>";
+                    }
+
                 }
 
                 priceHtml = @$"
@@ -115,6 +153,9 @@ namespace Airport.UI.Models.Extendions
                       <p style=""margin: 0px;margin-left:.5rem"">€{price}</p>
             </div>
         </div>
+
+        
+
         <div style=""display: flex; justify-content: space-between;width:100%;"">
             <div>
                       <p style=""margin: 0px;"">Service fee:</p>
@@ -139,10 +180,7 @@ namespace Airport.UI.Models.Extendions
                 {
                     serviceHtml += @$" <div>
             <div>
-                      <p style=""margin: 0px;font-weight: bold;"">{item.ServiceItem.ServiceProperty.ServicePropertyName}</p>
-            </div>
-            <div style=""margin: 0px;margin-left:.5rem;font-size: 10px;!important;"">
-                     {item.ServiceItem.ServiceProperty.ServicePropertyDescription}
+                      <p style=""margin: 0px;font-weight: bold;"">{item.ServiceItem.ServiceProperty.ServicePropertyName}-{item.Price}€</p>
             </div>
         </div>"; 
                 }
