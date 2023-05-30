@@ -14,7 +14,7 @@ Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'UsingCo
    at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
    at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
    at System.Linq.Enumerable.WhereEnumerableIterator`1.ToList()
-   at Airport.EF.EfRepo`2.SelectByFunc(Func`2 whereCondition) in C:\Users\Digimondi\Desktop\Airport2\Airport\Airport.EF\EfRepo.cs:line 79
-   at Airport.UI.Controllers.ReservationController.ReservationLastStep(Reservations reservation, List`1 OthersName, List`1 OthersSurname, List`1 serviceItems, String selectedServiceItems, String coupon) in C:\Users\Digimondi\Desktop\Airport2\Airport\Airport.UI\Controllers\ReservationController.cs:line 515
-ClientConnectionId:0036f9a7-5e40-4bac-ba99-4afd5b686396
+   at Airport.EF.EfRepo`2.SelectByFunc(Func`2 whereCondition) in C:\Users\drsin\OneDrive\Masaüstü\air\Airport\Airport.EF\EfRepo.cs:line 79
+   at Airport.UI.Controllers.ReservationController.ReservationLastStep(Reservations reservation, List`1 OthersName, List`1 OthersSurname, List`1 serviceItems, String selectedServiceItems, String coupon) in C:\Users\drsin\OneDrive\Masaüstü\air\Airport\Airport.UI\Controllers\ReservationController.cs:line 515
+ClientConnectionId:dd622b46-d3e1-4400-bda7-ba429ea89f4f
 Error Number:207,State:1,Class:16

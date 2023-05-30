@@ -31,7 +31,6 @@ namespace Airport.MessageExtensions.Repos
             if (reservationDetail.LocationCars.Car.Armored)
             {
                 carAttrHtml += "<img src='http://www.airportglobaltransfer.com/img/i5.png'>";
-
             }
 
             if (reservationDetail.LocationCars.Car.Wifi)
