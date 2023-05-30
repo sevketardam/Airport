@@ -62,19 +62,19 @@ namespace Airport.UI.Controllers
 
         }
 
-        [HttpGet("profile/settings")]
+        [HttpGet("settings")]
         public IActionResult Settings()
         {
             return View();
         }
 
-        [HttpGet("profile/change-password")]
+        [HttpGet("change-password")]
         public IActionResult ChangePassword()
         {
             return View();
         }
 
-        [HttpPost("profile/change-password",Name ="changePassword")]
+        [HttpPost("change-password",Name ="changePassword")]
         public IActionResult ChangePassword(string oldPassword,string newPassword)
         {
             try
@@ -104,20 +104,20 @@ namespace Airport.UI.Controllers
 
         }
 
-        [HttpGet("profile/bank-account")]
+        [HttpGet("bank-account")]
         public IActionResult BankAccount()
         {
             return View();
         }
 
-        [HttpGet("profile/agreements")]
+        [HttpGet("agreements")]
         public IActionResult Agreement()
         {
             return View();
         }
 
         [Authorize(Roles ="2")]
-        [HttpGet("profile/my-company")]
+        [HttpGet("my-company")]
         public IActionResult Company()
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
@@ -129,7 +129,7 @@ namespace Airport.UI.Controllers
         }
 
         [Authorize(Roles = "2")]
-        [HttpPost("profile/my-company")]
+        [HttpPost("my-company")]
         public IActionResult Company(UserDatas updateUser)
         {
             try

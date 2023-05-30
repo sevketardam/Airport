@@ -1,0 +1,107 @@
+﻿@model UserDatas
+@{
+    Layout = "_PanelLayout";
+    ViewData["title"] = "My Profile";
+}
+<section class="_Module_Margin">
+    <div class="container">
+        <div class="_Profile_Flex">
+
+            @await Component.InvokeAsync("ProfileSidebar")
+
+            <div class="_Profile_Right">
+                <div>
+                    <h2 class="_Simple_Orange_Title">
+                        Your Profile
+                    </h2>
+                    <div class="_Simple_Div">
+                        <p class="_Simple_P">
+                            Details about your profile information
+                        </p>
+                    </div>
+                    <div>
+                        <form id="_Profile_Form">
+                            <div class="_Form_Flex_Style">
+                                @*<div class="_Form_Div">
+                                <label class="_Form_Label">Title</label>
+                                <input type="text" name="Title">
+                                </div>*@
+
+                                <div class="_Form_Div _Two">
+                                    <label class="_Form_Label">E-mail</label>
+                                    <input type="text" value="@Model.LoginAuth?.Email" disabled>
+                                </div>
+
+                                <div class="_Form_Div _Two">
+                                    <label class="_Form_Label">Name</label>
+                                    <input type="text" name="Name" value="@Model.Name">
+                                </div>
+
+                                <div class="_Form_Div _Two">
+                                    <label class="_Form_Label">Profession</label>
+                                    <input type="text" value="@Model.Profession" name="Profession">
+                                </div>
+
+                                <div class="_Form_Div _Two">
+                                    <label class="_Form_Label">Mobile Phone</label>
+                                    <input type="text" value="@Model.PhoneNumber" name="PhoneNumber">
+                                </div>
+                                @*
+                                <div class="_Form_Div _Two">
+                                <button class="_Verify_Number">
+                                Verify Number
+                                </button>
+                                </div>
+                                *@
+
+                                <div class="_Form_Div _Two">
+                                    <button class="_Form_Button" type="submit">
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section pageJs{
+
+    <script>
+
+        $('#_Profile_Form').on("submit", function (e) {
+            e.preventDefault();
+            if ($(this).valid()) {
+                var formData = $(this).serialize()
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.PanelController.Profile))',
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Succesful',
+                                text: 'Successfully changed your information',
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!!',
+                                text: 'Something went wrong!! Try again ',
+                            })
+                        }
+                    }
+                });
+            }
+        })
+
+
+
+    </script>
+
+}
