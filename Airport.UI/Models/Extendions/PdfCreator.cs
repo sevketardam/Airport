@@ -101,6 +101,12 @@ namespace Airport.UI.Models.Extendions
             <div>
                       <p style=""margin: 0px;margin-left:.5rem;"">{reservation.Discount} €</p>
             </div>
+            <div>
+                      <p style=""margin: 0px;margin-left:.5rem;"">{reservation.Discount} €</p>
+            </div>
+            <div>
+                      <p style=""margin: 0px;margin-left:.5rem;"">{reservation.DiscountText} €</p>
+            </div>
         </div>
        ";
                 }
@@ -124,6 +130,9 @@ namespace Airport.UI.Models.Extendions
             </div>
             <div>
                        <p style=""margin: 0px;margin-left:.5rem;"">€{totalprice} €</p>
+            </div>
+            <div>
+                       <p style=""margin: 0px;margin-left:.5rem;"">€{reservation.Coupons.Comment} €</p>
             </div>
         </div>
 
@@ -181,7 +190,7 @@ namespace Airport.UI.Models.Extendions
                 {
                     serviceHtml += @$" <div>
             <div>
-                      <p style=""margin: 0px;font-weight: bold;"">{item.ServiceItem.ServiceProperty.ServicePropertyName} {item.Price * item.PeopleCount} €</p>
+                      <p style=""margin: 0px;font-weight: bold;"">{item.ServiceItem.ServiceProperty.ServicePropertyName} {item.Price}x{item.PeopleCount}={item.Price*item.PeopleCount}€</p>
             </div>
         </div>";
                 }

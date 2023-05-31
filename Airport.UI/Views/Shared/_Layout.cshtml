@@ -340,14 +340,24 @@
                                 timer: 1500
                             })
 
-                            setTimeout(function () {
+                            
         @if (userRole == 1)
         {
             <text>
-                                        location.href = "/user-management";
+            setTimeout(function () {
+                location.href = "/user-management";
+                     }, 1500)
             </text>
         }
-                                    }, 1500)
+        else
+        {
+            <text>
+                                    setTimeout(function () {
+                                                        location.reload();
+                                             }, 1500)
+            </text>
+        }
+   
 
                         } else if (data.status == 404) {
                             Swal.fire({

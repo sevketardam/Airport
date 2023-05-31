@@ -52,32 +52,32 @@ namespace Airport.MessageExtensions.Repos
             var carAttrHtml = "";
             if (reservationDetail.LocationCars.Car.Armored)
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
+                carAttrHtml += "<img style='width: 18px;' src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Wifi)
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i4.png'>";
+                carAttrHtml += "<img style='width: 18px;' src='http://www.test.airportglobaltransfer.com/img/i4.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Water)
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i1.png'>";
+                carAttrHtml += "<img style='width: 18px;' src='http://www.test.airportglobaltransfer.com/img/i1.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Partition)
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i6.png'>";
+                carAttrHtml += "<img style='width: 18px;' src='http://www.test.airportglobaltransfer.com/img/i6.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Charger)
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i3.png'>";
+                carAttrHtml += "<img style='width: 18px;' src='http://www.test.airportglobaltransfer.com/img/i3.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Disabled)
             {
-                carAttrHtml += "<img src='http://www.test.airportglobaltransfer.com/img/i2.png'>";
+                carAttrHtml += "<img style='width: 18px;' src='http://www.test.airportglobaltransfer.com/img/i2.png'>";
             }
 
             var returnIcon = "https://storage.acerapps.io/app-1348/asd/altok.png";
@@ -126,7 +126,7 @@ margin: 0 auto;
         font-weight: 800;
         font-style: italic;
         font-size: 30px;
-        ""><img src=""http://test.airportglobaltransfer.com/images/Logo.png""></div>
+        ""><img style=""width: 100%;max-width: 200px;"" src=""http://test.airportglobaltransfer.com/images/Logo.png""></div>
         <div class=""header-text"" style=""
         font-size: 20px;"">Succesful Created Reservation</div>
     </div>
@@ -183,7 +183,7 @@ margin: 0 auto;
        "">
                        <img src=""https://storage.acerapps.io/app-1348/asd/B.png"" width=""100%"" alt="""">
                    </div>
-                   <span>{reservationDetail.PickFullName}</span>
+                   <span>{reservationDetail.DropFullName}</span>
                </div>
                 
             </div>
@@ -203,8 +203,8 @@ margin: 0 auto;
             <div class=""teklif-item"" style=""
                 display: flex;
         align-items: flex-start;"">
-                <span style=""width: 40%;
-                font-weight: 300;"">Price : &nbsp; </span>
+                <span style=""width: 50%;
+                font-weight: 300;"">Price : </span>
                 <span class=""teklif-description"" style=""color: black;
         font-weight: 500;
         ""> {reservationDetail.TotalPrice} € </span>
@@ -213,18 +213,15 @@ margin: 0 auto;
             display: flex;
         align-items: flex-start;
         "">
-                <span style=""width: 40%;
-                font-weight: 300;"">Passengers : &nbsp; </span>
-                <span class=""teklif-description"" style=""color: black;
-        font-weight: 500;
-        "">{reservationDetail.PeopleCount}</span>
+                <span style=""width: 50%;font-weight: 300;"">Passengers : </span>
+                <span class=""teklif-description"" style=""color: black;font-weight: 500; "">{reservationDetail.PeopleCount}</span>
             </div>
             <div class=""teklif-item"" style=""
             display: flex;
         align-items: flex-start;
         "">
-                <span style=""width: 40%;
-                font-weight: 300;"">Transport Types : &nbsp; </span>
+                <span style=""width: 50%;
+                font-weight: 300;"">Transport: </span>
                 <span class=""teklif-description"" style=""color: black;
         font-weight: 500;
         ""> Every </span> 
@@ -236,8 +233,8 @@ margin: 0 auto;
                 display: flex;
         align-items: flex-start;
         "">
-                <span style=""width: 40%;
-                font-weight: 300;"">Transport Type : &nbsp; </span>
+                <span style=""width: 50%;
+                font-weight: 300;"">Transport Type : </span>
                 <span class=""teklif-description"" style=""color: black;
         font-weight: 500;
         ""> {reservationDetail.LocationCars.Car.Type.CarTypeName} {reservationDetail.LocationCars.Car.MaxPassenger} {reservationDetail.LocationCars.Car.SmallBags} {reservationDetail.LocationCars.Car.SuitCase} </span>
@@ -246,8 +243,8 @@ margin: 0 auto;
             display: flex;
         align-items: flex-start;
         "">
-                <span style=""width: 40%;
-                font-weight: 300;"">Car : &nbsp; </span>
+                <span style=""width: 50%;
+                font-weight: 300;"">Car : </span>
                 <span class=""teklif-description"" style=""color: black;
         font-weight: 500;"">  {reservationDetail.LocationCars.Car.Brand.CarBrandName} {reservationDetail.LocationCars.Car.Model.CarModelName}{reservationDetail.LocationCars.Car.Series.CarSeriesName} </span>
                
@@ -256,8 +253,8 @@ margin: 0 auto;
             display: flex;
         align-items: flex-start;
         "">
-                <span style=""width: 40%;
-                font-weight: 300;"">Plate : &nbsp; </span>
+                <span style=""width: 50%;
+                font-weight: 300;"">Plate : </span>
                 <span class=""teklif-description"" style=""color: black;
         font-weight: 500;
         "">  {reservationDetail.LocationCars.Car.Plate} </span>
@@ -268,8 +265,8 @@ margin: 0 auto;
         align-items: flex-start;
         margin-top: .3rem;
         "">
-                <span style=""width: 40%;
-                font-weight: 300;"">Attributes : &nbsp; </span>
+                <span style=""width: 50%;
+                font-weight: 300;"">Attributes :  </span>
                 <span class=""teklif-description attrs"" style=""color: black;
         font-weight: 500;
         display: flex;

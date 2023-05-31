@@ -121,7 +121,7 @@
                             {
                                 <li>
                                     <p>
-                                        @item.ServiceItem.ServiceProperty.ServicePropertyName : <b>@(Math.Round(item.Price * item.PeopleCount, 2)) €</b>
+                                        @item.ServiceItem.ServiceProperty.ServicePropertyName : <b>@(item.Price)x@(item.PeopleCount) = @(Math.Round(item.Price * item.PeopleCount, 2)) €</b>
                                     </p>
                                 </li>
                             }
