@@ -243,10 +243,8 @@ margin: 0 auto;
             display: flex;
         align-items: flex-start;
         "">
-                <span style=""width: 50%;
-                font-weight: 300;"">Car : </span>
-                <span class=""teklif-description"" style=""color: black;
-        font-weight: 500;"">  {reservationDetail.LocationCars.Car.Brand.CarBrandName} {reservationDetail.LocationCars.Car.Model.CarModelName}{reservationDetail.LocationCars.Car.Series.CarSeriesName} </span>
+                <span style=""width: 50%;font-weight: 300;"">Car : </span>
+                <span class=""teklif-description"" style=""color: black;font-weight: 500;"">  {reservationDetail.LocationCars.Car.Brand.CarBrandName} {reservationDetail.LocationCars.Car.Model.CarModelName}{reservationDetail.LocationCars.Car.Series.CarSeriesName} </span>
                
             </div>
             <div class=""teklif-item"" style=""
