@@ -21,8 +21,8 @@ namespace Airport.DBEntities.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            //var connectionString = "server=localhost;port=3306;database=canli_wr7076624;user=canli_wr7076624;password=Haxa90$29;Allow Zero Datetime=True;Convert Zero Datetime=True";
-            //optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            var connectionString = "server=localhost;port=3306;database=canli_wr7076624;user=canli_wr7076624;password=Haxa90$29;Allow Zero Datetime=True;Convert Zero Datetime=True";
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
             //var connectionString = "server=localhost;port=3306;database=wr7076624_;user=globalairport_db;password=Ljfv7789#;Allow Zero Datetime=True;Convert Zero Datetime=True";
             //optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
@@ -30,8 +30,8 @@ namespace Airport.DBEntities.Context
             //var connectionString = "Server =.\\SQLEXPRESS01; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
             //optionsBuilder.UseSqlServer(connectionString);
 
-            var connectionString = "Server =.\\SQLEXPRESS; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
-            optionsBuilder.UseSqlServer(connectionString);
+            //var connectionString = "Server =.\\SQLEXPRESS; Database = Airport; Trusted_Connection = True; MultipleActiveResultSets = true";
+            //optionsBuilder.UseSqlServer(connectionString);
 
             base.OnConfiguring(optionsBuilder);
         }

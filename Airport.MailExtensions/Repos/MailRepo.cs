@@ -52,32 +52,32 @@ namespace Airport.MessageExtensions.Repos
             var carAttrHtml = "";
             if (reservationDetail.LocationCars.Car.Armored)
             {
-                carAttrHtml += "<img style='width: 18px;' src='http://www.test.airportglobaltransfer.com/img/i5.png'>";
+                carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i5.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Wifi)
             {
-                carAttrHtml += "<img style='width: 18px;' src='http://www.test.airportglobaltransfer.com/img/i4.png'>";
+                carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i4.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Water)
             {
-                carAttrHtml += "<img style='width: 18px;' src='http://www.test.airportglobaltransfer.com/img/i1.png'>";
+                carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i1.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Partition)
             {
-                carAttrHtml += "<img style='width: 18px;' src='http://www.test.airportglobaltransfer.com/img/i6.png'>";
+                carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i6.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Charger)
             {
-                carAttrHtml += "<img style='width: 18px;' src='http://www.test.airportglobaltransfer.com/img/i3.png'>";
+                carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i3.png'>";
             }
 
             if (reservationDetail.LocationCars.Car.Disabled)
             {
-                carAttrHtml += "<img style='width: 18px;' src='http://www.test.airportglobaltransfer.com/img/i2.png'>";
+                carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i2.png'>";
             }
 
             var returnIcon = "https://storage.acerapps.io/app-1348/asd/altok.png";
@@ -126,7 +126,7 @@ margin: 0 auto;
         font-weight: 800;
         font-style: italic;
         font-size: 30px;
-        ""><img style=""width: 100%;max-width: 200px;"" src=""http://test.airportglobaltransfer.com/images/Logo.png""></div>
+        ""><img style=""width: 100%;max-width: 200px;"" src=""http://airportglobaltransfer.com/images/Logo.png""></div>
         <div class=""header-text"" style=""
         font-size: 20px;"">Succesful Created Reservation</div>
     </div>
@@ -293,7 +293,7 @@ margin: 0 auto;
         <div class=""btn"" style=""
         padding: 2rem 0;"">
 
-            <a href=""http://test.airportglobaltransfer.com/pdf/{{reservationDetail.ReservationCode}}-{{reservationDetail.Id}}.pdf""
+            <a href=""http://airportglobaltransfer.com/pdf/{{reservationDetail.ReservationCode}}-{{reservationDetail.Id}}.pdf""
                 style=""
                 padding: 1rem 3rem;
         background-color: rgb(13, 188, 13);

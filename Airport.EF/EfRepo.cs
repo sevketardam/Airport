@@ -107,6 +107,6 @@ namespace Airport.EF
             _context.Entry(updatedData).State = EntityState.Modified;
             _context.SaveChanges();
             return updatedData;
-        }
+        }       
     }
 }
