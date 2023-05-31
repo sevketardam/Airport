@@ -121,7 +121,7 @@
                             @foreach (var item in Model.ReservationServicesTables)
                             {
                                 <li>
-                                    <p>
+                                    <p style="overflow-wrap: break-word;">
                                         @item.ServiceItem.ServiceProperty.ServicePropertyName : <b>@(item.Price)x@(item.PeopleCount) = @(Math.Round(item.Price * item.PeopleCount, 2)) €</b>
                                     </p>
                                 </li>

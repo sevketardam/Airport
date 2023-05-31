@@ -172,15 +172,11 @@ margin: 0 auto;
                 width: 25px;
     height: 18px;
     object-fit: contain;
-    position: absolute;
-    left: 0.8rem;
-    top: 50%;
-    bottom: 50%;
+    margin: 0.5rem 0;
     transform: translate(-50%, -75%);
     "" alt="""">
                 <div class=""data-text-icon-group"" style=""
-                display: flex;
-margin-top: 1.5rem;
+                display: flex;margin-top: 1.5rem;
                 "">
                    <div class=""date-text-icon"" style=""
        width: 25px;
