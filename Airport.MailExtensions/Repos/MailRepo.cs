@@ -155,7 +155,8 @@ margin: 0 auto;
                 <p class=""date-text-date"" style="" font-size: 12px;
                 font-weight: 300;"">{reservationDetail.ReservationDate.ToString("dd.MM.yyyy HH:mm")}</p>
 
-               <div class=""data-text-icon-group"" style=""
+               <div style=""position: relative;"">
+<div class=""data-text-icon-group"" style=""
                  display: flex;
                  "">
                     <div class=""date-text-icon"" style=""
@@ -171,10 +172,15 @@ margin: 0 auto;
                 width: 25px;
     height: 18px;
     object-fit: contain;
-    margin-top: .4rem;
+    position: absolute;
+    left: 0.8rem;
+    top: 50%;
+    bottom: 50%;
+    transform: translate(-50%, -75%);
     "" alt="""">
                 <div class=""data-text-icon-group"" style=""
                 display: flex;
+margin-top: 1.5rem;
                 "">
                    <div class=""date-text-icon"" style=""
        width: 25px;
@@ -185,6 +191,8 @@ margin: 0 auto;
                    </div>
                    <span>{reservationDetail.DropFullName}</span>
                </div>
+
+</div>
                 
             </div>
         </div>
