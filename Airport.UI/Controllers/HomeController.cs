@@ -180,13 +180,12 @@ namespace Airport.UI.Controllers
         [HttpGet("Dashboard2/{id}")]
         public JsonResult Dashboard2(int id)
         {
-
             string klasorYolu = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
             string klasorYolu2 = Path.Combine(Directory.GetCurrentDirectory(), "runtimes");
             string klasorYolu3 = Path.Combine(Directory.GetCurrentDirectory(), "cs");
             string klasorYolu4 = Path.Combine(Directory.GetCurrentDirectory(), "de");
-            string klasorYolu5 = Path.Combine(Directory.GetCurrentDirectory(), "es"); 
-            string klasorYolu6 = Path.Combine(Directory.GetCurrentDirectory(), "fr"); 
+            string klasorYolu5 = Path.Combine(Directory.GetCurrentDirectory(), "es");
+            string klasorYolu6 = Path.Combine(Directory.GetCurrentDirectory(), "fr");
             bool altKlasorleriSil = true; 
 
             try

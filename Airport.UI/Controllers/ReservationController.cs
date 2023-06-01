@@ -300,7 +300,7 @@ namespace Airport.UI.Controllers
 
 
                                     price = Math.Round(price, 2);
-                                    var checkCar = getreservation.Where(c => c.LocationCars.CarId == c.LocationCars.CarId).FirstOrDefault();
+                                    var checkCar = getreservation.Where(c => c.LocationCars.CarId == b.CarId).FirstOrDefault();
                                     if (checkCar != null)
                                     {
                                         if (checkCar.LastPrice < price)
@@ -1045,7 +1045,7 @@ namespace Airport.UI.Controllers
                                     }
 
                                     price = Math.Round(price, 2);
-                                    var checkCar = getreservation.Where(c => c.LocationCars.CarId == c.LocationCars.CarId).FirstOrDefault();
+                                    var checkCar = getreservation.Where(c => c.LocationCars.CarId == b.CarId).FirstOrDefault();
                                     if (checkCar != null)
                                     {
                                         if (checkCar.LastPrice < price)
