@@ -278,17 +278,7 @@ namespace Airport.UI.Controllers
                     locationCars.ForEach(a =>
                     {
                         var checkReservation = _reservations.SelectByFunc(b => b.LocationCarId == a.Id).FirstOrDefault();
-                        if (checkReservation is null)
-                        {
-                            var locationCarsFare = _locationCarsFare.SelectByFunc(b => b.LocationCarId == a.Id);
-                            locationCarsFare.ForEach(b =>
-                            {
-                                _locationCarsFare.HardDelete(b);
-                            });
-
-                            _locationCars.HardDelete(a);
-                        }
-                        else
+                        if (checkReservation is not null)
                         {
                             check = true;
                         }

@@ -99,7 +99,6 @@ namespace Airport.UI.Controllers
                     reservation.LocationCars = reservationLocationCars;
                     if (reservationLocationCars != null)
                     {
-
                         reservation.LocationCars.Car = _carDetail.CarDetail(reservation.LocationCars.CarId);
                         reservation.LocationCars.Car.Service = _services.SelectByID(reservation.LocationCars?.Car?.SeriesId);
 
@@ -141,7 +140,7 @@ namespace Airport.UI.Controllers
                 }
                 return NotFound();
             }
-            catch (Exception ex)
+            catch (Exception ex)    
             {
                 string dosyaYolu = "wwwroot/error.txt";
 

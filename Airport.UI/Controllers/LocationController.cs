@@ -231,6 +231,8 @@ namespace Airport.UI.Controllers
         [HttpPost("panel/update-location/{id}", Name = "updateLocationValues")]
         public IActionResult UpdateLocation(string jsonValues)
         {
+
+            //!!!!!!!BURASI DÜZENLENİCEK HATALI SİLİNİNCE IDLER DEĞİŞİYOR BU YÜZDEN RESERVATION DETAYI HATALI GELİYOR
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
             var convertData = JsonConvert.DeserializeObject<GetLocationDataVM>(jsonValues);
 
@@ -248,13 +250,13 @@ namespace Airport.UI.Controllers
             var oldLocationCar = _locationCars.SelectByFunc(a => a.LocationId == location.Id);
             oldLocationCar.ForEach(a =>
             {
-                var oldLocationCarFare = _locationCarsFare.SelectByFunc(b=>b.LocationCarId == a.Id);
+                var oldLocationCarFare = _locationCarsFare.SelectByFunc(b => b.LocationCarId == a.Id);
                 oldLocationCarFare.ForEach(b =>
                 {
                     _locationCarsFare.HardDelete(b);
                 });
 
-                _locationCars.HardDelete(a);                
+                _locationCars.HardDelete(a);
             });
 
             var carLocationFareList = new List<LocationCarsFare>();
@@ -294,35 +296,36 @@ namespace Airport.UI.Controllers
                 return Json(new { result = 2 });
             }
 
-            var check = false;
-            var locationCars = _locationCars.SelectByFunc(a=>a.LocationId == location.Id);
-            locationCars.ForEach(a =>
-            {
-                var checkReservation = _reservations.SelectByFunc(b=>b.LocationCarId == a.Id).FirstOrDefault();
-                if (checkReservation is null)
-                {
-                    var locationCarsFare = _locationCarsFare.SelectByFunc(b => b.LocationCarId == a.Id);
-                    locationCarsFare.ForEach(b =>
-                    {
-                        _locationCarsFare.HardDelete(b);
-                    });
+            //var check = false;
+            //var locationCars = _locationCars.SelectByFunc(a=>a.LocationId == location.Id);
+            //locationCars.ForEach(a =>
+            //{
+            //    var checkReservation = _reservations.SelectByFunc(b=>b.LocationCarId == a.Id).FirstOrDefault();
+            //    if (checkReservation is not null)
+            //    {
+            //        check = true;
+            //        //var locationCarsFare = _locationCarsFare.SelectByFunc(b => b.LocationCarId == a.Id);
+            //        //locationCarsFare.ForEach(b =>
+            //        //{
+            //        //    _locationCarsFare.HardDelete(b);
+            //        //});
 
-                    _locationCars.HardDelete(a);
-                }
-                else
-                {
-                    check = true;
-                }
-            });
+            //        //_locationCars.HardDelete(a);
+            //    }
+            //    //else
+            //    //{
+            //    //    check = true;
+            //    //}
+            //});
 
-            if (check)
-            {
+            //if (check)
+            //{
                 _locations.SoftDelete(location);
-            }
-            else
-            {
-                _locations.HardDelete(location);
-            }
+            //}
+            //else
+            //{
+            //    _locations.HardDelete(location);
+            //}
 
 
             return Json(new { result = 1 });
