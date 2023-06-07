@@ -256,24 +256,24 @@ namespace Airport.UI.Controllers
                     _locationCarsFare.HardDelete(b);
                 });
 
-                _locationCars.HardDelete(a);
+                //_locationCars.HardDelete(a);
             });
 
             var carLocationFareList = new List<LocationCarsFare>();
 
             convertData.CarsPrice.ForEach(a =>
             {
-                var addedLocationCars = _locationCars.Insert(new LocationCars
-                {
-                    CarId = a.CarId,
-                    LocationId = location.Id,
-                });
+                //var addedLocationCars = _locationCars.Insert(new LocationCars
+                //{
+                //    CarId = a.CarId,
+                //    LocationId = location.Id,
+                //});
 
                 a.CarsPricePerKm.ForEach(car =>
                 {
                     carLocationFareList.Add(new LocationCarsFare
                     {
-                        LocationCarId = addedLocationCars.Id,
+                        LocationCarId = a.CarId,
                         StartFrom = car.StartKm,
                         UpTo = car.UpToKm,
                         Fare = car.Price.ToString(),
