@@ -113,16 +113,19 @@ nav {
 ._Auth ul {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 0 0 0 auto;
     display: flex;
     gap: 0;
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
+    border: 2px solid var(--orange);
+    width: max-content;
+    border-radius: 13px;
 }
 
     ._Auth ul._Btns > li {
-        border: 2px solid var(--orange);
+        /*border: 2px solid var(--orange);*/
         padding: 0.6rem 0;
     }
 
@@ -167,7 +170,7 @@ label.error {
 }
 
 ._Auth ul._Btns > li._Active {
-    border-right: none;
+    /*border-right: none;*/
     position: relative;
 }
 
@@ -178,9 +181,15 @@ label.error {
         color: white;
     }
 
-._Form_Inputs_Div > div:last-child {
-    justify-content: flex-end;
-}
+    ._Auth ul._Btns > li._Active{
+        background: var(--orange);
+        border-radius: 10px;
+    }
+
+    ._Form_Inputs_Div > div:last-child {
+        justify-content: flex-end;
+    }
+
 
 ._Sing_Form_Main {
     border: 1px solid #707070;
@@ -1055,6 +1064,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 
 ._Pay_Flex img {
     width: 100%;
+    max-width: 8rem;
 }
 
 ._Footer_Contact_Links {

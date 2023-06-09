@@ -274,5 +274,15 @@
             initMap();
         }
 
+         const min_today = new Date();
+        const min_year = min_today.getFullYear();
+        const min_month = String(min_today.getMonth() + 1).padStart(2, '0');
+        const min_day = String(min_today.getDate()).padStart(2, '0');
+        const min_hours = String(min_today.getHours()).padStart(2, '0');
+        const min_minutes = String(min_today.getMinutes()).padStart(2, '0');
+
+        const minDate = `${min_year}-${min_month}-${min_day}T${min_hours}:${min_minutes}`;
+        document.getElementsByName("FlightTime")[0].min = minDate;
+
     </script>
 }

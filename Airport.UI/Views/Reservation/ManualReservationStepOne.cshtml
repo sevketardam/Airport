@@ -111,6 +111,16 @@
             });
         }
 
+        const min_today = new Date();
+        const min_year = min_today.getFullYear();
+        const min_month = String(min_today.getMonth() + 1).padStart(2, '0');
+        const min_day = String(min_today.getDate()).padStart(2, '0');
+        const min_hours = String(min_today.getHours()).padStart(2, '0');
+        const min_minutes = String(min_today.getMinutes()).padStart(2, '0');
+
+        const minDate = `${min_year}-${min_month}-${min_day}T${min_hours}:${min_minutes}`;
+        document.getElementsByName("FlightTime")[0].min = minDate;
+
         $('form.stepOneForm').validate({
             rules: {
                 PickValueText: {
@@ -121,6 +131,7 @@
                 },
                 FlightTime: {
                     required: true,
+                    min: minDate
                 },
                 ReturnDate: {
                     required: true,
@@ -137,7 +148,8 @@
                     required: "This Field is Required!"
                 },
                 FlightTime: {
-                    required: "This Field is Required!"
+                    required: "This Field is Required!",
+                    min: "Invalid Value!"
                 },
                 ReturnDate: {
                     required: "This Field is Required!"

@@ -73,7 +73,7 @@
                                 <div class="_Pos_Rel">
                                     <div class="d-none Return_Arrival">
                                         <label for="">Return</label>
-                                        <input type="datetime-local" name="ReturnDate">
+                                        <input type="datetime-local" name="ReturnDate" id="ReturnDate">
                                         <img src="~/img/calendar.png" class="calendarImage" />
                                         <input type="checkbox" name="ReturnStatus" value="true" style="position:absolute; opacity: 0;visibility: visible; " />
                                     </div>
@@ -884,8 +884,19 @@
             });
         }
 
+const min_today = new Date();
+const min_year = min_today.getFullYear();
+const min_month = String(min_today.getMonth() + 1).padStart(2, '0');
+const min_day = String(min_today.getDate()).padStart(2, '0');
+const min_hours = String(min_today.getHours()).padStart(2, '0');
+const min_minutes = String(min_today.getMinutes()).padStart(2, '0');
 
-        
+const minDate = `${min_year }-${min_month}-${min_day}T${min_hours}:${min_minutes}`;
+document.getElementsByName("FlightTime")[0].min = minDate;
+
+
+
+
 $('form#reservationForm').validate({
     rules: {
         PickValueText: {
@@ -896,6 +907,7 @@ $('form#reservationForm').validate({
         },
         FlightTime: {
             required: true,
+            min: minDate
         },
         ReturnDate: {
             required: true,
@@ -913,7 +925,8 @@ $('form#reservationForm').validate({
             required: "!"
         },
         FlightTime: {
-            required: "!"
+            required: "!",
+            min: "!"
         },
         ReturnDate: {
             required: "!"
