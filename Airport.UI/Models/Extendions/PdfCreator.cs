@@ -42,7 +42,7 @@ namespace Airport.UI.Models.Extendions
             var dropLatLng = reservation.DropLatLng.Replace("lat:", "").Replace("lng:", "").Replace(",", "%2C");
 
 
-            var str = "https://maps.googleapis.com/maps/api/staticmap?markers=color%3Ared%7Clabel%3AA%7C" + pickLatLng + "&markers=color%3Bred%7Clabel%3AA%7C" + dropLatLng + "&size=303x156&key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&path=color%3Ablue%7Cweight%3A5%7C";
+            var str = "https://maps.googleapis.com/maps/api/staticmap?markers=color%3Ared%7Clabel%3AA%7C" + pickLatLng + "&markers=color%3Ared%7Clabel%3AB%7C" + dropLatLng + "&size=303x156&key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&path=color%3Ablue%7Cweight%3A5%7C";
 
             convertLocationValue.ForEach(a =>
             {
@@ -200,6 +200,15 @@ namespace Airport.UI.Models.Extendions
                 serviceHtml += "</div></div>";
             }
 
+            var returnString = "";
+            if (reservation.ReturnStatus)
+            {
+                returnString =  @$"                <p style=""font-weight: bold; margin: 0;"">RETURN DATE</p>
+                <div>
+                    <p style=""margin: 0 0 10px 0px;"">{reservation.ReturnDate.ToString("dd.MM.yyyy HH:mm")} </p>
+                </div>"; 
+            }
+
 
 
             var htmlContent = @$"<!DOCTYPE html>
@@ -268,6 +277,8 @@ font-family: 'Montserrat';
                 <div>
                     <p style=""margin: 0 0 10px 0px;"">{reservation.ReservationDate.ToString("dd.MM.yyyy HH:mm")} </p>
                 </div>
+
+                {returnString}
 
                 <p style=""font-weight: bold; margin: 0px;"">FROM</p>
                 <div style=""margin: 0 0 10px 0px;"">
