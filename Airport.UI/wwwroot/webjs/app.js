@@ -374,3 +374,34 @@ $("body").on("click", ".pageServiceDownItemTop", function (e) {
         $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
     }
 })
+
+$("input[name = 'PickValueText'], input[name = 'DropValueText']").on("keypress, keydown", function () {
+
+    
+    setTimeout(() => {
+        if ($(this).val().length > 0) {
+            $(this).addClass("focusinput")
+            if ($(this).hasClass("focusinput")) {
+                $(this).addClass("testb")
+            }
+        }
+        else {
+            $(this).removeClass("focusinput")
+            $(this).removeClass("testb")
+        }
+    }, 100);
+
+})
+
+$("input[name = 'PickValueText'], input[name = 'DropValueText']").on("focus", function () {
+    $(this).addClass("focusinput")
+    if ($(this).val().length > 0) {
+        $(this).addClass("testb")
+    }
+})
+
+$("input[name = 'PickValueText'], input[name = 'DropValueText']").on("focusout", function () {
+    $(this).removeClass("focusinput")
+    $(this).removeClass("testb")
+    
+})

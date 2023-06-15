@@ -55,7 +55,7 @@ body {
 
 ._Banner_Form ._Pos_Rel {
     position: relative;
-    overflow: hidden;
+    /*overflow: hidden;*/
     width: 100%;
     background: white;
     border-radius: 0.6rem;
@@ -310,6 +310,20 @@ label.error {
     display: none;
 }
 
+.pac-logo:after {
+    content: none !important;
+    background-image: none !important;
+}
+
+.pac-container {
+    border: none;
+    box-shadow: 0px 13px 15px #00000026;
+}
+
+.testb {
+    border-radius: 0.6rem 0.6rem 0 0 !important;
+}
+
 @media only screen and (max-width: 768px) {
     ._Logo {
         width: 40%;
@@ -340,7 +354,10 @@ label.error {
 
     li._Mobile_Logo img {
         width: 100%;
+        padding: 1rem;
     }
+
+    
 
     ._Nav_Content {
         position: absolute;
@@ -361,7 +378,7 @@ label.error {
         align-items: center;
         justify-content: center;
         gap: 2rem;
-        padding: 7rem 0 3rem 0;
+        padding: 5rem 0 3rem 0;
         transition: left 250ms;
     }
 
@@ -3181,7 +3198,7 @@ input[type="number"]::-webkit-outer-spin-button {
         padding-left: 1.5rem !important;
     }
 
-    #reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(1) label {
+    #reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(1) label:not(label.error) {
         left: 1.5rem !important;
     }
 
@@ -3189,7 +3206,7 @@ input[type="number"]::-webkit-outer-spin-button {
         padding-left: 1.5rem !important;
     }
 
-    #reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(2) label {
+    #reservationForm > ._Form_Inputs > ._Pos_Rel:nth-child(2) label:not(label.error) {
         left: 1.5rem !important;
     }
 
@@ -3200,6 +3217,13 @@ input[type="number"]::-webkit-outer-spin-button {
     ._Car_Slider {
         justify-content: center;
     }
+}
+
+input::-webkit-calendar-picker-indicator {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
 }
 
 @media only screen and (max-width: 446px) {
