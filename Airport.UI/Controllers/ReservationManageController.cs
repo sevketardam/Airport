@@ -18,6 +18,7 @@ using Airport.MessageExtensions.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using System.Data;
 using System.IO;
+using Microsoft.Extensions.Options;
 
 namespace Airport.UI.Controllers
 {
@@ -25,6 +26,7 @@ namespace Airport.UI.Controllers
     {
 
         private readonly IWebHostEnvironment _env;
+        private readonly IOptions<GoogleAPIKeys> _googleAPIKeys;
 
         IReservationsDAL _reservations;
         IDriversDAL _drivers;
@@ -42,7 +44,8 @@ namespace Airport.UI.Controllers
         IMail _mail;
         ILoginAuthDAL _loginAuth;
         ICouponsDAL _coupons;
-        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons)
+        IPayment _payment;
+        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons,IPayment payment, IOptions<GoogleAPIKeys> googleAPIKeys)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -61,6 +64,8 @@ namespace Airport.UI.Controllers
             _mail = mail;
             _loginAuth = loginAuth;
             _coupons = coupons;
+            _payment = payment;
+            _googleAPIKeys = googleAPIKeys;
         }
 
 
@@ -268,20 +273,20 @@ namespace Airport.UI.Controllers
 
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
 
-                var api_key = "AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg";
+                var api_key = _googleAPIKeys.Value.GoogleMapAPIKey;
 
                 var httpClient = new HttpClient();
 
                 var s = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric";
                 var apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + reservation.PickValue + "&key=" + api_key;
-                var response = httpClient.GetAsync(apiUrl).Result;
-                var content = response.Content.ReadAsStringAsync().Result;
+                var response = await httpClient.GetAsync(apiUrl);
+                var content = await response.Content.ReadAsStringAsync();
                 var contentJsonResult = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content);
 
 
                 var apiReturnUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + reservation.DropValue + "&key=" + api_key;
-                var returnResponse = httpClient.GetAsync(apiReturnUrl).Result;
-                var content3 = returnResponse.Content.ReadAsStringAsync().Result;
+                var returnResponse = await httpClient.GetAsync(apiReturnUrl);
+                var content3 = await returnResponse.Content.ReadAsStringAsync();
                 var contentJsonResult2 = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content3);
 
                 var fullUrl2 = s + $"&origins={contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}&destinations={contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}&key=" + api_key;
@@ -455,24 +460,8 @@ namespace Airport.UI.Controllers
                                         b.LocationCarsFares.ForEach(c =>
                                         {
                                             var fare = Convert.ToDouble(c.Fare);
-                                            if (c.StartFrom < minKm)
-                                            {
-                                                if (c.PriceType == 2)
-                                                {
-                                                    if (c.UpTo < minKm)
-                                                    {
-                                                        price += fare * (c.UpTo - c.StartFrom);
-                                                    }
-                                                    else
-                                                    {
-                                                        price += fare * (minKm - c.StartFrom);
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    price += fare;
-                                                }
-                                            }
+
+                                            price = _payment.ReservationPrice(c.StartFrom, minKm, c.PriceType, c.UpTo, fare);
 
                                             lastUp = c.UpTo;
                                             lastPrice = fare;
@@ -667,24 +656,8 @@ namespace Airport.UI.Controllers
                         locationCar.LocationCarsFares.ForEach(c =>
                         {
                             var fare = Convert.ToDouble(c.Fare);
-                            if (c.StartFrom < datas.KM)
-                            {
-                                if (c.PriceType == 2)
-                                {
-                                    if (c.UpTo < datas.KM)
-                                    {
-                                        price += fare * (c.UpTo - c.StartFrom);
-                                    }
-                                    else
-                                    {
-                                        price += fare * (datas.KM - c.StartFrom);
-                                    }
-                                }
-                                else
-                                {
-                                    price += fare;
-                                }
-                            }
+
+                            price = _payment.ReservationPrice(c.StartFrom, datas.KM, c.PriceType, c.UpTo, fare);
 
                             lastUp = c.UpTo;
                             lastPrice = fare;

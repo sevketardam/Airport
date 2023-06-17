@@ -5,6 +5,7 @@ using Airport.MessageExtension.Repos;
 using Airport.MessageExtensions.Interfaces;
 using Airport.MessageExtensions.Repos;
 using Airport.UI.Models.Interface;
+using Airport.UI.Models.ITransactions;
 using Airport.UI.Models.VM;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -29,6 +30,7 @@ namespace Airport.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<GoogleAPIKeys>(Configuration.GetSection("MySettings"));
 
             services.AddSession(a =>
             {
@@ -59,6 +61,7 @@ namespace Airport.UI
             services.AddScoped<IMail, MailRepo>();
             services.AddScoped<ISMS, SMSRepo>();
             services.AddScoped<ILoginAuthDAL, LoginAuthDAL>();
+            services.AddScoped<IPayment, GetPrice>();
 
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
