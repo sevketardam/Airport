@@ -2,7 +2,7 @@
     ViewData["title"] = "Agreement";
 }
 
-<section class="_Module_Margin">
+@*<section class="_Module_Margin">
     <div class="container">
         <div class="_Profile_Flex">
 
@@ -34,3 +34,32 @@
         </div>
     </div>
 </section>
+*@
+
+<div class="container">
+    <div class="bg-white rounded-lg d-block d-md-flex out-style">
+        @await Component.InvokeAsync("ProfileSidebar")
+        <div class="tab-content p-sm-5 p-3 w-100" id="v-pills-tabContent">
+            <div class="tab-pane fade active show" id="agreements">
+                <h2 class="_Simple_Orange_Title">
+                    Agreements
+                </h2>
+                <div class="_Simple_Div">
+                    <p class="_Simple_P">
+                        View your agreements
+                    </p>
+                </div>
+                <div class="_Agreements_Flex">
+                    <div class="_Agreements_Item">
+                        <div>
+                            <span>TERMS AND CONDITIONS FOR TRANSPORT COMPANIES</span>
+                        </div>
+                        <div class="_Agreements_State _Ok">
+                            APPROVED
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

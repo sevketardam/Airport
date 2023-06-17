@@ -405,3 +405,13 @@ $("input[name = 'PickValueText'], input[name = 'DropValueText']").on("focusout",
     $(this).removeClass("testb")
     
 })
+
+$(window).ready(function () {
+    $(`.profile-left-custom-style a[href="${location.pathname.split("/")[1]}"]`).attr("class", "active show")
+})
+
+
+$(".step2_top_infos button").click(function () {
+    $(this).toggleClass("active");
+    $(".top_infos_details").slideToggle(250)
+})

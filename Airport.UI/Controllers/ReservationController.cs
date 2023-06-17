@@ -79,9 +79,9 @@ namespace Airport.UI.Controllers
                 var httpClient = new HttpClient();
 
                 var s = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric";
-                var apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + reservation.PickValue + "&key=" + api_key;
-                var response = httpClient.GetAsync(apiUrl).Result;
-                var content = response.Content.ReadAsStringAsync().Result;
+                var apiUrl = $"https://maps.googleapis.com/maps/api/place/details/json?place_id={reservation.PickValue}&key={api_key}";
+                var response = await httpClient.GetAsync(apiUrl);
+                var content =await response.Content.ReadAsStringAsync();
                 var contentJsonResult = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content);
 
 

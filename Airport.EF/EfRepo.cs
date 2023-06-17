@@ -76,7 +76,7 @@ namespace Airport.EF
 
         public List<TEntity> SelectByFunc(Func<TEntity, bool> whereCondition)
         {
-            return _context.Set<TEntity>().Where(whereCondition).ToList();
+            return _context.Set<TEntity>().AsNoTracking().Where(whereCondition).ToList();
         }
 
         public ImmutableList<TEntity> SelectByFuncPer(Func<TEntity, bool> whereCondition)
