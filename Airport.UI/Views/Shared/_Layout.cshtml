@@ -29,6 +29,7 @@
 </head>
 
 <body>
+    @await Component.InvokeAsync("CouponMenu")
 
     <div class="globalLoader">
         <svg class="car" width="102" height="40" xmlns="http://www.w3.org/2000/svg">
@@ -378,6 +379,46 @@
                 });
             }
         })
+    </script>
+
+    <script>
+        if(sessionStorage.getItem("coupon") != null && sessionStorage.getItem("coupon") == $('#couponName').text()){
+                            $('#couponBox').remove()
+        }
+
+        if($('#endTime').length){
+
+            $('#closeCoupon').on("click",function(){
+                sessionStorage.setItem("coupon",$('#couponName').text())
+                $('#couponBox').remove()
+            })
+
+            var parts = $('#endTime').text().split(' ');
+var dateParts = parts[0].split('.');
+var formattedDateStr = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}T${parts[1]}`;
+
+        var endTime = new Date(formattedDateStr); // Bitiş zamanınızı alın
+        
+        var x = setInterval(function () {
+            var now = new Date().getTime();
+            var distance = endTime - now;
+
+    var hours = Math.floor(distance / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("timeHour").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("timeMinute").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("timeSecond").innerText = seconds.toString().padStart(2, '0');
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("timeHour").innerText = "00";
+                document.getElementById("timeMinute").innerText = "00";
+                document.getElementById("timeSecond").innerText = "00";
+            }
+        }, 1000);
+        }
     </script>
 
     @RenderSection("pageJs", required: false)

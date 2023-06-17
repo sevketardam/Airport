@@ -1,0 +1,35 @@
+﻿@model PageCouponVM
+@if (Model != null)
+{
+    <div id="couponBox" style="position:relative;background: var(--orange);padding: 1rem;text-align: center;color: white;display: flex;align-items: center;justify-content: center;">
+        @*        @Model.CouponCode*@
+
+        <div>
+        <span>
+            Discounted With Code <b id="couponName">@Model.CouponCode</b>
+        </span>
+
+        <div style="display: flex;gap: 2px;flex-wrap: nowrap;">
+            <span>
+            You Can Make Reservation in
+                </span>
+                <b style="display: flex;
+    flex-wrap: nowrap;">
+                <span id="timeHour">@Model.Hour</span>
+                <span>:</span>
+                <span id="timeMinute">@Model.Minute</span>
+                <span>:</span>
+                <span id="timeSecond">@Model.Second</span>
+            </b>
+        </div>
+        </div>
+        <div id="closeCoupon" style="position: absolute;
+    right: 16px;
+    top: 2px;cursor:pointer;">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+
+        <div class="d-none" id="endTime">@Model.EndTime</div>
+    </div>
+
+}

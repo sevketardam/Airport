@@ -90,12 +90,22 @@
 
                         <div class="col-md-12">
                             <div class="custom-control custom-checkbox mb-3">
+                                <input type="checkbox" value="true" class="custom-control-input" name="IsOffer" id="offerCheckbox">
+                                <label class="custom-control-label" for="offerCheckbox">
+                                    Is Offer
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="custom-control custom-checkbox mb-3">
                                 <input type="checkbox" value="true" class="custom-control-input" name="IsPerma" id="permaCheckbox">
                                 <label class="custom-control-label" for="permaCheckbox">
                                     Is Perma
                                 </label>
                             </div>
                         </div>
+
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Coupon Limit</label>
@@ -172,6 +182,15 @@
 
                         <div class="col-md-12">
                             <div class="custom-control custom-checkbox mb-3">
+                                <input type="checkbox" value="true" class="custom-control-input" name="IsOffer" id="offerCheckbox">
+                                <label class="custom-control-label" for="offerCheckbox">
+                                    Is Offer
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="custom-control custom-checkbox mb-3">
                                 <input type="checkbox" value="true" class="custom-control-input" name="IsPerma" id="permaCheckbox">
                                 <label class="custom-control-label" for="permaCheckbox">
                                     Is Perma
@@ -239,6 +258,7 @@
                         $('#updateCouponForm input[name="CouponStartDate"]').val(response.data.couponStartDate)
                         $('#updateCouponForm input[name="CouponFinishDate"]').val(response.data.couponFinishDate)
                         $('#updateCouponForm textarea[name="Comment"]').val(response.data.comment)
+                        $('#updateCouponForm input[name="IsOffer"]').attr("checked",response.data.isOffer)
                         $('#updateCouponForm input[name="Active"]').attr("checked", response.data.active)
                         $('#updateCouponForm input[name="IsPerma"]').attr("checked", response.data.isPerma)
                         $('#updateCouponForm input[name="CouponLimit"]').val(response.data.couponLimit)

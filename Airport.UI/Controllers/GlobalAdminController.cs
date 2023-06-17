@@ -45,6 +45,7 @@ namespace Airport.UI.Controllers
                         IsPerma = coupon.IsPerma,
                         Discount = coupon.Discount,
                         UserId = userId,
+                        IsOffer = coupon.IsOffer,
                         UsingCount = 0
                     });
                     return new JsonResult(new { result = 1 });
