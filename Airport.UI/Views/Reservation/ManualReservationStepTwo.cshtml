@@ -289,7 +289,7 @@
 
 
 
-<div class="container my-5">
+<div class="container my-5 manual">
     <p class="step2_top_date">@Model.SelectedReservationValues.FlightTime.ToString("f")</p>
     <div class="step2_top_infos">
         <div>
@@ -523,7 +523,7 @@
             streetViewControl: false,
                 zoomControl: false,
                     fullscreenControl: false
-                                    });
+                                            });
 
         directionsRenderer.setMap(map);
 
@@ -541,7 +541,7 @@
                 directionsRenderer.setDirections(result);
             }
         });
-                                }
+                                        }
 
         window.onload = () => {
             initMap();
