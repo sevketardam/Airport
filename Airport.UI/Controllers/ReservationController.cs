@@ -817,7 +817,7 @@ namespace Airport.UI.Controllers
         }
 
         [Authorize(Roles = "0,2")]
-        [HttpPost("panel/manual-reservation-two", Name = "getManualLocationValue")]
+        [HttpGet("panel/manual-reservation-two", Name = "getManualLocationValue")]
         public async Task<IActionResult> ManualReservationStepTwo(GetResevationIM reservation)
         {
             try
