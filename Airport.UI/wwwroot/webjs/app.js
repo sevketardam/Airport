@@ -407,7 +407,7 @@ $("input[name = 'PickValueText'], input[name = 'DropValueText']").on("focusout",
 })
 
 $(window).ready(function () {
-    $(`.profile-left-custom-style a[href="${location.pathname.split("/")[1]}"]`).attr("class", "active show")
+    $(`.profile-left-custom-style a[href="${location.pathname.split("/")[2] || location.pathname.split("/")[1]}"]`).attr("class", "active show")
 })
 
 

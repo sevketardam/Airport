@@ -472,16 +472,16 @@ input.selectPhoto {
     cursor: pointer;
 }
 
-    .pageServiceDownItemTop p {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin: 0;
-    }
+.pageServiceDownItemTop p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
 
-    .pageServiceDownItemTop .pageServicePrice p {
-        font-size: 1.2rem;
-        font-weight: 400;
-    }
+.pageServiceDownItemTop .pageServicePrice p {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
 
 .pageServicePrice {
     display: flex;
@@ -635,9 +635,9 @@ input.selectPhoto {
         color: var(--orange);
     }
 
-    .couponItem:hover .copuonUpdate {
-        opacity: 1;
-    }
+.couponItem:hover .copuonUpdate {
+    opacity: 1;
+}
 
 @media only screen and (max-width: 1200px) {
     .couponItem {
@@ -655,6 +655,7 @@ input.selectPhoto {
     .couponItem {
         width: 100%;
     }
+
     .copuonUpdate {
         opacity: 1;
     }
@@ -677,11 +678,11 @@ input.selectPhoto {
     margin-left: 1rem;
 }
 
-.mobile_Menu_Item{
+.mobile_Menu_Item {
     display: none;
 }
 
-#_Passenger_Form textarea{
+#_Passenger_Form textarea {
     padding: .5rem;
 }
 
@@ -690,10 +691,27 @@ input.selectPhoto {
     .mobile_Menu_Item {
         display: block;
     }
+
     nav.navbar .navbar-right {
         display: none;
     }
+
     a.navbar-logo .logo {
         width: 8rem;
     }
- }
+}
+.manual .car_point {
+    left: 0.9rem;
+    width: calc(100% - .9rem);
+}
+@media (max-width: 768px) {
+    .manual .car_point {
+        left: 0.9rem;
+        width: calc(100% - 1.8rem);
+        border-radius: 0;
+    }
+
+    .step2_cars_item_center {
+        padding: 1rem 2rem;
+    }
+}

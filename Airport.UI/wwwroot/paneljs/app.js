@@ -385,3 +385,8 @@ $("._Center_History_Area .dateBtn").on("click", function () {
 
     })
 })
+
+$(".step2_top_infos button").click(function () {
+    $(this).toggleClass("active");
+    $(".top_infos_details").slideToggle(250)
+})
