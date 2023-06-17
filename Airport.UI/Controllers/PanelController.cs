@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.IO;
 using Airport.MessageExtensions.Interfaces;
 using Microsoft.AspNetCore.Hosting;
+using System.Collections.Generic;
 
 namespace Airport.UI.Controllers
 {
@@ -67,10 +68,12 @@ namespace Airport.UI.Controllers
                 var today = DateTime.Today;
                 var lastWeek = today.AddDays(7);
 
-                var myCars = _myCars.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
-                myCars.ForEach(a =>
+                var myCarsList = _myCars.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
+
+                var myCars = new List<MyCars>();
+                myCarsList.ForEach(a =>
                 {
-                    a = _carDetail.CarDetail(a.Id);
+                    myCars.Add(_carDetail.CarDetail(a.Id));
                 });
 
                 var myDashboard = new DashboardVM()

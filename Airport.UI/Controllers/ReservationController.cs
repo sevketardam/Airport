@@ -69,7 +69,7 @@ namespace Airport.UI.Controllers
             _loginAuth = loginAuth;
         }
 
-        [HttpPost("reservation", Name = "getLocationValue")]
+        [HttpGet("reservation", Name = "getLocationValue")]
         public async Task<IActionResult> ReservationStepTwo(GetResevationIM reservation)
         {
             try
@@ -387,7 +387,8 @@ namespace Airport.UI.Controllers
                         PickLocationPlaceId = reservation.PickValue,
                         Distance = betweenLocation.rows[0].elements[0].distance?.text,
                         Duration = betweenLocation.rows[0].elements[0].duration?.text,
-                        SelectedReservationValues = reservation
+                        SelectedReservationValues = reservation,
+                        
                     };
 
                     var reservationDatas = new ReservationDatasVM()

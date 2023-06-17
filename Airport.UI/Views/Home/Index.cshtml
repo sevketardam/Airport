@@ -8,17 +8,17 @@
 }
 
 @section pageCss{
-            <style>
-                            #reservationForm label.error {
-                                font-weight: 800;
-                                font-size: 1.5rem !important;
-                                right: 6px;
-                                top: 3px;
-                                position: absolute;
-                                left: auto !important;
-                            }
+    <style>
+        #reservationForm label.error {
+            font-weight: 800;
+            font-size: 1.5rem !important;
+            right: 6px;
+            top: 3px;
+            position: absolute;
+            left: auto !important;
+        }
 
-                        </style>
+    </style>
 }
 <!-- Banner -->
 <section>
@@ -31,8 +31,8 @@
             <div class="_Banner_Flex">
                 <div class="_Banner_Left">
                     <div class="_Banner_Form">
-                
-                        <form asp-route="getLocationValue" method="post" id="reservationForm">                           
+
+                        <form asp-route="getLocationValue" method="get" id="reservationForm">
                             <div class="_Form_Cat">
                                 <div>
                                     <input id="reservationDatas" name="reservationDatas" type="hidden" />
@@ -336,7 +336,7 @@
     <div class="container">
         <div class="_Module_Inner_Pad">
             <h2 class="_Orange_Title">
-               Available services
+                Available services
             </h2>
             <div class="_Module_Inner_Pad">
                 <div class="_List_Flex">
@@ -536,60 +536,60 @@
                     Browse the vehicle models you want to travel with.
                 </p>
                 <div class="_Car_Slider">
-                        <div class="">
-                            <img src="https://gettransfer.com/common/transport_types/economy_small.png" alt="car">
-                            <p>
-                                Economy
-                            </p>
-                        </div>
-                        <div class="">
-                            <img src="https://gettransfer.com/common/transport_types/comfort_small.png" alt="car">
-                            <p>
-                                Comfort
-                            </p>
-                        </div>
-                        <div class="">
-                            <img src="https://gettransfer.com/common/transport_types/business_small.png" alt="car">
-                            <p>
-                               Business
-                            </p>
-                        </div>
-                        <div class="">
-                            <img src="https://gettransfer.com/common/transport_types/premium_small.png" alt="car">
-                            <p>
-                                Premium
-                            </p>
-                        </div>
-                        <div class="">
-                            <img src="https://gettransfer.com/common/transport_types/limousine_small.png" alt="car">
-                            <p>
-                                Limousine
-                            </p>
-                        </div>
-                        <div class="">
-                            <img src="https://gettransfer.com/common/transport_types/suv_small.png" alt="car">
-                            <p>
-                                Suv
-                            </p>
-                        </div>
-                         <div class="">
-                            <img src="https://gettransfer.com/common/transport_types/van_small.png" alt="car">
-                            <p>
-                                Minivan
-                            </p>
-                        </div>
-                         <div class="">
-                            <img src="https://gettransfer.com/common/transport_types/minibus_small.png" alt="car">
-                            <p>
-                                Minibus
-                            </p>
-                        </div>
-                         <div class="">
-                            <img src="https://gettransfer.com/common/transport_types/bus_small.png" alt="car">
-                            <p>
-                                Bus
-                            </p>
-                        </div>
+                    <div class="">
+                        <img src="https://gettransfer.com/common/transport_types/economy_small.png" alt="car">
+                        <p>
+                            Economy
+                        </p>
+                    </div>
+                    <div class="">
+                        <img src="https://gettransfer.com/common/transport_types/comfort_small.png" alt="car">
+                        <p>
+                            Comfort
+                        </p>
+                    </div>
+                    <div class="">
+                        <img src="https://gettransfer.com/common/transport_types/business_small.png" alt="car">
+                        <p>
+                            Business
+                        </p>
+                    </div>
+                    <div class="">
+                        <img src="https://gettransfer.com/common/transport_types/premium_small.png" alt="car">
+                        <p>
+                            Premium
+                        </p>
+                    </div>
+                    <div class="">
+                        <img src="https://gettransfer.com/common/transport_types/limousine_small.png" alt="car">
+                        <p>
+                            Limousine
+                        </p>
+                    </div>
+                    <div class="">
+                        <img src="https://gettransfer.com/common/transport_types/suv_small.png" alt="car">
+                        <p>
+                            Suv
+                        </p>
+                    </div>
+                    <div class="">
+                        <img src="https://gettransfer.com/common/transport_types/van_small.png" alt="car">
+                        <p>
+                            Minivan
+                        </p>
+                    </div>
+                    <div class="">
+                        <img src="https://gettransfer.com/common/transport_types/minibus_small.png" alt="car">
+                        <p>
+                            Minibus
+                        </p>
+                    </div>
+                    <div class="">
+                        <img src="https://gettransfer.com/common/transport_types/bus_small.png" alt="car">
+                        <p>
+                            Bus
+                        </p>
+                    </div>
 
                 </div>
             </div>
@@ -847,17 +847,6 @@
 @section pageJs{
 
     <script>
-                    @if(ViewBag.Error != null)
-            {
-                <text>
-                     Swal.fire({
-                    icon: 'error',
-                    title: 'Error!!',
-                    text: 'Something went wrong!! Try again ',
-                    })
-                </text>
-            }
-
 
         var pickPlaceId;
         var dropPlaceId;
@@ -884,139 +873,136 @@
             });
         }
 
-const min_today = new Date();
-const min_year = min_today.getFullYear();
-const min_month = String(min_today.getMonth() + 1).padStart(2, '0');
-const min_day = String(min_today.getDate()).padStart(2, '0');
-const min_hours = String(min_today.getHours()).padStart(2, '0');
-const min_minutes = String(min_today.getMinutes()).padStart(2, '0');
+        const min_today = new Date();
+        const min_year = min_today.getFullYear();
+        const min_month = String(min_today.getMonth() + 1).padStart(2, '0');
+        const min_day = String(min_today.getDate()).padStart(2, '0');
+        const min_hours = String(min_today.getHours()).padStart(2, '0');
+        const min_minutes = String(min_today.getMinutes()).padStart(2, '0');
 
-const minDate = `${min_year }-${min_month}-${min_day}T${min_hours}:${min_minutes}`;
-document.getElementsByName("FlightTime")[0].min = minDate;
-
-
+        const minDate = `${min_year}-${min_month}-${min_day}T${min_hours}:${min_minutes}`;
+        document.getElementsByName("FlightTime")[0].min = minDate;
 
 
-$('form#reservationForm').validate({
-    rules: {
-        PickValueText: {
-            required: true,
-        },
-        DropValueText: {
-            required: true,
-        },
-        FlightTime: {
-            required: true,
-            min: minDate
-        },
-        ReturnDate: {
-            required: true,
-        },
-        
-        PeopleCount: {
-            required: true,
-        },
-    },
-    messages: {
-        PickValueText: {
-            required: "!"
-        },
-        DropValueText: {
-            required: "!"
-        },
-        FlightTime: {
-            required: "!",
-            min: "!"
-        },
-        ReturnDate: {
-            required: "!"
-        },
-        PeopleCount: {
-            required: "!"
-        }
-    },
-    submitHandler: function (form) {
-            let datas = {
-                pickValue: pickPlaceId,
-                dropValue: dropPlaceId
-            }
-
-            $('#reservationDatas').val(JSON.stringify(datas))
-
-            form.submit()
-    },
-});
 
 
-$('.sliderHappySection .sliderHappy').slick({
-  dots: false,
-  infinite: true,
-  arrow: false,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 0,
-    speed: 6000,
-    cssEase: 'linear',
-    useTransform: true,
-    pauseOnHover: false,
-  responsive: [
-    {
-      breakpoint: 576,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 2
-      }
-    },
-    {
-      breakpoint: 480,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1
-      }
-    }
-    // You can unslick at a given breakpoint now by adding:
-    // settings: "unslick"
-    // instead of a settings object
-  ]
-});
+        $('form#reservationForm').validate({
+            rules: {
+                PickValueText: {
+                    required: true,
+                },
+                DropValueText: {
+                    required: true,
+                },
+                FlightTime: {
+                    required: true,
+                    min: minDate
+                },
+                ReturnDate: {
+                    required: true,
+                },
+
+                PeopleCount: {
+                    required: true,
+                },
+            },
+            messages: {
+                PickValueText: {
+                    required: "!"
+                },
+                DropValueText: {
+                    required: "!"
+                },
+                FlightTime: {
+                    required: "!",
+                    min: "!"
+                },
+                ReturnDate: {
+                    required: "!"
+                },
+                PeopleCount: {
+                    required: "!"
+                }
+            },
+            submitHandler: function (form) {
+                let datas = {
+                    pickValue: pickPlaceId,
+                    dropValue: dropPlaceId
+                }
+
+                $('#reservationDatas').val(JSON.stringify(datas))
+
+                form.submit()
+            },
+        });
+
+
+        $('.sliderHappySection .sliderHappy').slick({
+            dots: false,
+            infinite: true,
+            arrow: false,
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 0,
+            speed: 6000,
+            cssEase: 'linear',
+            useTransform: true,
+            pauseOnHover: false,
+            responsive: [
+                {
+                    breakpoint: 576,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+            ]
+        });
 
 
 
 
 
-// Anasayfadaki araçların slider kodu
-//var swiper = new Swiper("._Car_Slider", {
-//    slidesPerView: 1,
-//    spaceBetween: 10,
+        // Anasayfadaki araçların slider kodu
+        //var swiper = new Swiper("._Car_Slider", {
+        //    slidesPerView: 1,
+        //    spaceBetween: 10,
 
-//    navigation: {
-//        nextEl: ".swiper-button-next",
-//        prevEl: ".swiper-button-prev",
-//    },
-//    breakpoints: {
-//        480: {
-//            slidesPerView: 1,
-//            spaceBetween: 0,
-//        },
-//        576: {
-//            slidesPerView: 2,
-//            spaceBetween: 10,
-//        },
-//        768: {
-//            slidesPerView: 3,
-//            spaceBetween: 20,
-//        },
-//        992: {
-//            slidesPerView: 4,
-//            spaceBetween: 30,
-//        },
-//        1024: {
-//            slidesPerView: 5,
-//            spaceBetween: 40,
-//        },
-//    },
+        //    navigation: {
+        //        nextEl: ".swiper-button-next",
+        //        prevEl: ".swiper-button-prev",
+        //    },
+        //    breakpoints: {
+        //        480: {
+        //            slidesPerView: 1,
+        //            spaceBetween: 0,
+        //        },
+        //        576: {
+        //            slidesPerView: 2,
+        //            spaceBetween: 10,
+        //        },
+        //        768: {
+        //            slidesPerView: 3,
+        //            spaceBetween: 20,
+        //        },
+        //        992: {
+        //            slidesPerView: 4,
+        //            spaceBetween: 30,
+        //        },
+        //        1024: {
+        //            slidesPerView: 5,
+        //            spaceBetween: 40,
+        //        },
+        //    },
 
-//});
+        //});
     </script>
 }

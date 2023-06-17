@@ -4099,13 +4099,17 @@ textarea.form-control-custom {
         height: auto;
         text-align: center;
         border-radius: 12px;
-        background-color: var(--green);
+        background-color: #ff6709;
         color: white;
         border: none;
+        cursor: pointer;
         outline: none;
         font-size: 1.2rem;
         padding: .3rem 0;
         transition: background-color 250ms;
+    }
+    .step2_cars_item_right a:hover {
+        background: #d46723;
     }
 
 .car_price {
