@@ -2,7 +2,7 @@
 @{
     ViewData["title"] = "Company";
 }
-<section class="_Module_Margin">
+@*<section class="_Module_Margin">
     <div class="container">
         <div class="_Profile_Flex">
 
@@ -74,10 +74,10 @@
             </div>
         </div>
     </div>
-</section>
+</section>*@
 
 
-@section pageJs{
+@*@section pageJs{
 
     <script>
 
@@ -109,4 +109,75 @@
         })
     </script>
 
-}
+}*@
+
+
+<div class="container">
+    <div class="bg-white rounded-lg d-block d-md-flex out-style">
+        @await Component.InvokeAsync("ProfileSidebar")
+        <div class="tab-content p-sm-5 p-3 w-100" id="v-pills-tabContent">
+            <div class="tab-pane fade active show" id="your-company">
+                <h2 class="_Simple_Orange_Title">
+                    Your Company
+                </h2>
+                <div class="_Simple_Div">
+                    <p class="_Simple_P">
+                        Details about your company information
+                    </p>
+                </div>
+                <form id="_Profile_Form">
+                    <div class="row g-2">
+                        <div class="col-md-12 _Info">
+                            <label class="_Form_Label">Company Name</label>
+                            <input type="text" name="CompanyName" class="form-control form-control-custom">
+                            <span>Please contact us if you’d like to change your company name.</span>
+                        </div>
+                        <div class="col-md-12 _Info">
+                            <label class="_Form_Label">Company Email</label>
+                            <input type="text" name="CompanyEmail" class="form-control form-control-custom">
+                            <span>Please contact us if you’d like to change your e-mail.</span>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="_Form_Label">Phone Number</label>
+                            <input type="text" name="CompanyPhoneNumber"
+                                   class="form-control form-control-custom">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="_Form_Label">Country</label>
+                            <input type="text" name="Country" class="form-control form-control-custom">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="_Form_Label">Address</label>
+                            <input type="text" name="Address" class="form-control form-control-custom">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="_Form_Label">Website</label>
+                            <input type="text" name="CompanyWebsite" class="form-control form-control-custom">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="_Form_Label">Linkedin</label>
+                            <input type="text" name="Linkedin" class="form-control form-control-custom">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="_Form_Label">Facebook</label>
+                            <input type="text" name="Facebook" class="form-control form-control-custom">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="_Form_Label">About Us</label>
+                            <label class="_Down_Label">
+                                Write a few sentences about the company and what it’s
+                                like to work there
+                            </label>
+                            <textarea name="AboutUs" class="form-control form-control-custom"></textarea>
+                        </div>
+                        <div class="_Form_Div">
+                            <button class="_Form_Button save-button">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

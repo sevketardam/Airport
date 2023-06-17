@@ -349,7 +349,6 @@ font-family: 'Montserrat';
             pdfDoc.Close();
         }
 
-
         private List<Location> DecodePolylinePoints(string encodedPoints)
         {
             if (encodedPoints == null || encodedPoints == "") return null;

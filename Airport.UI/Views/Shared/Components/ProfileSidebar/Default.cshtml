@@ -1,6 +1,6 @@
 ﻿@model RecognizerUserVM
 
-<div class="_Profile_Left">
+@*<div class="_Profile_Left">
     <div class="_Profile_Items_Flex">
         <div class="_Profile_Item">
             <div class="_Pos_Rel">
@@ -54,5 +54,56 @@
                 Log Out
             </a>
         </div>
+    </div>
+</div>*@
+
+<div class="profile-tab-nav border-right">
+    <div class="profile-left-top-image">
+        <div class="_Pos_Rel">
+            <img src="~/img/car3.png" alt="">
+            <div class="updateProfilePhoto">
+                <i class="fa-solid fa-camera"></i>
+                <input type="file" class="updateProfilePhotoInput">
+            </div>
+        </div>
+        <div class="pt-2">
+            <p>
+                @Model.Name
+            </p>
+        </div>
+    </div>
+    <div class="nav profile-left-custom-style" id="v-pills-tab" role="tablist">
+        <a href="profile">
+            <i class="fa-solid fa-user-vneck"></i>
+            Your Profile
+        </a>
+        @if (Model.Type == 2)
+        {
+            <a href="my-company">
+                <i class="fa-solid fa-user-vneck"></i>
+                Your Company
+            </a>
+        }
+
+        <a href="change-password">
+            <i class="fa-solid fa-lock-keyhole"></i>
+            Change Password
+        </a>
+        <a href="bank-account">
+            <i class="fa-solid fa-wallet"></i>
+            Bank Accounts
+        </a>
+        <a href="agreements">
+            <i class="fa-regular fa-handshake"></i>
+            Agreements
+        </a>
+        <a href="settings">
+            <i class="fa-solid fa-gear"></i>
+            Settings
+        </a>
+        <a href="logout">
+            <i class="fa-solid fa-gear"></i>
+            Log Out
+        </a>
     </div>
 </div>

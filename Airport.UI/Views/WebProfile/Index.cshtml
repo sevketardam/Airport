@@ -2,7 +2,7 @@
 @{
     ViewData["title"] = "My Profile";
 }
-<section class="_Module_Margin">
+@*<section class="_Module_Margin">
     <div class="container">
         <div class="_Profile_Flex">
 
@@ -21,10 +21,6 @@
                     <div>
                         <form id="_Profile_Form">
                             <div class="_Form_Flex_Style">
-                                @*<div class="_Form_Div">
-                                <label class="_Form_Label">Title</label>
-                                <input type="text" name="Title">
-                                </div>*@
 
                                 <div class="_Form_Div _Two">
                                     <label class="_Form_Label">E-mail</label>
@@ -45,13 +41,6 @@
                                     <label class="_Form_Label">Mobile Phone</label>
                                     <input type="text" value="@Model.PhoneNumber" name="PhoneNumber">
                                 </div>
-                                @*
-                                <div class="_Form_Div _Two">
-                                <button class="_Verify_Number">
-                                Verify Number
-                                </button>
-                                </div>
-                                *@
 
                                 <div class="_Form_Div _Two">
                                     <button class="_Form_Button" type="submit">
@@ -65,10 +54,10 @@
             </div>
         </div>
     </div>
-</section>
+</section>*@
 
 
-@section pageJs{
+@*@section pageJs{
 
     <script>
 
@@ -103,4 +92,58 @@
 
     </script>
 
-}
+}*@
+
+
+<div class="container">
+    <div class="bg-white rounded-lg d-block d-md-flex out-style">
+        @await Component.InvokeAsync("ProfileSidebar")
+        <div class="tab-content p-sm-5 p-3 w-100" id="v-pills-tabContent">
+            <div class="tab-pane fade active show" id="your-profile">
+                <h2 class="_Simple_Orange_Title">
+                    Your Profile
+                </h2>
+                <div class="_Simple_Div">
+                    <p class="_Simple_P">
+                        Details about your profile information
+                    </p>
+                </div>
+                <form>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="_Form_Label">E-mail</label>
+                                <input type="text" class="form-control form-control-custom">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="_Form_Label">Name</label>
+                                <input type="text" class="form-control form-control-custom">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="_Form_Label">Profession</label>
+                                <input type="text" class="form-control form-control-custom">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="_Form_Label">Mobile Phone</label>
+                                <input type="text" class="form-control form-control-custom">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="_Form_Button save-button" type="submit">
+                            Save
+                        </button>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
