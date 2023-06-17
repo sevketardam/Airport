@@ -165,26 +165,28 @@ namespace Airport.UI.Controllers
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
 
                 var user = _loginAuth.SelectByID(userId);
-                if (user == null) { return NotFound(); }
+                if (user == null)
+                {
+                    return Json(new { });
+                }
 
                 if (GetMD5(oldPassword) == user.Password)
                 {
                     user.Password = GetMD5(newPassword);
                     _loginAuth.Update(user);
-                    ViewBag.Message = "success";
-
-                    return View();
+                    //okey
+                    return Json(new { result = 1 });
                 }
 
-                ViewBag.Message = "wrongPass";
-                return View();
+                //wrong password
+                return Json(new { result = 2 });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                ViewBag.Message = "Error";
-                return View();
-            }
 
+                //error
+                return Json(new { });
+            }
         }
 
 

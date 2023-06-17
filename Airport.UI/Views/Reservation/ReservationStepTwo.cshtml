@@ -302,6 +302,10 @@
         <div class="arrow_way">
             <div>
                 <i class="fa-solid fa-arrow-down-long"></i>
+                @if (Model.SelectedReservationValues.ReturnStatus)
+                {
+                    <i class="fa-solid fa-arrow-up-long"></i>
+                }
             </div>
             <div>
                 <p>@Model.Distance</p>
@@ -318,7 +322,7 @@
             </div>
         </div>
         <button type="button">
-            <div><i class="fa-light fa-circle-info"></i> Ayrıntılar </div>
+            <div><i class="fa-light fa-circle-info"></i> Detail </div>
             <div><i class="fa-solid fa-angle-down"></i></div>
         </button>
     </div>
@@ -408,42 +412,42 @@
                                     @if (item.LocationCars.Car.Wifi)
                                     {
                                         <div class="_Car_Attr_Item">
-                                            <img src="img/i4.png" alt="">
+                                            <img src="/img/i4.png" alt="">
                                         </div>
                                     }
 
                                     @if (item.LocationCars.Car.Water)
                                     {
                                         <div class="_Car_Attr_Item">
-                                            <img src="img/i1.png" alt="">
+                                            <img src="/img/i1.png" alt="">
                                         </div>
                                     }
 
                                     @if (item.LocationCars.Car.Charger)
                                     {
                                         <div class="_Car_Attr_Item">
-                                            <img src="img/i3.png" alt="">
+                                            <img src="/img/i3.png" alt="">
                                         </div>
                                     }
 
                                     @if (item.LocationCars.Car.Disabled)
                                     {
                                         <div class="_Car_Attr_Item">
-                                            <img src="img/i2.png" alt="">
+                                            <img src="/img/i2.png" alt="">
                                         </div>
                                     }
 
                                     @if (item.LocationCars.Car.Armored)
                                     {
                                         <div class="_Car_Attr_Item">
-                                            <img src="img/i5.png" alt="">
+                                            <img src="/img/i5.png" alt="">
                                         </div>
                                     }
 
                                     @if (item.LocationCars.Car.Partition)
                                     {
                                         <div class="_Car_Attr_Item">
-                                            <img src="img/i6.png" alt="">
+                                            <img src="/img/i6.png" alt="">
                                         </div>
                                     }
 
