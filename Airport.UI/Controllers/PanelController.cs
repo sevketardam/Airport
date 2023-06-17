@@ -95,6 +95,22 @@ namespace Airport.UI.Controllers
         }
 
 
+        public IActionResult test2()
+        {
+            try
+            {
+
+                return View();
+            }
+            catch (Exception)
+            {
+                return Json(new { });
+            }
+
+        }
+
+
+
         [Authorize(Roles = "0,2")]
         [HttpGet("panel/profile")]
         public IActionResult Profile()
@@ -369,5 +385,13 @@ namespace Airport.UI.Controllers
             }
             return md5Str;
         }
+
+
+        
+
+
     }
 }
+
+
+
