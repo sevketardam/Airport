@@ -1,7 +1,5 @@
 ﻿@model Reservations
 @{
-
-    Layout = "_PanelLayout";
     ViewData["title"] = "Reservation";
 }
 
@@ -191,7 +189,7 @@
             streetViewControl: false,
                 zoomControl: false,
                     fullscreenControl: false
-                                                            });
+                                                                            });
 
         directionsRenderer.setMap(map);
 
@@ -209,7 +207,7 @@
                 directionsRenderer.setDirections(result);
             }
         });
-                                                        }
+                                                                        }
 
 
         window.onload = () => {

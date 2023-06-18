@@ -50,7 +50,7 @@ namespace Airport.UI.Controllers
         ILoginAuthDAL _loginAuth;
         IPayment _payment;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons,ISMS sms, ILoginAuthDAL loginAuth,IPayment payment, IOptions<GoogleAPIKeys> googleAPIKeys)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons, ISMS sms, ILoginAuthDAL loginAuth, IPayment payment, IOptions<GoogleAPIKeys> googleAPIKeys)
         {
             _location = location;
             _locationCar = locationCar;
@@ -306,7 +306,7 @@ namespace Airport.UI.Controllers
                                             checkCar.PickLocationPlaceId = reservation.PickValue;
 
                                             getreservation[getreservation.IndexOf(checkCar)] = checkCar;
-                                        }                                   
+                                        }
                                     }
                                     else
                                     {
@@ -356,12 +356,12 @@ namespace Airport.UI.Controllers
                                         }
                                     }
 
-                         
+
                                 }
                             });
                         });
                     }
-                    
+
 
                     getreservation = getreservation.Distinct().ToList();
 
@@ -377,7 +377,7 @@ namespace Airport.UI.Controllers
                         Distance = betweenLocation.rows[0].elements[0].distance?.text,
                         Duration = betweenLocation.rows[0].elements[0].duration?.text,
                         SelectedReservationValues = reservation,
-                        
+
                     };
 
                     var reservationDatas = new ReservationDatasVM()
@@ -482,7 +482,7 @@ namespace Airport.UI.Controllers
                         locationCar.LocationCarsFares.ForEach(c =>
                         {
                             var fare = Convert.ToDouble(c.Fare);
-                            price = _payment.ReservationPrice(c.StartFrom,datas.KM,c.PriceType,c.UpTo,fare);
+                            price = _payment.ReservationPrice(c.StartFrom, datas.KM, c.PriceType, c.UpTo, fare);
 
                             lastUp = c.UpTo;
                             lastPrice = fare;
@@ -551,7 +551,7 @@ namespace Airport.UI.Controllers
         }
 
         [HttpPost("reservation-get-code", Name = "getBookValues")]
-        public async Task<IActionResult> ReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, List<int> serviceItems, string selectedServiceItems,string coupon)
+        public async Task<IActionResult> ReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, List<int> serviceItems, string selectedServiceItems, string coupon)
         {
             try
             {
@@ -665,7 +665,8 @@ namespace Airport.UI.Controllers
                     TotalPrice = total,
                     RealPhone = reservation.RealPhone,
                     DiscountText = getCoupon?.Comment,
-                    ReservationUserId = user?.Id
+                    ReservationUserId = user?.Id,
+                    Rate = 0
                 });
 
                 item.Coupons = getCoupon;
@@ -733,13 +734,7 @@ namespace Airport.UI.Controllers
 
                 _sms.SmsForReservation(mesaj);
 
-                item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
-                item.ReservationServicesTables.ForEach(a =>
-                {
-                    a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
-                    a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
-                });
-                return View(item);
+                return RedirectToAction("CreatedReservationDetail", "Reservation", new { id = item.Id });
             }
             catch (Exception ex)
             {
@@ -754,6 +749,33 @@ namespace Airport.UI.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+        }
+
+        [HttpGet("reservation-success")]
+        public IActionResult CreatedReservationDetail(int id)
+        {
+            var reservation = _reservations.SelectByID(id);
+            if (reservation != null)
+            {
+
+                reservation.LocationCars = _locationCar.SelectByID(reservation.LocationCarId);
+                reservation.LocationCars.Car = _getCar.CarDetail(reservation.LocationCars.CarId);
+
+                reservation.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == reservation.Id);
+
+                var loginAuth2 = _loginAuth.SelectByID(reservation.UserId);
+                reservation.User = _userDatas.SelectByID(loginAuth2.UserId);
+
+                reservation.ReservationServicesTables.ForEach(a =>
+                {
+                    a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
+                    a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
+                });
+
+                return View(reservation);
+            }
+
+            return NotFound();
         }
 
         [HttpPost("manage-reservation", Name = "checkReservation")]
@@ -1071,7 +1093,7 @@ namespace Airport.UI.Controllers
                             });
                         });
                     }
-                   
+
 
 
                     getreservation = getreservation.Distinct().ToList();
@@ -1354,7 +1376,8 @@ namespace Airport.UI.Controllers
                     TotalPrice = totalprice,
                     RealPhone = reservation.RealPhone,
                     DiscountText = reservation.DiscountText,
-                    ReservationUserId = user?.Id
+                    ReservationUserId = user?.Id,
+                    Rate = 0
                 });
 
                 var reservationItemsList = new List<ReservationServicesTable>();
@@ -1396,7 +1419,6 @@ namespace Airport.UI.Controllers
 
 
 
-                HttpContext.Session.Remove("reservationData");
                 item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
                 item.ReservationServicesTables.ForEach(a =>
                 {
@@ -1422,21 +1444,40 @@ namespace Airport.UI.Controllers
 
                 _sms.SmsForReservation(mesaj);
 
-                item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
-                item.ReservationServicesTables.ForEach(a =>
+                return RedirectToAction("ManualCreatedReservationDetail", "Reservation", new { id = item.Id });
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        [Authorize(Roles = "0,2")]
+        [HttpGet("panel/reservation-success")]
+        public IActionResult ManualCreatedReservationDetail(int id)
+        {
+            var reservation = _reservations.SelectByID(id);
+            if (reservation != null)
+            {
+
+                reservation.LocationCars = _locationCar.SelectByID(reservation.LocationCarId);
+                reservation.LocationCars.Car = _getCar.CarDetail(reservation.LocationCars.CarId);
+
+                reservation.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == reservation.Id);
+
+                var loginAuth2 = _loginAuth.SelectByID(reservation.UserId);
+                reservation.User = _userDatas.SelectByID(loginAuth2.UserId);
+
+                reservation.ReservationServicesTables.ForEach(a =>
                 {
                     a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
                     a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
                 });
 
-                return View(item);
-            }
-            catch (Exception)
-            {
-                ViewBag.Error = "Error";
-                return RedirectToAction("Index", "Home");
+                return View(reservation);
             }
 
+            return NotFound();
         }
 
         public JsonResult GetServiceItem(int[] serviceProId, int serviceId)
@@ -1492,12 +1533,12 @@ namespace Airport.UI.Controllers
         {
             try
             {
-                var coupons = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now 
+                var coupons = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now
                                                                                         && a.CouponFinishDate >= DateTime.Now && a.IsPerma).FirstOrDefault();
                 if (coupons == null)
                 {
-                     coupons = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now
-                                                                        && a.CouponFinishDate >= DateTime.Now && (a.CouponLimit > a.UsingCount && !a.IsPerma)).FirstOrDefault();
+                    coupons = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now
+                                                                       && a.CouponFinishDate >= DateTime.Now && (a.CouponLimit > a.UsingCount && !a.IsPerma)).FirstOrDefault();
                 }
 
                 if (coupons != null)

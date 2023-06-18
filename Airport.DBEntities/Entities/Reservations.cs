@@ -44,6 +44,7 @@ namespace Airport.DBEntities.Entities
         public string RealPhone { get; set; }
         public string? DiscountText { get; set; }
         public int? ReservationUserId { get; set; }
+        public int Rate { get; set; }
 
         public LocationCars LocationCars { get; set; }
         public UserDatas User { get; set; }

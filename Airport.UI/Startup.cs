@@ -30,6 +30,7 @@ namespace Airport.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.Configure<GoogleAPIKeys>(Configuration.GetSection("APIKeys"));
 
             services.AddSession(a =>
@@ -62,6 +63,7 @@ namespace Airport.UI
             services.AddScoped<ISMS, SMSRepo>();
             services.AddScoped<ILoginAuthDAL, LoginAuthDAL>();
             services.AddScoped<IPayment, GetPrice>();
+
 
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>

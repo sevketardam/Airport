@@ -7,16 +7,16 @@
 
 <section>
     <div style="background: var(--orange);" class="register_banner">
-           <div class="container">
-               <p>
+        <div class="container">
+            <p>
                 Would you like to register as <a href="/Agencies">transfer company</a>
-               </p>
-           </div>
+            </p>
+        </div>
     </div>
 </section>
 <section class="_Module_Margin">
     <div class="container">
-        <form id="_Register_Form" asp-route="personRegister" method="post">
+        <form id="_Register_Form">
             <div class="_Register_Flex">
                 <div class="_Register_Input_Div">
                     <label class="_Register_Label">Name</label>
@@ -30,7 +30,7 @@
                     <label class="_Register_Label">Phone</label>
                     <input type="text" name="phoneNumber" id="textPhone">
                 </div>
-                <input type="hidden" id="realPhoneInpt" name="RealPhone"/>
+                <input type="hidden" id="realPhoneInpt" name="RealPhone" />
                 <div class="_Register_Input_Div ">
                     <label class="_Register_Label">Password</label>
                     <input type="password" name="password">
@@ -66,42 +66,57 @@
 
 @section pageJs{
     <script>
+        $('#_Register_Form').on("submit", function (e) {
+            e.preventDefault();
+            if ($(this).valid()) {
+                var formData = $(this).serialize()
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.HomeController.Register))',
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully Created Your Account',
+                            }).then(() => {
+                                location.href = "/";
+                            })
+                        } else if (response.result == 2) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Warning',
+                                text: 'This email is already registered',
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'Error',
+                                title: 'Error',
+                                text: 'Something is Wrong!!',
+                            })
+                        }
+                    }
+                });
+            }
+        })
 
-         const phoneInputField = document.querySelector("input[name='phoneNumber']");
+        const phoneInputField = document.querySelector("input[name='phoneNumber']");
         const phoneInput = window.intlTelInput(phoneInputField, {
             utilsScript:
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
 
         });
 
-        $('#textPhone').on("change keypress keyup countrychange",function(){
+        $('#textPhone').on("change keypress keyup countrychange", function () {
             $('#realPhoneInpt').val(phoneInput.getNumber().replace("+", ""))
         })
 
-        @if (ViewBag.Message == "success")
-        {
-            <text>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Successfully Created Your Account',
-                })
-            </text>
-        }else if (ViewBag.Message == "email")
-        {
-            <text>
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Warning',
-                    text: 'An account has already been created with this email.',
-                })
-            </text> 
-        }
 
-            var cleave = new Cleave('[name="phoneNumber"]', {
-                numericOnly: true,
-                blocks: [15]
-            });
+        var cleave = new Cleave('[name="phoneNumber"]', {
+            numericOnly: false,
+            blocks: [15]
+        });
     </script>
 
 }

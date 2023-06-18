@@ -95,10 +95,7 @@ $('form[id="_Register_Form"]').validate({
         c2: {
             required: "Contracts Must Be Approved",
         },
-    },
-    submitHandler: function (form) {
-        form.submit();
-    },
+    }
 });
 
 // Agencies sayfasındaki formun validasyonu

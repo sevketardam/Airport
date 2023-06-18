@@ -1,6 +1,7 @@
 ﻿@model Reservations
 @{
 
+    Layout = "_PanelLayout";
     ViewData["title"] = "Reservation";
 }
 
@@ -54,7 +55,7 @@
             font-size: 0.8rem;
             margin-top: -0.4rem;
             border-bottom: 1px solid #00000033;
-            padding-bottom:.5rem;
+            padding-bottom: .5rem;
         }
 
     </style>
@@ -141,7 +142,7 @@
 
                         <li class="price">
                             <p>
-                               Price: @Model.TotalPrice €
+                                Price: @Model.TotalPrice €
                             </p>
 
                         </li>
@@ -190,7 +191,7 @@
             streetViewControl: false,
                 zoomControl: false,
                     fullscreenControl: false
-                                                    });
+                                                                    });
 
         directionsRenderer.setMap(map);
 
@@ -208,7 +209,7 @@
                 directionsRenderer.setDirections(result);
             }
         });
-                                                }
+                                                                }
 
 
         window.onload = () => {

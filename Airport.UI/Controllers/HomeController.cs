@@ -109,7 +109,7 @@ namespace Airport.UI.Controllers
             {
                 return View();
             }
-            return NotFound();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet("terms")]
@@ -118,33 +118,38 @@ namespace Airport.UI.Controllers
             return View();
         }
 
-        [HttpPost("register", Name = "personRegister")]
+        [HttpPost("register")]
         public IActionResult Register(UserDatas user, string Eposta, string Password)
         {
-            var checkUser = _loginAuth.SelectByFunc(a => a.Email == Eposta).FirstOrDefault();
-            if (checkUser == null)
+            try
             {
-                var addedUser = _userdata.Insert(new UserDatas
+                var checkUser = _loginAuth.SelectByFunc(a => a.Email == Eposta).FirstOrDefault();
+                if (checkUser == null)
                 {
-                    Name = user.Name,
-                    PhoneNumber = user.PhoneNumber,
-                    RealPhone = user.RealPhone,
-                });
+                    var addedUser = _userdata.Insert(new UserDatas
+                    {
+                        Name = user.Name,
+                        PhoneNumber = user.PhoneNumber,
+                        RealPhone = user.RealPhone,
+                    });
 
-                _loginAuth.Insert(new LoginAuth
-                {
-                    Email = Eposta,
-                    Password = GetMD5(Password),
-                    Type = 1,
-                    DriverId = 0,
-                    UserId = addedUser.Id
-                });
+                    _loginAuth.Insert(new LoginAuth
+                    {
+                        Email = Eposta,
+                        Password = GetMD5(Password),
+                        Type = 1,
+                        DriverId = 0,
+                        UserId = addedUser.Id
+                    });
 
-                ViewBag.Message = "success";
-                return View();
+                    return Json(new { result = 1 });
+                }
+                return Json(new { result = 2 });
             }
-            ViewBag.Message = "email";
-            return View();
+            catch (Exception)
+            {
+                return Json(new { });
+            }
         }
 
         public static string GetMD5(string value)
@@ -186,7 +191,7 @@ namespace Airport.UI.Controllers
             string klasorYolu4 = Path.Combine(Directory.GetCurrentDirectory(), "de");
             string klasorYolu5 = Path.Combine(Directory.GetCurrentDirectory(), "es");
             string klasorYolu6 = Path.Combine(Directory.GetCurrentDirectory(), "fr");
-            bool altKlasorleriSil = true; 
+            bool altKlasorleriSil = true;
 
             try
             {
