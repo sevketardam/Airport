@@ -4243,3 +4243,246 @@ textarea.form-control-custom {
         margin-top: 1rem;
     }
 }
+
+
+
+
+
+
+
+
+
+
+.step3-left-details label {
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.step3-left-details p {
+    font-size: .70rem;
+    font-weight: 400;
+}
+
+.step3-line {
+    width: 100%;
+    height: 0;
+    border: 2px dashed white;
+    margin: 1.5rem 0;
+}
+
+.step3-left-details h5 {
+    font-size: 1.3rem;
+}
+
+.step3-left-details img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.step3-left-image,
+.step3-left-car-detail {
+    height: 7rem;
+}
+
+    .step3-left-car-detail p {
+        margin: 0;
+    }
+
+    .step3-left-car-detail i {
+        color: white !important;
+    }
+
+.step3-right-radios > div input[type='radio'] {
+    cursor: pointer;
+}
+
+    .step3-right-radios > div input[type='radio']:after {
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: rgb(193, 193, 193);
+        content: '';
+        display: inline-block;
+        visibility: visible;
+    }
+
+    .step3-right-radios > div input[type='radio']:checked:after {
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: var(--orange);
+        content: '';
+        display: inline-block;
+        visibility: visible;
+    }
+
+.step3-right-radios > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .35rem;
+}
+
+.step3-right-radios p {
+    font-size: .8rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.step3-right-radios span {
+    font-size: .85rem;
+    margin-left: .35rem;
+}
+
+.total-price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .25rem;
+}
+
+.text {
+    font-size: .9rem;
+    margin: 0;
+}
+
+.total-price .total-price-text {
+    font-size: 1.05rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.step3-extra-detail-item > p {
+    font-size: .65rem;
+    position: relative;
+    opacity: .8;
+    line-height: 0.7rem;
+}
+
+.step3-extra-detail-item .price {
+    font-weight: 600;
+    font-size: .8rem;
+}
+
+.hidden-link {
+    height: 0.4rem;
+}
+
+    .hidden-link a {
+        font-size: .85rem;
+        color: black;
+        float: right;
+        /* margin-top: -0.7rem; */
+    }
+
+.step3-right-top-infos {
+    box-shadow: 0 0 5px rgb(0, 0, 0, .16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+    .step3-right-top-infos hr {
+        margin: .35rem 0;
+    }
+
+.step3-card-infos > div {
+    display: flex;
+    flex-direction: column;
+}
+
+    .step3-card-infos > div label {
+        font-size: .85rem;
+        margin: 0;
+    }
+
+.cardNumberImage {
+    width: auto;
+    height: 2.3rem;
+    position: absolute;
+    right: 1rem;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .1rem;
+}
+
+    .cardNumberImage img {
+        width: 2rem;
+        height: 1.3rem;
+        padding: 0.15rem;
+        object-fit: contain;
+        border: 1px solid rgb(0, 0, 0, .5);
+    }
+
+.step3-card-area button {
+    background-color: #ff6709;
+    color: white;
+    border: none;
+    outline: none;
+    height: 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 0 5px rgb(0, 0, 0, 0.16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+    border-radius: 5px;
+    transition: background-color 250ms;
+}
+
+    .step3-card-area button:hover {
+        background-color: #e35800;
+    }
+
+.step3-card-area p {
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 300;
+    margin: .5rem 0 0 0;
+}
+
+.cardTypesImages img {
+    width: 15rem;
+    margin: auto;
+    display: flex;
+}
+
+.step3-page-row {
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgb(0, 0, 0, .2);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+}
+
+    .step3-page-row > div:first-child {
+        background-color: var(--orange);
+        border-radius: 10px;
+        color: white;
+        padding: 1rem;
+    }
+
+.detail-car-name {
+    font-size: 1rem !important;
+}
+
+.step3-left-car-detail .step2_car_attrs > div i {
+    font-size: 0.8rem;
+    color: var(--orange);
+}
+
+.step3-left-car-detail span {
+    font-size: 0.8rem;
+}

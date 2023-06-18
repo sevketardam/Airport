@@ -415,3 +415,17 @@ $(".step2_top_infos button").click(function () {
     $(this).toggleClass("active");
     $(".top_infos_details").slideToggle(250)
 })
+
+
+$(".hidden-link a").on("click", function () {
+    $(this).toggleClass("active");
+    $(".step3-extra-details").slideToggle(300);
+    setTimeout(() => {
+        if ($(this).hasClass("active")) {
+            $(this).text("Hide Details");
+        }
+        else {
+            $(this).text("Show Details");
+        }
+    }, 10);
+})
