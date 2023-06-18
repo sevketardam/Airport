@@ -373,8 +373,6 @@
     </div>
 </div>
 
-
-
 <div class="modal fade" id="rateReservationModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -405,6 +403,7 @@
         </div>
     </div>
 </div>
+
 
 
 @section pageJsScript{
@@ -449,8 +448,8 @@
 
         })
 
-        $('#rateDriveForm').on("submit", function () {
-
+        $('#rateDriveForm').on("submit", function (e) {
+            e.preventDefault()
             var starRate = $('.modal_points .fa-solid.fa-star').length
             if (starRate > 0) {
                 $.ajax({
@@ -459,10 +458,11 @@
                     data: { id: rateReservationId, rate: starRate },
                     success: function (response) {
                         if (response.result == 1) {
+                            
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success',
-                                text: 'Successfully Rate Your Drive',
+                                html: 'Thanks for the feedback<br>See you next transfer :)',
                             }).then(() => {
                                 location.reload()
                             })

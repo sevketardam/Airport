@@ -74,6 +74,7 @@ namespace Airport.UI.Controllers
             _googleAPIKeys = googleAPIKeys;
         }
 
+        [HttpGet("step")]
         public IActionResult StepPay()
         {
             return View();

@@ -72,10 +72,10 @@ function loadStyle(href, callback) {
   }
 
   function onStyleCompleteDelayed() {
-    //$("body").addClass(direction);
-    //$("html").attr("dir", direction);
+    $("body").addClass(direction);
+    $("html").attr("dir", direction);
     $("body").addClass(radius);
-    //$("body").dore();
+    $("body").dore();
   }
 
   $("body").on("click", ".theme-color", function (event) {
