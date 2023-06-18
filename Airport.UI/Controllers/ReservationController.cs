@@ -74,22 +74,11 @@ namespace Airport.UI.Controllers
             _googleAPIKeys = googleAPIKeys;
         }
 
-
-
-
-
-
-
-
-
-
         public IActionResult StepPay()
         {
             return View();
 
         }
-
-
 
         [HttpGet("reservation", Name = "getLocationValue")]
         public async Task<IActionResult> ReservationStepTwo(GetResevationIM reservation)
@@ -303,14 +292,16 @@ namespace Airport.UI.Controllers
                                         price *= 2;
                                     }
 
-
-
                                     price = Math.Round(price, 2);
                                     var checkCar = getreservation.Where(c => c.LocationCars.CarId == b.CarId).FirstOrDefault();
+
+                                    var rate = _reservations.SelectByFunc(c => c.LocationCarId == b.Id && c.Rate > 0);
+
                                     if (checkCar != null)
                                     {
                                         if (checkCar.LastPrice < price)
                                         {
+
                                             checkCar.LastPrice = price;
                                             checkCar.LocationCars = b;
                                             checkCar.ReservationDate = reservation.FlightTime;
@@ -321,14 +312,13 @@ namespace Airport.UI.Controllers
                                             checkCar.PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}";
                                             checkCar.DropLocationPlaceId = reservation.DropValue;
                                             checkCar.PickLocationPlaceId = reservation.PickValue;
-
+                                            checkCar.Rate = rate.Count > 0 ? Math.Round(rate.Average(c => c.Rate), 2).ToString():"0";
+                                            checkCar.RateCount = rate.Count > 0 ? rate.Count.ToString() : "0";
                                             getreservation[getreservation.IndexOf(checkCar)] = checkCar;
                                         }
                                     }
                                     else
                                     {
-
-
                                         if (a.IsOutZoneOutside)
                                         {
                                             if (a.Location.IsOkeyOut)
@@ -347,6 +337,8 @@ namespace Airport.UI.Controllers
                                                         PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
                                                         DropLocationPlaceId = reservation.DropValue,
                                                         PickLocationPlaceId = reservation.PickValue,
+                                                        Rate = rate.Count > 0 ?  Math.Round(rate.Average(c => c.Rate), 2).ToString() : "0",
+                                                        RateCount = rate.Count > 0 ? rate.Count.ToString() : "0",
                                                     });
                                                 }
                                             }
@@ -368,6 +360,8 @@ namespace Airport.UI.Controllers
                                                     PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
                                                     DropLocationPlaceId = reservation.DropValue,
                                                     PickLocationPlaceId = reservation.PickValue,
+                                                    Rate = rate.Count > 0 ? Math.Round(rate.Average(c => c.Rate), 2).ToString() : "0",
+                                                    RateCount = rate.Count > 0 ? rate.Count.ToString() : "0",
                                                 });
                                             }
                                         }
@@ -1040,6 +1034,8 @@ namespace Airport.UI.Controllers
 
                                     price = Math.Round(price, 2);
                                     var checkCar = getreservation.Where(c => c.LocationCars.CarId == b.CarId).FirstOrDefault();
+
+                                    var rate = _reservations.SelectByFunc(c => c.LocationCarId == b.Id && c.Rate > 0);
                                     if (checkCar != null)
                                     {
                                         if (checkCar.LastPrice < price)
@@ -1054,7 +1050,8 @@ namespace Airport.UI.Controllers
                                             checkCar.PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}";
                                             checkCar.DropLocationPlaceId = reservation.DropValue;
                                             checkCar.PickLocationPlaceId = reservation.PickValue;
-
+                                            checkCar.Rate = rate.Count > 0 ? Math.Round(rate.Average(c => c.Rate), 2).ToString() : "0";
+                                            checkCar.RateCount = rate.Count > 0 ? rate.Count.ToString() : "0";
                                             getreservation[getreservation.IndexOf(checkCar)] = checkCar;
                                         }
                                     }
@@ -1080,6 +1077,8 @@ namespace Airport.UI.Controllers
                                                         PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
                                                         DropLocationPlaceId = reservation.DropValue,
                                                         PickLocationPlaceId = reservation.PickValue,
+                                                        Rate = rate.Count > 0 ? Math.Round(rate.Average(c => c.Rate), 2).ToString() : "0",
+                                                        RateCount = rate.Count > 0 ? rate.Count.ToString() : "0",
                                                     });
                                                 }
                                             }
@@ -1101,6 +1100,8 @@ namespace Airport.UI.Controllers
                                                     PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
                                                     DropLocationPlaceId = reservation.DropValue,
                                                     PickLocationPlaceId = reservation.PickValue,
+                                                    Rate = rate.Count > 0 ? Math.Round(rate.Average(c => c.Rate), 2).ToString() : "0",
+                                                    RateCount = rate.Count > 0 ? rate.Count.ToString() : "0",
                                                 });
                                             }
                                         }

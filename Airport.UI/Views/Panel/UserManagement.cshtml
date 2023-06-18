@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css">
 }
 
-@*@section pageCss{
+@section pageCss{
     <style>
 
         .reservation-table-icon {
@@ -42,41 +42,6 @@
 
             .reservation-table-icon:hover {
                 filter: drop-shadow(0 0 7px);
-            }
-
-        table {
-            border-collapse: separate;
-            border-spacing: 0 1rem;
-            margin-top: -10px; /* correct offset on first border spacing if desired */
-            width: 100%;
-        }
-
-        tbody tr {
-            background: rgb(0 0 0 / 10%);
-        }
-
-            tbody tr:hover {
-                background: rgb(0 0 0 / 18%) !important;
-            }
-
-
-        tbody td {
-            border-style: solid none;
-            padding: 10px;
-            cursor: pointer;
-            text-align: center;
-        }
-
-            tbody td:first-child {
-                border-left-style: solid;
-                border-top-left-radius: 10px;
-                border-bottom-left-radius: 10px;
-            }
-
-            tbody td:last-child {
-                border-right-style: solid;
-                border-bottom-right-radius: 10px;
-                border-top-right-radius: 10px;
             }
 
         .get-member {
@@ -93,9 +58,45 @@
             filter: drop-shadow(0 0 1px);
         }
 
+
+        #reservationTable tbody tr {
+            cursor: pointer;
+        }
+
+            #reservationTable tbody tr:hover {
+                box-shadow: 0 3px 30px rgba(0,0,0,.1), 0 3px 20px rgba(0,0,0,.1);
+            }
+
+        .modal_points {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .modal_points i {
+                font-size: 2rem;
+                cursor: pointer;
+                color: gold;
+            }
+
+        .modal_points_send {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            margin-top: 1rem;
+            border: none;
+            background-color: var(--orange);
+            color: white;
+            border-radius: 5px;
+            padding: .7rem 1.5rem;
+            font-size: .85rem;
+        }
+
     </style>
 }
-
+@*
 <div style=" overflow-x: auto;">
     <table id="recourseTable">
         <thead>
@@ -166,7 +167,7 @@
 
         </div>
     }
-   
+
 </div>*@
 @*
 @section pageJs{
@@ -213,7 +214,7 @@
                     });
                 }
             })
-        }) 
+        })
 
         $('.goDetail td:not(:last-child) ').on("click", function () {
             var id = $(this).closest("tr").attr("data-id")
@@ -225,96 +226,94 @@
 
 
 <div class="container my-5">
-<div class="row icon-cards-row mb-4">
-    <div class="col-md-3 col-lg-3 col-sm-6 col-6 mb-3">
-        <a href="#" class="card">
-            <div class="card-body text-center">
-                <i class="fa-light fa-ban"></i>
-                <p class="card-text font-weight-semibold mb-0">Canceled</p>
-                <p id="canceledReservation" class="lead text-center">0</p>
-            </div>
-        </a>
-    </div>
-    <div class="col-md-3 col-lg-3 col-sm-6 col-6 mb-3">
-        <a href="#" class="card">
-            <div class="card-body text-center">
-                <i class="fa-regular fa-check"></i>
-                <p class="card-text font-weight-semibold mb-0">Completed</p>
-                <p id="completedReservation" class="lead text-center">0</p>
-            </div>
-        </a>
-    </div>
-    <div class="col-md-3 col-lg-3 col-sm-6 col-6 mb-3">
-        <a href="#" class="card">
-            <div class="card-body text-center">
-                <i class="iconsminds-clock"></i>
-                <p class="card-text font-weight-semibold mb-0">Pending Approval</p>
-                <p id="pendingReservation" class="lead text-center">0</p>
-            </div>
-        </a>
-    </div>
-    <div class="col-md-3 col-lg-3 col-sm-6 col-6 mb-3">
-        <a href="#" class="card">
-            <div class="card-body text-center">
-                <i class="fa-regular fa-list"></i>
-                <p class="card-text font-weight-semibold mb-0">Total</p>
-                <p id="totalReservation" class="lead text-center">0</p>
-            </div>
-        </a>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        @*        <div class="btn-group float-right" style="top: -.6rem">
-        <button class="btn btn-outline-primary btn-lg dropdown-toggle" type="button"
-        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        EXPORT
-        </button>
-        <div class="dropdown-menu">
-        <a class="dropdown-item" id="dataTablesCopy" href="#">Copy</a>
-        <a class="dropdown-item" id="dataTablesExcel" href="#">Excel</a>
-        <a class="dropdown-item" id="dataTablesCsv" href="#">Csv</a>
-        <a class="dropdown-item" id="dataTablesPdf" href="#">Pdf</a>
-        </div>
-        </div>*@
-        <div class="mb-2 mt-5">
-            @*<a class="btn pt-0 pl-0 d-inline-block d-md-none" data-toggle="collapse" href="#displayOptions"
-            role="button" aria-expanded="true" aria-controls="displayOptions">
-            Display Options
-            <i class="simple-icon-arrow-down align-middle"></i>
-            </a>*@
-            <div>
-                <div class="d-block d-md-inline-block">
-                    <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
-                        <input class="form-control" placeholder="Search Table" id="searchDatatable">
-                    </div>
+    <div class="row icon-cards-row mb-4">
+        <div class="col-md-3 col-lg-3 col-sm-6 col-6 mb-3">
+            <a href="#" class="card">
+                <div class="card-body text-center">
+                    <i class="fa-light fa-ban"></i>
+                    <p class="card-text font-weight-semibold mb-0">Canceled</p>
+                    <p id="canceledReservation" class="lead text-center">0</p>
                 </div>
-
-
-            </div>
+            </a>
         </div>
-        <div class="separator"></div>
+        <div class="col-md-3 col-lg-3 col-sm-6 col-6 mb-3">
+            <a href="#" class="card">
+                <div class="card-body text-center">
+                    <i class="fa-regular fa-check"></i>
+                    <p class="card-text font-weight-semibold mb-0">Completed</p>
+                    <p id="completedReservation" class="lead text-center">0</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3 col-lg-3 col-sm-6 col-6 mb-3">
+            <a href="#" class="card">
+                <div class="card-body text-center">
+                    <i class="iconsminds-clock"></i>
+                    <p class="card-text font-weight-semibold mb-0">Pending Approval</p>
+                    <p id="pendingReservation" class="lead text-center">0</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3 col-lg-3 col-sm-6 col-6 mb-3">
+            <a href="#" class="card">
+                <div class="card-body text-center">
+                    <i class="fa-regular fa-list"></i>
+                    <p class="card-text font-weight-semibold mb-0">Total</p>
+                    <p id="totalReservation" class="lead text-center">0</p>
+                </div>
+            </a>
+        </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-12 mb-4 data-table-rows data-tables-hide-filter">
-        <table id="reservationTable" class="data-table responsive nowrap"
-               data-order="[[ 1, &quot;desc&quot; ]]">
-            <thead>
-                <tr>
+    <div class="row">
+        <div class="col-12">
+            @*        <div class="btn-group float-right" style="top: -.6rem">
+            <button class="btn btn-outline-primary btn-lg dropdown-toggle" type="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            EXPORT
+            </button>
+            <div class="dropdown-menu">
+            <a class="dropdown-item" id="dataTablesCopy" href="#">Copy</a>
+            <a class="dropdown-item" id="dataTablesExcel" href="#">Excel</a>
+            <a class="dropdown-item" id="dataTablesCsv" href="#">Csv</a>
+            <a class="dropdown-item" id="dataTablesPdf" href="#">Pdf</a>
+            </div>
+            </div>*@
+            <div class="mb-2 mt-5">
+                @*<a class="btn pt-0 pl-0 d-inline-block d-md-none" data-toggle="collapse" href="#displayOptions"
+                role="button" aria-expanded="true" aria-controls="displayOptions">
+                Display Options
+                <i class="simple-icon-arrow-down align-middle"></i>
+                </a>*@
+                <div>
+                    <div class="d-block d-md-inline-block">
+                        <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
+                            <input class="form-control" placeholder="Search Table" id="searchDatatable">
+                        </div>
+                    </div>
 
-                    <th>Reservation Code</th>
-                    <th>Name</th>
-                    <th>Date</th>
-                    <th>Situation</th>
-                    <th>Driver Situation</th>
-                    <th>Transactions</th>
 
-                </tr>
-            </thead>
-            <tbody>
+                </div>
+            </div>
+            <div class="separator"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mb-4 data-table-rows data-tables-hide-filter">
+            <table id="reservationTable" class="data-table responsive nowrap"
+                   data-order="[[ 1, &quot;desc&quot; ]]">
+                <thead>
+                    <tr>
+
+                        <th>Reservation Code</th>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Situation</th>
+                        <th>Transactions</th>
+                    </tr>
+                </thead>
+                <tbody>
                     @foreach (var item in Model.Reservations)
                     {
                         <tr class="goDetail" data-id="@item.Id">
@@ -336,46 +335,78 @@
                                 }
                             </td>
                             <td>
-                                @if (item.DriverId != null && item.DriverId != 0)
+                                @if (item.Status == 3)
                                 {
-                                    <span class="badge badge-success">Driver Assigned</span>
+                                    <a class="rateReservation" style="filter:drop-shadow(0 0 1px);font-size:1.3rem;color:@(item.Rate == 0 ? "green" : "#ffbb00")"><i class="fa-solid fa-star"></i></a>
                                 }
                                 else
                                 {
-                                    <span class="badge badge-warning">Driver Not Assigned</span>
+                                    <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
+                                        <i class="iconsminds-file"></i>
+                                    </a>
+                                    <a title="Cancel Reservation" class="reservation-delete"><i class="fa-regular fa-xmark"></i></a>
                                 }
-                            </td>
-                            <td>
-                                <a title="Go to detail" href="/user-management/detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
-                                <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
-                                    <i class="iconsminds-file"></i>
-                                </a>
-                                <a title="Cancel Reservation" class="reservation-delete"><i class="fa-regular fa-xmark"></i></a>
+
                             </td>
                         </tr>
                     }
-            </tbody>
-        </table>
-        <div class="float-left dropdown-as-select" id="pageCountDatatable" style="float: left;
+                </tbody>
+            </table>
+            <div class="float-left dropdown-as-select" id="pageCountDatatable" style="float: left;
     margin-top: -4.9rem;
     z-index: 99;
     position: relative;">
-            <span class="text-muted text-small">Displaying 1-10 of 40 items </span>
-            <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                10
-            </button>
-            <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#">5</a>
-                <a class="dropdown-item active" href="#">10</a>
-                <a class="dropdown-item" href="#">20</a>
+                <span class="text-muted text-small">Displaying 1-10 of 40 items </span>
+                <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    10
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#">5</a>
+                    <a class="dropdown-item active" href="#">10</a>
+                    <a class="dropdown-item" href="#">20</a>
+                </div>
             </div>
-        </div>
-        <div class="top-right-button-container" style="top: -1.5rem;">
+            <div class="top-right-button-container" style="top: -1.5rem;">
+            </div>
         </div>
     </div>
 </div>
+
+
+
+<div class="modal fade" id="rateReservationModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="px-3 py-2">
+                <button type="button" class="close" data-bs-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="rateDriveForm">
+                    <h3 class="text-center">
+                        Rate the Drive
+                    </h3>
+                    <div class="modal_points">
+                        <i point="1" class="fa-regular fa-star"></i>
+                        <i point="2" class="fa-regular fa-star"></i>
+                        <i point="3" class="fa-regular fa-star"></i>
+                        <i point="4" class="fa-regular fa-star"></i>
+                        <i point="5" class="fa-regular fa-star"></i>
+                    </div>
+                    <button class="modal_points_send">
+                        Send
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
 </div>
+
+
 @section pageJsScript{
     <script src="~/js/vendor/jquery-3.3.1.min.js"></script>
 
@@ -399,17 +430,59 @@
     <script src="~/js/vendor/mousetrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.0.2/cleave.min.js" integrity="sha512-SvgzybymTn9KvnNGu0HxXiGoNeOi0TTK7viiG0EGn2Qbeu/NFi3JdWrJs2JHiGA1Lph+dxiDv5F9gDlcgBzjfA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="~/js/dore.script.js" asp-append-version="true"></script>
+      <script src="~/js/dore.script.js" asp-append-version="true"></script>
 
-    <script src="~/js/scripts.js" asp-append-version="true"></script>
+     <script src="~/js/scripts.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"
             integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 }
-
 @section pageJs{
-
     <script>
+        let rateReservationId;
+        $('tbody').on("click", ".rateReservation", function () {
+            console.log($(this).css("color"))
+            if ($(this).css("color") != "rgb(255, 187, 0)") {
+                rateReservationId = $(this).closest("tr").attr("data-id")
+                $('#rateReservationModal').modal("show")
+            }
+
+        })
+
+        $('#rateDriveForm').on("submit", function () {
+
+            var starRate = $('.modal_points .fa-solid.fa-star').length
+            if (starRate > 0) {
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.PanelController.RateDrive))',
+                    type: "POST",
+                    data: { id: rateReservationId, rate: starRate },
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully Rate Your Drive',
+                            }).then(() => {
+                                location.reload()
+                            })
+                        }
+                        else {
+                            Swal.fire({
+                                title: 'Error!',
+                                html: 'Something went wrong',
+                                icon: 'error',
+                                confirmButtonText: 'Okey'
+                            }).then(() => {
+                                location.reload()
+                            })
+                        }
+                    }
+                });
+            }
+        })
+
+
 
         function CountAnimation(item, count) {
             var i = 0;
@@ -448,7 +521,6 @@
                 { data: "Name" },
                 { data: "Date" },
                 { data: "Situation" },
-                { data: "DriverSituation" },
                 { data: "Transactions" }
             ],
             language: {
@@ -605,12 +677,18 @@
         $('.goDetail td:not(:last-child) ').on("click", function () {
             var genislik = window.innerWidth;
             if (genislik > 768) {
-            var id = $(this).closest("tr").attr("data-id")
-            location.href = "/user-management/detail/" + id;
+                var id = $(this).closest("tr").attr("data-id")
+                location.href = "/user-management/detail/" + id;
             }
         })
 
-
+        $(".modal_points i").on("click", function () {
+            let s = Number($(this).attr("point"));
+            $(`.modal_points i`).attr("class", "fa-regular fa-star")
+            for (let index = 1; index <= s; index++) {
+                $(`.modal_points i:nth-child(${index})`).attr("class", "fa-solid fa-star")
+            }
+        })
 
     </script>
 }
