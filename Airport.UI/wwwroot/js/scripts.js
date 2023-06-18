@@ -68,14 +68,14 @@ function loadStyle(href, callback) {
 
   loadStyle("/css/" + theme, onStyleComplete);
   function onStyleComplete() {
-    setTimeout(onStyleCompleteDelayed, 300);
+    setTimeout(onStyleCompleteDelayed, 100);
   }
 
   function onStyleCompleteDelayed() {
-    $("body").addClass(direction);
-    $("html").attr("dir", direction);
+    //$("body").addClass(direction);
+    //$("html").attr("dir", direction);
     $("body").addClass(radius);
-    $("body").dore();
+    //$("body").dore();
   }
 
   $("body").on("click", ".theme-color", function (event) {

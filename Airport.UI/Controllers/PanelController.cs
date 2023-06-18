@@ -373,6 +373,39 @@ namespace Airport.UI.Controllers
             }
         }
 
+        public JsonResult RateDrive(int id,int rate)
+        {
+            try
+            {
+                var reservation = _reservations.SelectByFunc(a => a.Id == id).FirstOrDefault();
+                if (reservation is not null)
+                {
+                    if (rate >= 5 && rate <= 0)
+                    {
+                        rate = 0;
+                    }
+
+                    reservation.Rate = rate;
+                    _reservations.Update(reservation);
+
+                    return Json(new {result = 1});
+                }
+                return Json(new { });
+            }
+            catch (Exception ex)
+            {
+                string dosyaYolu = "wwwroot/error.txt";
+
+                using (StreamWriter yazici = new StreamWriter(dosyaYolu))
+                {
+                    string metin = ex.ToString();
+                    yazici.WriteLine(metin);
+                }
+
+                return Json(new { });
+            }
+        }
+
         public static string GetMD5(string value)
         {
             MD5 md5 = MD5.Create();
