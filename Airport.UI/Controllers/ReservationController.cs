@@ -74,6 +74,23 @@ namespace Airport.UI.Controllers
             _googleAPIKeys = googleAPIKeys;
         }
 
+
+
+
+
+
+
+
+
+
+        public IActionResult StepPay()
+        {
+            return View();
+
+        }
+
+
+
         [HttpGet("reservation", Name = "getLocationValue")]
         public async Task<IActionResult> ReservationStepTwo(GetResevationIM reservation)
         {
