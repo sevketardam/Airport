@@ -12,6 +12,8 @@ using System.IO;
 using Airport.MessageExtensions.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace Airport.UI.Controllers
 {
@@ -34,7 +36,8 @@ namespace Airport.UI.Controllers
         ILoginAuthDAL _loginAuth;
         ICouponsDAL _coupons;
         IMyCarsDAL _myCars;
-        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars)
+        IFileOperation _fileOperation;
+        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars, IFileOperation fileOperation)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -53,6 +56,7 @@ namespace Airport.UI.Controllers
             _loginAuth = loginAuth;
             _coupons = coupons;
             _myCars = myCars;
+            _fileOperation = fileOperation;
         }
 
 
@@ -100,6 +104,22 @@ namespace Airport.UI.Controllers
             try
             {
 
+                return View();
+            }
+            catch (Exception)
+            {
+                return Json(new { });
+            }
+
+        }
+
+
+        public async Task<IActionResult> test3(IFormFile file)
+        {
+            try
+            {
+                var key = await _fileOperation.UploadFile(file);
+                var s = _fileOperation.GetFile(key);
                 return View();
             }
             catch (Exception)
