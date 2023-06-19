@@ -37,7 +37,8 @@ namespace Airport.UI.Controllers
         ICouponsDAL _coupons;
         IMyCarsDAL _myCars;
         IFileOperation _fileOperation;
-        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars, IFileOperation fileOperation)
+        IUserDocsDAL _docs;
+        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars, IFileOperation fileOperation, IUserDocsDAL docs)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -57,6 +58,7 @@ namespace Airport.UI.Controllers
             _coupons = coupons;
             _myCars = myCars;
             _fileOperation = fileOperation;
+            _docs = docs;
         }
 
 
@@ -103,6 +105,96 @@ namespace Airport.UI.Controllers
         {
             try
             {
+                return View();
+            }
+            catch (Exception)
+            {
+                return Json(new { });
+            }
+
+        }
+
+        [HttpPost("docs")]
+        public async Task<IActionResult> Docs(IFormFile docs1,IFormFile docs2, IFormFile docs3)
+        {
+            try
+            {
+                if (docs1 != null || docs2 != null || docs3 != null)
+                {
+                    var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+
+                    var userIsEmpty = _docs.SelectByFunc(a=>a.UserId == userId).FirstOrDefault();
+
+                    var docs1Link = "";
+                    var docs2Link = "";
+                    var docs3Link = "";
+
+                    if (docs1 != null)
+                    {
+                        docs1Link = await _fileOperation.UploadFile(docs1);
+                        docs1Link = _fileOperation.GetFile(docs1Link);
+
+                    }
+                    else
+                    {
+                        if (userIsEmpty is not null)
+                        {
+                            docs1Link = userIsEmpty.Docs1;
+                        }
+                    }
+
+                    if (docs2 != null)
+                    {
+                        docs2Link = await _fileOperation.UploadFile(docs2);
+                        docs2Link = _fileOperation.GetFile(docs2Link);
+                    }
+                    else
+                    {
+                        if (userIsEmpty is not null)
+                        {
+                            docs2Link = userIsEmpty.Docs2;
+                        }
+                    }
+
+                    if (docs3 != null)
+                    {
+                        docs3Link = await _fileOperation.UploadFile(docs3);
+                        docs3Link = _fileOperation.GetFile(docs3Link);
+                    }
+                    else
+                    {
+                        if (userIsEmpty is not null)
+                        {
+                            docs3Link = userIsEmpty.Docs3;
+                        }
+                    }
+
+                    if (userIsEmpty is null)
+                    {
+                        _docs.Insert(new UserDocs
+                        {
+                            Docs1 = docs1Link,
+                            Docs2 = docs2Link,
+                            Docs3 = docs3Link,
+                            UserId = userId,
+                            Docs1Status = docs1Link == "" ? false:true,
+                            Docs2Status = docs2Link == "" ? false:true,
+                            Docs3Status = docs3Link == "" ? false:true,
+                        });
+                    }
+                    else
+                    {
+                        userIsEmpty.Docs1 = docs1Link;
+                        userIsEmpty.Docs2 = docs2Link;
+                        userIsEmpty.Docs3 = docs3Link;
+                        userIsEmpty.Docs1Status = docs1Link == "" ? false : true;
+                        userIsEmpty.Docs2Status = docs2Link == "" ? false : true;
+                        userIsEmpty.Docs3Status = docs3Link == "" ? false : true;
+
+                        _docs.Update(userIsEmpty);
+                    }
+                }
+
 
                 return View();
             }

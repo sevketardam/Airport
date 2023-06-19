@@ -78,7 +78,7 @@ namespace Airport.UI.Models.Extendions
                 BucketName = bucketName,
                 Key = key,
                 Expires = DateTime.Now.AddMinutes(30)
-            });
+            }).Split('?', ' ')[0].Replace("https", "http");
         }
     }
 }

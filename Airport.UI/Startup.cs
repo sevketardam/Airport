@@ -60,9 +60,12 @@ namespace Airport.UI
             services.AddScoped<IReservationPeopleDAL, ReservationPeopleDAL>();
             services.AddScoped<IReservationServicesTableDAL, ReservationServicesTableDAL>();
             services.AddScoped<ICouponsDAL, CouponsDAL>();
+            services.AddScoped<ILoginAuthDAL, LoginAuthDAL>();
+            services.AddScoped<IUserDocsDAL, UserDocsDAL>();
+
+
             services.AddScoped<IMail, MailRepo>();
             services.AddScoped<ISMS, SMSRepo>();
-            services.AddScoped<ILoginAuthDAL, LoginAuthDAL>();
             services.AddScoped<IPayment, GetPrice>();
             services.AddScoped<IFileOperation, FileOperation>();
 

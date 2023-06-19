@@ -5,6 +5,7 @@
 <section class="my-5">
     <div class="container">
         <div class="doc-items">
+
             <div class="doc-item">
                 <h6>Doc 1</h6>
                 <div class="row">
@@ -13,12 +14,11 @@
                             <p>
                                 Select File
                             </p>
-                            <input type="file">
+                            <input type="file" name="docs1" id="docs1" accept="application/pdf">
                         </div>
                         <div>
                             <i class="fa-solid fa-download"></i>
                         </div>
-                        @*<div class="doc-status err"><i class="fa-regular fa-circle-exclamation"></i></div>*@
                         <div class="doc-status success"><i class="fa-regular fa-check"></i></div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                             <p>
                                 Select File
                             </p>
-                            <input type="file">
+                            <input type="file" name="docs2" id="docs2" accept="application/pdf">
                         </div>
                         <div>
                             <i class="fa-solid fa-download"></i>
@@ -50,7 +50,7 @@
                             <p>
                                 Select File
                             </p>
-                            <input type="file">
+                            <input type="file" name="docs3" id="docs3" accept="application/pdf">
                         </div>
                         <div>
                             <i class="fa-solid fa-download"></i>
@@ -58,6 +58,80 @@
                     </div>
                 </div>
             </div>
+
+
+            <input type="button" class="btn btn-success" id="sendDocument" />
         </div>
     </div>
 </section>
+
+
+@section pageJs{
+    <script>
+
+        $('#sendDocument').on("click",function(){
+            var docs1 = document.getElementById('docs1');
+            var docs2 = document.getElementById('docs2');
+            var docs3 = document.getElementById('docs3');
+
+            var file = docs1.files[0];
+            var file2 = docs2.files[0];
+            var file3 = docs3.files[0];
+
+            console.log(file)
+
+            var formData = new FormData();
+
+            formData.append('docs1', file);
+            formData.append('docs2', file2);
+            formData.append('docs3', file3);
+
+            if (file != undefined || file2 != undefined || file3 != undefined) {
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.PanelController.Docs))',
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully Save Your PDF',
+                            }).then(() => {
+                                location.reload()
+                            })
+                        }
+                        else {
+                            Swal.fire({
+                                title: 'Error!',
+                                html: 'Something went wrong',
+                                icon: 'error',
+                                confirmButtonText: 'Okey'
+                            }).then(() => {
+                                location.reload()
+                            })
+                        }
+                    }
+                });
+            }
+        })
+
+
+
+        //$('#deneme').on("submit", function (e) {
+        //    e.preventDefault()
+        //    var fileInput = document.getElementById('file');
+        //    var file = fileInput.files[0];
+        //    var formData = new FormData();
+
+        //    formData.append('file', file);
+
+            
+
+           
+        //})
+
+    </script>
+}

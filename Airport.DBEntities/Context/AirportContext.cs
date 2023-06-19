@@ -172,6 +172,11 @@ namespace Airport.DBEntities.Context
                 .HasOne<Drivers>(a => a.Driver)
                 .WithOne(a => a.LoginAuth);
 
+
+            modelBuilder.Entity<UserDocs>()
+                .HasOne<UserDatas>(a => a.User)
+                .WithOne(a => a.Docs);
+
             base.OnModelCreating(modelBuilder);
         }
 
