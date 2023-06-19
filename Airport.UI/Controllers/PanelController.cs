@@ -113,6 +113,21 @@ namespace Airport.UI.Controllers
 
         }
 
+        [HttpGet("satis")]
+        public IActionResult Satis()
+        {
+            try
+            {
+
+                return View();
+            }
+            catch (Exception)
+            {
+                return Json(new { });
+            }
+
+        }
+
 
         public async Task<IActionResult> test3(IFormFile file)
         {
