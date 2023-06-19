@@ -1,5 +1,6 @@
 ﻿using Airport.DBEntities.Entities;
 using Airport.DBEntitiesDAL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -8,6 +9,7 @@ using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
 namespace Airport.UI.Controllers
 {
+    [Authorize(Roles = "0,4")]
     public class GlobalAdminController : Controller
     {
         ICouponsDAL _coupons;

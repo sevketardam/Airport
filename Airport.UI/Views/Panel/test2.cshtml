@@ -900,49 +900,4 @@
     </div>
 </div>
 
-@section pageJs{
-    <script>
-        $('#deneme').on("submit",function(e){
-            e.preventDefault()
-            var fileInput = document.getElementById('file');
-            var file = fileInput.files[0];
-            var formData = new FormData();
-
-            formData.append('file', file);
-
-            console.log(formData)
-
-            $.ajax({
-                url: '@Url.Action(nameof(Airport.UI.Controllers.PanelController.test3))',
-                type: "POST",
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    if (response.result == 1) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Successfully Cancel Reservation',
-                        }).then(() => {
-                            location.reload()
-                        })
-                    }
-                    else {
-                        Swal.fire({
-                            title: 'Error!',
-                            html: 'Something went wrong',
-                            icon: 'error',
-                            confirmButtonText: 'Okey'
-                        }).then(() => {
-                            location.reload()
-                        })
-                    }
-                }
-            });
-        })
-                
-
-    </script>
-}
 

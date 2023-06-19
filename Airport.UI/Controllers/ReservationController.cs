@@ -815,14 +815,14 @@ namespace Airport.UI.Controllers
 
         }
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/manual-reservation-one")]
         public async Task<IActionResult> ManualReservationStepOne()
         {
             return View();
         }
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/manual-reservation-two", Name = "getManualLocationValue")]
         public async Task<IActionResult> ManualReservationStepTwo(GetResevationIM reservation)
         {
@@ -1167,7 +1167,7 @@ namespace Airport.UI.Controllers
 
         }
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/manual-reservation-three/{id}")]
         public IActionResult ManualReservationStepThree(int id)
         {
@@ -1297,12 +1297,14 @@ namespace Airport.UI.Controllers
 
         }
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpPost("panel/manual-reservation-three/{id}", Name = "getManualBookValues")]
         public IActionResult ManualReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, List<int> serviceItems, string selectedServiceItems)
         {
             try
             {
+                var userRole = User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault();
+
                 var createReservation = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
                 if (createReservation == null)
@@ -1360,8 +1362,23 @@ namespace Airport.UI.Controllers
                     user = null;
                 }
 
+                if (user != null)
+                {
 
-                var totalprice = reservation.IsDiscount ? Convert.ToDouble(reservation.Discount) : createReservation.LastPrice + totalServiceFee;
+                }
+                var totalprice = createReservation.LastPrice + totalServiceFee;
+                if (userRole == "0" || userRole == "4")
+                {
+                    totalprice = reservation.IsDiscount ? Convert.ToDouble(reservation.Discount) : totalprice;
+                }
+
+                var salesAgency = 0;
+
+                if (userRole == "5")
+                {
+                    salesAgency = userId;
+                }
+
                 totalprice = Math.Round(totalprice, 2);
                 var item = _reservations.Insert(new Reservations
                 {
@@ -1396,7 +1413,8 @@ namespace Airport.UI.Controllers
                     RealPhone = reservation.RealPhone,
                     DiscountText = reservation.DiscountText,
                     ReservationUserId = user?.Id,
-                    Rate = 0
+                    Rate = 0,
+                    SalesAgencyId = salesAgency,
                 });
 
                 var reservationItemsList = new List<ReservationServicesTable>();
@@ -1471,7 +1489,7 @@ namespace Airport.UI.Controllers
             }
         }
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/reservation-success")]
         public IActionResult ManualCreatedReservationDetail(int id)
         {

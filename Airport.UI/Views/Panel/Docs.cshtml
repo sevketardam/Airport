@@ -1,43 +1,66 @@
-﻿@{
+﻿@using Airport.DBEntities.Entities;
+@{
     Layout = "_PanelLayout";
     ViewData["title"] = "Docs";
 }
+@model UserDocs
+@section pageCss{
+    <style>
+        .disabledFileInput{
+            background: #8080805e !important;
+        }
+    </style>
+}
+
 <section class="my-5">
     <div class="container">
         <div class="doc-items">
-
             <div class="doc-item">
                 <h6>Doc 1</h6>
                 <div class="row">
                     <div class="col-12">
-                        <div class="doc-block form-control form-control-custom">
+                        <div class="doc-block form-control form-control-custom @(Model != null && Model.Docs1Status ? "disabledFileInput" : "")">
                             <p>
                                 Select File
                             </p>
-                            <input type="file" name="docs1" id="docs1" accept="application/pdf">
+                            <input type="file" name="docs1" id="docs1" @(Model != null && Model.Docs1Status ? "disabled" : "") disabled accept="application/pdf">
                         </div>
                         <div>
                             <i class="fa-solid fa-download"></i>
                         </div>
-                        <div class="doc-status success"><i class="fa-regular fa-check"></i></div>
+                        @if (Model != null && Model.Docs1 != "" && !Model.Docs1Status)
+                        {
+                            <div class="doc-status err"><i class="fa-regular fa-circle-exclamation"></i></div>
+                        }
+                        else if (Model != null && Model.Docs1 != "" && Model.Docs1Status)
+                        {
+                            <div class="doc-status success"><i class="fa-regular fa-check"></i></div>
+                        }
                     </div>
                 </div>
             </div>
-
+            
             <div class="doc-item">
                 <h6>Doc 2</h6>
                 <div class="row">
                     <div class="col-12">
-                        <div class="doc-block form-control form-control-custom">
+                        <div class="doc-block form-control form-control-custom @(Model != null && Model.Docs2Status ? "disabledFileInput" : "")">
                             <p>
                                 Select File
                             </p>
-                            <input type="file" name="docs2" id="docs2" accept="application/pdf">
+                            <input type="file" name="docs2" id="docs2" @(Model != null && Model.Docs2Status ? "disabled" : "") accept="application/pdf">
                         </div>
                         <div>
                             <i class="fa-solid fa-download"></i>
                         </div>
-                        <div class="doc-status err"><i class="fa-regular fa-circle-exclamation"></i></div>
+                        @if (Model != null && Model.Docs2 != "" && !Model.Docs2Status)
+                        {
+                            <div class="doc-status err"><i class="fa-regular fa-circle-exclamation"></i></div>
+                        }
+                        else if (Model != null && Model.Docs2 != "" && Model.Docs2Status)
+                        {
+                            <div class="doc-status success"><i class="fa-regular fa-check"></i></div>
+                        }
                     </div>
                 </div>
             </div>
@@ -46,25 +69,32 @@
                 <h6>Doc 3</h6>
                 <div class="row">
                     <div class="col-12">
-                        <div class="doc-block form-control form-control-custom">
+                        <div class="doc-block form-control form-control-custom @(Model != null && Model.Docs3Status ? "disabledFileInput" : "")">
                             <p>
                                 Select File
                             </p>
-                            <input type="file" name="docs3" id="docs3" accept="application/pdf">
+                            <input type="file" name="docs3" id="docs3" @(Model != null && Model.Docs3Status ? "disabled" : "") accept="application/pdf">
                         </div>
                         <div>
                             <i class="fa-solid fa-download"></i>
                         </div>
+                        @if (Model != null && Model.Docs3 != "" && !Model.Docs3Status)
+                        {
+                            <div class="doc-status err"><i class="fa-regular fa-circle-exclamation"></i></div>
+                        }
+                        else if (Model != null && Model.Docs3 != "" && Model.Docs3Status)
+                        {
+                            <div class="doc-status success"><i class="fa-regular fa-check"></i></div>
+                        }
                     </div>
                 </div>
             </div>
 
 
-            <input type="button" class="btn btn-success" id="sendDocument" />
+            <input type="button" class="btn btn-success" id="sendDocument" value="Upload" />
         </div>
     </div>
 </section>
-
 
 @section pageJs{
     <script>
@@ -77,8 +107,6 @@
             var file = docs1.files[0];
             var file2 = docs2.files[0];
             var file3 = docs3.files[0];
-
-            console.log(file)
 
             var formData = new FormData();
 
@@ -103,14 +131,20 @@
                                 location.reload()
                             })
                         }
+                        else if(response.result == 2) {
+                            Swal.fire({
+                                title: 'Warning',
+                                html: 'Please Select File',
+                                icon: 'warning',
+                                confirmButtonText: 'Okey'
+                            })
+                        }
                         else {
                             Swal.fire({
                                 title: 'Error!',
                                 html: 'Something went wrong',
                                 icon: 'error',
                                 confirmButtonText: 'Okey'
-                            }).then(() => {
-                                location.reload()
                             })
                         }
                     }

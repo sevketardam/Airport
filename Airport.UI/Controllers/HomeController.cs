@@ -45,12 +45,14 @@ namespace Airport.UI.Controllers
             return View();
         }
 
+        [Authorize(Roles ="0")]
         [HttpGet("agencies")]
         public IActionResult Agencies()
         {
             return View();
         }
 
+        [Authorize(Roles = "0")]
         [HttpPost("agencies")]
         public IActionResult Agencies(UserDatas data, string Eposta, string Password)
         {
@@ -95,6 +97,7 @@ namespace Airport.UI.Controllers
 
             return View();
         }
+
 
         [HttpGet("privacy")]
         public IActionResult Privacy()

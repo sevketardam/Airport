@@ -9,7 +9,7 @@
             @Model.Name
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-            @if (Model.Type == 2 || Model.Type == 0)
+            @if (Model.Type == 2 || Model.Type == 0 || Model.Type == 4 || Model.Type == 5)
             {
                 <a href="/panel" class="dropdown-item" type="button">Dashboard</a>
             }

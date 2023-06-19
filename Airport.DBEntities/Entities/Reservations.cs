@@ -45,6 +45,7 @@ namespace Airport.DBEntities.Entities
         public string? DiscountText { get; set; }
         public int? ReservationUserId { get; set; }
         public int Rate { get; set; }
+        public int? SalesAgencyId { get; set; }
 
         public LocationCars LocationCars { get; set; }
         public UserDatas User { get; set; }

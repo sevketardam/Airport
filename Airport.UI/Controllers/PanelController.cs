@@ -62,7 +62,7 @@ namespace Airport.UI.Controllers
         }
 
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         public IActionResult Index()
         {
             try
@@ -97,7 +97,7 @@ namespace Airport.UI.Controllers
             {
                 return BadRequest(ex.ToString());
             }
-            
+
         }
 
         [HttpGet("docs")]
@@ -105,7 +105,10 @@ namespace Airport.UI.Controllers
         {
             try
             {
-                return View();
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var docs = _docs.SelectByFunc(a=>a.UserId == userId).FirstOrDefault();
+
+                return View(docs);
             }
             catch (Exception)
             {
@@ -115,7 +118,7 @@ namespace Airport.UI.Controllers
         }
 
         [HttpPost("docs")]
-        public async Task<IActionResult> Docs(IFormFile docs1,IFormFile docs2, IFormFile docs3)
+        public async Task<IActionResult> Docs(IFormFile docs1, IFormFile docs2, IFormFile docs3)
         {
             try
             {
@@ -123,7 +126,7 @@ namespace Airport.UI.Controllers
                 {
                     var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
 
-                    var userIsEmpty = _docs.SelectByFunc(a=>a.UserId == userId).FirstOrDefault();
+                    var userIsEmpty = _docs.SelectByFunc(a => a.UserId == userId).FirstOrDefault();
 
                     var docs1Link = "";
                     var docs2Link = "";
@@ -177,9 +180,9 @@ namespace Airport.UI.Controllers
                             Docs2 = docs2Link,
                             Docs3 = docs3Link,
                             UserId = userId,
-                            Docs1Status = docs1Link == "" ? false:true,
-                            Docs2Status = docs2Link == "" ? false:true,
-                            Docs3Status = docs3Link == "" ? false:true,
+                            Docs1Status = docs1Link == "" ? false : true,
+                            Docs2Status = docs2Link == "" ? false : true,
+                            Docs3Status = docs3Link == "" ? false : true,
                         });
                     }
                     else
@@ -193,10 +196,10 @@ namespace Airport.UI.Controllers
 
                         _docs.Update(userIsEmpty);
                     }
+
+                    return Json(new { result = 1 });
                 }
-
-
-                return View();
+                return Json(new { result = 2 });
             }
             catch (Exception)
             {
@@ -211,22 +214,6 @@ namespace Airport.UI.Controllers
             try
             {
 
-                return View();
-            }
-            catch (Exception)
-            {
-                return Json(new { });
-            }
-
-        }
-
-
-        public async Task<IActionResult> test3(IFormFile file)
-        {
-            try
-            {
-                var key = await _fileOperation.UploadFile(file);
-                var s = _fileOperation.GetFile(key);
                 return View();
             }
             catch (Exception)
@@ -253,7 +240,7 @@ namespace Airport.UI.Controllers
 
 
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/profile")]
         public IActionResult Profile()
         {
@@ -270,7 +257,7 @@ namespace Airport.UI.Controllers
         }
 
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpPost("panel/profile")]
         public IActionResult Profile(UserDatas updateUser)
         {
@@ -300,21 +287,21 @@ namespace Airport.UI.Controllers
         }
 
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/settings")]
         public IActionResult Settings()
         {
             return View();
         }
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/change-password")]
         public IActionResult ChangePassword()
         {
             return View();
         }
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpPost("panel/change-password", Name = "panelChangePassword")]
         public IActionResult ChangePassword(string oldPassword, string newPassword)
         {
@@ -348,7 +335,7 @@ namespace Airport.UI.Controllers
         }
 
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/bank-account")]
         public IActionResult BankAccount()
         {
@@ -356,14 +343,14 @@ namespace Airport.UI.Controllers
         }
 
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/agreements")]
         public IActionResult Agreement()
         {
             return View();
         }
 
-        [Authorize(Roles = "2")]
+        [Authorize(Roles = "2,4")]
         [HttpGet("panel/my-company")]
         public IActionResult Company()
         {
@@ -375,7 +362,7 @@ namespace Airport.UI.Controllers
             return View(user);
         }
 
-        [Authorize(Roles = "2")]
+        [Authorize(Roles = "2,4")]
         [HttpPost("panel/my-company")]
         public IActionResult Company(UserDatas updateUser)
         {
@@ -407,7 +394,6 @@ namespace Airport.UI.Controllers
             }
 
         }
-
 
         [Authorize(Roles = "1")]
         [HttpGet("user-management")]
@@ -442,7 +428,6 @@ namespace Airport.UI.Controllers
                 return BadRequest(ex.ToString());
             }
         }
-
 
         [Authorize(Roles = "1")]
         [HttpGet("user-management/detail/{id}")]
@@ -515,7 +500,7 @@ namespace Airport.UI.Controllers
             }
         }
 
-        public JsonResult RateDrive(int id,int rate)
+        public JsonResult RateDrive(int id, int rate)
         {
             try
             {
@@ -530,7 +515,7 @@ namespace Airport.UI.Controllers
                     reservation.Rate = rate;
                     _reservations.Update(reservation);
 
-                    return Json(new {result = 1});
+                    return Json(new { result = 1 });
                 }
                 return Json(new { });
             }
@@ -560,11 +545,6 @@ namespace Airport.UI.Controllers
             }
             return md5Str;
         }
-
-
-        
-
-
     }
 }
 

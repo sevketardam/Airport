@@ -15,6 +15,8 @@ namespace Airport.DBEntities.Entities
         public string Email { get; set; }
         public string Password { get; set; }
         public byte Type { get; set; }
+        //0=global admin,1=müşteri,2=partner acente,3=sürücü,4=junior admin,5=satış acentesi
+        
         public int UserId { get; set; }
         public int DriverId { get; set; }
 
