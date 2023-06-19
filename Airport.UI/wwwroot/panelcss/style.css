@@ -725,7 +725,7 @@ input.selectPhoto {
     gap: 1rem;
     max-width: 32rem;
     margin: auto;
-} 
+}
 
 .doc-block {
     position: relative;
@@ -757,13 +757,78 @@ input.selectPhoto {
     }
 
 
-    .doc-item .col-12 {
-        display: flex;
-        align-items: center;
-        gap: 0.9rem;
-    }
+.doc-item .col-12 {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+}
 
 .doc-item i {
     cursor: pointer;
     font-size: 1.4rem;
+}
+
+.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-top,
+.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
+.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
+.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
+    top: 36.9rem !important;
+}
+
+@media (max-width: 1440px) and (min-width: 1200px) {
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
+        top: calc(40.3rem - 5.7rem) !important;
+    }
+
+}
+@media (max-width: 1200px) {
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
+        top: calc(38rem - 5.7rem) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
+        top: calc(46.1rem - 5.2rem) !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
+        left: 0 !important;
+        right: 0 !important;
+        margin: auto;
+        width: 45% !important;
+        top: calc(46.2rem - 2.2rem) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
+        width: 55% !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
+        width: 70% !important;
+    }
 }
