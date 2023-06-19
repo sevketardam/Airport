@@ -1,8 +1,11 @@
-System.InvalidOperationException: Sequence contains no elements
-   at System.Linq.ThrowHelper.ThrowNoElementsException()
-   at System.Linq.Enumerable.Average[TSource](IEnumerable`1 source, Func`2 selector)
-   at Airport.UI.Controllers.ReservationController.<>c__DisplayClass22_7.<ReservationStepTwo>b__12(LocationCars b) in C:\Users\arda2\OneDrive\Masaüstü\Airport2\Airport\Airport.UI\Controllers\ReservationController.cs:line 328
-   at System.Collections.Generic.List`1.ForEach(Action`1 action)
-   at Airport.UI.Controllers.ReservationController.<>c__DisplayClass22_2.<ReservationStepTwo>b__10(LocationIsOutVM a) in C:\Users\arda2\OneDrive\Masaüstü\Airport2\Airport\Airport.UI\Controllers\ReservationController.cs:line 250
-   at System.Collections.Generic.List`1.ForEach(Action`1 action)
-   at Airport.UI.Controllers.ReservationController.ReservationStepTwo(GetResevationIM reservation) in C:\Users\arda2\OneDrive\Masaüstü\Airport2\Airport\Airport.UI\Controllers\ReservationController.cs:line 246
+iText.Kernel.Exceptions.PdfException: Unknown PdfException.
+ ---> System.NotSupportedException: Either itext7.bouncy-castle-adapter or itext7.bouncy-castle-fips-adapter dependency must be added in order to use BouncyCastleFactoryCreator
+   at iText.Bouncycastleconnector.BouncyCastleDefaultFactory.CreateIDigest(String hashAlgorithm)
+   at iText.Kernel.Pdf.SmartModePdfObjectsSerializer..ctor()
+   --- End of inner exception stack trace ---
+   at iText.Kernel.Pdf.SmartModePdfObjectsSerializer..ctor()
+   at iText.Kernel.Pdf.PdfWriter..ctor(Stream os, WriterProperties properties)
+   at iText.Kernel.Pdf.PdfWriter..ctor(String filename, WriterProperties properties)
+   at iText.Kernel.Pdf.PdfWriter..ctor(String filename)
+   at Airport.UI.Models.Extendions.PdfCreator.CreateReservationPDF(String fileName, Reservations reservation) in C:\Users\arda2\OneDrive\Masaüstü\Airport2\Airport\Airport.UI\Models\Extendions\PdfCreator.cs:line 343
+   at Airport.UI.Controllers.ReservationController.ReservationLastStep(Reservations reservation, List`1 OthersName, List`1 OthersSurname, List`1 serviceItems, String selectedServiceItems, String coupon) in C:\Users\arda2\OneDrive\Masaüstü\Airport2\Airport\Airport.UI\Controllers\ReservationController.cs:line 733
