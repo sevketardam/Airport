@@ -403,3 +403,8 @@ $(".hidden-link a").on("click", function () {
         }
     }, 10);
 })
+
+
+$(".doc-item input").on("change", function () {
+    $(this).closest(".doc-item").find("p").text($(this).val().split(`\\`)[$(this).val().split(`\\`).length - 1])
+})

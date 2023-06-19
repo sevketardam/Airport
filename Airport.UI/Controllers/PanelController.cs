@@ -94,6 +94,21 @@ namespace Airport.UI.Controllers
             
         }
 
+        [HttpGet("docs")]
+        public IActionResult Docs()
+        {
+            try
+            {
+
+                return View();
+            }
+            catch (Exception)
+            {
+                return Json(new { });
+            }
+
+        }
+
 
         public IActionResult test2()
         {
