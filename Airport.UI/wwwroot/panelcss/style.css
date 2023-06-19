@@ -729,6 +729,7 @@ input.selectPhoto {
 
 .doc-block {
     position: relative;
+    padding-right: 3rem !important;
     /*border: 1px solid black;
     width: 100%;
     max-width: 20rem;
@@ -757,6 +758,20 @@ input.selectPhoto {
     }
 
 
+.doc-status {
+    position: absolute;
+    right: 3.8rem;
+    top: 0.5rem;
+    bottom: 0;
+}
+
+    .doc-status.err {
+        color: red;
+    }
+    .doc-status.success {
+        color: green;
+    }
+
 .doc-item .col-12 {
     display: flex;
     align-items: center;
@@ -772,33 +787,53 @@ input.selectPhoto {
 .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
 .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
 .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
-    top: 36.9rem !important;
+    top: 29.1rem !important;
 }
 
-@media (max-width: 1440px) and (min-width: 1200px) {
+@media (max-width: 1440px) and (min-width: 1400px) {
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-top,
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
-        top: calc(40.3rem - 5.7rem) !important;
+        top: 27rem !important;
     }
 
 }
+
+@media (max-width: 1400px) and (min-width: 1200px) {
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
+        top: 32.7rem !important;
+    }
+}
+
 @media (max-width: 1200px) {
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-top,
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
-        top: calc(38rem - 5.7rem) !important;
+        top: 30.2rem !important;
     }
 }
 
+@media (max-width: 900px) {
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
+        top: 36.2rem !important;
+    }
+
+
+}
 @media (max-width: 768px) {
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-top,
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
-        top: calc(46.1rem - 5.2rem) !important;
+        top: 32.75rem !important;
     }
 }
 
@@ -807,11 +842,19 @@ input.selectPhoto {
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
-        left: 0 !important;
-        right: 0 !important;
-        margin: auto;
+        
         width: 45% !important;
-        top: calc(46.2rem - 2.2rem) !important;
+        top: 35.75rem !important;
+    }
+}
+
+@media (max-width: 500px) {
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-top,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
+    .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
+        width: 45% !important;
+        top: 39rem !important;
     }
 }
 
@@ -821,6 +864,10 @@ input.selectPhoto {
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
         width: 55% !important;
+        left: 0 !important;
+        right: 0 !important;
+        margin: auto;
+        top: 45.3rem !important;
     }
 }
 
@@ -830,5 +877,152 @@ input.selectPhoto {
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom,
     .datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-right.datepicker-orient-bottom {
         width: 70% !important;
+    }
+}
+
+
+.icon-cards-row .card-body strong {
+    font-weight: 400;
+    color: #00365a;
+    font-size: 1.6rem;
+}
+
+.icon-cards-row .card-body a.pull_price {
+    font-size: 0.8rem;
+    background: #28c428;
+    color: white;
+    border-radius: 5px;
+    display: block;
+    /* margin-top: 0.2rem; */
+    position: absolute;
+    width: 90%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    bottom: 0.6rem;
+    justify-content: center;
+}
+
+.icon-cards-row .card-body {
+    position: relative;
+}
+
+p.card-text.font-weight-semibold.mb-0 {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+
+.calc-flex {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+
+.calc-item {
+    width: calc(20% - .77rem);
+    box-shadow: 0 0 4px rgb(0,0,0,.2);
+    background: white;
+    border-radius: 12px;
+    padding: 0 2rem;
+}
+
+    .calc-item:last-child {
+        width: calc(40% - .77rem);
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+
+.calc-first-div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+}
+
+    .calc-first-div > div:first-child {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.5rem;
+        height: 5rem;
+        
+    }
+
+    .calc-first-div p {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+.calc-length {
+    font-size: 1.8rem;
+    font-weight: 400;
+}
+
+a.pull_price {
+    background: #28c428;
+    color: white;
+    display: block;
+    height: 2.3rem;
+    width: 9rem;
+    border-radius: 9.8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.calc-first-div > div:last-child p {
+    font-size: 1.7rem;
+    font-weight: 400;
+}
+
+@media (max-width: 1400px){
+    .calc-item {
+        width: calc((100% / 3) - .67rem);
+    }
+
+        .calc-item:last-child {
+            width: 100%;
+        }
+}
+
+@media (max-width: 900px) {
+    .calc-item {
+        width: calc((100% / 2) - .5rem);
+    }
+
+        .calc-item:nth-child(3) {
+            width: 100%;
+        }
+
+        .calc-item:last-child {
+            width: 100%;
+        }
+}
+
+@media (max-width: 500px) {
+    .calc-item:last-child {
+        height: auto;
+        justify-content: center;
+        gap: 0;
+        flex-direction: column;
+        padding: 0 1rem 1rem 1rem;
+    }
+}
+
+@media (max-width: 480px){
+    .calc-item {
+        width: 100%;
     }
 }
