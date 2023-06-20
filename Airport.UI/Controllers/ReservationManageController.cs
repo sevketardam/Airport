@@ -153,9 +153,6 @@ namespace Airport.UI.Controllers
                         };
                         return View(reservationVM);
                     }
-
-                    return RedirectToAction("Index", "Home");
-
                 }
                 return NotFound();
             }

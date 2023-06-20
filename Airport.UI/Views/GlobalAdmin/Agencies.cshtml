@@ -1,15 +1,40 @@
 ﻿@{
+    Layout = "_PanelLayout";
+    ViewData["title"] = "Create Coupon";
+}
+
+@{
     ViewData["title"] = "Agencies";
 }
+
 @section pageCSSLink{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+}
+
+@section pageCss{
+    <style>
+        .iti{
+            display:block;
+        }
+
+        .submitBtn{
+            border: none;
+            background: var(--orange);
+            color: white;
+            /* padding: 1.5rem 7rem; */
+            width: 100%;
+            max-width: 400px;
+            height: 62px;
+            border-radius: 2px;
+        }
+    </style>
 }
 
 <section class="_Module_Margin">
     <div class="container">
         <form id="_Agency_Form">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 _Form_Title">
                     <h3>
                         Personel Information
                     </h3>
@@ -19,28 +44,28 @@
 
                 <div class="col-md-6">
                     <label class="_Form_Label">Title</label>
-                    <input type="text" name="Title">
+                    <input type="text" class="form-control" name="Title">
                 </div>
                 <div class="col-md-6">
                     <label class="_Form_Label">E-mail</label>
-                    <input type="text" name="eposta">
+                    <input type="text" class="form-control" name="eposta">
                 </div>
                 <div class="col-md-6">
                     <label class="_Form_Label">Name Surname</label>
-                    <input type="text" name="name">
+                    <input type="text" class="form-control" name="name">
                 </div>
                 <div class="col-md-6 _Pos_Phone">
                     <label class="_Form_Label">Phone Number</label>
-                    <input type="text" id="_Personel_Number" name="PhoneNumber">
+                    <input type="text" class="form-control" id="_Personel_Number" name="PhoneNumber">
                     <input type="hidden" name="RealPhone" id="realPhoneInpt">
                 </div>
                 <div class="col-md-6">
                     <label class="_Form_Label">Profession (Optional)</label>
-                    <input type="text" name="Profession">
+                    <input type="text" class="form-control" name="Profession">
                 </div>
                 <div class="col-md-6">
                     <label class="_Form_Label">Password</label>
-                    <input type="password" name="Password">
+                    <input type="password" class="form-control" name="Password">
                 </div>
 
                 <div class="_Form_Div py-3"></div>
@@ -48,7 +73,7 @@
                 <div class="_Form_Div py-3 _Mobile_None"></div>
                 <!-- 2 Form arasına boşluk bırakmak için. Yapı bozulmasın diye 2 adet var.  -->
 
-                <div class="col-md-6 _Form_Title">
+                <div class="col-md-12 _Form_Title mt-3">
                     <h3>
                         Agency Information
                     </h3>
@@ -57,25 +82,25 @@
                 <!-- Yapı bozulması diye eklendi. Silinirse yapı bozulur -->
                 <div class="col-md-6">
                     <label class="_Form_Label">Company Name</label>
-                    <input type="text" name="CompanyName">
+                    <input type="text" class="form-control" name="CompanyName">
                 </div>
                 <div class="col-md-6">
                     <label class="_Form_Label">Adress</label>
-                    <input type="text" name="Address">
+                    <input type="text" class="form-control" name="Address">
                 </div>
                 <div class="col-md-6">
                     <label class="_Form_Label">Company Website (optional)</label>
-                    <input type="text" name="CompanyWebsite">
+                    <input type="text" class="form-control" name="CompanyWebsite">
                 </div>
                 <div class="col-md-6">
                     <div class="_Down_Flex">
                         <div>
                             <label class="_Form_Label">Linkedin (optional)</label>
-                            <input type="text" name="Linkedin">
+                            <input type="text" class="form-control" name="Linkedin">
                         </div>
                         <div>
                             <label class="_Form_Label">Facebook (optional)</label>
-                            <input type="text" name="Facebook">
+                            <input type="text" class="form-control" name="Facebook">
                         </div>
                     </div>
                 </div>
@@ -84,30 +109,30 @@
                     <div class="_Down_Flex">
                         <div class="_Pos_Rel">
                             <label class="_Form_Label">Transfer Request (monthly basis)</label>
-                            <input type="text" name="TransferRequest">
+                            <input type="text" class="form-control" name="TransferRequest">
                         </div>
                         <div class="_Pos_Rel">
                             <label class="_Form_Label">Transfer Requested Locations</label>
-                            <input type="text" name="TransferRequestLocation">
+                            <input type="text" class="form-control" name="TransferRequestLocation">
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 _Pos_Phone">
                     <label class="_Form_Label">Company Phone Number</label>
-                    <input type="text" id="_Agency_Number" name="CompanyPhoneNumber">
+                    <input type="text" class="form-control" id="_Agency_Number" name="CompanyPhoneNumber">
                     <input type="hidden" name="CompanyRealPhone" id="companyRealPhoneInpt">
                 </div>
 
                 <div class="col-md-6 _Last_Input">
                     <label class="_Form_Label">Tell us Phone Number</label>
-                    <input type="text" name="TellUsPhoneNumber">
+                    <input type="text" class="form-control" name="TellUsPhoneNumber">
                 </div>
-
-                <div class="col-md-6 _Check_Main mt-4">
+@*
+                <div class="col-md-12 _Check_Main mt-4">
                     <div class="_Check_Div">
                         <div class="col-md-12 _Pos_Rel">
                             <div class="custom-control custom-checkbox mb-2">
-                                <input type="checkbox" class="custom-control-input" id="financialCheckbox" name="c1" value="true">
+                                <input type="checkbox" class="custom-control-input" name="c1" value="true">
                                 <label class="custom-control-label" for="financialCheckbox">
                                     By clicking “Register”, you indicate that
                                     you have
@@ -116,20 +141,20 @@
                             </div>
 
                         </div>
-
-                        @*<input type="checkbox" name="c1"> *@
-
                     </div>
                     <div class="_Check_Div">
-                        <input type="checkbox" name="c2"> <label for="">
-                            By clicking “Register”, you indicate that
-                            you have
-                            agreed our Privacy Policy. *
-                        </label>
+                        <div class="custom-control custom-checkbox mb-2">
+                            <input type="checkbox" class="custom-control-input" name="c2" value="true">
+                            <label class="custom-control-label" for="financialCheckbox">
+                                By clicking “Register”, you indicate that
+                                you have
+                                agreed our Privacy Policy. *
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <button type="submit">
+                </div>*@
+                <div class="col-md-12 mt-3">
+                    <button type="submit" class="submitBtn">
                         Submit
                     </button>
                 </div>
@@ -137,7 +162,6 @@
         </form>
     </div>
 </section>
-
 
 @section pageJsScript{
 
@@ -148,36 +172,34 @@
 
 
     <script>
-
-
-        //$('#_Agency_Form').on("submit", function (e) {
-        //    e.preventDefault();
-        //    if ($(this).valid()) {
-        //        var formData = $(this).serialize()
-        //        $.ajax({
-        //            url: '@Url.Action(nameof(Airport.UI.Controllers.HomeController))',
-        //            type: "POST",
-        //            data: formData,
-        //            success: function (response) {
-        //                if (response.result == 1) {
-        //                    Swal.fire({
-        //                        icon: 'success',
-        //                        title: 'Success',
-        //                        text: 'Successfully Created Your Agency Account',
-        //                    }).then(() => {
-        //                        location.href = "/";
-        //                    })
-        //                } else if (response.result == 2) {
-        //                    Swal.fire({
-        //                        icon: 'warning',
-        //                        title: 'Error',
-        //                        text: 'This email is already registered',
-        //                    })
-        //                }
-        //            }
-        //        });
-        //    }
-        //})
+        $('#_Agency_Form').on("submit", function (e) {
+            e.preventDefault();
+            if ($(this).valid()) {
+                var formData = $(this).serialize()
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.HomeController))',
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully Created Your Agency Account',
+                            }).then(() => {
+                                location.href = "/";
+                            })
+                        } else if (response.result == 2) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Error',
+                                text: 'This email is already registered',
+                            })
+                        }
+                    }
+                });
+            }
+        })
 
 
 

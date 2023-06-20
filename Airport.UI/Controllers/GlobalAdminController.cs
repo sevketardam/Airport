@@ -104,5 +104,12 @@ namespace Airport.UI.Controllers
             }
         }
 
+        [Authorize(Roles = "0")]
+        [HttpGet("agencies")]
+        public IActionResult Agencies()
+        {
+            return View();
+        }
+
     }
 }

@@ -76,7 +76,7 @@ namespace Airport.UI
                 opt.LoginPath = "/";
                 opt.SlidingExpiration = false;
                 opt.ExpireTimeSpan = TimeSpan.FromHours(6);
-                opt.AccessDeniedPath = "/";
+                opt.AccessDeniedPath = "/NotFound";
             });
 
         }
@@ -86,12 +86,14 @@ namespace Airport.UI
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/error");
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/error");
             }
+
+            app.UseStatusCodePagesWithReExecute("/Error/Index", "?code={0}");
 
             app.UseStaticFiles();
 
