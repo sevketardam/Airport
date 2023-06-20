@@ -12,7 +12,7 @@
         }
 
             .infosList li.active p {
-                color: orange;
+                color: white;
                 font-size: 1.5rem;
                 font-weight: 600;
             }
@@ -31,9 +31,10 @@
 
         .leftDetail {
             height: 100%;
-            background-color: #eeeeee;
+            background-color: var(--orange);
             border-radius: 10px;
             padding: 1rem;
+            color: white !important;
         }
 
         .rightPhotos {
@@ -56,12 +57,124 @@
             padding-bottom: .5rem;
         }
 
+        ._Btn_Style.btn {
+            color: var(--orange);
+            background-color: white;
+        }
+
+        @@media (max-width: 768px) {
+            .md-flex-reverse {
+                flex-direction: column-reverse;
+            }
+        }
+
+        .pay_success_icon {
+            width: 3rem;
+            height: 3rem;
+            /* border: 1px solid; */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+        }
+
+            .pay_success_icon.success {
+                background-color: #ff670933;
+                color: var(--orange);
+            }
+
+        .pay_text_title p {
+            font-size: 5vmin;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .pay_text_title.success p {
+            color: var(--orange);
+        }
+
+        .pay_text_content p {
+            font-size: 0.9rem;
+        }
+
+        .pay_buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+            .pay_buttons > div {
+                width: 10rem;
+                font-size: 0.8rem;
+                height: 2.2rem;
+            }
+
+            .pay_buttons button {
+                width: 100%;
+                height: 100%;
+                border: 1px solid var(--orange);
+                color: var(--orange);
+                border-radius: 10px;
+            }
+
+            .pay_buttons > div:first-child button {
+                background-color: var(--orange);
+                color: white;
+            }
+
+            .pay_buttons > div:last-child button {
+                background-color: transparent;
+            }
+
+        .status_modal {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .pay_buttons > div:last-child button a {
+            color: var(--orange);
+            text-decoration: none;
+        }
+
+        .order-detail-title {
+            margin-top: 2rem;
+            font-weight: 600;
+        }
+
     </style>
 }
 
 <section>
     <div class="container my-5">
-        <div class="row">
+        <div>
+            <div class="status_modal">
+                <div class="pay_success_icon success">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div class="pay_text_title success">
+                    <p>
+                        Payment Successful
+                    </p>
+                </div>
+                <div>
+                    <h3 class="order-detail-title">
+                        Order Detail
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="row md-flex-reverse">
+
+
+            <div class="col-md-6 mt-3">
+                <div id="map"></div>
+                <div class="rightPhotos">
+                    <img src="@Model.LocationCars.Car.Type.CarImageURL" width="100%" height="100%" style="object-fit: contain;" alt="">
+                </div>
+            </div>
             <div class="col-md-6 mt-3">
                 <div class="leftDetail">
 
@@ -69,8 +182,8 @@
                         <h2>
                             Reservation Code : <span>@Model.ReservationCode</span>
                         </h2>
-                        <p>@Model.LocationCars.Car.Brand.CarBrandName @Model.LocationCars.Car.Model.CarModelName @Model.LocationCars.Car.Series.CarSeriesName</p>
-                        <p>Max @Model.LocationCars.Car.MaxPassenger Suitcase @Model.LocationCars.Car.SuitCase Small Bags @Model.LocationCars.Car.SmallBags</p>
+                        <p>@Model.LocationCars.Car.Brand.CarBrandName @Model.LocationCars.Car.Model.CarModelName @Model.LocationCars.Car.Series.CarSeriesName @Model.LocationCars.Car.Type.CarTypeName</p>
+                        <p>Max @Model.LocationCars.Car.MaxPassenger Suitcase @Model.LocationCars.Car.SuitCase Small Bags @Model.LocationCars.Car.SuitCase</p>
                     </div>
 
                     <ul class="infosList">
@@ -107,24 +220,21 @@
                             </p>
                         </li>
 
-                        @if (Model.ReservationServicesTables.Count > 0)
+                        <li class="active">
+                            <p>
+                                Services
+                            </p>
+                        </li>
+                        @foreach (var item in Model.ReservationServicesTables)
                         {
-                            <li class="active">
-                                <p>
-                                    Services
+
+                            <li>
+                                <p style="overflow-wrap: break-word;">
+                                    @item.ServiceItem.ServiceProperty.ServicePropertyName : <b>@(item.Price)x@(item.PeopleCount) = @(Math.Round(item.Price * item.PeopleCount, 2)) €</b>
                                 </p>
                             </li>
-
-
-                            @foreach (var item in Model.ReservationServicesTables)
-                            {
-                                <li>
-                                    <p style="overflow-wrap: break-word;">
-                                        @item.ServiceItem.ServiceProperty.ServicePropertyName : <b>@(item.Price)x@(item.PeopleCount) = @(Math.Round(item.Price * item.PeopleCount, 2)) €</b>
-                                    </p>
-                                </li>
-                            }
                         }
+
 
 
                         <li class="active">
@@ -134,13 +244,26 @@
                         </li>
                         <li>
                             <p>
-                                @Model.ReservationDate.ToString("dd.MM.yyyy HH:mm")
+                                @(Model.ReservationDate.ToString("g"))
                             </p>
                         </li>
 
+                        @if (Model.ReturnStatus)
+                        {
+                            <li class="active">
+                                <p>
+                                    Return Date
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    @(Model.ReturnDate.ToString("g"))
+                                </p>
+                            </li>
+                        }
                         <li class="price">
                             <p>
-                                Price: @Model.TotalPrice €
+                                Price: @(Model.TotalPrice) €
                             </p>
 
                         </li>
@@ -149,19 +272,9 @@
                     <a class="_Btn_Style btn" href="http://airportglobaltransfer.com/pdf/@(Model.ReservationCode)-@(Model.Id).pdf" target="_blank">Download Voucher</a>
                 </div>
             </div>
-
-            <div class="col-md-6 mt-3">
-                <div class="rightMap" id="map">
-                </div>
-                <div class="rightPhotos">
-                    <img src="@Model.LocationCars.Car.Type.CarImageURL" width="100%" height="100%"
-                         style="object-fit: contain;" alt="">
-                </div>
-            </div>
         </div>
     </div>
 </section>
-
 
 @section  pageJsScript{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"
@@ -189,7 +302,7 @@
             streetViewControl: false,
                 zoomControl: false,
                     fullscreenControl: false
-                                                                            });
+                                                                                    });
 
         directionsRenderer.setMap(map);
 
@@ -207,7 +320,7 @@
                 directionsRenderer.setDirections(result);
             }
         });
-                                                                        }
+                                                                                }
 
 
         window.onload = () => {

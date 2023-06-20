@@ -210,24 +210,24 @@
                 </div>
 
                 <div class="step3-card-area mt-4">
-                    <form action="">
+                    <form method="post">
                         <div class="row g-2 step3-card-infos">
                             <div class="col-12">
                                 <label for="cardName">Card Holder Name</label>
-                                <input type="text" id="cardName" placeholder="Card Holder Name" class="font-control form-control-custom">
+                                <input type="text" id="cardName" name="CardHolderName" placeholder="Card Holder Name" class="font-control form-control-custom">
                             </div>
                             <div class="col-12 _Pos_Rel">
                                 <label for="cardNumber">Card Number</label>
-                                <input type="text" id="cardNumber" placeholder="Card Number" class="font-control form-control-custom">
+                                <input type="text" id="cardNumber" name="CardNumber" placeholder="Card Number" class="font-control form-control-custom">
 
                             </div>
                             <div class="col-6">
                                 <label for="mmyy">MM/YY</label>
-                                <input type="text" id="mmyy" placeholder="MM/YY" class="font-control form-control-custom">
+                                <input type="text" id="mmyy" name="CardDate" placeholder="MM/YY" class="font-control form-control-custom">
                             </div>
                             <div class="col-6">
                                 <label for="cvc">CVC</label>
-                                <input type="text" id="cvc" placeholder="CVC" class="font-control form-control-custom">
+                                <input type="text" id="cvc" name="CVC" placeholder="CVC" class="font-control form-control-custom">
                             </div>
                             <div class="col-12">
                                 <button type="submit"> @Model.TotalPrice € Pay</button>

@@ -23,6 +23,7 @@ using System.Globalization;
 using System.IO;
 using System.Collections;
 using Microsoft.Extensions.Options;
+using Minio.DataModel;
 
 namespace Airport.UI.Controllers
 {
@@ -313,7 +314,7 @@ namespace Airport.UI.Controllers
                                             checkCar.PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}";
                                             checkCar.DropLocationPlaceId = reservation.DropValue;
                                             checkCar.PickLocationPlaceId = reservation.PickValue;
-                                            checkCar.Rate = rate.Count > 0 ? Math.Round(rate.Average(c => c.Rate), 2).ToString():"0";
+                                            checkCar.Rate = rate.Count > 0 ? Math.Round(rate.Average(c => c.Rate), 2).ToString() : "0";
                                             checkCar.RateCount = rate.Count > 0 ? rate.Count.ToString() : "0";
                                             getreservation[getreservation.IndexOf(checkCar)] = checkCar;
                                         }
@@ -338,7 +339,7 @@ namespace Airport.UI.Controllers
                                                         PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
                                                         DropLocationPlaceId = reservation.DropValue,
                                                         PickLocationPlaceId = reservation.PickValue,
-                                                        Rate = rate.Count > 0 ?  Math.Round(rate.Average(c => c.Rate), 2).ToString() : "0",
+                                                        Rate = rate.Count > 0 ? Math.Round(rate.Average(c => c.Rate), 2).ToString() : "0",
                                                         RateCount = rate.Count > 0 ? rate.Count.ToString() : "0",
                                                     });
                                                 }
@@ -754,7 +755,7 @@ namespace Airport.UI.Controllers
                 //_sms.SmsForReservation(mesaj);
 
 
-                HttpContext.Session.MySet("reservation",item);
+                HttpContext.Session.MySet("reservation", item);
 
 
                 return RedirectToAction("ReservationStepPayment", "Reservation");
@@ -783,42 +784,123 @@ namespace Airport.UI.Controllers
                 var reservation = HttpContext.Session.MyGet<Reservations>("reservation");
                 if (reservation != null)
                 {
-                    //PdfCreator pdfCreator = new PdfCreator(_env);
-                    //pdfCreator.CreateReservationPDF(reservation.ReservationCode + "-" + reservation.Id, reservation);
-
-
-                    //_mail.SendReservationMail(reservation);
-
-                    //var allMessage = new List<Mesaj>();
-                    //allMessage.Add(new Mesaj
-                    //{
-                    //    dest = reservation.RealPhone,
-                    //    msg = @$"Your reservation code {reservation.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{reservation.ReservationCode}-{reservation.Id}.pdf"
-                    //});
-
-                    //var mesaj = allMessage.ToArray();
-
-                    //_sms.SmsForReservation(mesaj);
-
                     return View(reservation);
                 }
                 return NotFound();
             }
-            catch (Exception )
+            catch (Exception)
             {
                 throw new Exception();
-            }         
+            }
         }
 
+        [HttpPost("reservation-step-payment")]
+        public async Task<IActionResult> ReservationStepPayment(PaymentCardDetailVM cardDetail)
+        {
+            try
+            {
+                var reservation = HttpContext.Session.MyGet<Reservations>("reservation");
+                if (reservation != null)
+                {
+                    if (cardDetail.CardNumber == "1")
+                    {
 
+                        var getCoupon = _coupons.SelectByFunc(a => a.Active && a.Id == reservation.Coupon && a.CouponStartDate <= DateTime.Now
+                                                        && a.CouponFinishDate >= DateTime.Now && a.IsPerma).FirstOrDefault();
+                        if (getCoupon == null)
+                        {
+                            getCoupon = _coupons.SelectByFunc(a => a.Active && a.Id == reservation.Coupon && a.CouponStartDate <= DateTime.Now
+                                                                               && a.CouponFinishDate >= DateTime.Now && (a.CouponLimit > a.UsingCount && !a.IsPerma)).FirstOrDefault();
+                        }
+
+                        if (getCoupon is not null)
+                        {
+                            getCoupon.UsingCount = getCoupon.UsingCount + 1;
+                            _coupons.Update(getCoupon);
+                        }
+
+                        var createdReservation = _reservations.Insert(new Reservations
+                        {
+                            DropLatLng = reservation.DropLatLng,
+                            PickLatLng = reservation.PickLatLng,
+                            Phone = reservation.Phone,
+                            DropPlaceId = reservation.DropPlaceId,
+                            PickPlaceId = reservation.PickPlaceId,
+                            Email = reservation.Email,
+                            LocationCarId = reservation.LocationCars.Id,
+                            Name = reservation.Name,
+                            ReservationCode = reservation.ReservationCode,
+                            OfferPrice = reservation.OfferPrice,
+                            Surname = reservation.Surname,
+                            DropFullName = reservation.DropFullName,
+                            PickFullName = reservation.PickFullName,
+                            PeopleCount = reservation.PeopleCount,
+                            ReservationDate = reservation.ReservationDate,
+                            ReturnDate = reservation.ReturnDate,
+                            ReturnStatus = reservation.ReturnStatus,
+                            DistanceText = reservation.DistanceText,
+                            DurationText = reservation.DurationText,
+                            Discount = reservation.Discount,
+                            IsDiscount = reservation.IsDiscount,
+                            UserId = reservation.UserId,
+                            ServiceFee = reservation.ServiceFee,
+                            Comment = reservation.Comment,
+                            Status = reservation.Status,
+                            IsDelete = reservation.IsDelete,
+                            HidePrice = reservation.HidePrice,
+                            Coupon = reservation.Coupon,
+                            TotalPrice = reservation.TotalPrice,
+                            RealPhone = reservation.RealPhone,
+                            DiscountText = reservation.DiscountText,
+                            ReservationUserId = reservation.ReservationUserId,
+                            Rate = reservation.Rate
+                        });
+                        reservation.Id = createdReservation.Id;
+
+                        PdfCreator pdfCreator = new PdfCreator(_env);
+                        pdfCreator.CreateReservationPDF(reservation.ReservationCode + "-" + reservation.Id, reservation);
+
+                        reservation.ReservationPeoples.ForEach(item => item.ReservationId = createdReservation.Id);
+                        reservation.ReservationServicesTables.ForEach(item => item.ReservationId = createdReservation.Id);
+
+                        _reservationsPeople.InsertRage(reservation.ReservationPeoples);
+                        _reservationServicesTable.InsertRage(reservation.ReservationServicesTables);
+
+                        _mail.SendReservationMail(reservation);
+
+                        var allMessage = new List<Mesaj>();
+                        allMessage.Add(new Mesaj
+                        {
+                            dest = reservation.RealPhone,
+                            msg = @$"Your reservation code {reservation.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{reservation.ReservationCode}-{reservation.Id}.pdf"
+                        });
+
+                        var mesaj = allMessage.ToArray();
+
+                        _sms.SmsForReservation(mesaj);
+
+
+                        return RedirectToAction("CreatedReservationDetail", "Reservation", new { id = reservation.Id });
+                    }
+                    else
+                    {
+                        return RedirectToAction("CancelReservation", "Reservation");
+                    }
+                }
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
 
         [HttpGet("reservation-success")]
         public IActionResult CreatedReservationDetail(int id)
         {
-            var reservation = _reservations.SelectByID(id);
-            if (reservation != null)
+            var reservation = HttpContext.Session.MyGet<Reservations>("reservation");
+            if (reservation != null && reservation.Id == id)
             {
-
                 reservation.LocationCars = _locationCar.SelectByID(reservation.LocationCarId);
                 reservation.LocationCars.Car = _getCar.CarDetail(reservation.LocationCars.CarId);
 
@@ -836,6 +918,17 @@ namespace Airport.UI.Controllers
                 return View(reservation);
             }
 
+            return NotFound();
+        }
+
+        [HttpGet("reservation-cancel")]
+        public IActionResult CancelReservation()
+        {
+            var reservation = HttpContext.Session.MyGet<Reservations>("reservation");
+            if(reservation != null)
+            {
+                return View();
+            }
             return NotFound();
         }
 
