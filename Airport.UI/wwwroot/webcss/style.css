@@ -4486,3 +4486,8 @@ textarea.form-control-custom {
 .non-bor{
     border-radius: 0 !important;
 }
+
+.form-control-custom:not(.non-bor) {
+
+     padding: 0.5rem 0.75rem !important; 
+}
