@@ -20,8 +20,6 @@ namespace Airport.DBEntities.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
-
             //var connectionString = "server=localhost;port=3306;database=canli_wr7076624;user=canli_wr7076624;password=Haxa90$29;Allow Zero Datetime=True;Convert Zero Datetime=True";
             //optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 

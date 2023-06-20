@@ -118,7 +118,7 @@ namespace Airport.UI.Controllers
 
         [Authorize(Roles = "0")]
         [HttpPost("agencies")]
-        public IActionResult Agencies(UserDatas data, string Eposta, string Password,int agencyType)
+        public IActionResult Agencies(UserDatas data, string Eposta, string Password,byte agencyType)
         {
             if (data != null)
             {
@@ -148,7 +148,7 @@ namespace Airport.UI.Controllers
                     {
                         Email = Eposta,
                         Password = GetMD5(Password),
-                        Type = 2,
+                        Type = agencyType,
                         UserId = addedAgencies.Id,
                         DriverId = 0
                     });
