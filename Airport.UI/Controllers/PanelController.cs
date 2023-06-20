@@ -100,13 +100,29 @@ namespace Airport.UI.Controllers
 
         }
 
-        [HttpGet("docs")]
+
+        [HttpGet("createpaylink")]
+        public IActionResult CreatePayLink()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception)
+            {
+                return Json(new { });
+            }
+
+        }
+
+
+       [HttpGet("docs")]
         public IActionResult Docs()
         {
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var docs = _docs.SelectByFunc(a=>a.UserId == userId).FirstOrDefault();
+                var docs = _docs.SelectByFunc(a => a.UserId == userId).FirstOrDefault();
 
                 return View(docs);
             }

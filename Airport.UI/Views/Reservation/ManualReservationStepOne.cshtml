@@ -26,28 +26,28 @@
                         <div class="_Form_Inputs">
                             <div class="_Pos_Rel">
                                 <label for="">Pick Up</label>
-                                <input type="text" id="_Pick_Up" name="PickValueText" placeholder="Search Location">
+                                <input type="text" id="_Pick_Up" name="PickValueText" placeholder="Search Location" class="form-control form-control-custom non-bor">
                                 <input type="hidden" name="PickValue" id="_Pick_Up_Value">
                             </div>
                             <div class="_Pos_Rel">
                                 <label for="">Drop Off</label>
-                                <input type="text" id="_Drop_Off" name="DropValueText" placeholder="Search Location">
+                                <input type="text" id="_Drop_Off" name="DropValueText" placeholder="Search Location" class="form-control form-control-custom non-bor">
                                 <input type="hidden" name="DropValue" id="_Drop_Off_Value">
                             </div>
                             <div class="_Pos_Rel">
                                 <label for="">Flight Arrival</label>
                                 <img src="~/img/calendar.png" class="calendarImage" />
-                                <input type="datetime-local" name="FlightTime">
+                                <input type="datetime-local" name="FlightTime" class="form-control form-control-custom non-bor">
                             </div>
                             <div class="_Pos_Rel">
                                 <div class="d-none Return_Arrival">
                                     <label for="">Return</label>
-                                    <input type="datetime-local" name="ReturnDate">
+                                    <input type="datetime-local" name="ReturnDate" class="form-control form-control-custom non-bor">
                                     <img src="~/img/calendar.png" class="calendarImage" />
                                     <input type="checkbox" name="ReturnStatus" value="true" style="position:absolute; opacity: 0;visibility: visible; " />
                                 </div>
                                 <div>
-                                    <button type="button" class="_Add_Return">
+                                    <button type="button" class="_Add_Return form-control form-control-custom non-bor">
                                         <i class="fa-sharp fa-solid fa-plus"></i> Add Return
                                     </button>
                                 </div>
@@ -56,12 +56,12 @@
                                 <span class="stepOneNumber">
                                     <i class="fa-solid fa-user"></i>
                                 </span>
-                                <input type="number" value="1" name="PeopleCount" class="numberReser">
+                                <input type="number" value="1" name="PeopleCount" class="numberReser form-control form-control-custom non-bor">
                                 <div class="_user_btns">
-                                    <div class="_up_number">
+                                    <div class="_up_number non-bor">
                                         <i class="fa-sharp fa-solid fa-caret-up"></i>
                                     </div>
-                                    <div class="_down_number">
+                                    <div class="_down_number non-bor">
                                         <i class="fa-sharp fa-solid fa-caret-down"></i>
                                     </div>
                                 </div>

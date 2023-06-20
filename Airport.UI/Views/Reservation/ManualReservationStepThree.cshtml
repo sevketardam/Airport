@@ -244,15 +244,15 @@
                             <div class="_Form_Flex_Style">
                                 <div class="_Form_Div">
                                     <label class="_Form_Label">Name</label>
-                                    <input type="text" value="@Model.User?.Name" name="Name">
+                                    <input type="text" value="@Model.User?.Name" name="Name" class="form-control form-control-custom non-bor">
                                 </div>
                                 <div class="_Form_Div">
                                     <label class="_Form_Label">Surname</label>
-                                    <input type="text" name="Surname">
+                                    <input type="text" name="Surname" class="form-control form-control-custom non-bor">
                                 </div>
                                 <div class="_Form_Div _Info_Div">
                                     <label class="_Form_Label">E-mail</label>
-                                    <input type="text" value="@Model.User?.LoginAuth?.Email" name="Email">
+                                    <input type="text" value="@Model.User?.LoginAuth?.Email" name="Email" class="form-control form-control-custom non-bor">
 
                                     <span>
                                         Your invoice will be sent to this e-mail address
@@ -261,7 +261,7 @@
 
                                 <div class="_Form_Div _Info_Div _Pos_Phone">
                                     <label class="_Form_Label">Phone</label>
-                                    <input type="text" value="@(Model.User != null ? "+"+Model.User.RealPhone : "")" name="Phone" id="textPhone">
+                                    <input type="text" value="@(Model.User != null ? "+"+Model.User.RealPhone : "")" name="Phone" id="textPhone" class="form-control form-control-custom non-bor">
                                     <input type="hidden" name="RealPhone" value="@Model.User?.RealPhone" id="realPhoneInpt" />
                                     <span>
                                         You will be receiving both text and phone calls from
@@ -276,11 +276,11 @@
                                 {
                                     <div class="_Form_Div">
                                         <label class="_Form_Label">@(i + 2) People Name</label>
-                                        <input type="text" name="OthersName">
+                                        <input type="text" name="OthersName" class="form-control form-control-custom non-bor">
                                     </div>
                                     <div class="_Form_Div">
                                         <label class="_Form_Label">@(i + 2) People Surname</label>
-                                        <input type="text" name="OthersSurname">
+                                        <input type="text" name="OthersSurname" class="form-control form-control-custom non-bor">
                                     </div>
                                 }
                             </div>
@@ -289,8 +289,10 @@
 
 
                             <div class="w-100">
-                                <label class="_Form_Label">Comment</label>
-                                <textarea class="formTextarea" name="comment"></textarea>
+                                <label class="_Form_Label" style="font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.1rem;">Comment</label>
+                                <textarea class="form-control form-control-custom non-bor formTextarea mt-0" name="comment"></textarea>
                             </div>
 
                             @if (Model.SelectedData.LocationCar.Car.Service != null)
