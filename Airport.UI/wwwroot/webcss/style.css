@@ -74,19 +74,15 @@ body {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 0rem;
     position: relative;
 }
 
 ._Nav_List {
-    width: calc(60% - var(--nav-gap));
     display: flex;
-    justify-content: space-between;
-}
-
-._Auth {
-    width: calc(40% - var(--nav-gap));
+    justify-content: flex-end;
+    margin-right:1rem;
 }
 
 nav {
@@ -376,7 +372,7 @@ label.error {
         flex-direction: column;
         padding: 1rem 0;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-end;
         gap: 2rem;
         padding: 5rem 0 3rem 0;
         transition: left 250ms;

@@ -1,8 +1,10 @@
-﻿@model ReservationStepThreeVM
+﻿@using System.Security.Claims;
+@model ReservationStepThreeVM
 
 @{
     Layout = "_PanelLayout";
     ViewData["title"] = "Manual Reservation";
+    var userRole = User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault();
 }
 
 
@@ -118,7 +120,7 @@
             visibility: visible;
         }
 
-        .newPriveDesc{
+        .newPriveDesc {
             height: 5rem;
             top: 4.2rem;
             padding: 0.5rem !important;
@@ -196,17 +198,24 @@
                                 <h3>
                                     Total
                                 </h3>
-                                
+
                             </div>
                             <div class="_Total_Flex _Price_Flex">
                                 <div class="price">
                                     <p><span> <span id="priceBox">@Model.SelectedData.LastPrice</span> €</span></p>
-                                    <input class="newPriceInput" type="number" id="newPriceInput" value="@Model.SelectedData.LastPrice">
-                                    <textarea class="newPriveDesc" placeholder="Discount Description" id="discountDescription"></textarea>
+                                    @if (userRole == "0" || userRole == "4")
+                                    {
+                                        <input class="newPriceInput" type="number" id="newPriceInput" value="@Model.SelectedData.LastPrice">
+                                        <textarea class="newPriveDesc" placeholder="Discount Description" id="discountDescription"></textarea>
+                                    }
+
                                 </div>
-                                <div>
-                                    <input id="discountCheck" type="checkbox"> Discount
-                                </div>
+                                @if (userRole == "0" || userRole == "4")
+                                {
+                                    <div>
+                                        <input id="discountCheck" type="checkbox"> Discount
+                                    </div>
+                                }
                             </div>
                             <p>
                                 Free Cancellation <br>
@@ -354,7 +363,7 @@
 @section pageJs{
     <script>
 
-        $('#discountDescription').on("click keyup change keydown",function(){
+        $('#discountDescription').on("click keyup change keydown", function () {
             $('#discountDescriptionWR').val($(this).val())
         })
 

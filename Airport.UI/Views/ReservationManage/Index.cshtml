@@ -1,8 +1,11 @@
-﻿@model ReservationsIndexVM
+﻿@using System.Security.Claims;
+@model ReservationsIndexVM
 @{
     Layout = "_PanelLayout";
 
     ViewData["title"] = "Reservation Management";
+
+    var userRole = User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault();
 }
 @section pageCss{
     <style>
@@ -33,12 +36,12 @@
 
 
         #reservationTable tbody tr {
-            cursor:pointer;
+            cursor: pointer;
         }
 
-        #reservationTable tbody tr:hover {
-            box-shadow: 0 3px 30px rgba(0,0,0,.1), 0 3px 20px rgba(0,0,0,.1);
-        }
+            #reservationTable tbody tr:hover {
+                box-shadow: 0 3px 30px rgba(0,0,0,.1), 0 3px 20px rgba(0,0,0,.1);
+            }
     </style>
 }
 @*
@@ -223,7 +226,7 @@
                             }
                             else if (item.Status == 3)
                             {
-                                <span class="badge badge-info">Finished Reservation</span>
+                                <span class="badge badge-info">Completed</span>
                             }
                             else if (item.Status == 4)
                             {
@@ -242,12 +245,15 @@
                         </td>
                         <td>
                             <a title="Go to detail" href="/panel/reservation-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
-                            <a title="Leave a note" class="open-note reservation-table-icon"><i class="iconsminds-file-edit"></i></a>
-                            <a title="Select Driver" class="select-driver reservation-table-icon"><i class="iconsminds-doctor"></i></a>
-                            <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
-                                <i class="iconsminds-file"></i>
-                            </a>
-                            <a title="Cancel Reservation" class="reservation-delete"><i class="fa-regular fa-xmark"></i></a>
+                            @if (userRole != "5")
+                            {
+                                <a title="Leave a note" class="open-note reservation-table-icon"><i class="iconsminds-file-edit"></i></a>
+                                <a title="Select Driver" class="select-driver reservation-table-icon"><i class="iconsminds-doctor"></i></a>
+                                <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
+                                    <i class="iconsminds-file"></i>
+                                </a>
+                                <a title="Cancel Reservation" class="reservation-delete"><i class="fa-regular fa-xmark"></i></a>
+                            }
                         </td>
                     </tr>
                 }
@@ -272,78 +278,80 @@
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="SelectDriverModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Select Driver</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="selectDriver">
-                    <div>
-                        <label for="reservationDriver">Drivers</label>
-                        <select class="form-control" name="DriverId" id="reservationDriver">
-                            <option value="0" selected disabled>Select Driver</option>
-                            @foreach (var item in Model.Drivers)
-                            {
-                                <option value="@item.Id">@item.Name @item.Surname</option>
-                            }
-                        </select>
-                    </div>
-                    <div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                        data-dismiss="modal">
-                    Close
-                </button>
-                <button type="button" class="btn btn-primary" onclick="$('#selectDriver').submit()" id="saveNote">Assign Driver</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="reservationNoteModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Leave Note</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="statusForm">
-                    <div>
-                        <label for="reservationStatus">Status</label>
-                        <select class="form-control" name="Status" id="reservationStatus">
-                            <option value="null" selected disabled>Select Status</option>
-                            <option value="1">Waiting For Transaction</option>
-                            <option value="3">Finished Reservation</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="reservationNote">Note</label>
-                        <textarea class="form-control" name="FinishComment" id="reservationNote"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                        data-dismiss="modal">
-                    Close
-                </button>
-                <button type="button" class="btn btn-primary" onclick="$('#statusForm').submit()" id="saveNote">Save changes</button>
+@if (userRole != "5")
+{
+    <div class="modal fade" id="SelectDriverModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Select Driver</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="selectDriver">
+                        <div>
+                            <label for="reservationDriver">Drivers</label>
+                            <select class="form-control" name="DriverId" id="reservationDriver">
+                                <option value="0" selected disabled>Select Driver</option>
+                                @foreach (var item in Model.Drivers)
+                                {
+                                    <option value="@item.Id">@item.Name @item.Surname</option>
+                                }
+                            </select>
+                        </div>
+                        <div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="$('#selectDriver').submit()" id="saveNote">Assign Driver</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="modal fade" id="reservationNoteModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Leave Note</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="statusForm">
+                        <div>
+                            <label for="reservationStatus">Status</label>
+                            <select class="form-control" name="Status" id="reservationStatus">
+                                <option value="null" selected disabled>Select Status</option>
+                                <option value="1">Waiting For Transaction</option>
+                                <option value="3">Finished Reservation</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="reservationNote">Note</label>
+                            <textarea class="form-control" name="FinishComment" id="reservationNote"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="$('#statusForm').submit()" id="saveNote">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 @*
 @section pageJs{
     <script>

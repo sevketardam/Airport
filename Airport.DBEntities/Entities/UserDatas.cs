@@ -40,6 +40,7 @@ namespace Airport.DBEntities.Entities
         public List<ServiceCategories> ServiceCategories{ get; set; }
         public List<Reservations> Reservations { get; set; }
         public List<Coupons> Coupons { get; set; }
+        public UserDocs Docs { get; set; }
         public LoginAuth LoginAuth { get; set; }
     }
 }

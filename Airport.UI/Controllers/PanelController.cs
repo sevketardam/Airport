@@ -12,6 +12,8 @@ using System.IO;
 using Airport.MessageExtensions.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace Airport.UI.Controllers
 {
@@ -34,7 +36,9 @@ namespace Airport.UI.Controllers
         ILoginAuthDAL _loginAuth;
         ICouponsDAL _coupons;
         IMyCarsDAL _myCars;
-        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars)
+        IFileOperation _fileOperation;
+        IUserDocsDAL _docs;
+        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars, IFileOperation fileOperation, IUserDocsDAL docs)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -53,10 +57,12 @@ namespace Airport.UI.Controllers
             _loginAuth = loginAuth;
             _coupons = coupons;
             _myCars = myCars;
+            _fileOperation = fileOperation;
+            _docs = docs;
         }
 
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         public IActionResult Index()
         {
             try
@@ -91,7 +97,7 @@ namespace Airport.UI.Controllers
             {
                 return BadRequest(ex.ToString());
             }
-            
+
         }
 
         [HttpGet("docs")]
@@ -99,8 +105,101 @@ namespace Airport.UI.Controllers
         {
             try
             {
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var docs = _docs.SelectByFunc(a=>a.UserId == userId).FirstOrDefault();
 
-                return View();
+                return View(docs);
+            }
+            catch (Exception)
+            {
+                return Json(new { });
+            }
+
+        }
+
+        [HttpPost("docs")]
+        public async Task<IActionResult> Docs(IFormFile docs1, IFormFile docs2, IFormFile docs3)
+        {
+            try
+            {
+                if (docs1 != null || docs2 != null || docs3 != null)
+                {
+                    var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+
+                    var userIsEmpty = _docs.SelectByFunc(a => a.UserId == userId).FirstOrDefault();
+
+                    var docs1Link = "";
+                    var docs2Link = "";
+                    var docs3Link = "";
+
+                    if (docs1 != null)
+                    {
+                        docs1Link = await _fileOperation.UploadFile(docs1);
+                        docs1Link = _fileOperation.GetFile(docs1Link);
+
+                    }
+                    else
+                    {
+                        if (userIsEmpty is not null)
+                        {
+                            docs1Link = userIsEmpty.Docs1;
+                        }
+                    }
+
+                    if (docs2 != null)
+                    {
+                        docs2Link = await _fileOperation.UploadFile(docs2);
+                        docs2Link = _fileOperation.GetFile(docs2Link);
+                    }
+                    else
+                    {
+                        if (userIsEmpty is not null)
+                        {
+                            docs2Link = userIsEmpty.Docs2;
+                        }
+                    }
+
+                    if (docs3 != null)
+                    {
+                        docs3Link = await _fileOperation.UploadFile(docs3);
+                        docs3Link = _fileOperation.GetFile(docs3Link);
+                    }
+                    else
+                    {
+                        if (userIsEmpty is not null)
+                        {
+                            docs3Link = userIsEmpty.Docs3;
+                        }
+                    }
+
+                    if (userIsEmpty is null)
+                    {
+                        _docs.Insert(new UserDocs
+                        {
+                            Docs1 = docs1Link,
+                            Docs2 = docs2Link,
+                            Docs3 = docs3Link,
+                            UserId = userId,
+                            Docs1Status = docs1Link == "" ? false : true,
+                            Docs2Status = docs2Link == "" ? false : true,
+                            Docs3Status = docs3Link == "" ? false : true,
+                        });
+                    }
+                    else
+                    {
+                        userIsEmpty.Docs1 = docs1Link;
+                        userIsEmpty.Docs2 = docs2Link;
+                        userIsEmpty.Docs3 = docs3Link;
+                        userIsEmpty.Docs1Status = docs1Link == "" ? false : true;
+                        userIsEmpty.Docs2Status = docs2Link == "" ? false : true;
+                        userIsEmpty.Docs3Status = docs3Link == "" ? false : true;
+
+                        _docs.Update(userIsEmpty);
+                    }
+
+                    return Json(new { result = 1 });
+                }
+                return Json(new { result = 2 });
             }
             catch (Exception)
             {
@@ -156,7 +255,7 @@ namespace Airport.UI.Controllers
 
 
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/profile")]
         public IActionResult Profile()
         {
@@ -173,7 +272,7 @@ namespace Airport.UI.Controllers
         }
 
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpPost("panel/profile")]
         public IActionResult Profile(UserDatas updateUser)
         {
@@ -203,21 +302,21 @@ namespace Airport.UI.Controllers
         }
 
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/settings")]
         public IActionResult Settings()
         {
             return View();
         }
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/change-password")]
         public IActionResult ChangePassword()
         {
             return View();
         }
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpPost("panel/change-password", Name = "panelChangePassword")]
         public IActionResult ChangePassword(string oldPassword, string newPassword)
         {
@@ -251,7 +350,7 @@ namespace Airport.UI.Controllers
         }
 
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/bank-account")]
         public IActionResult BankAccount()
         {
@@ -259,14 +358,14 @@ namespace Airport.UI.Controllers
         }
 
 
-        [Authorize(Roles = "0,2")]
+        [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/agreements")]
         public IActionResult Agreement()
         {
             return View();
         }
 
-        [Authorize(Roles = "2")]
+        [Authorize(Roles = "2,4")]
         [HttpGet("panel/my-company")]
         public IActionResult Company()
         {
@@ -278,7 +377,7 @@ namespace Airport.UI.Controllers
             return View(user);
         }
 
-        [Authorize(Roles = "2")]
+        [Authorize(Roles = "2,4")]
         [HttpPost("panel/my-company")]
         public IActionResult Company(UserDatas updateUser)
         {
@@ -310,7 +409,6 @@ namespace Airport.UI.Controllers
             }
 
         }
-
 
         [Authorize(Roles = "1")]
         [HttpGet("user-management")]
@@ -345,7 +443,6 @@ namespace Airport.UI.Controllers
                 return BadRequest(ex.ToString());
             }
         }
-
 
         [Authorize(Roles = "1")]
         [HttpGet("user-management/detail/{id}")]
@@ -418,7 +515,7 @@ namespace Airport.UI.Controllers
             }
         }
 
-        public JsonResult RateDrive(int id,int rate)
+        public JsonResult RateDrive(int id, int rate)
         {
             try
             {
@@ -433,7 +530,7 @@ namespace Airport.UI.Controllers
                     reservation.Rate = rate;
                     _reservations.Update(reservation);
 
-                    return Json(new {result = 1});
+                    return Json(new { result = 1 });
                 }
                 return Json(new { });
             }
@@ -463,11 +560,6 @@ namespace Airport.UI.Controllers
             }
             return md5Str;
         }
-
-
-        
-
-
     }
 }
 

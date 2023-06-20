@@ -74,11 +74,25 @@ namespace Airport.UI.Controllers
         {
             try
             {
+                var userRole = User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault();
+
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var reservations = new List<Reservations>();
+                var drivers = new List<Drivers>();
+                if (userRole == "5")
+                {
+                    reservations = _reservations.SelectByFunc(a => a.SalesAgencyId == userId).OrderByDescending(a => a.ReservationDate).ToList();
+                }
+                else
+                {
+                    reservations = _reservations.SelectByFunc(a => a.UserId == userId).OrderByDescending(a => a.ReservationDate).ToList();
+                    drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
+                }
+
                 var reservationVM = new ReservationsIndexVM()
                 {
-                    Reservations = _reservations.SelectByFunc(a => a.UserId == userId).OrderByDescending(a => a.ReservationDate).ToList(),
-                    Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete)
+                    Reservations = reservations,
+                    Drivers = drivers
                 };
 
                 return View(reservationVM);

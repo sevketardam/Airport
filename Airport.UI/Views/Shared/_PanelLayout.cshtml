@@ -120,6 +120,7 @@
                                 </a>
                             </li>
                         }
+
                         @if (userRole != "1")
                         {
                             <li class="mobile_Menu_Item">
@@ -128,6 +129,7 @@
                                     <span>Profile</span>
                                 </a>
                             </li>
+
                             <li>
                                 <a href="/panel">
                                     <i class="iconsminds-shop-4"></i>
@@ -135,11 +137,15 @@
                                 </a>
                             </li>
 
-                            <li>
-                                <a href="/panel/manual-reservation-one">
-                                    <i class="iconsminds-calendar-1"></i> Create Reservation
-                                </a>
-                            </li>
+                            if (userRole == "4" || userRole == "0" || userRole == "5")
+                            {
+                                <li>
+                                    <a href="/panel/manual-reservation-one">
+                                        <i class="iconsminds-calendar-1"></i> Create Reservation
+                                    </a>
+                                </li>
+                            }
+
                             @if (userRole == "0")
                             {
                                 <li>
@@ -148,35 +154,52 @@
                                     </a>
                                 </li>
                             }
-                            <li>
-                                <a href="/panel/my-cars">
-                                    <i class="iconsminds-car"></i> My Cars
-                                </a>
-                            </li>
+                            @if (userRole == "2" || userRole == "4" || userRole == "5")
+                            {
+                                <li>
+                                    <a href="/panel/reservation-management">
+                                        <i class="simple-icon-calendar"></i> My Reservations
+                                    </a>
+                                </li>
+                            }
 
-                            <li>
-                                <a href="/panel/reservation-management">
-                                    <i class="simple-icon-calendar"></i> My Reservations
-                                </a>
-                            </li>
 
-                            <li>
-                                <a href="/panel/location">
-                                    <i class="iconsminds-map-marker"></i> My Locations
-                                </a>
-                            </li>
+                            if (userRole == "2" || userRole == "4")
+                            {
+                                <li>
+                                    <a href="/panel/my-cars">
+                                        <i class="iconsminds-car"></i> My Cars
+                                    </a>
+                                </li>
 
-                            <li>
-                                <a href="/panel/my-drivers">
-                                    <i class="iconsminds-doctor"></i> Drivers
-                                </a>
-                            </li>
+                                <li>
+                                    <a href="/panel/location">
+                                        <i class="iconsminds-map-marker"></i> My Locations
+                                    </a>
+                                </li>
 
-                            <li>
-                                <a href="/panel/service">
-                                    <i class="iconsminds-edit-map"></i> Services
-                                </a>
-                            </li>
+                                <li>
+                                    <a href="/panel/my-drivers">
+                                        <i class="iconsminds-doctor"></i> Drivers
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="/panel/service">
+                                        <i class="iconsminds-edit-map"></i> Services
+                                    </a>
+                                </li>
+
+                            }
+
+                            if (userRole == "5" || userRole == "2" || userRole == "4")
+                            {
+                                <li>
+                                    <a href="/docs">
+                                        <i class="iconsminds-library"></i> Documentations
+                                    </a>
+                                </li>
+                            }
 
                             <li>
                                 <a href="#">
@@ -622,10 +645,13 @@
                                     </ul>
                                 </div>
                             </li>
+                        }
 
+                        @if (userRole == "0" || userRole == "4")
+                        {
                             <li>
                                 <a href="#" data-toggle="collapse" data-target="#collapseMenuTypes2" aria-expanded="true"
-                                   aria-controls="collapseMenuTypes2" class="rotate-arrow-icon">
+                                aria-controls="collapseMenuTypes2" class="rotate-arrow-icon">
                                     <i class="simple-icon-arrow-down"></i> <span class="d-inline-block">Coupons</span>
                                 </a>
                                 <div id="collapseMenuTypes2" class="collapse show" data-parent="#menuTypes">
