@@ -208,13 +208,25 @@ namespace Airport.UI.Controllers
 
         }
 
-        [HttpGet("satis")]
+        [HttpGet("financial-accounting")]
         public IActionResult Satis()
         {
             try
             {
+                var userRole = User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault();
 
-                return View();
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var reservations = new List<Reservations>();
+                if (userRole == "5")
+                {
+                    reservations = _reservations.SelectByFunc(a => a.SalesAgencyId == userId).OrderByDescending(a => a.ReservationDate).ToList();
+                }
+                else
+                {
+                    reservations = _reservations.SelectByFunc(a => a.UserId == userId).OrderByDescending(a => a.ReservationDate).ToList();
+                }
+
+                return View(reservations);
             }
             catch (Exception)
             {
@@ -222,7 +234,6 @@ namespace Airport.UI.Controllers
             }
 
         }
-
 
         [HttpGet("test33")]
         public IActionResult Test33()
@@ -252,8 +263,6 @@ namespace Airport.UI.Controllers
             }
 
         }
-
-
 
         [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/profile")]

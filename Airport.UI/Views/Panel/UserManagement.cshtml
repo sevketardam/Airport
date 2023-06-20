@@ -597,29 +597,29 @@
             }
         }
 
-        function unCheckAllRows() {
-            $('#reservationTable tbody tr').removeClass('selected');
-            $('#reservationTable tbody tr .custom-checkbox input').prop("checked", false).trigger("change");
-        }
+        //function unCheckAllRows() {
+        //    $('#reservationTable tbody tr').removeClass('selected');
+        //    $('#reservationTable tbody tr .custom-checkbox input').prop("checked", false).trigger("change");
+        //}
 
-        function checkAllRows() {
-            $('#reservationTable tbody tr').addClass('selected');
-            $('#reservationTable tbody tr .custom-checkbox input').prop("checked", true).trigger("change");
-        }
+        //function checkAllRows() {
+        //    $('#reservationTable tbody tr').addClass('selected');
+        //    $('#reservationTable tbody tr .custom-checkbox input').prop("checked", true).trigger("change");
+        //}
 
-        $("#checkAllDataTables").on("click", function (event) {
-            var isCheckedAll = $("#checkAllDataTables").prop("checked");
-            if (isCheckedAll) {
-                checkAllRows();
-            } else {
-                unCheckAllRows();
-            }
-        });
+        //$("#checkAllDataTables").on("click", function (event) {
+        //    var isCheckedAll = $("#checkAllDataTables").prop("checked");
+        //    if (isCheckedAll) {
+        //        checkAllRows();
+        //    } else {
+        //        unCheckAllRows();
+        //    }
+        //});
 
-        function getSelectedRows() {
-            //Getting Selected Ones
-            console.log($dataTableRows.rows('.selected').data());
-        }
+        //function getSelectedRows() {
+        //    //Getting Selected Ones
+        //    console.log($dataTableRows.rows('.selected').data());
+        //}
 
         $("#searchDatatable").on("keyup", function (event) {
             $dataTableRows.search($(this).val()).draw();

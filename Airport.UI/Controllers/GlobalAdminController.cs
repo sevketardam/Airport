@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
 namespace Airport.UI.Controllers
@@ -13,9 +14,13 @@ namespace Airport.UI.Controllers
     public class GlobalAdminController : Controller
     {
         ICouponsDAL _coupons;
-        public GlobalAdminController(ICouponsDAL coupons)
+        ILoginAuthDAL _loginAuth;
+        IUserDatasDAL _userData;
+        public GlobalAdminController(ICouponsDAL coupons,ILoginAuthDAL loginAuth,IUserDatasDAL userDta)
         {
             _coupons = coupons;
+            _loginAuth = loginAuth;
+            _userData = userDta;
         }
 
         [HttpGet("panel/coupons")]
@@ -109,6 +114,65 @@ namespace Airport.UI.Controllers
         public IActionResult Agencies()
         {
             return View();
+        }
+
+        [Authorize(Roles = "0")]
+        [HttpPost("agencies")]
+        public IActionResult Agencies(UserDatas data, string Eposta, string Password,int agencyType)
+        {
+            if (data != null)
+            {
+                var datas = _loginAuth.SelectByFunc(a => a.Email == Eposta).FirstOrDefault();
+                if (datas == null)
+                {
+                    var newAgencies = new UserDatas
+                    {
+                        Linkedin = data.Linkedin,
+                        Name = data.Name,
+                        AboutUs = data.AboutUs,
+                        Address = data.Address,
+                        CompanyEmail = data.CompanyEmail,
+                        CompanyName = data.CompanyName,
+                        CompanyPhoneNumber = data.CompanyPhoneNumber,
+                        CompanyWebsite = data.CompanyWebsite,
+                        Facebook = data.Facebook,
+                        Profession = data.Profession,
+                        TransferRequest = data.TransferRequest,
+                        TransferRequestLocation = data.TransferRequestLocation,
+                        PhoneNumber = data.PhoneNumber,
+                    };
+
+                    var addedAgencies = _userData.Insert(newAgencies);
+
+                    _loginAuth.Insert(new LoginAuth
+                    {
+                        Email = Eposta,
+                        Password = GetMD5(Password),
+                        Type = 2,
+                        UserId = addedAgencies.Id,
+                        DriverId = 0
+                    });
+
+                    return Json(new { result = 1 });
+                }
+
+                return Json(new { result = 2 });
+            }
+
+            return View();
+        }
+
+        public static string GetMD5(string value)
+        {
+            MD5 md5 = MD5.Create();
+            byte[] md5Bytes = System.Text.Encoding.Default.GetBytes(value);
+            byte[] cryString = md5.ComputeHash(md5Bytes);
+            string md5Str = string.Empty;
+            for (int i = 0; i < cryString.Length; i++)
+            {
+                md5Str += cryString[i].ToString("X");
+            }
+            return md5Str;
         }
 
     }
