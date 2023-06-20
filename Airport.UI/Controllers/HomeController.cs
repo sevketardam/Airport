@@ -47,58 +47,7 @@ namespace Airport.UI.Controllers
             return View();
         }
 
-        //[Authorize(Roles ="0")]
-        //[HttpGet("agencies")]
-        //public IActionResult Agencies()
-        //{
-        //    return View();
-        //}
-
-        //[Authorize(Roles = "0")]
-        //[HttpPost("agencies")]
-        //public IActionResult Agencies(UserDatas data, string Eposta, string Password)
-        //{
-        //    if (data != null)
-        //    {
-        //        var datas = _loginAuth.SelectByFunc(a => a.Email == Eposta).FirstOrDefault();
-        //        if (datas == null)
-        //        {
-        //            var newAgencies = new UserDatas
-        //            {
-        //                Linkedin = data.Linkedin,
-        //                Name = data.Name,
-        //                AboutUs = data.AboutUs,
-        //                Address = data.Address,
-        //                CompanyEmail = data.CompanyEmail,
-        //                CompanyName = data.CompanyName,
-        //                CompanyPhoneNumber = data.CompanyPhoneNumber,
-        //                CompanyWebsite = data.CompanyWebsite,
-        //                Facebook = data.Facebook,
-        //                Profession = data.Profession,
-        //                TransferRequest = data.TransferRequest,
-        //                TransferRequestLocation = data.TransferRequestLocation,
-        //                PhoneNumber = data.PhoneNumber,
-        //            };
-
-        //            var addedAgencies = _userdata.Insert(newAgencies);
-
-        //            _loginAuth.Insert(new LoginAuth
-        //            {
-        //                Email = Eposta,
-        //                Password = GetMD5(Password),
-        //                Type = 2,
-        //                UserId = addedAgencies.Id,
-        //                DriverId = 0
-        //            });
-
-        //            return Json(new { result = 1 });
-        //        }
-
-        //        return Json(new { result = 2 });
-        //    }
-
-        //    return View();
-        //}
+ 
 
 
         [HttpGet("privacy")]
