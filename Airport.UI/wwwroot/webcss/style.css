@@ -2072,7 +2072,7 @@ input[type="number"]::-webkit-outer-spin-button {
         cursor: pointer;
     }
 
-        ._user_btns div:first-child {
+        ._user_btns div:first-child:not(.non-bor) {
             border-top-right-radius: 10px;
         }
 
@@ -3857,13 +3857,13 @@ label.error {
     border-radius: 0.1rem;
     outline: initial !important;
     box-shadow: initial !important;
-    font-size: .8rem;
-    padding: 0.5rem 0.75rem;
-    line-height: 1;
-    border: 1px solid #d7d7d7;
-    background: #fff;
-    color: #3a3a3a;
-    border-color: #d7d7d7;
+    font-size: .8rem !important;
+    /* padding: 0.5rem 0.75rem !important; */
+    /* line-height: 1 !important; */
+    border: 1px solid #d7d7d7 !important;
+    background: #fff !important;
+    color: #3a3a3a !important;
+    border-color: #d7d7d7 !important;
     height: calc(2em + 0.8rem);
 }
 
@@ -4481,4 +4481,8 @@ textarea.form-control-custom {
 
 .step3-left-car-detail span {
     font-size: 0.8rem;
+}
+
+.non-bor{
+    border-radius: 0 !important;
 }
