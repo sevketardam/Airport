@@ -562,12 +562,14 @@ namespace Airport.UI.Controllers
 
         }
 
+
+
+
         [HttpPost("reservation-get-code", Name = "getBookValues")]
-        public async Task<IActionResult> ReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, List<int> serviceItems, string selectedServiceItems, string coupon)
+        public async Task<IActionResult> ReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, string selectedServiceItems, string coupon)
         {
             try
             {
-
                 var createReservation = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
                 if (createReservation == null)
@@ -625,7 +627,7 @@ namespace Airport.UI.Controllers
                 {
                     total = total - ((total * getCoupon.Discount) / 100);
                     getCoupon.UsingCount = getCoupon.UsingCount + 1;
-                    _coupons.Update(getCoupon);
+                    //_coupons.Update(getCoupon);
                 }
 
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
@@ -644,7 +646,7 @@ namespace Airport.UI.Controllers
 
                 total = Math.Round(total, 2);
 
-                var item = _reservations.Insert(new Reservations
+                var item = new Reservations()
                 {
                     DropLatLng = createReservation.DropLocationLatLng,
                     PickLatLng = createReservation.PickLocationLatLng,
@@ -679,7 +681,7 @@ namespace Airport.UI.Controllers
                     DiscountText = getCoupon?.Comment,
                     ReservationUserId = user?.Id,
                     Rate = 0
-                });
+                };
 
                 item.Coupons = getCoupon;
 
@@ -697,7 +699,9 @@ namespace Airport.UI.Controllers
                     });
                 }
 
-                _reservationServicesTable.InsertRage(reservationItemsList);
+                item.ReservationServicesTables = reservationItemsList;
+
+                //_reservationServicesTable.InsertRage(reservationItemsList);
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
                 item.LocationCars.Car = _getCar.CarDetail(item.LocationCars.CarId);
@@ -718,10 +722,13 @@ namespace Airport.UI.Controllers
                     });
                 });
 
-                _reservationsPeople.InsertRage(reservationPeople);
+                item.ReservationPeoples = reservationPeople;
+
+                //_reservationsPeople.InsertRage(reservationPeople);
 
 
-                HttpContext.Session.Remove("reservationData");
+                //HttpContext.Session.Remove("reservationData");
+
                 item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
                 item.ReservationServicesTables.ForEach(a =>
                 {
@@ -729,24 +736,28 @@ namespace Airport.UI.Controllers
                     a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
                 });
 
-                PdfCreator pdfCreator = new PdfCreator(_env);
-                pdfCreator.CreateReservationPDF(kod + "-" + item.Id, item);
+                //PdfCreator pdfCreator = new PdfCreator(_env);
+                //pdfCreator.CreateReservationPDF(kod + "-" + item.Id, item);
 
 
-                _mail.SendReservationMail(item);
+                //_mail.SendReservationMail(item);
 
-                var allMessage = new List<Mesaj>();
-                allMessage.Add(new Mesaj
-                {
-                    dest = reservation.RealPhone,
-                    msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{item.ReservationCode}-{item.Id}.pdf"
-                });
+                //var allMessage = new List<Mesaj>();
+                //allMessage.Add(new Mesaj
+                //{
+                //    dest = reservation.RealPhone,
+                //    msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{item.ReservationCode}-{item.Id}.pdf"
+                //});
 
-                var mesaj = allMessage.ToArray();
+                //var mesaj = allMessage.ToArray();
 
-                _sms.SmsForReservation(mesaj);
+                //_sms.SmsForReservation(mesaj);
 
-                return RedirectToAction("CreatedReservationDetail", "Reservation", new { id = item.Id });
+
+                HttpContext.Session.MySet("reservation",item);
+
+
+                return RedirectToAction("ReservationStepPayment", "Reservation");
             }
             catch (Exception ex)
             {
@@ -762,6 +773,44 @@ namespace Airport.UI.Controllers
             }
 
         }
+
+
+        [HttpGet("reservation-step-payment")]
+        public async Task<IActionResult> ReservationStepPayment()
+        {
+            try
+            {
+                var reservation = HttpContext.Session.MyGet<Reservations>("reservation");
+                if (reservation != null)
+                {
+                    //PdfCreator pdfCreator = new PdfCreator(_env);
+                    //pdfCreator.CreateReservationPDF(reservation.ReservationCode + "-" + reservation.Id, reservation);
+
+
+                    //_mail.SendReservationMail(reservation);
+
+                    //var allMessage = new List<Mesaj>();
+                    //allMessage.Add(new Mesaj
+                    //{
+                    //    dest = reservation.RealPhone,
+                    //    msg = @$"Your reservation code {reservation.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{reservation.ReservationCode}-{reservation.Id}.pdf"
+                    //});
+
+                    //var mesaj = allMessage.ToArray();
+
+                    //_sms.SmsForReservation(mesaj);
+
+                    return View(reservation);
+                }
+                return NotFound();
+            }
+            catch (Exception )
+            {
+                throw new Exception();
+            }         
+        }
+
+
 
         [HttpGet("reservation-success")]
         public IActionResult CreatedReservationDetail(int id)
