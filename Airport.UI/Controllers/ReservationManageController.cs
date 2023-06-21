@@ -45,7 +45,7 @@ namespace Airport.UI.Controllers
         ILoginAuthDAL _loginAuth;
         ICouponsDAL _coupons;
         IPayment _payment;
-        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons,IPayment payment, IOptions<GoogleAPIKeys> googleAPIKeys)
+        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IPayment payment, IOptions<GoogleAPIKeys> googleAPIKeys)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -92,7 +92,7 @@ namespace Airport.UI.Controllers
                 var reservationVM = new ReservationsIndexVM()
                 {
                     Reservations = reservations,
-                    Drivers = drivers
+                    Drivers = drivers,
                 };
 
                 return View(reservationVM);
@@ -110,7 +110,8 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var reservation = _reservations.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
+
+                var reservation = _reservations.SelectByFunc(a => a.Id == id).FirstOrDefault();
                 if (reservation is not null)
                 {
                     var reservationLocationCars = _locationCars.SelectByID(reservation.LocationCarId);
@@ -149,14 +150,14 @@ namespace Airport.UI.Controllers
                         {
                             Reservation = reservation,
                             Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
-                            ReservationServicesTable = ReservationServicesTable
+                            ReservationServicesTable = ReservationServicesTable,
                         };
                         return View(reservationVM);
                     }
                 }
                 return NotFound();
             }
-            catch (Exception ex)    
+            catch (Exception ex)
             {
                 string dosyaYolu = "wwwroot/error.txt";
 
@@ -208,10 +209,72 @@ namespace Airport.UI.Controllers
                 var reservation = _reservations.SelectByFunc(a => a.Id == reservationId && a.UserId == userId).FirstOrDefault();
                 if (driver is not null && reservation is not null)
                 {
-                    reservation.DriverId = driver.Id;
-                    _reservations.Update(reservation);
+                    if (!(reservation.Status == 3 && reservation.LastUpdate.AddDays(1) <= DateTime.Now))
+                    {
+                        reservation.DriverId = driver.Id;
+                        reservation.IsManuelDriver = false;
+                        _reservations.Update(reservation);
+                        return Json(new { result = 1 });
+                    }
+                    return Json(new { result = 3 });
+                }
+                return Json(new { result = 2 });
+            }
+            catch (Exception)
+            {
+                return Json(new { });
+            }
+        }
 
-                    return Json(new { result = 1 });
+        public IActionResult GetDriverData(int driverId)
+        {
+            try
+            {
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var driver = _drivers.SelectByFunc(a => a.Id == driverId && a.UserId == userId && !a.IsDelete).FirstOrDefault();
+                if (driver is not null)
+                {
+                    var newDriver = new GetDriverVM()
+                    {
+                        DriverBirthday = driver.DateOfBirth.ToString("d"),
+                        DriverId = driver.DriverId,
+                        DriverPhone = driver.Phone,
+                        DriverName = driver.Name,
+                        DriverSurname = driver.Surname,
+                        DriverEmail = _loginAuth.SelectByFunc(a => a.DriverId == driverId).FirstOrDefault().Email,
+                        DriverBackPhoto = driver.PhotoBack,
+                        DriverFrontPhoto = driver.PhotoFront,
+                    };
+
+                    return Json(new { result = 1, data = newDriver });
+                }
+                return Json(new { result = 2 });
+            }
+            catch (Exception)
+            {
+                return Json(new { });
+            }
+        }
+
+
+        public IActionResult AddManualDriver(int reservationId, AddManualDriverIM driver)
+        {
+            try
+            {
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                var reservation = _reservations.SelectByFunc(a => a.Id == reservationId && a.UserId == userId).FirstOrDefault();
+                if (reservation is not null)
+                {
+                    if (!(reservation.Status == 3 && reservation.LastUpdate.AddDays(1) <= DateTime.Now))
+                    {
+                        reservation.IsManuelDriver = true;
+                        reservation.DriverName = driver.DriverName;
+                        reservation.DriverSurname = driver.DriverSurname;
+                        reservation.DriverPhone = driver.DriverPhone;
+                        _reservations.Update(reservation);
+                        return Json(new { result = 1 });
+                    }
+                    return Json(new { result = 3 });
                 }
                 return Json(new { result = 2 });
             }
@@ -228,19 +291,25 @@ namespace Airport.UI.Controllers
             var getReservation = _reservations.SelectByFunc(a => a.Id == reservation.Id && a.UserId == userId).FirstOrDefault();
             if (getReservation is not null)
             {
-                var list = new List<int> { 1, 3 };
-                if (!list.Contains(reservation.Status))
+                if (!(getReservation.Status == 3 && getReservation.LastUpdate.AddDays(1) <= DateTime.Now))
                 {
-                    reservation.Status = 1;
+                    var list = new List<int> { 1, 3 };
+                    if (!list.Contains(reservation.Status))
+                    {
+                        reservation.Status = 1;
+                    }
+
+                    getReservation.FinishComment = reservation.FinishComment;
+                    getReservation.Status = reservation.Status;
+                    getReservation.LastUpdate = DateTime.Now;
+
+                    _reservations.Update(getReservation);
+
+                    return Json(new { result = 1 });
                 }
-
-                getReservation.FinishComment = reservation.FinishComment;
-                getReservation.Status = reservation.Status;
-                _reservations.Update(getReservation);
-
-                return Json(new { result = 1 });
+                return Json(new { result = 2 });
             }
-            return BadRequest();
+            return Json(new { result = 3 });
         }
 
         public IActionResult CancelReservation(int id)
@@ -249,12 +318,18 @@ namespace Airport.UI.Controllers
             var getReservation = _reservations.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
             if (getReservation is not null)
             {
-                getReservation.Status = 4;
-                _reservations.Update(getReservation);
+                if (!(getReservation.Status == 3 && getReservation.LastUpdate.AddDays(1) <= DateTime.Now))
+                {
+                    getReservation.Status = 4;
+                    _reservations.Update(getReservation);
 
-                return Json(new { result = 1 });
+                    return Json(new { result = 1 });
+                }
+
+                return Json(new { result = 2 });
             }
-            return BadRequest();
+
+            return Json(new { });
         }
 
         [HttpGet("panel/update-reservation/{id}")]
@@ -264,9 +339,12 @@ namespace Airport.UI.Controllers
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
                 var reservation = _reservations.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
-                if (reservation != null)
+                if (!(reservation.Status == 3 && reservation.LastUpdate.AddDays(1) <= DateTime.Now))
                 {
-                    return View(reservation);
+                    if (reservation != null)
+                    {
+                        return View(reservation);
+                    }
                 }
                 return NotFound();
             }
@@ -626,7 +704,6 @@ namespace Airport.UI.Controllers
 
         }
 
-
         [HttpGet("panel/update-reservation-user/{id}")]
         public IActionResult UpdateReservationStepThree(int id)
         {
@@ -828,6 +905,7 @@ namespace Airport.UI.Controllers
                 updatedService.HidePrice = reservation.HidePrice;
                 updatedService.LocationCarId = createReservation.LocationCar.Id;
                 updatedService.TotalPrice = totalprice;
+                updatedService.LastUpdate = DateTime.Now;
 
                 var item = _reservations.Update(updatedService);
 

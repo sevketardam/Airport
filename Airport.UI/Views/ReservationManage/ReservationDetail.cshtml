@@ -1,7 +1,9 @@
-﻿@model ReservationManagementVM
+﻿@using System.Security.Claims;
+@model ReservationManagementVM
 @{
     Layout = "_PanelLayout";
     ViewData["title"] = "Reservation Detail";
+    var userRole = User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault();
 }
 
 @section pageCSSLink{
@@ -385,7 +387,12 @@
 
     </style>
 }
-<a class="btn btn-primary" href="/panel/update-reservation/@Model.Reservation.Id">Update Reservation</a>
+
+@if (!(Model.Reservation.Status == 3 && Model.Reservation.LastUpdate.AddDays(1) <= DateTime.Now) && userRole == "2")
+{
+    <a class="btn btn-primary" href="/panel/update-reservation/@Model.Reservation.Id">Update Reservation</a>
+}
+
 <section>
     <div class="container my-5">
         <div style="width: 100%; height: 350px;" id="map"></div>
@@ -434,34 +441,37 @@
 
         </div>
 
-        <!-- Müşterilerin Bilgileri -->
-        <div class="my-4">
-            <h4 class="infosTitle">Information of Persons</h4>
-            <div class="resPeople mt-2">
-                <div class="firstPeople">
-                    @Model.Reservation.Name
-                </div>
-                <div class="firstPeople">
-                    @Model.Reservation.Surname
-                </div>
-                <div class="firstPeople">
-                    @Model.Reservation.Phone
-                </div>
-                <div class="firstPeople">
-                    @Model.Reservation.Email
-                </div>
-                @if (Model.Reservation.ReservationPeoples != null && Model.Reservation.ReservationPeoples.Count > 0)
-                {
-                    @foreach (var item in Model.Reservation.ReservationPeoples)
+        @if (!(Model.Reservation.Status == 3 && Model.Reservation.LastUpdate.AddDays(1) <= DateTime.Now))
+        {
+            <div class="my-4">
+                <h4 class="infosTitle">Information of Persons</h4>
+                <div class="resPeople mt-2">
+                    <div class="firstPeople">
+                        @Model.Reservation.Name
+                    </div>
+                    <div class="firstPeople">
+                        @Model.Reservation.Surname
+                    </div>
+                    <div class="firstPeople">
+                        @Model.Reservation.Phone
+                    </div>
+                    <div class="firstPeople">
+                        @Model.Reservation.Email
+                    </div>
+                    @if (Model.Reservation.ReservationPeoples != null && Model.Reservation.ReservationPeoples.Count > 0)
                     {
-                        <div class="otherPeople">
-                            @item.Name @item.Surname
-                        </div>
+                        @foreach (var item in Model.Reservation.ReservationPeoples)
+                        {
+                            <div class="otherPeople">
+                                @item.Name @item.Surname
+                            </div>
+                        }
                     }
-                }        
+                </div>
             </div>
-        </div>
+        }
 
+        <!-- Müşterilerin Bilgileri -->
         @if (Model.ReservationServicesTable != null && Model.ReservationServicesTable.Count > 0)
         {
             <div class="my-4">
@@ -492,9 +502,6 @@
                 </div>
             </div>
         }
-
-
-
 
         <div class="pricingFlex">
             <div>
@@ -532,8 +539,7 @@
                         <b>Discount Description:</b>@Model.Reservation.DiscountText
                     </span>
                 }
-                </div>
-
+            </div>
         </div>
 
 
@@ -641,81 +647,287 @@
             </div>
         </div>
 
+
         <!-- Sürücü Bilgileri -->
         <div class="my-4">
-            <div class="driverFlex">
-                <div class="driverLeft topStyle"></div>
-                <div class="driverRight topStyle">
-                    <div class="w-100">
-                        <select name="DriverId" class="form-control" id="driverSelectbox">
-                            <option value="null" selected disabled>Select Driver</option>
-                            @if (Model.Drivers != null && Model.Drivers.Count > 0)
-                            {
-                                foreach (var item in Model.Drivers)
-                                {
-                                    if (Model.Reservation.DriverId == item.Id)
-                                    {
-                                        <option value="@item.Id" selected>@item.Name @item.Surname</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@item.Id">@item.Name @item.Surname</option>
-                                    }
-                                }
-                            }
+            @if (userRole == "2")
+            {
+                @if (!(Model.Reservation.Status == 3 && Model.Reservation.LastUpdate.AddDays(1) <= DateTime.Now))
+                {
+                    <div class="card">
+                        <div class="card-header pl-0 pr-0">
+                            <ul class="nav nav-tabs card-header-tabs ml-0 mr-0" role="tablist">
+                                <li class="nav-item w-50 text-center">
+                                    <a class="nav-link @(Convert.ToBoolean(Model.Reservation.IsManuelDriver) ? "" : "active")" id="first-tab_" data-toggle="tab" href="#firstFull" role="tab" aria-controls="first" aria-selected="@(Convert.ToBoolean(Model.Reservation.IsManuelDriver) ? "false" : "true")">Registered Driver</a>
+                                </li>
+                                <li class="nav-item w-50 text-center">
+                                    <a class="nav-link @(Convert.ToBoolean(Model.Reservation.IsManuelDriver) ? "active" : "")" id="second-tab_" data-toggle="tab" href="#secondFull" role="tab" aria-controls="second" aria-selected="@(Convert.ToBoolean(Model.Reservation.IsManuelDriver) ? "true" : "false")">Manual Driver</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane fade @(Convert.ToBoolean(Model.Reservation.IsManuelDriver) ? "" : "active show")" id="firstFull" role="tabpanel" aria-labelledby="first-tab_">
 
-                        </select>
-                    </div>
-                    <div>
-                        <button class="btn btn-primary" id="assignDriverBtn">
-                            Get Driver
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="driverFlex">
+                                    <div class="driverFlex">
+                                        <div class="driverLeft topStyle"></div>
+                                        <div class="driverRight topStyle">
 
-                <div class="driverLeft">
-                    <h2>Driver Infos</h2>
-                    <div class="carInputs">
-                        <div>
-                            <label>Driver ID</label>
-                            <div>@Model.Reservation.Driver?.DriverId</div>
-                        </div>
-                        <div>
-                            <label>Name</label>
-                            <div>@Model.Reservation.Driver?.Name</div>
-                        </div>
-                        <div>
-                            <label>Surname</label>
-                            <div>@Model.Reservation.Driver?.Surname</div>
-                        </div>
-                        <div>
-                            <label>E-Mail</label>
-                            <div>@Model.Reservation.Driver?.LoginAuth?.Email</div>
-                        </div>
-                        <div>
-                            <label>Phone</label>
-                            <div>@Model.Reservation.Driver?.Phone</div>
-                        </div>
-                        <div>
-                            <label>Date Of Birth</label>
-                            <div>@Model.Reservation.Driver?.DateOfBirth</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="driverRight">
+                                            <div class="w-100">
+                                                <select name="DriverId" class="form-control" id="driverSelectbox">
+                                                    <option value="null" selected disabled>Select Driver</option>
+                                                    @if (Model.Drivers != null && Model.Drivers.Count > 0)
+                                                    {
+                                                        foreach (var item in Model.Drivers)
+                                                        {
+                                                            if (Model.Reservation.DriverId == item.Id)
+                                                            {
+                                                                <option value="@item.Id" selected>@item.Name @item.Surname</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@item.Id">@item.Name @item.Surname</option>
+                                                            }
+                                                        }
+                                                    }
 
-                    <div class="slideDriverPhotos">
-                        <div>
-                            <img src="@Model.Reservation.Driver?.PhotoFront" alt="">
-                        </div>
-                        <div>
-                            <img src="@Model.Reservation.Driver?.PhotoBack" alt="">
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-primary" id="assignDriverBtn">
+                                                    Assign Driver
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="driverFlex">
+
+                                        <div class="driverLeft">
+                                            <h2>Driver Infos</h2>
+                                            <div class="carInputs" id="driverInfo">
+                                                <div>
+                                                    <label>Driver ID</label>
+                                                    <div id="driverId">@Model.Reservation.Driver?.DriverId</div>
+                                                </div>
+                                                <div>
+                                                    <label>Name</label>
+                                                    <div id="driverName">@Model.Reservation.Driver?.Name</div>
+                                                </div>
+                                                <div>
+                                                    <label>Surname</label>
+                                                    <div id="driverSurname">@Model.Reservation.Driver?.Surname</div>
+                                                </div>
+                                                <div>
+                                                    <label>E-Mail</label>
+                                                    <div id="driverEmail">@Model.Reservation.Driver?.LoginAuth?.Email</div>
+                                                </div>
+                                                <div>
+                                                    <label>Phone</label>
+                                                    <div id="driverPhone">@Model.Reservation.Driver?.Phone</div>
+                                                </div>
+                                                <div>
+                                                    <label>Date Of Birth</label>
+                                                    <div id="driverBirthdate">@Model.Reservation.Driver?.DateOfBirth</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="driverRight">
+
+                                            <div class="slideDriverPhotos">
+                                                <div>
+                                                    <img id="driverFrontPhoto" src="@Model.Reservation.Driver?.PhotoFront" alt="">
+                                                </div>
+                                                <div>
+                                                    <img id="driverBackPhoto" src="@Model.Reservation.Driver?.PhotoBack" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade @(Convert.ToBoolean(Model.Reservation.IsManuelDriver) ? "active show" : "")" id="secondFull" role="tabpanel" aria-labelledby="second-tab_">
+                                    <form id="manualDriver">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label for="DriverName">Driver Name</label>
+                                                <input type="text" required value="@(Model.Reservation.IsManuelDriver != null && Model.Reservation.IsManuelDriver == true ? Model.Reservation.DriverName : "")" name="DriverName" id="DriverName" class="form-control" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="DriverSurname">Driver Surname</label>
+                                                <input type="text" required name="DriverSurname" value="@(Model.Reservation.IsManuelDriver != null && Model.Reservation.IsManuelDriver == true ? Model.Reservation.DriverSurname : "")" id="DriverSurname" class="form-control" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="DriverPhone">Driver Phone</label>
+                                                <input type="text" required name="DriverPhone" value="@(Model.Reservation.IsManuelDriver != null && Model.Reservation.IsManuelDriver == true ? Model.Reservation.DriverPhone : "")" id="DriverPhone" class="form-control" />
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <div>
+                                                    <button type="submit" class="btn btn-primary">Save Driver</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                }
+                else
+                {
+                    if (Convert.ToBoolean(Model.Reservation.IsManuelDriver))
+                    {
+
+                        <div class="driverFlex">
+
+                            <div class="driverLeft">
+                                <h2>Manual Driver Infos</h2>
+                                <div class="carInputs">
+                                    <div>
+                                        <label>Name</label>
+                                        <div>@Model.Reservation.DriverName</div>
+                                    </div>
+                                    <div>
+                                        <label>Surname</label>
+                                        <div>@Model.Reservation.DriverSurname</div>
+                                    </div>
+                                    <div>
+                                        <label>Phone</label>
+                                        <div>@Model.Reservation.DriverPhone</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                    else
+                    {
+
+                        <div class="driverFlex">
+
+                            <div class="driverLeft">
+                                <h2>Driver Infos</h2>
+                                <div class="carInputs">
+                                    <div>
+                                        <label>Driver ID</label>
+                                        <div>@Model.Reservation.Driver?.DriverId</div>
+                                    </div>
+                                    <div>
+                                        <label>Name</label>
+                                        <div>@Model.Reservation.Driver?.Name</div>
+                                    </div>
+                                    <div>
+                                        <label>Surname</label>
+                                        <div>@Model.Reservation.Driver?.Surname</div>
+                                    </div>
+                                    <div>
+                                        <label>E-Mail</label>
+                                        <div>@Model.Reservation.Driver?.LoginAuth?.Email</div>
+                                    </div>
+                                    <div>
+                                        <label>Phone</label>
+                                        <div>@Model.Reservation.Driver?.Phone</div>
+                                    </div>
+                                    <div>
+                                        <label>Date Of Birth</label>
+                                        <div>@Model.Reservation.Driver?.DateOfBirth</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="driverRight">
+
+                                <div class="slideDriverPhotos">
+                                    <div>
+                                        <img src="@Model.Reservation.Driver?.PhotoFront" alt="">
+                                    </div>
+                                    <div>
+                                        <img src="@Model.Reservation.Driver?.PhotoBack" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+                if (Convert.ToBoolean(Model.Reservation.IsManuelDriver))
+                {
+
+                    <div class="driverFlex">
+
+                        <div class="driverLeft">
+                            <h2>Manual Driver Infos</h2>
+                            <div class="carInputs">
+                                <div>
+                                    <label>Name</label>
+                                    <div>@Model.Reservation.DriverName</div>
+                                </div>
+                                <div>
+                                    <label>Surname</label>
+                                    <div>@Model.Reservation.DriverSurname</div>
+                                </div>
+                                <div>
+                                    <label>Phone</label>
+                                    <div>@Model.Reservation.DriverPhone</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                }
+                else
+                {
+
+                    <div class="driverFlex">
+
+                        <div class="driverLeft">
+                            <h2>Driver Infos</h2>
+                            <div class="carInputs">
+                                <div>
+                                    <label>Driver ID</label>
+                                    <div>@Model.Reservation.Driver?.DriverId</div>
+                                </div>
+                                <div>
+                                    <label>Name</label>
+                                    <div>@Model.Reservation.Driver?.Name</div>
+                                </div>
+                                <div>
+                                    <label>Surname</label>
+                                    <div>@Model.Reservation.Driver?.Surname</div>
+                                </div>
+                                <div>
+                                    <label>E-Mail</label>
+                                    <div>@Model.Reservation.Driver?.LoginAuth?.Email</div>
+                                </div>
+                                <div>
+                                    <label>Phone</label>
+                                    <div>@Model.Reservation.Driver?.Phone</div>
+                                </div>
+                                <div>
+                                    <label>Date Of Birth</label>
+                                    <div>@Model.Reservation.Driver?.DateOfBirth</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="driverRight">
+
+                            <div class="slideDriverPhotos">
+                                <div>
+                                    <img src="@Model.Reservation.Driver?.PhotoFront" alt="">
+                                </div>
+                                <div>
+                                    <img src="@Model.Reservation.Driver?.PhotoBack" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+
         </div>
 
     </div>
@@ -732,14 +944,74 @@
     <script>
 
 
+        $('#manualDriver').on("submit", function (e) {
+            e.preventDefault()
+            if ($(this).valid()) {
+                var driver = {
+                    DriverName: $(this).find("input[name='DriverName']").val(),
+                    DriverSurname: $(this).find("input[name='DriverSurname']").val(),
+                    DriverPhone: $(this).find("input[name='DriverPhone']").val()
+                }
+
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.AddManualDriver))',
+                    type: "POST",
+                    data: { reservationId: @Model.Reservation.Id, driver: driver },
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Successfully Assign Driver',
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Something went wrong',
+                            }).then(() => {
+                                location.reload()
+                            })
+                        }
+                        $('.formLoader').addClass("deActive")
+                    }
+                });
+            }
+        })
+
 
         $(".detailServicesItem").on("click", function () {
             $(this).find(".detailServiceDownItemBottom").slideToggle(150);
         })
 
-
-
-
+        $('#driverSelectbox').on("change",function(){
+            var driverId = $('#driverSelectbox').val();
+            $.ajax({
+                url: '@Url.Action(nameof(Airport.UI.Controllers.ReservationManageController.GetDriverData))',
+                type: "POST",
+                data: { driverId: driverId },
+                success: function (response) {
+                    if (response.result == 1) {
+                        $('#driverInfo #driverId').text(response.data.driverId)
+                        $('#driverInfo #driverName').text(response.data.driverName)
+                        $('#driverInfo #driverSurname').text(response.data.driverSurname)
+                        $('#driverInfo #driverPhone').text(response.data.driverPhone)
+                        $('#driverInfo #driverEmail').text(response.data.driverEmail)
+                        $('#driverInfo #driverBirthdate').text(response.data.driverBirthday)
+                        $('#driverInfo #driverFrontPhoto').text(response.data.driverBackPhoto)
+                        $('#driverInfo #driverBackPhoto').text(response.data.driverFrontPhoto)
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Something went wrong',
+                        }).then(() => {
+                            location.reload()
+                        })
+                    }
+                }
+            });
+        })
 
         $('#assignDriverBtn').on("click", function () {
             var driverId = $('#driverSelectbox').val();
@@ -791,7 +1063,7 @@
             streetViewControl: false,
                 zoomControl: false,
                     fullscreenControl: false
-                                                                                                                                    });
+                                                                                                                                                                                                                    });
 
         directionsRenderer.setMap(map);
 
@@ -809,7 +1081,7 @@
                 directionsRenderer.setDirections(result);
             }
         });
-                                                                                                                                }
+                                                                                                                                                                                                                }
 
 
         window.onload = () => {

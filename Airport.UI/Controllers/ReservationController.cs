@@ -853,8 +853,11 @@ namespace Airport.UI.Controllers
                             RealPhone = reservation.RealPhone,
                             DiscountText = reservation.DiscountText,
                             ReservationUserId = reservation.ReservationUserId,
-                            Rate = reservation.Rate
+                            Rate = reservation.Rate,
+                            LastUpdate = DateTime.Now,
+                            CreateDate = DateTime.Now,
                         });
+
                         reservation.Id = createdReservation.Id;
 
                         PdfCreator pdfCreator = new PdfCreator(_env);
@@ -1557,6 +1560,8 @@ namespace Airport.UI.Controllers
                     ReservationUserId = user?.Id,
                     Rate = 0,
                     SalesAgencyId = salesAgency,
+                    LastUpdate = DateTime.Now,
+                    CreateDate = DateTime.Now,
                 });
 
                 var reservationItemsList = new List<ReservationServicesTable>();
