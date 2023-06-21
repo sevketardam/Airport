@@ -302,7 +302,7 @@ $(".nav_btn").on("click", function () {
 })
 
 $("._user_btns div").on("click", function () {
-    let type = $(this).attr("class");
+    let type = $(this).attr("rol");
 
     if (type == "_up_number") {
         $(this)
