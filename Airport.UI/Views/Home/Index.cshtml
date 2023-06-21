@@ -91,10 +91,10 @@
                                     <span class="_User"><i class="fa-solid fa-user"></i></span>
                                     <input type="text" value="1" name="PeopleCount" onkeydown="return numControl(event)">
                                     <div class="_user_btns">
-                                        <div class="_up_number">
+                                        <div rol="_up_number" class="_up_number">
                                             <i class="fa-sharp fa-solid fa-caret-up"></i>
                                         </div>
-                                        <div class="_down_number">
+                                        <div rol="_down_number" class="_down_number">
                                             <i class="fa-sharp fa-solid fa-caret-down"></i>
                                         </div>
                                     </div>
@@ -115,6 +115,99 @@
         </div>
     </div>
 </section>
+
+
+@*Butonları değişmiş banner*@
+@*<section>
+    <div class="container">
+        <div>
+            <h2 class="_Banner_Title">
+                Book airport services all over the world
+                in just a few clicks
+            </h2>
+            <div class="_Banner_Flex">
+                <div class="_Banner_Left">
+                    <div class="_Banner_Form">
+
+                        <form asp-route="getLocationValue" method="get" id="reservationForm">
+                            <div class="_Form_Cat">
+                                <div>
+                                    <input id="reservationDatas" name="reservationDatas" type="hidden" />
+                                    <button class="One_Way form-control form-control-custom non-bor" type="button">
+                                        One Way
+                                    </button>
+                                </div>
+                                <div>
+                                    <button class="Roundtrip_Btn form-control form-control-custom non-bor" type="button">
+                                        Roundtrip
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="_Form_Inputs">
+                                <div class="_Pos_Rel">
+                                    <div>
+                                        <img src="~/img/location.png" class="_Locaiton_Icon" alt="Location icon">
+                                        <label for="">Pick Up</label>
+                                        <input class="get-location form-control form-control-custom non-bor" id="_Pick_Up" name="PickValueText" placeholder="Search Location" type="text" />
+
+                                        <input id="_Pick_Up_Value" name="PickValue" type="hidden" />
+                                    </div>
+                                </div>
+                                <div class="_Pos_Rel">
+                                    <div>
+                                        <img src="~/img/location.png" class="_Locaiton_Icon" alt="Location icon">
+                                        <label for="">Drop off</label>
+                                        <input class="get-location form-control form-control-custom non-bor" id="_Drop_Off" name="DropValueText" placeholder="Search Location" type="text" />
+
+                                        <input id="_Drop_Off_Value" name="DropValue" type="hidden" />
+                                    </div>
+                                </div>
+                                <div class="_Pos_Rel">
+                                    <label for="">Flight Arrival</label>
+                                    <img src="~/img/calendar.png" class="calendarImage" />
+                                    <input type="datetime-local" class="form-control form-control-custom non-bor" name="FlightTime" style="padding-left: 10px;">
+                                </div>
+                                <div class="_Pos_Rel">
+                                    <div class="d-none Return_Arrival">
+                                        <label for="">Return</label>
+                                        <input type="datetime-local" class="form-control form-control-custom non-bor" name="ReturnDate" id="ReturnDate">
+                                        <img src="~/img/calendar.png" class="calendarImage" />
+                                        <input type="checkbox" name="ReturnStatus" value="true" style="position:absolute; opacity: 0;visibility: visible; " />
+                                    </div>
+                                    <div>
+                                        <button type="button" class="_Add_Return form-control form-control-custom">
+                                            <i class="fa-sharp fa-solid fa-plus"></i> Add Return
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="_Pos_Rel _User_Div">
+                                    <span class="_User"><i class="fa-solid fa-user"></i></span>
+                                    <input type="text" value="1" name="PeopleCount" class="form-control form-control-custom non-bor" onkeydown="return numControl(event)">
+                                    <div class="_user_btns">
+                                        <div rol="_up_number" class="_up_number non-bor">
+                                            <i class="fa-sharp fa-solid fa-caret-up"></i>
+                                        </div>
+                                        <div rol="_down_number" class="_down_number non-bor">
+                                            <i class="fa-sharp fa-solid fa-caret-down"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="_Pos_Rel">
+                                    <button type="submit" class="_Search_Booking" id="_Search_Booking">
+                                        Search Booking
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="_Banner_Right">
+                    <img src="~/img/phonesMockup.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>*@
 
 <!-- Neden Airpot Global? -->
 <section class="_Module_Margin">

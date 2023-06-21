@@ -4496,7 +4496,7 @@ textarea.form-control-custom {
 
 @media (max-width: 480px) {
     ._user_btns div {
-        height: calc(2.3rem / 2);
+        height: calc(2.3rem / 2) !important;
     }
 
     ._Form_Inputs ._Add_Return {
