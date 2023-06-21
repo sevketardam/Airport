@@ -32,14 +32,15 @@ namespace Airport.UI.Controllers
         [Route("/error")]
         public IActionResult HandleError()
         {
-            return Problem();
+            return RedirectToAction("Index", "Error", new { code = Problem().StatusCode });
         }
 
-        public IActionResult Index(int code)                            
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Index(int code)
         {
             if (code == 404)
             {
-                return RedirectToAction("Page404","Error");
+                return RedirectToAction("Page404", "Error");
             }
             else
             {
@@ -47,8 +48,9 @@ namespace Airport.UI.Controllers
             }
         }
 
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         [Route("/NotFound")]
-        public IActionResult Page404() 
+        public IActionResult Page404()
         {
             return View();
         }
