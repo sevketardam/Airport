@@ -426,3 +426,47 @@ $(".hidden-link a").on("click", function () {
         }
     }, 10);
 })
+
+
+
+
+
+$('form[id="payForm"]').validate({
+    rules: {
+        CardHolderName: {
+            required: true,
+        },
+        CardNumber: {
+            required: true,
+            minlength: 19,
+        },
+        CardDate: {
+            required: true,
+            minlength: 7,
+        },
+        CVC: {
+            required: true,
+            minlength: 3,
+        },
+    },
+    messages: {
+        CardHolderName: {
+            required: "This field is required !",
+        },
+        CardNumber: {
+            required: "This field is required !",
+            minlength: "Please enter a valid card number!",
+        },
+        CardDate: {
+            required: "This field is required !",
+            minlength: "Please enter a valid card date!",
+        },
+        CVC: {
+            required: "This field is required !",
+            minlength: "Please enter a valid cvc!",
+        },
+    },
+    submitHandler: function (form) {
+        form.submit();
+    },
+});

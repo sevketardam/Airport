@@ -18,6 +18,10 @@
             left: auto !important;
         }
 
+        #reservationForm #PeopleCount-error {
+            right: 3rem;
+        }
+
     </style>
 }
 <!-- Banner -->
@@ -86,6 +90,14 @@
                                 <div class="_Pos_Rel _User_Div">
                                     <span class="_User"><i class="fa-solid fa-user"></i></span>
                                     <input type="text" value="1" name="PeopleCount" onkeydown="return numControl(event)">
+                                    <div class="_user_btns">
+                                        <div class="_up_number">
+                                            <i class="fa-sharp fa-solid fa-caret-up"></i>
+                                        </div>
+                                        <div class="_down_number">
+                                            <i class="fa-sharp fa-solid fa-caret-down"></i>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="_Pos_Rel">
                                     <button type="submit" class="_Search_Booking" id="_Search_Booking">

@@ -127,6 +127,8 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            height: 100vh;
+            padding: 0 .5rem;
         }
 
         .pay_buttons > div:last-child button a {
@@ -139,11 +141,17 @@
             font-weight: 600;
         }
 
+        header,footer{
+            display:none;
+            opacity: 0;
+            user-select: none;
+        }
+
     </style>
 }
 
 <section>
-    <div class="container my-5">
+    <div>
         <div>
             <div class="status_modal">
                 <div class="pay_success_icon success">
@@ -153,6 +161,13 @@
                     <p>
                         Payment Failed
                     </p>
+                </div>
+                <div class="pay_buttons">
+                    <div>
+                        <button>
+                            <a href="/">Back to Homepage</a>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

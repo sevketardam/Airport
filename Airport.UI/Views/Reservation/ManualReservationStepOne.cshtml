@@ -7,10 +7,23 @@
     input[type="datetime-local"]::-webkit-calendar-picker-indicator {
         filter: invert(56%) sepia(81%) saturate(4242%) hue-rotate(355deg) brightness(100%) contrast(102%);
         color: transparent;
-         background: url(~/img/calendar.png) !important;
+        background: url(~/img/calendar.png) !important;
         background-size: 100% !important;
-        
     }
+
+
+    @@media (min-width: 992px) {
+        .stepOneForm ._Form_Inputs {
+            flex-wrap: nowrap !important
+        }
+    }
+
+    @@media (max-width: 992px) {
+        ._Form_Inputs {
+            gap: 1.45rem;
+        }
+    }
+
 </style>
 
 <section class="_Module_Margin">

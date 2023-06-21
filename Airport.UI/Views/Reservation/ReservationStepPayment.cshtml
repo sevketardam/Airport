@@ -117,34 +117,34 @@
                             </div>
                         </div>
                         @*<div>
-                            <div>
-                                <input type="radio" name="refund" id=""> <span>Full Refund</span>
-                            </div>
-                            <div>
-                                <p>
-                                    € 50
-                                </p>
-                            </div>
+                        <div>
+                        <input type="radio" name="refund" id=""> <span>Full Refund</span>
                         </div>
                         <div>
-                            <div>
-                                <input type="radio" name="lorem" id=""> <span>Lorem Ipsum</span>
-                            </div>
-                            <div>
-                                <p>
-                                    € 50
-                                </p>
-                            </div>
+                        <p>
+                        € 50
+                        </p>
+                        </div>
                         </div>
                         <div>
-                            <div>
-                                <input type="radio" name="lorem" id=""> <span>Lorem Ipsum</span>
-                            </div>
-                            <div>
-                                <p>
-                                    € 50
-                                </p>
-                            </div>
+                        <div>
+                        <input type="radio" name="lorem" id=""> <span>Lorem Ipsum</span>
+                        </div>
+                        <div>
+                        <p>
+                        € 50
+                        </p>
+                        </div>
+                        </div>
+                        <div>
+                        <div>
+                        <input type="radio" name="lorem" id=""> <span>Lorem Ipsum</span>
+                        </div>
+                        <div>
+                        <p>
+                        € 50
+                        </p>
+                        </div>
                         </div>*@
                     </div>
                     <hr>
@@ -185,17 +185,17 @@
                             </div>
                             <p>This fee helps us improve our service</p>
                         </div>
-                       @* <div class="step3-extra-detail-item">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <p class="text">
-                                        Refundable Cancellation
-                                    </p>
-                                </div>
-                                <div>
-                                    <p class="text price">€ 90</p>
-                                </div>
-                            </div>
+                        @* <div class="step3-extra-detail-item">
+                        <div class="d-flex justify-content-between">
+                        <div>
+                        <p class="text">
+                        Refundable Cancellation
+                        </p>
+                        </div>
+                        <div>
+                        <p class="text price">€ 90</p>
+                        </div>
+                        </div>
                         </div>*@
                         <hr>
                     </div>
@@ -210,7 +210,7 @@
                 </div>
 
                 <div class="step3-card-area mt-4">
-                    <form method="post">
+                    <form id="payForm" method="post">
                         <div class="row g-2 step3-card-infos">
                             <div class="col-12">
                                 <label for="cardName">Card Holder Name</label>
@@ -222,8 +222,8 @@
 
                             </div>
                             <div class="col-6">
-                                <label for="mmyy">MM/YY</label>
-                                <input type="text" id="mmyy" name="CardDate" placeholder="MM/YY" class="font-control form-control-custom">
+                                <label for="mmyy">MM/YYYY</label>
+                                <input type="text" id="mmyy" name="CardDate" placeholder="MM/YYYY" class="font-control form-control-custom">
                             </div>
                             <div class="col-6">
                                 <label for="cvc">CVC</label>
@@ -248,3 +248,39 @@
         </div>
     </div>
 </section>
+
+
+
+
+
+
+<style>
+    label.error {
+        position: initial !important;
+    }
+</style>
+
+
+
+@section pageJsScript{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.0.2/cleave.min.js" integrity="sha512-SvgzybymTn9KvnNGu0HxXiGoNeOi0TTK7viiG0EGn2Qbeu/NFi3JdWrJs2JHiGA1Lph+dxiDv5F9gDlcgBzjfA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+}
+
+
+@section pageJs{
+    <script>
+        var CardNumber = new Cleave('input[name="CardNumber"]', {
+            numericOnly: true,
+            blocks: [4,4,4,4],
+            delimiter: '-'
+        });
+        var CardDate = new Cleave('input[name="CardDate"]', {
+            date: true, datePattern: ['m', 'Y']
+        });
+        var CVC = new Cleave('input[name="CVC"]', {
+            numericOnly: true,
+            blocks: [3]
+        });
+    </script>
+}
+
