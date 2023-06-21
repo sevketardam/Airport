@@ -2072,12 +2072,12 @@ input[type="number"]::-webkit-outer-spin-button {
         cursor: pointer;
     }
 
-        ._user_btns div:first-child:not(.non-bor) {
-            border-top-right-radius: 10px;
+        ._user_btns div:first-child {
+            border-top-right-radius: 8px;
         }
 
         ._user_btns div:last-child {
-            border-bottom-right-radius: 10px;
+            border-bottom-right-radius: 8px;
         }
 
         ._user_btns div:hover {
@@ -3291,7 +3291,8 @@ input::-webkit-calendar-picker-indicator {
 }
 
 #reservationForm > ._Form_Inputs > ._Pos_Rel._User_Div input {
-    text-align: end;
+    padding-left: 2.5rem;
+    padding-right: 4.5rem;
 }
 
 ._Banner_Right img {
@@ -3397,10 +3398,10 @@ input::-webkit-calendar-picker-indicator {
 
 label.error {
     font-weight: 400;
-    font-size: .85rem !important;
+    font-size: .65rem !important;
     right: auto;
     top: auto;
-    bottom: -1.7rem;
+    bottom: -1.6rem;
     position: absolute;
     left: 0 !important;
 }
@@ -4103,13 +4104,13 @@ textarea.form-control-custom {
         max-width: 12rem;
         height: auto;
         text-align: center;
-        border-radius: 12px;
+        border-radius: 10px;
         background-color: #ff6709;
         color: white !important;
         border: none;
         cursor: pointer;
         outline: none;
-        font-size: 1.2rem;
+        font-size: 1rem;
         padding: .3rem 0;
         transition: background-color 250ms;
     }
@@ -4490,4 +4491,15 @@ textarea.form-control-custom {
 .form-control-custom:not(.non-bor) {
 
      padding: 0.5rem 0.75rem !important; 
+}
+
+
+@media (max-width: 480px) {
+    ._user_btns div {
+        height: calc(2.3rem / 2);
+    }
+
+    ._Form_Inputs ._Add_Return {
+        height: 2.3rem;
+    }
 }
