@@ -19,6 +19,11 @@ namespace Airport.DBEntities.Entities
         public bool Docs1Status { get; set; }
         public bool Docs2Status { get; set; }
         public bool Docs3Status { get; set; }
+        public DateTime LastUpdate { get; set; }
+        public bool Docs1AdminStatus { get; set; }
+        public bool Docs2AdminStatus { get; set; }
+        public bool Docs3AdminStatus { get; set; }
+
 
         public UserDatas User { get; set; }
     }

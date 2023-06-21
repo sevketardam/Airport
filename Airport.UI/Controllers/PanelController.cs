@@ -116,7 +116,7 @@ namespace Airport.UI.Controllers
         }
 
 
-       [HttpGet("docs")]
+        [HttpGet("docs")]
         public IActionResult Docs()
         {
             try
@@ -152,7 +152,6 @@ namespace Airport.UI.Controllers
                     {
                         docs1Link = await _fileOperation.UploadFile(docs1);
                         docs1Link = _fileOperation.GetFile(docs1Link);
-
                     }
                     else
                     {
@@ -199,17 +198,33 @@ namespace Airport.UI.Controllers
                             Docs1Status = docs1Link == "" ? false : true,
                             Docs2Status = docs2Link == "" ? false : true,
                             Docs3Status = docs3Link == "" ? false : true,
+                            Docs1AdminStatus = false,
+                            Docs2AdminStatus = false,
+                            Docs3AdminStatus = false,
+                            LastUpdate = DateTime.Now,
                         });
                     }
                     else
                     {
-                        userIsEmpty.Docs1 = docs1Link;
-                        userIsEmpty.Docs2 = docs2Link;
-                        userIsEmpty.Docs3 = docs3Link;
-                        userIsEmpty.Docs1Status = docs1Link == "" ? false : true;
-                        userIsEmpty.Docs2Status = docs2Link == "" ? false : true;
-                        userIsEmpty.Docs3Status = docs3Link == "" ? false : true;
+                        if (!userIsEmpty.Docs1AdminStatus)
+                        {
+                            userIsEmpty.Docs1 = docs1Link;
+                            userIsEmpty.Docs1Status = docs1Link == "" ? false : true;
+                        }
 
+                        if (!userIsEmpty.Docs2AdminStatus)
+                        {
+                            userIsEmpty.Docs2 = docs2Link;
+                            userIsEmpty.Docs2Status = docs2Link == "" ? false : true;
+                        }
+
+                        if (!userIsEmpty.Docs3AdminStatus)
+                        {
+                            userIsEmpty.Docs3 = docs3Link;
+                            userIsEmpty.Docs3Status = docs3Link == "" ? false : true;
+                        }
+
+                        userIsEmpty.LastUpdate = DateTime.Now;
                         _docs.Update(userIsEmpty);
                     }
 

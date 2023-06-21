@@ -3,6 +3,7 @@ using Airport.DBEntitiesDAL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -16,11 +17,13 @@ namespace Airport.UI.Controllers
         ICouponsDAL _coupons;
         ILoginAuthDAL _loginAuth;
         IUserDatasDAL _userData;
-        public GlobalAdminController(ICouponsDAL coupons,ILoginAuthDAL loginAuth,IUserDatasDAL userDta)
+        IUserDocsDAL _userDocs;
+        public GlobalAdminController(ICouponsDAL coupons, ILoginAuthDAL loginAuth, IUserDatasDAL userDta, IUserDocsDAL userDocs)
         {
             _coupons = coupons;
             _loginAuth = loginAuth;
             _userData = userDta;
+            _userDocs = userDocs;
         }
 
         [HttpGet("panel/coupons")]
@@ -118,7 +121,7 @@ namespace Airport.UI.Controllers
 
         [Authorize(Roles = "0")]
         [HttpPost("agencies")]
-        public IActionResult Agencies(UserDatas data, string Eposta, string Password,byte agencyType)
+        public IActionResult Agencies(UserDatas data, string Eposta, string Password, byte agencyType)
         {
             if (data != null)
             {
@@ -161,6 +164,66 @@ namespace Airport.UI.Controllers
 
             return View();
         }
+
+        [Authorize(Roles = "0")]
+        [HttpGet("docs-list")]
+        public IActionResult Docs()
+        {
+            var docs = new List<UserDocs>();
+            _userDocs.Select().ForEach(doc =>
+            {
+                var auth = _loginAuth.SelectByID(doc.UserId);
+                doc.User = _userData.SelectByID(auth.UserId);
+                docs.Add(doc);
+            });
+
+
+            return View(docs);
+        }
+
+        [Authorize(Roles = "0")]
+        public IActionResult GetDocsAttr(int docsId)
+        {
+            try
+            {
+                var docs = _userDocs.SelectByID(docsId);
+
+                return Json(new { result = 1, data = docs });
+            }
+            catch (Exception)
+            {
+                return Json(new { });
+            }
+
+        }
+
+        [Authorize(Roles = "0")]
+        public IActionResult UpdateDocs(UserDocs docs)
+        {
+            try
+            {
+                var selectedDocs = _userDocs.SelectByID(docs.Id);
+                if (selectedDocs != null)
+                {
+                    selectedDocs.Docs1AdminStatus = docs.Docs1AdminStatus;
+                    selectedDocs.Docs2AdminStatus = docs.Docs2AdminStatus;
+                    selectedDocs.Docs3AdminStatus = docs.Docs3AdminStatus;
+
+                    _userDocs.Update(selectedDocs);
+
+                    return Json(new { result = 1 });
+                }
+
+                return Json(new { result = 2 });
+
+            }
+            catch (Exception)
+            {
+                return Json(new { });
+            }
+
+        }
+
 
         public static string GetMD5(string value)
         {
