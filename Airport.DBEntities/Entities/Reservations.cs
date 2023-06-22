@@ -46,6 +46,14 @@ namespace Airport.DBEntities.Entities
         public int? ReservationUserId { get; set; }
         public int Rate { get; set; }
         public int? SalesAgencyId { get; set; }
+        public DateTime LastUpdate { get; set; }
+        public DateTime CreateDate { get; set; }
+        public bool? IsManuelDriver { get; set; }
+        public string? DriverName { get; set; }
+        public string? DriverSurname { get; set; }
+        public string? DriverPhone { get; set; }
+
+
 
         public LocationCars LocationCars { get; set; }
         public UserDatas User { get; set; }
