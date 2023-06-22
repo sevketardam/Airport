@@ -802,7 +802,7 @@ namespace Airport.UI.Controllers
                 var reservation = HttpContext.Session.MyGet<Reservations>("reservation");
                 if (reservation != null)
                 {
-                    if (cardDetail.CardNumber == "1")
+                    if (cardDetail.CardNumber == "1111-1111-1111-1111")
                     {
 
                         var getCoupon = _coupons.SelectByFunc(a => a.Active && a.Id == reservation.Coupon && a.CouponStartDate <= DateTime.Now
@@ -856,18 +856,21 @@ namespace Airport.UI.Controllers
                             Rate = reservation.Rate,
                             LastUpdate = DateTime.Now,
                             CreateDate = DateTime.Now,
+                            
                         });
 
                         reservation.Id = createdReservation.Id;
-
-                        PdfCreator pdfCreator = new PdfCreator(_env);
-                        pdfCreator.CreateReservationPDF(reservation.ReservationCode + "-" + reservation.Id, reservation);
-
                         reservation.ReservationPeoples.ForEach(item => item.ReservationId = createdReservation.Id);
                         reservation.ReservationServicesTables.ForEach(item => item.ReservationId = createdReservation.Id);
 
                         _reservationsPeople.InsertRage(reservation.ReservationPeoples);
                         _reservationServicesTable.InsertRage(reservation.ReservationServicesTables);
+
+                        PdfCreator pdfCreator = new PdfCreator(_env);
+                        pdfCreator.CreateReservationPDF(reservation.ReservationCode + "-" + reservation.Id, reservation);
+
+
+
 
                         _mail.SendReservationMail(reservation);
 
@@ -882,6 +885,8 @@ namespace Airport.UI.Controllers
 
                         _sms.SmsForReservation(mesaj);
 
+
+                        HttpContext.Session.MySet("reservation", createdReservation);
 
                         return RedirectToAction("CreatedReservationDetail", "Reservation", new { id = reservation.Id });
                     }
