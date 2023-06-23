@@ -19,20 +19,20 @@
                 <h6>Doc 1</h6>
                 <div class="row">
                     <div class="col-12">
-                        <div class="doc-block form-control form-control-custom @((Model != null && Model.Docs1Status) || (Model != null &&Model.Docs1AdminStatus) ? "disabledFileInput" : ""))">
+                        <div class="doc-block form-control form-control-custom @((Model != null && Model.Docs1AdminStatus) ? "disabledFileInput" : ""))">
                             <p>
                                 Select File
                             </p>
-                            <input type="file" name="docs1" id="docs1" @((Model != null && Model.Docs1Status) || (Model != null &&Model.Docs1AdminStatus) ? "disabled" : "") accept="application/pdf">
+                            <input type="file" name="docs1" id="docs1" @((Model != null && Model.Docs1AdminStatus) ? "disabled" : "") accept="application/pdf">
                         </div>
                         <div>
                             <i class="fa-solid fa-download"></i>
                         </div>
-                        @if (Model != null && Model.Docs1 != "" && !Model.Docs1Status && !Model.Docs1AdminStatus)
+                        @if (Model != null && !Model.Docs1AdminStatus)
                         {
                             <div class="doc-status err"><i class="fa-regular fa-circle-exclamation"></i></div>
                         }
-                        else if (Model != null && Model.Docs1 != "" && Model.Docs1Status && !Model.Docs1AdminStatus)
+                        else if (Model != null && Model.Docs1AdminStatus)
                         {
                             <div class="doc-status success"><i class="fa-regular fa-check"></i></div>
                         }
@@ -44,20 +44,20 @@
                 <h6>Doc 2</h6>
                 <div class="row">
                     <div class="col-12">
-                        <div class="doc-block form-control form-control-custom @((Model != null && Model.Docs2Status) || (Model != null &&Model.Docs2AdminStatus) ? "disabledFileInput" : "")">
+                        <div class="doc-block form-control form-control-custom @((Model != null && Model.Docs2AdminStatus) ? "disabledFileInput" : "")">
                             <p>
                                 Select File
                             </p>
-                            <input type="file" name="docs2" id="docs2" @((Model != null && Model.Docs2Status) || (Model != null &&Model.Docs2AdminStatus) ? "disabled" : "") accept="application/pdf">
+                            <input type="file" name="docs2" id="docs2" @((Model != null && Model.Docs2AdminStatus) ? "disabled" : "") accept="application/pdf">
                         </div>
                         <div>
                             <i class="fa-solid fa-download"></i>
                         </div>
-                        @if (Model != null && Model.Docs2 != "" && !Model.Docs2Status && !Model.Docs2Status)
+                        @if (Model != null && !Model.Docs2AdminStatus)
                         {
                             <div class="doc-status err"><i class="fa-regular fa-circle-exclamation"></i></div>
                         }
-                        else if (Model != null && Model.Docs2 != "" && Model.Docs2Status && !Model.Docs2Status)
+                        else if (Model != null && Model.Docs2AdminStatus)
                         {
                             <div class="doc-status success"><i class="fa-regular fa-check"></i></div>
                         }
@@ -69,20 +69,20 @@
                 <h6>Doc 3</h6>
                 <div class="row">
                     <div class="col-12">
-                        <div class="doc-block form-control form-control-custom @((Model != null && Model.Docs3Status) || (Model != null &&Model.Docs3AdminStatus) ? "disabledFileInput" : "")">
+                        <div class="doc-block form-control form-control-custom @((Model != null && Model.Docs3AdminStatus) ? "disabledFileInput" : "")">
                             <p>
                                 Select File
                             </p>
-                            <input type="file" name="docs3" id="docs3" @((Model != null && Model.Docs3Status) || (Model != null &&Model.Docs3AdminStatus) ? "disabled" : "") accept="application/pdf">
+                            <input type="file" name="docs3" id="docs3" @((Model != null && Model.Docs3AdminStatus) ? "disabled" : "") accept="application/pdf">
                         </div>
                         <div>
                             <i class="fa-solid fa-download"></i>
                         </div>
-                        @if (Model != null && Model.Docs3 != "" && !Model.Docs3Status && !Model.Docs3Status)
+                        @if (Model != null && !Model.Docs3AdminStatus)
                         {
                             <div class="doc-status err"><i class="fa-regular fa-circle-exclamation"></i></div>
                         }
-                        else if (Model != null && Model.Docs3 != "" && Model.Docs3Status && !Model.Docs3Status)
+                        else if (Model != null && !Model.Docs3AdminStatus)
                         {
                             <div class="doc-status success"><i class="fa-regular fa-check"></i></div>
                         }
@@ -115,6 +115,7 @@
             formData.append('docs3', file3);
 
             if (file != undefined || file2 != undefined || file3 != undefined) {
+                $('.formLoader').removeClass("deActive")
                 $.ajax({
                     url: '@Url.Action(nameof(Airport.UI.Controllers.PanelController.Docs))',
                     type: "POST",
@@ -147,6 +148,7 @@
                                 confirmButtonText: 'Okey'
                             })
                         }
+                        $('.formLoader').addClass("deActive")
                     }
                 });
             }

@@ -173,11 +173,11 @@
                                 </li>
                             }
 
-                            @if (userRole == "2" || userRole == "4" || userRole == "5")
+                            @if (userRole == "2" || userRole == "4" || userRole == "5" || userRole == "0")
                             {
                                 <li>
                                     <a href="/panel/reservation-management">
-                                        <i class="simple-icon-calendar"></i> My Reservations
+                                        <i class="simple-icon-calendar"></i> @(userRole == "0" ? "Reservations" : "My Reservations")
                                     </a>
                                 </li>
                             }

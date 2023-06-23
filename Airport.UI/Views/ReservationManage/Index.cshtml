@@ -247,9 +247,9 @@
                             <a title="Go to detail" href="/panel/reservation-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
                             @if (userRole != "5")
                             {
-                                @if (!(item.Status == 3 && item.LastUpdate.AddDays(1) <= DateTime.Now))
+                                @if (!(item.Status == 3 && item.LastUpdate.AddDays(1) <= DateTime.Now) || userRole == "0")
                                 {
-                                <a title="Leave a note" class="open-note reservation-table-icon"><i class="iconsminds-file-edit"></i></a>
+                                    <a title="Leave a note" class="open-note reservation-table-icon"><i class="iconsminds-file-edit"></i></a>
 
                                     <a title="Select Driver" class="select-driver reservation-table-icon"><i class="iconsminds-doctor"></i></a>
                                     <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">

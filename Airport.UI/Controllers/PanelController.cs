@@ -265,36 +265,7 @@ namespace Airport.UI.Controllers
             }
 
         }
-
-        [HttpGet("test33")]
-        public IActionResult Test33()
-        {
-            try
-            {
-
-                return View();
-            }
-            catch (Exception)
-            {
-                return Json(new { });
-            }
-
-        }
-
-        public IActionResult test2()
-        {
-            try
-            {
-
-                return View();
-            }
-            catch (Exception)
-            {
-                return Json(new { });
-            }
-
-        }
-
+     
         [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/profile")]
         public IActionResult Profile()

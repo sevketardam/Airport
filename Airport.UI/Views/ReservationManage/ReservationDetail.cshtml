@@ -388,7 +388,7 @@
     </style>
 }
 
-@if (!(Model.Reservation.Status == 3 && Model.Reservation.LastUpdate.AddDays(1) <= DateTime.Now) && userRole == "2")
+@if ((!(Model.Reservation.Status == 3 && Model.Reservation.LastUpdate.AddDays(1) <= DateTime.Now) && userRole == "2") || userRole == "0")
 {
     <a class="btn btn-primary" href="/panel/update-reservation/@Model.Reservation.Id">Update Reservation</a>
 }
@@ -650,7 +650,7 @@
 
         <!-- Sürücü Bilgileri -->
         <div class="my-4">
-            @if (userRole == "2")
+            @if (userRole == "2" || userRole == "0")
             {
                 @if (!(Model.Reservation.Status == 3 && Model.Reservation.LastUpdate.AddDays(1) <= DateTime.Now))
                 {
