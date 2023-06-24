@@ -83,13 +83,17 @@
                                 <input type="text" value="@Model.Name" class="form-control form-control-custom">
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="_Form_Label">Profession</label>
-                                <input type="text" value="@Model.Profession" class="form-control form-control-custom">
+                        @if (Model.LoginAuth.Type == 0 || Model.LoginAuth.Type == 2)
+                        {
+                             <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="_Form_Label">Profession</label>
+                                    <input type="text" value="@Model.Profession" class="form-control form-control-custom">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
+                        }
+
+                        <div class="col-md-@(Model.LoginAuth.Type == 0 || Model.LoginAuth.Type == 2 ? "6" : "12")">
                             <div class="form-group">
                                 <label class="_Form_Label">Mobile Phone</label>
                                 <input type="text" value="@Model.PhoneNumber" class="form-control form-control-custom">

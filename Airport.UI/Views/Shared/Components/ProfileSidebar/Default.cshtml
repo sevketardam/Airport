@@ -97,10 +97,13 @@
             <i class="fa-regular fa-handshake"></i>
             Agreements
         </a>
-        <a href="settings">
-            <i class="fa-solid fa-gear"></i>
-            Settings
-        </a>
+        @if (Model.Type == 2 || Model.Type == 0)
+        {
+            <a href="settings">
+                <i class="fa-solid fa-gear"></i>
+                Settings
+            </a>
+        }
         <a href="logout">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
             Log Out

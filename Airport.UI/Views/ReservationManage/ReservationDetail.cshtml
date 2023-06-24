@@ -388,13 +388,16 @@
     </style>
 }
 
-@if ((!(Model.Reservation.Status == 3 && Model.Reservation.LastUpdate.AddDays(1) <= DateTime.Now) && userRole == "2") || userRole == "0")
-{
-    <a class="btn btn-primary" href="/panel/update-reservation/@Model.Reservation.Id">Update Reservation</a>
-}
+
 
 <section>
     <div class="container my-5">
+
+        @if ((!(Model.Reservation.Status == 3 && Model.Reservation.LastUpdate.AddDays(1) <= DateTime.Now) && userRole == "2") || (!(Model.Reservation.Status == 3 && Model.Reservation.LastUpdate.AddDays(1) <= DateTime.Now) && userRole == "0"))
+        {
+            <a class="btn btn-primary" href="/panel/update-reservation/@Model.Reservation.Id">Update Reservation</a>
+        }
+
         <div style="width: 100%; height: 350px;" id="map"></div>
 
 

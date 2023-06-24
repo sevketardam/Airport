@@ -252,6 +252,10 @@ namespace Airport.UI.Controllers
                 {
                     reservations = _reservations.SelectByFunc(a => a.SalesAgencyId == userId).OrderByDescending(a => a.ReservationDate).ToList();
                 }
+                else if (userRole == "0")
+                {
+                    reservations = _reservations.Select().OrderByDescending(a => a.ReservationDate).ToList();
+                }
                 else
                 {
                     reservations = _reservations.SelectByFunc(a => a.UserId == userId).OrderByDescending(a => a.ReservationDate).ToList();
