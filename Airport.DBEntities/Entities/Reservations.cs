@@ -52,6 +52,9 @@ namespace Airport.DBEntities.Entities
         public string? DriverName { get; set; }
         public string? DriverSurname { get; set; }
         public string? DriverPhone { get; set; }
+        public double? ServiceFee { get; set; }
+        public double? SalesFee { get; set; }
+        public double? PartnerFee { get; set; }
 
 
 

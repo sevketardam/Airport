@@ -851,8 +851,7 @@ namespace Airport.UI.Controllers
                             ReservationUserId = reservation.ReservationUserId,
                             Rate = reservation.Rate,
                             LastUpdate = DateTime.Now,
-                            CreateDate = DateTime.Now,
-                            
+                            CreateDate = DateTime.Now,                            
                         });
 
                         reservation.Id = createdReservation.Id;
