@@ -920,7 +920,7 @@ namespace Airport.UI.Controllers
                 updatedService.DurationText = createReservation.Duration;
                 updatedService.IsDiscount = reservation.IsDiscount;
                 updatedService.Discount = reservation.Discount;
-                updatedService.ServiceFee = totalServiceFee;
+                updatedService.ExtraServiceFee = totalServiceFee;
                 updatedService.Comment = reservation.Comment;
                 updatedService.HidePrice = reservation.HidePrice;
                 updatedService.LocationCarId = createReservation.LocationCar.Id;

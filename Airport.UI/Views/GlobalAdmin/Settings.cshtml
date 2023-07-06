@@ -1,0 +1,62 @@
+﻿@{
+    Layout = "_PanelLayout";
+    ViewData["title"] = "Settings";
+}
+@model GlobalSettings
+<div class="container">
+    <form id="globalSettingsForm">
+        <div class="row">
+            <div class="col-md-12">
+                Last Changed Time @Model.LastChange.ToString("f")
+            </div>
+            <div class="col-md-4">
+                <label for="partnerPer">Partner Percentile</label>
+                <input class="form-control" name="PartnerPer" id="partnerPer" required value="@Model.PartnerPer" type="number" />
+            </div>
+            <div class="col-md-4">
+                <label for="salesPer">Sales Percentile</label>
+                <input class="form-control" name="SalesPer" id="salesPer" required value="@Model.SalesPer" type="number" />
+            </div>
+            <div class="col-md-4">
+                <label for="globalPer">Global Percentile</label>
+                <input class="form-control" name="GlobalPer" id="globalPer" required value="@Model.GlobalPer" type="number" />
+            </div>
+            <div class="col-md-12 mt-3">
+                <div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section pageJs{
+    <script>
+        $("#globalSettingsForm").on("submit", function (e) {
+            e.preventDefault();
+            var formData = $(this).serialize()
+            if ($(this).valid()) {
+                $.ajax({
+                    url: '@Url.Action(nameof(Airport.UI.Controllers.GlobalAdminController.Settings))',
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        if (response.result == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Successfully',
+                                text: 'Successfully Updated Percentile',
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Something went wrong',
+                            })
+                        }
+                    }
+                });
+            }
+        })
+    </script>
+}

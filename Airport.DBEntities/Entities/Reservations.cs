@@ -33,7 +33,7 @@ namespace Airport.DBEntities.Entities
         public double? Discount { get; set; }
         public int UserId { get; set; }
         public string Comment { get; set; }
-        public double? ServiceFee { get; set; }
+        public double? ExtraServiceFee { get; set; }
         public byte Status { get; set; }
         public string? FinishComment { get; set; }
         public int? DriverId { get; set; }

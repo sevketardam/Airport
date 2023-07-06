@@ -57,7 +57,7 @@ namespace Airport.UI.Models.Extendions
             string base64String = Convert.ToBase64String(imageBytes);
 
             var price = reservation.IsDiscount ? reservation.Discount : reservation.OfferPrice;
-            var servicefee = reservation.ServiceFee;
+            var servicefee = reservation.ExtraServiceFee;
 
             var totalprice = price + servicefee;
 
@@ -91,7 +91,7 @@ namespace Airport.UI.Models.Extendions
                       <p style=""font-weight: bold;margin: 0px;"">Total:</p>
             </div>
             <div>
-                      <p style=""margin: 0px;margin-left:.5rem;"">{reservation.OfferPrice + reservation.ServiceFee} €</p>
+                      <p style=""margin: 0px;margin-left:.5rem;"">{reservation.OfferPrice + reservation.ExtraServiceFee} €</p>
             </div>
         </div>
 <div style=""display: flex; justify-content: space-between;width:100%;"">
@@ -121,7 +121,7 @@ namespace Airport.UI.Models.Extendions
                       <p style=""font-weight: bold;margin: 0px;"">TOTAL:</p>
             </div>
             <div>
-                       <p style=""margin: 0px;margin-left:.5rem;"">{reservation.ServiceFee + reservation.OfferPrice} €</p>
+                       <p style=""margin: 0px;margin-left:.5rem;"">{reservation.ExtraServiceFee + reservation.OfferPrice} €</p>
             </div>
         </div>
 <div style=""display: flex; justify-content: space-between;width:100%;"">
@@ -174,7 +174,7 @@ namespace Airport.UI.Models.Extendions
                       <p style=""margin: 0px;"">Service fee:</p>
             </div>
             <div>
-                      <p style=""margin: 0px;margin-left:.5rem;"">{reservation.ServiceFee} €</p>
+                      <p style=""margin: 0px;margin-left:.5rem;"">{reservation.ExtraServiceFee} €</p>
             </div>
         </div>
         {discountHtml}

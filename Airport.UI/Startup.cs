@@ -63,6 +63,7 @@ namespace Airport.UI
             services.AddScoped<ICouponsDAL, CouponsDAL>();
             services.AddScoped<ILoginAuthDAL, LoginAuthDAL>();
             services.AddScoped<IUserDocsDAL, UserDocsDAL>();
+            services.AddScoped<IGlobalSettingsDAL, GlobalSettingsDAL>();
 
 
             services.AddScoped<IMail, MailRepo>();
@@ -72,6 +73,7 @@ namespace Airport.UI
             services.AddScoped<IFileOperation, FileOperation>();
 
 
+            services.AddHttpContextAccessor();
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
             {

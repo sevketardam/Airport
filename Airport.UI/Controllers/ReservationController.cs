@@ -528,7 +528,6 @@ namespace Airport.UI.Controllers
                         {
                             a.ServiceProperty = _serviceProperties.SelectByID(a.ServicePropertyId);
                         });
-
                     }
 
 
@@ -562,9 +561,6 @@ namespace Airport.UI.Controllers
             }
 
         }
-
-
-
 
         [HttpPost("reservation-get-code", Name = "getBookValues")]
         public async Task<IActionResult> ReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, string selectedServiceItems, string coupon)
@@ -671,7 +667,7 @@ namespace Airport.UI.Controllers
                     Discount = 0,
                     IsDiscount = false,
                     UserId = _location.SelectByID(createReservation.LocationCar.LocationId).UserId,
-                    ServiceFee = totalServiceFee,
+                    ExtraServiceFee = totalServiceFee,
                     Comment = reservation.Comment,
                     Status = 1,
                     IsDelete = false,
@@ -843,7 +839,7 @@ namespace Airport.UI.Controllers
                             Discount = reservation.Discount,
                             IsDiscount = reservation.IsDiscount,
                             UserId = reservation.UserId,
-                            ServiceFee = reservation.ServiceFee,
+                            ExtraServiceFee = reservation.ExtraServiceFee,
                             Comment = reservation.Comment,
                             Status = reservation.Status,
                             IsDelete = reservation.IsDelete,
@@ -1554,7 +1550,7 @@ namespace Airport.UI.Controllers
                     IsDiscount = reservation.IsDiscount,
                     Discount = reservation.Discount,
                     UserId = _location.SelectByID(createReservation.LocationCar.LocationId).UserId,
-                    ServiceFee = totalServiceFee,
+                    ExtraServiceFee = totalServiceFee,
                     Comment = reservation.Comment,
                     Status = 1,
                     IsDelete = false,

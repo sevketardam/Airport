@@ -1,4 +1,8 @@
-﻿@model Reservations
+﻿@{
+    ViewData["title"] = "Payment";
+}
+
+@model Reservations
 
 <section class="my-5">
     <div class="container">
@@ -180,7 +184,7 @@
                                     </p>
                                 </div>
                                 <div>
-                                    <p class="text price">@Model.ServiceFee €</p>
+                                    <p class="text price">@Model.ExtraServiceFee €</p>
                                 </div>
                             </div>
                             <p>This fee helps us improve our service</p>

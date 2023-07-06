@@ -188,6 +188,7 @@ namespace Airport.DBEntities.Context
         public DbSet<CarTypes> CarTypes { get; set; }
         public DbSet<MyCars> MyCars { get; set; }
         public DbSet<Drivers> Drivers { get; set; }
+        public DbSet<GlobalSettings> GlobalSettings { get; set; }
       
     }
 }

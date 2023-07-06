@@ -23,10 +23,10 @@ namespace Airport.UI.Models.ITransactions
         public HttpContext Context { get; set; }
 
 
-        public PaymentMethods(IConfiguration Configuration, HttpContext context)
+        public PaymentMethods(IConfiguration Configuration, IHttpContextAccessor httpContextAccessor)
         {
             this.Configuration = Configuration;
-            Context = context;
+            Context = httpContextAccessor.HttpContext;
         }
 
         public string HashGenerate(string hashCode)

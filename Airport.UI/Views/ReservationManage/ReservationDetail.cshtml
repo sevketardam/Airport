@@ -517,7 +517,7 @@
             <div>
                 <h4 class="infosTitle">Total Service Fee</h4>
                 <p class="infosP">
-                    @Model.Reservation.ServiceFee €
+                    @Model.Reservation.ExtraServiceFee €
                 </p>
             </div>
 
@@ -526,7 +526,7 @@
                 <p class="infosP">
                     @if (Model.Reservation.IsDiscount || (Model.Reservation.Coupon != null && Model.Reservation.Coupon != 0))
                     {
-                        <span style="text-decoration: line-through;opacity: .5;font-size: 1rem;font-weight: 700;">@(Math.Round(Convert.ToDouble(Model.Reservation.OfferPrice + Model.Reservation.ServiceFee), 2)) €</span>
+                        <span style="text-decoration: line-through;opacity: .5;font-size: 1rem;font-weight: 700;">@(Math.Round(Convert.ToDouble(Model.Reservation.OfferPrice + Model.Reservation.ExtraServiceFee), 2)) €</span>
                     }
 
                     <b>@Model.Reservation.TotalPrice €</b>
