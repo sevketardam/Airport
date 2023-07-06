@@ -11,6 +11,7 @@ using Airport.UI.Models.VM;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -67,6 +68,7 @@ namespace Airport.UI
             services.AddScoped<IMail, MailRepo>();
             services.AddScoped<ISMS, SMSRepo>();
             services.AddScoped<IPayment, GetPrice>();
+            services.AddScoped<IPayment, PaymentMethods>();
             services.AddScoped<IFileOperation, FileOperation>();
 
 

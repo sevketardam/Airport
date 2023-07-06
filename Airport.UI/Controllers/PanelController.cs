@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Hosting;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+using static iText.Svg.SvgConstants;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Airport.UI.Controllers
 {
@@ -38,7 +41,8 @@ namespace Airport.UI.Controllers
         IMyCarsDAL _myCars;
         IFileOperation _fileOperation;
         IUserDocsDAL _docs;
-        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars, IFileOperation fileOperation, IUserDocsDAL docs)
+        IPayment _payment;
+        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars, IFileOperation fileOperation, IUserDocsDAL docs, IPayment payment)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -59,6 +63,85 @@ namespace Airport.UI.Controllers
             _myCars = myCars;
             _fileOperation = fileOperation;
             _docs = docs;
+            _payment = payment;
+        }
+
+
+        [HttpGet("denemeee")]
+        public IActionResult deneme()       
+        {
+            var adSoyadParse = "Sevket Arda".Split(' ');
+            string musteriSoyad = adSoyadParse[adSoyadParse.Length - 1];
+            adSoyadParse = adSoyadParse.Take(adSoyadParse.Length - 1).ToArray();
+            string musteriAdi = String.Join(" ", adSoyadParse);
+
+            var linkData = new Dictionary<string, string>
+            {
+                {"productName", "deneme22"},
+                {"productData", JsonConvert.SerializeObject(new List<object>
+                    {
+                        new
+                        {
+                            productName = "deneme12",
+                            productPrice = "1",
+                            productType = "DIJITAL_URUN"
+                        }
+                    })
+    },
+                {"productType", "DIJITAL_URUN"},
+                {"productsTotalPrice", "10"},
+                {"orderPrice", "10"},
+                {"currency", "TRY"},
+                {"orderId", "1231236323"},
+                {"locale", "TR".ToLower()},
+                {"conversationId", "12315323"},
+                {"buyerName", musteriAdi},
+                {"buyerSurName", musteriSoyad},
+                {"buyerGsmNo", "5555555555"},
+                {"buyerIp", _payment.GetClientIp()},
+                {"buyerMail", "asd@ad.com"},
+                {"buyerAdress", "Deneme"},
+                {"buyerCountry", "Turkey"},
+                {"buyerCity", "Istanbul"},
+                {"buyerDistrict", "34000"},
+                {"callbackOkUrl", "/tamamlandi"},
+                {"callbackFailUrl", "/tamamlanmadi"},
+            };
+
+            //        var linkData = new Dictionary<string, string>
+            //        {
+            //            productName = "deneme2",
+            //            productData = new List<object>
+            //{
+            //    new
+            //    {
+            //        productName = "deneme",
+            //        productPrice = "1",
+            //        productType = "DIJITAL_URUN"
+            //    }
+            //},
+            //            productType = "DIJITAL_URUN",
+            //            productsTotalPrice = "10",
+            //            orderPrice = "10",
+            //            currency = "TRY",
+            //            orderId = "123123",
+            //            locale = "TR".ToLower(),
+            //            conversationId = "123",
+            //            buyerName = musteriAdi,
+            //            buyerSurName = musteriSoyad,
+            //            buyerGsmNo = "5555555555",
+            //            buyerIp = _payment.GetClientIp(HttpContext), // This is assuming you have a similar function in your Vallet_light_api class
+            //            buyerMail = "asd@ad.com",
+            //            buyerAdress = "deneme adres",
+            //            buyerCountry = "Turkey",
+            //            buyerCity = "Istanbul",
+            //            buyerDistrict = "",
+            //            callbackOkUrl = "/tamamlandi",
+            //            callbackFailUrl = "/tamamlanmadi"
+            //        };
+
+            var result = _payment.CreatePaymentLink(linkData);
+            return View();
         }
 
 
@@ -269,7 +352,7 @@ namespace Airport.UI.Controllers
             }
 
         }
-     
+
         [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/profile")]
         public IActionResult Profile()

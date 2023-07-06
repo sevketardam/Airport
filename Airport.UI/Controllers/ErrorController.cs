@@ -32,7 +32,7 @@ namespace Airport.UI.Controllers
         [Route("/error")]
         public IActionResult HandleError()
         {
-            return RedirectToAction("Index", "Error", new { code = Problem().StatusCode });
+            return View(Problem().StatusCode);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
