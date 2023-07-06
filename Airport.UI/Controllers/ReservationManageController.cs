@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.Data;
 using System.IO;
 using Microsoft.Extensions.Options;
+using Airport.MessageExtension.Interfaces;
+using Airport.MessageExtension.VM;
 
 namespace Airport.UI.Controllers
 {
@@ -45,7 +47,8 @@ namespace Airport.UI.Controllers
         ILoginAuthDAL _loginAuth;
         ICouponsDAL _coupons;
         IPayment _payment;
-        public ReservationManageController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IPayment payment, IOptions<GoogleAPIKeys> googleAPIKeys)
+        ISMS _sms;
+        public ReservationManageController(IReservationsDAL reservations,ISMS sms, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IPayment payment, IOptions<GoogleAPIKeys> googleAPIKeys)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -66,6 +69,7 @@ namespace Airport.UI.Controllers
             _coupons = coupons;
             _payment = payment;
             _googleAPIKeys = googleAPIKeys;
+            _sms = sms;
         }
 
 
@@ -277,6 +281,17 @@ namespace Airport.UI.Controllers
                         reservation.DriverSurname = driver.DriverSurname;
                         reservation.DriverPhone = driver.DriverPhone;
                         _reservations.Update(reservation);
+
+                        var allMessage = new List<Mesaj>();
+                        allMessage.Add(new Mesaj
+                        {
+                            dest = reservation.RealPhone,
+                            msg = @$"Your driver is ready. Voucher Link http://airportglobaltransfer.com/pdf/{reservation.ReservationCode}-{reservation.Id}.pdf"
+                        });
+
+                        var mesaj = allMessage.ToArray();
+                        _sms.SmsForReservation(mesaj);
+
                         return Json(new { result = 1 });
                     }
                     return Json(new { result = 3 });

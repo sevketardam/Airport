@@ -42,7 +42,7 @@ namespace Airport.UI.Models.Extendions
             var dropLatLng = reservation.DropLatLng.Replace("lat:", "").Replace("lng:", "").Replace(",", "%2C");
 
 
-            var str = "https://maps.googleapis.com/maps/api/staticmap?markers=color%3Ared%7Clabel%3AA%7C" + pickLatLng + "&markers=color%3Ared%7Clabel%3AB%7C" + dropLatLng + "&size=303x156&key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&path=color%3Ablue%7Cweight%3A5%7C";
+            var str = "https://maps.googleapis.com/maps/api/staticmap?markers=color%3Ared%7Clabel%3AB%7C" + pickLatLng + "&markers=color%3Ared%7Clabel%3AA%7C" + dropLatLng + "&size=303x156&key=AIzaSyAnqSEVlrvgHJymL-F8GmxIwNbe8fYUjdg&path=color%3Ablue%7Cweight%3A5%7C";
 
             convertLocationValue.ForEach(a =>
             {
