@@ -181,7 +181,7 @@
                                     Total
                                 </h3>
                                 <p>
-                                    <span id="priceBox">@Model.SelectedData.LastPrice</span> €
+                                    <span id="priceBox">@Model.SelectedData.TotalPrice</span> €
                                 </p>
                             </div>
                             <p>
@@ -362,10 +362,10 @@
             }
         })
 
-        var currentPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
+        var currentPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
 
         let listCheckedItems = []
-        const lastPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
+        const lastPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
         $('.itemCheckbox').on("click", function () {
             listCheckedItems = []
             var price = 0;
@@ -403,7 +403,7 @@
             $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
         })
 
-        const firstPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".")
+        const firstPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".")
             
 
     </script>

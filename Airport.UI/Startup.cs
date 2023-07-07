@@ -68,9 +68,12 @@ namespace Airport.UI
 
             services.AddScoped<IMail, MailRepo>();
             services.AddScoped<ISMS, SMSRepo>();
-            services.AddScoped<IPayment, GetPrice>();
             services.AddScoped<IPayment, PaymentMethods>();
+            services.AddScoped<ITReservations, TReservations>();
+            services.AddScoped<ITReservationHelpers, TReservationHelpers>();
             services.AddScoped<IFileOperation, FileOperation>();
+            services.AddScoped<IApiResult, ApiResults>();
+            services.AddScoped<IGlobalSettings, TGlobalSettings>();
 
 
             services.AddHttpContextAccessor();

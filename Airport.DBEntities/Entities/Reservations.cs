@@ -12,7 +12,6 @@ namespace Airport.DBEntities.Entities
         public int Id { get; set; }
         public string DropLatLng { get; set; }
         public string PickLatLng { get; set; }
-        public double OfferPrice { get; set; }
         public string Name { get; set; }
         public string? Surname { get; set; }
         public string Email { get; set; }
@@ -30,17 +29,14 @@ namespace Airport.DBEntities.Entities
         public string DistanceText { get; set; }
         public string DurationText { get; set; }
         public bool IsDiscount { get; set; }
-        public double? Discount { get; set; }
         public int UserId { get; set; }
         public string Comment { get; set; }
-        public double? ExtraServiceFee { get; set; }
         public byte Status { get; set; }
         public string? FinishComment { get; set; }
         public int? DriverId { get; set; }
         public bool IsDelete { get; set; }
         public bool HidePrice { get; set; }
         public int? Coupon { get; set; }
-        public double TotalPrice { get; set; }
         public string RealPhone { get; set; }
         public string? DiscountText { get; set; }
         public int? ReservationUserId { get; set; }
@@ -48,13 +44,22 @@ namespace Airport.DBEntities.Entities
         public int? SalesAgencyId { get; set; }
         public DateTime LastUpdate { get; set; }
         public DateTime CreateDate { get; set; }
+        public double OfferPrice { get; set; }
         public bool? IsManuelDriver { get; set; }
         public string? DriverName { get; set; }
         public string? DriverSurname { get; set; }
         public string? DriverPhone { get; set; }
+
+
+        public double TotalPrice { get; set; }
         public double? ServiceFee { get; set; }
         public double? SalesFee { get; set; }
         public double? PartnerFee { get; set; }
+        public double? ExtraServiceFee { get; set; }
+        public double? DriverFee { get; set; }
+        public double? DiscountRate { get; set; }
+        public double? GlobalPartnerFee { get; set; }
+        public double? Discount { get; set; }
 
 
 

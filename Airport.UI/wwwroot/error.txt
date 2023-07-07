@@ -1,11 +1,4 @@
-iText.Kernel.Exceptions.PdfException: Unknown PdfException.
- ---> System.NotSupportedException: Either itext7.bouncy-castle-adapter or itext7.bouncy-castle-fips-adapter dependency must be added in order to use BouncyCastleFactoryCreator
-   at iText.Bouncycastleconnector.BouncyCastleDefaultFactory.CreateIDigest(String hashAlgorithm)
-   at iText.Kernel.Pdf.SmartModePdfObjectsSerializer..ctor()
-   --- End of inner exception stack trace ---
-   at iText.Kernel.Pdf.SmartModePdfObjectsSerializer..ctor()
-   at iText.Kernel.Pdf.PdfWriter..ctor(Stream os, WriterProperties properties)
-   at iText.Kernel.Pdf.PdfWriter..ctor(String filename, WriterProperties properties)
-   at iText.Kernel.Pdf.PdfWriter..ctor(String filename)
-   at Airport.UI.Models.Extendions.PdfCreator.CreateReservationPDF(String fileName, Reservations reservation) in C:\Users\arda2\OneDrive\Masaüstü\Airport2\Airport\Airport.UI\Models\Extendions\PdfCreator.cs:line 343
-   at Airport.UI.Controllers.ReservationController.ReservationLastStep(Reservations reservation, List`1 OthersName, List`1 OthersSurname, List`1 serviceItems, String selectedServiceItems, String coupon) in C:\Users\arda2\OneDrive\Masaüstü\Airport2\Airport\Airport.UI\Controllers\ReservationController.cs:line 733
+System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+   at System.Collections.Generic.List`1.set_Item(Int32 index, T value)
+   at Airport.UI.Models.ITransactions.TReservations.ReservationList(List`1 locationIsOutVM, GetResevationIM reservation, Double minKm, GetGoogleAPIVM pickLocationValues, GetGoogleAPIVM dropLocationValues) in C:\Users\Gökçe\Desktop\Airport2\Airport\Airport.UI\Models\ITransactions\TReservations.cs:line 162
+   at Airport.UI.Controllers.ReservationController.ReservationStepTwo(GetResevationIM reservation) in C:\Users\Gökçe\Desktop\Airport2\Airport\Airport.UI\Controllers\ReservationController.cs:line 116

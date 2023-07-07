@@ -24,6 +24,8 @@ using System.IO;
 using System.Collections;
 using Microsoft.Extensions.Options;
 using Minio.DataModel;
+using Airport.UI.Models.ITransactions;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
 namespace Airport.UI.Controllers
 {
@@ -49,9 +51,12 @@ namespace Airport.UI.Controllers
         ICouponsDAL _coupons;
         ISMS _sms;
         ILoginAuthDAL _loginAuth;
-        IPayment _payment;
+        ITReservations _reservationT;
+        IApiResult _apiResult;
+        ITReservationHelpers _tReservationHelpers;
+        IGlobalSettings _globalSettings;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons, ISMS sms, ILoginAuthDAL loginAuth, IPayment payment, IOptions<GoogleAPIKeys> googleAPIKeys)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons, ISMS sms, ILoginAuthDAL loginAuth, ITReservations reservationT, IOptions<GoogleAPIKeys> googleAPIKeys, IApiResult apiResult, ITReservationHelpers tReservationHelpers, IGlobalSettings globalSettings)
         {
             _location = location;
             _locationCar = locationCar;
@@ -71,8 +76,11 @@ namespace Airport.UI.Controllers
             _coupons = coupons;
             _sms = sms;
             _loginAuth = loginAuth;
-            _payment = payment;
+            _reservationT = reservationT;
             _googleAPIKeys = googleAPIKeys;
+            _apiResult = apiResult;
+            _tReservationHelpers = tReservationHelpers;
+            _globalSettings = globalSettings;
         }
 
         [HttpGet("step")]
@@ -87,304 +95,37 @@ namespace Airport.UI.Controllers
         {
             try
             {
-                var api_key = _googleAPIKeys.Value.GoogleMapAPIKey;
+                var pickLocationValues = await _apiResult.LocationValues(reservation.PickValue);
+                var dropLocationValues = await _apiResult.LocationValues(reservation.DropValue);
 
-                var httpClient = new HttpClient();
-
-                var s = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric";
-                var apiUrl = $"https://maps.googleapis.com/maps/api/place/details/json?place_id={reservation.PickValue}&key={api_key}";
-                var response = await httpClient.GetAsync(apiUrl);
-                var content = await response.Content.ReadAsStringAsync();
-                var contentJsonResult = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content);
-
-
-                var apiReturnUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + reservation.DropValue + "&key=" + api_key;
-                var returnResponse = await httpClient.GetAsync(apiReturnUrl);
-                var content3 = await returnResponse.Content.ReadAsStringAsync();
-                var contentJsonResult2 = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content3);
-
-                var fullUrl2 = s + $"&origins={contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}&destinations={contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}&key=" + api_key;
-                HttpResponseMessage response4 = httpClient.GetAsync(fullUrl2).Result;
-                var content4 = response4.Content.ReadAsStringAsync().Result;
-                var betweenLocation = JsonConvert.DeserializeObject<DistanceMatrixApiResponse>(content4);
+                var betweenLocation = await _apiResult.DistanceMatrixValues(pickLocationValues.Result.Geometry.Location.lat, pickLocationValues.Result.Geometry.Location.lng, dropLocationValues.Result.Geometry.Location.lat, dropLocationValues.Result.Geometry.Location.lng);
 
                 if (betweenLocation.status == "OK")
                 {
-                    var locations = _location.SelectByFunc(a => !a.IsDelete);
-                    var listlocation = new List<ReservationLocationCarsVM>();
-                    var locationCars = new List<List<ReservationLocationCarsVM>>();
-                    int i = 0;
-
-                    locations.ForEach(a =>
-                    {
-                        a.LocationCars = _locationCar.SelectByFunc(b => b.LocationId == a.Id);
-
-                        listlocation.Add(new ReservationLocationCarsVM
-                        {
-                            LocationCar = a.LocationCars,
-                            PlaceId = a.LocationMapId,
-                            ZoneValue = a.LocationRadius,
-                            Lat = a.Lat,
-                            Lng = a.Lng
-                        });
-                    });
-
-                    if (listlocation.Count != 0)
-                    {
-                        locationCars.Add(listlocation);
-                    }
-
-                    var allDatas = new List<AllDatas>();
-                    var allDatas2 = new List<AllDatas>();
-                    locationCars.ForEach(a =>
-                    {
-                        string carLatLngString = "";
-                        a.ForEach(b =>
-                        {
-                            carLatLngString += b.Lat + "," + b.Lng + "|";
-                        });
-
-                        var apiArrayUrl = $"https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins={contentJsonResult.Result.Geometry.Location.lat + "," + contentJsonResult.Result.Geometry.Location.lng}&destinations={carLatLngString}&key=" + api_key;
-                        var arrayResponse = httpClient.GetAsync(apiArrayUrl).Result;
-                        var arrayContent = arrayResponse.Content.ReadAsStringAsync().Result;
-                        var data = JsonConvert.DeserializeObject<DistanceMatrixApiResponse>(arrayContent);
-
-
-                        var apiArrayUrl2 = $"https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins={contentJsonResult2.Result.Geometry.Location.lat + "," + contentJsonResult2.Result.Geometry.Location.lng}&destinations={carLatLngString}&key=" + api_key;
-                        var arrayResponse2 = httpClient.GetAsync(apiArrayUrl2).Result;
-                        var arrayContent2 = arrayResponse2.Content.ReadAsStringAsync().Result;
-                        var data2 = JsonConvert.DeserializeObject<DistanceMatrixApiResponse>(arrayContent2);
-                        if (data.status == "OK" && data2.status == "OK")
-                        {
-                            int i2 = 0;
-                            var locationdatas = carLatLngString.Split("|");
-                            data.destination_addresses.ForEach(a =>
-                            {
-                                if (data.rows[0].elements[i2].status == "OK" && data2.rows[0].elements[i2].status == "OK")
-                                {
-                                    allDatas.Add(new AllDatas
-                                    {
-                                        DisanceValue = data.rows[0].elements[i2].distance.value.ToString(),
-                                        DurationeValue = data.rows[0].elements[i2].distance.value.ToString(),
-                                        Lat = locationdatas[i2].Split(",")[0],
-                                        Lng = locationdatas[i2].Split(",")[1],
-                                        Destinationaddresses = data.destination_addresses[i2],
-                                        DropDisanceValue = data2.rows[0].elements[i2].distance.value.ToString(),
-                                        DropDurationeValue = data2.rows[0].elements[i2].distance.value.ToString(),
-                                        DropLat = locationdatas[i2].Split(",")[0],
-                                        DropLng = locationdatas[i2].Split(",")[1],
-                                        DropDestinationaddresses = data2.destination_addresses[i2]
-                                    });
-                                }
-                                i2++;
-                            });
-                        }
-
-                    });
-
-                    var selectedLocations = new List<LocationIsOutVM>();
-                    allDatas = allDatas.Distinct().ToList();
-                    allDatas.ForEach(a =>
-                    {
-                        var convertLocation = _location.SelectByFunc(b => b.Lat == a.Lat && b.Lng == a.Lng && !b.IsDelete);
-                        convertLocation.ForEach(b =>
-                        {
-                            var realRadiusValue = Convert.ToInt32(b.LocationRadius) * 1000;
-                            if (realRadiusValue > Convert.ToInt32(a.DisanceValue))
-                            {
-                                if (realRadiusValue > Convert.ToInt32(a.DropDisanceValue))
-                                {
-                                    selectedLocations.Add(new LocationIsOutVM
-                                    {
-                                        IsOutZone = false,
-                                        Location = b,
-                                        IsOutZoneOutside = false
-                                    });
-                                }
-                                else
-                                {
-                                    selectedLocations.Add(new LocationIsOutVM
-                                    {
-                                        IsOutZone = false,
-                                        Location = b,
-                                        IsOutZoneOutside = true
-                                    });
-                                }
-                            }
-                            else if (b.OutZonePricePerKM > 0 && realRadiusValue < Convert.ToInt32(a.DisanceValue))
-                            {
-                                if (realRadiusValue > Convert.ToInt32(a.DropDisanceValue))
-                                {
-                                    selectedLocations.Add(new LocationIsOutVM
-                                    {
-                                        IsOutZone = true,
-                                        Location = b,
-                                        IsOutZoneOutside = false
-                                    });
-                                }
-                                else
-                                {
-                                    selectedLocations.Add(new LocationIsOutVM
-                                    {
-                                        IsOutZone = true,
-                                        Location = b,
-                                        IsOutZoneOutside = true
-                                    });
-                                }
-
-                            }
-                        });
-                    });
+                    var allDatas = await _reservationT.GetLocationAllDataList(pickLocationValues, dropLocationValues);
 
                     var getreservation = new List<GetReservationValues>();
-                    selectedLocations = selectedLocations.Distinct().ToList();
+                    var selectedLocationsMini = new List<LocationIsOutMiniVM>();
+
+                    var selectedLocations = await _reservationT.GetLocationIsOutList(allDatas);
+
                     double minKm = 0;
 
-                    var selectedLocationsMini = new List<LocationIsOutMiniVM>();
                     if (betweenLocation.rows[0].elements[0].status == "OK")
                     {
                         var lastKm = Math.Round(Convert.ToDouble(betweenLocation.rows[0].elements[0].distance.value) / 100) * 100;
                         minKm = lastKm / 1000;
-                        selectedLocations.ForEach(a =>
-                        {
-                            a.Location.LocationCars = _locationCar.SelectByFunc(b => b.LocationId == a.Location.Id);
+                        var lastLocations = await _reservationT.ReservationList(selectedLocations, reservation, minKm, pickLocationValues, dropLocationValues);
 
-                            a.Location.LocationCars.ForEach(b =>
-                            {
-                                selectedLocationsMini.Add(new LocationIsOutMiniVM
-                                {
-                                    LocationCarId = b.Id,
-                                    IsOutZone = a.IsOutZone,
-                                    IsOutZoneOutside = a.IsOutZoneOutside,
-                                });
-
-                                b.Car = _carDetail.CarDetail(b.CarId);
-                                if (b.Car.MaxPassenger >= reservation.PeopleCount)
-                                {
-                                    double price = 0;
-                                    if (a.IsOutZone)
-                                    {
-                                        price = a.Location.DropCharge + (minKm * a.Location.OutZonePricePerKM);
-                                    }
-                                    else
-                                    {
-                                        b.LocationCarsFares = _locationCarsFare.SelectByFunc(c => c.LocationCarId == b.Id);
-                                        var lastUp = 0;
-                                        double lastPrice = 0;
-
-                                        b.LocationCarsFares.ForEach(c =>
-                                        {
-                                            var fare = Convert.ToDouble(c.Fare);
-
-                                            price = _payment.ReservationPrice(c.StartFrom, minKm, c.PriceType, c.UpTo, fare);
-
-                                            lastUp = c.UpTo;
-                                            lastPrice = fare;
-                                        });
-
-                                        if (lastUp < minKm)
-                                        {
-                                            var plusPrice = minKm - lastUp;
-                                            price += lastPrice * plusPrice;
-                                        }
-                                    }
-
-                                    if (reservation.ReturnStatus)
-                                    {
-                                        price *= 2;
-                                    }
-
-                                    price = Math.Round(price, 2);
-                                    var checkCar = getreservation.Where(c => c.LocationCars.CarId == b.CarId).FirstOrDefault();
-
-                                    var rate = _reservations.SelectByFunc(c => c.LocationCarId == b.Id && c.Rate > 0);
-
-                                    if (checkCar != null)
-                                    {
-                                        if (checkCar.LastPrice < price)
-                                        {
-
-                                            checkCar.LastPrice = price;
-                                            checkCar.LocationCars = b;
-                                            checkCar.ReservationDate = reservation.FlightTime;
-                                            checkCar.PickLocationName = contentJsonResult.Result.formatted_address;
-                                            checkCar.DropLocationName = contentJsonResult2.Result.formatted_address;
-                                            checkCar.PassangerCount = reservation.PeopleCount;
-                                            checkCar.DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}";
-                                            checkCar.PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}";
-                                            checkCar.DropLocationPlaceId = reservation.DropValue;
-                                            checkCar.PickLocationPlaceId = reservation.PickValue;
-                                            checkCar.Rate = rate.Count > 0 ? Math.Round(rate.Average(c => c.Rate), 2).ToString() : "0";
-                                            checkCar.RateCount = rate.Count > 0 ? rate.Count.ToString() : "0";
-                                            getreservation[getreservation.IndexOf(checkCar)] = checkCar;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (a.IsOutZoneOutside)
-                                        {
-                                            if (a.Location.IsOkeyOut)
-                                            {
-                                                if (price > 0)
-                                                {
-                                                    getreservation.Add(new GetReservationValues
-                                                    {
-                                                        LocationCars = b,
-                                                        LastPrice = price,
-                                                        ReservationDate = reservation.FlightTime,
-                                                        PickLocationName = contentJsonResult.Result.formatted_address,
-                                                        DropLocationName = contentJsonResult2.Result.formatted_address,
-                                                        PassangerCount = reservation.PeopleCount,
-                                                        DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
-                                                        PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
-                                                        DropLocationPlaceId = reservation.DropValue,
-                                                        PickLocationPlaceId = reservation.PickValue,
-                                                        Rate = rate.Count > 0 ? Math.Round(rate.Average(c => c.Rate), 2).ToString() : "0",
-                                                        RateCount = rate.Count > 0 ? rate.Count.ToString() : "0",
-                                                    });
-                                                }
-                                            }
-
-                                        }
-                                        else
-                                        {
-                                            if (price > 0)
-                                            {
-                                                getreservation.Add(new GetReservationValues
-                                                {
-                                                    LocationCars = b,
-                                                    LastPrice = price,
-                                                    ReservationDate = reservation.FlightTime,
-                                                    PickLocationName = contentJsonResult.Result.formatted_address,
-                                                    DropLocationName = contentJsonResult2.Result.formatted_address,
-                                                    PassangerCount = reservation.PeopleCount,
-                                                    DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
-                                                    PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
-                                                    DropLocationPlaceId = reservation.DropValue,
-                                                    PickLocationPlaceId = reservation.PickValue,
-                                                    Rate = rate.Count > 0 ? Math.Round(rate.Average(c => c.Rate), 2).ToString() : "0",
-                                                    RateCount = rate.Count > 0 ? rate.Count.ToString() : "0",
-                                                });
-                                            }
-                                        }
-                                    }
-
-
-                                }
-                            });
-                        });
+                        getreservation = lastLocations.Locations;
+                        selectedLocationsMini = lastLocations.MiniLocations;
                     }
-
-
-                    getreservation = getreservation.Distinct().ToList();
-
-
 
                     var lastVM = new ReservationStepTwoVM()
                     {
                         ReservationValues = getreservation,
-                        DropLocationLatLng = $"lat:{contentJsonResult.Result.Geometry.Location.lat},lng:{contentJsonResult.Result.Geometry.Location.lng}",
-                        PickLocationLatLng = $"lat:{contentJsonResult2.Result.Geometry.Location.lat},lng:{contentJsonResult2.Result.Geometry.Location.lng}",
+                        DropLocationLatLng = $"lat:{dropLocationValues.Result.Geometry.Location.lat},lng:{dropLocationValues.Result.Geometry.Location.lng}",
+                        PickLocationLatLng = $"lat:{pickLocationValues.Result.Geometry.Location.lat},lng:{pickLocationValues.Result.Geometry.Location.lng}",
                         DropLocationPlaceId = reservation.DropValue,
                         PickLocationPlaceId = reservation.PickValue,
                         Distance = betweenLocation.rows[0].elements[0].distance?.text,
@@ -395,12 +136,12 @@ namespace Airport.UI.Controllers
 
                     var reservationDatas = new ReservationDatasVM()
                     {
-                        DropLocationLatLng = $"lat:{contentJsonResult.Result.Geometry.Location.lat},lng:{contentJsonResult.Result.Geometry.Location.lng}",
-                        PickLocationLatLng = $"lat:{contentJsonResult2.Result.Geometry.Location.lat},lng:{contentJsonResult2.Result.Geometry.Location.lng}",
+                        DropLocationLatLng = $"lat:{dropLocationValues.Result.Geometry.Location.lat},lng:{dropLocationValues.Result.Geometry.Location.lng}",
+                        PickLocationLatLng = $"lat:{pickLocationValues.Result.Geometry.Location.lat},lng:{pickLocationValues.Result.Geometry.Location.lng}",
                         DropLocationPlaceId = reservation.DropValue,
                         PickLocationPlaceId = reservation.PickValue,
-                        PickLocationName = contentJsonResult.Result.formatted_address,
-                        DropLocationName = contentJsonResult2.Result.formatted_address,
+                        PickLocationName = pickLocationValues.Result.formatted_address,
+                        DropLocationName = dropLocationValues.Result.formatted_address,
                         KM = minKm,
                         ReservationValues = reservation,
                         Distance = betweenLocation.rows[0].elements[0].distance?.text,
@@ -416,9 +157,6 @@ namespace Airport.UI.Controllers
 
                     lastVM.ReservationValues = lastVM.ReservationValues.OrderBy(a => a.LastPrice).ToList();
 
-
-
-                    ViewBag.test = locationCars;
                     return View(lastVM);
                 }
 
@@ -474,48 +212,19 @@ namespace Airport.UI.Controllers
                 {
                     var locationCar = _locationCar.SelectByID(selectedDatasMini.LocationCarId);
 
-
-                    locationCar.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == id);
-                    locationCar.Location = _location.SelectByID(locationCar.LocationId);
-
                     //fixed= 1
                     //per = 2 
 
-                    double price = 0;
-                    var lastUp = 0;
-                    double lastPrice = 0;
-                    if (selectedDatasMini.IsOutZone)
-                    {
-                        price = locationCar.Location.DropCharge + (datas.KM * locationCar.Location.OutZonePricePerKM);
-                    }
-                    else
-                    {
-                        locationCar.LocationCarsFares = _locationCarsFare.SelectByFunc(c => c.LocationCarId == locationCar.Id);
+                    var prices = _tReservationHelpers.ReservationPrice(locationCar.Id, datas.KM, false, 0, datas.ReservationValues.ReturnStatus, selectedDatasMini.IsOutZone);
 
-                        locationCar.LocationCarsFares.ForEach(c =>
-                        {
-                            var fare = Convert.ToDouble(c.Fare);
-                            price = _payment.ReservationPrice(c.StartFrom, datas.KM, c.PriceType, c.UpTo, fare);
+                    datas.OfferPrice = prices.OfferPrice;
+                    datas.ServiceFee = prices.ServiceFee;
+                    datas.TotalPrice = prices.LastPrice;
+                    datas.ExtraServiceFee = prices.ExtraServiceFee;
+                    datas.SalesFee = prices.SalesFee;
+                    datas.PartnerFee = prices.PartnerFee;
+                    datas.GlobalPartnerFee = prices.GlobalPartnerFee;
 
-                            lastUp = c.UpTo;
-                            lastPrice = fare;
-                        });
-
-
-                        if (lastUp < datas.KM)
-                        {
-                            var plusPrice = datas.KM - lastUp;
-                            price += lastPrice * plusPrice;
-                        }
-                    }
-
-                    if (datas.ReservationValues.ReturnStatus)
-                    {
-                        price *= 2;
-                    }
-
-                    price = Math.Round(price, 2);
-                    datas.LastPrice = price;
                     datas.LocationCar = locationCar;
                     datas.LocationCar.Car = _carDetail.CarDetail(locationCar.CarId);
                     datas.LocationCar.Car.Service = _services.SelectByID(datas.LocationCar.Car.ServiceId);
@@ -618,13 +327,12 @@ namespace Airport.UI.Controllers
                                                                        && a.CouponFinishDate >= DateTime.Now && (a.CouponLimit > a.UsingCount && !a.IsPerma)).FirstOrDefault();
                 }
 
-                var total = createReservation.LastPrice + totalServiceFee;
+                var total = createReservation.TotalPrice;
 
                 if (getCoupon is not null)
                 {
                     total = total - ((total * getCoupon.Discount) / 100);
-                    getCoupon.UsingCount = getCoupon.UsingCount + 1;
-                    //_coupons.Update(getCoupon);
+                    total = Math.Round(total, 2);
                 }
 
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
@@ -641,7 +349,7 @@ namespace Airport.UI.Controllers
                     user = null;
                 }
 
-                total = Math.Round(total, 2);
+
 
                 var item = new Reservations()
                 {
@@ -654,7 +362,14 @@ namespace Airport.UI.Controllers
                     LocationCarId = createReservation.LocationCar.Id,
                     Name = reservation.Name,
                     ReservationCode = kod,
-                    OfferPrice = createReservation.LastPrice,
+
+                    PartnerFee = createReservation.PartnerFee,
+                    SalesFee = createReservation.SalesFee,
+                    ServiceFee = createReservation.ServiceFee,
+                    OfferPrice = createReservation.OfferPrice,
+                    TotalPrice = total,
+                    GlobalPartnerFee = createReservation.GlobalPartnerFee,
+
                     Surname = reservation.Surname,
                     DropFullName = createReservation.DropLocationName,
                     PickFullName = createReservation.PickLocationName,
@@ -673,11 +388,12 @@ namespace Airport.UI.Controllers
                     IsDelete = false,
                     HidePrice = reservation.HidePrice,
                     Coupon = getCoupon?.Id,
-                    TotalPrice = total,
                     RealPhone = reservation.RealPhone,
                     DiscountText = getCoupon?.Comment,
                     ReservationUserId = user?.Id,
-                    Rate = 0
+                    Rate = 0,
+                    DiscountRate = getCoupon?.Discount
+                    
                 };
 
                 item.Coupons = getCoupon;
@@ -697,8 +413,6 @@ namespace Airport.UI.Controllers
                 }
 
                 item.ReservationServicesTables = reservationItemsList;
-
-                //_reservationServicesTable.InsertRage(reservationItemsList);
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
                 item.LocationCars.Car = _getCar.CarDetail(item.LocationCars.CarId);
@@ -721,11 +435,6 @@ namespace Airport.UI.Controllers
 
                 item.ReservationPeoples = reservationPeople;
 
-                //_reservationsPeople.InsertRage(reservationPeople);
-
-
-                //HttpContext.Session.Remove("reservationData");
-
                 item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
                 item.ReservationServicesTables.ForEach(a =>
                 {
@@ -733,26 +442,7 @@ namespace Airport.UI.Controllers
                     a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
                 });
 
-                //PdfCreator pdfCreator = new PdfCreator(_env);
-                //pdfCreator.CreateReservationPDF(kod + "-" + item.Id, item);
-
-
-                //_mail.SendReservationMail(item);
-
-                //var allMessage = new List<Mesaj>();
-                //allMessage.Add(new Mesaj
-                //{
-                //    dest = reservation.RealPhone,
-                //    msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{item.ReservationCode}-{item.Id}.pdf"
-                //});
-
-                //var mesaj = allMessage.ToArray();
-
-                //_sms.SmsForReservation(mesaj);
-
-
                 HttpContext.Session.MySet("reservation", item);
-
 
                 return RedirectToAction("ReservationStepPayment", "Reservation");
             }
@@ -800,18 +490,12 @@ namespace Airport.UI.Controllers
                 {
                     if (cardDetail.CardNumber == "1111-1111-1111-1111")
                     {
+                        var getCoupon = _coupons.Select().FirstOrDefault(a => a.Active && a.Id == reservation.Coupon && a.CouponStartDate <= DateTime.Now
+                        && a.CouponFinishDate >= DateTime.Now && (a.IsPerma || a.CouponLimit > a.UsingCount));
 
-                        var getCoupon = _coupons.SelectByFunc(a => a.Active && a.Id == reservation.Coupon && a.CouponStartDate <= DateTime.Now
-                                                        && a.CouponFinishDate >= DateTime.Now && a.IsPerma).FirstOrDefault();
-                        if (getCoupon == null)
+                        if (getCoupon != null)
                         {
-                            getCoupon = _coupons.SelectByFunc(a => a.Active && a.Id == reservation.Coupon && a.CouponStartDate <= DateTime.Now
-                                                                               && a.CouponFinishDate >= DateTime.Now && (a.CouponLimit > a.UsingCount && !a.IsPerma)).FirstOrDefault();
-                        }
-
-                        if (getCoupon is not null)
-                        {
-                            getCoupon.UsingCount = getCoupon.UsingCount + 1;
+                            getCoupon.UsingCount++;
                             _coupons.Update(getCoupon);
                         }
 
@@ -826,7 +510,6 @@ namespace Airport.UI.Controllers
                             LocationCarId = reservation.LocationCars.Id,
                             Name = reservation.Name,
                             ReservationCode = reservation.ReservationCode,
-                            OfferPrice = reservation.OfferPrice,
                             Surname = reservation.Surname,
                             DropFullName = reservation.DropFullName,
                             PickFullName = reservation.PickFullName,
@@ -845,13 +528,19 @@ namespace Airport.UI.Controllers
                             IsDelete = reservation.IsDelete,
                             HidePrice = reservation.HidePrice,
                             Coupon = reservation.Coupon,
-                            TotalPrice = reservation.TotalPrice,
                             RealPhone = reservation.RealPhone,
                             DiscountText = reservation.DiscountText,
                             ReservationUserId = reservation.ReservationUserId,
                             Rate = reservation.Rate,
                             LastUpdate = DateTime.Now,
-                            CreateDate = DateTime.Now,                            
+                            CreateDate = DateTime.Now,
+
+                            PartnerFee = reservation.PartnerFee,
+                            SalesFee = reservation.SalesFee,
+                            ServiceFee = reservation.ServiceFee,
+                            OfferPrice = reservation.OfferPrice,
+                            TotalPrice = reservation.TotalPrice,
+                            GlobalPartnerFee = reservation.GlobalPartnerFee,
                         });
 
                         reservation.Id = createdReservation.Id;
@@ -864,22 +553,18 @@ namespace Airport.UI.Controllers
                         PdfCreator pdfCreator = new PdfCreator(_env);
                         pdfCreator.CreateReservationPDF(reservation.ReservationCode + "-" + reservation.Id, reservation);
 
-
-
-
                         _mail.SendReservationMail(reservation);
 
-                        var allMessage = new List<Mesaj>();
-                        allMessage.Add(new Mesaj
+                        var mesaj = new Mesaj[]
                         {
-                            dest = reservation.RealPhone,
-                            msg = @$"Your reservation code {reservation.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{reservation.ReservationCode}-{reservation.Id}.pdf"
-                        });
-
-                        var mesaj = allMessage.ToArray();
+                            new Mesaj
+                            {
+                                dest = reservation.RealPhone,
+                                msg = @$"Your reservation code {reservation.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{reservation.ReservationCode}-{reservation.Id}.pdf"
+                            }
+                        };
 
                         _sms.SmsForReservation(mesaj);
-
 
                         HttpContext.Session.MySet("reservation", createdReservation);
 
@@ -904,19 +589,7 @@ namespace Airport.UI.Controllers
             var reservation = HttpContext.Session.MyGet<Reservations>("reservation");
             if (reservation != null && reservation.Id == id)
             {
-                reservation.LocationCars = _locationCar.SelectByID(reservation.LocationCarId);
-                reservation.LocationCars.Car = _getCar.CarDetail(reservation.LocationCars.CarId);
-
-                reservation.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == reservation.Id);
-
-                var loginAuth2 = _loginAuth.SelectByID(reservation.UserId);
-                reservation.User = _userDatas.SelectByID(loginAuth2.UserId);
-
-                reservation.ReservationServicesTables.ForEach(a =>
-                {
-                    a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
-                    a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
-                });
+                reservation = _tReservationHelpers.GetReservationAll(id);
 
                 return View(reservation);
             }
@@ -928,7 +601,7 @@ namespace Airport.UI.Controllers
         public IActionResult CancelReservation()
         {
             var reservation = HttpContext.Session.MyGet<Reservations>("reservation");
-            if(reservation != null)
+            if (reservation != null)
             {
                 return View();
             }
@@ -973,300 +646,37 @@ namespace Airport.UI.Controllers
         {
             try
             {
-                var api_key = _googleAPIKeys.Value.GoogleMapAPIKey;
+                var pickLocationValues = await _apiResult.LocationValues(reservation.PickValue);
+                var dropLocationValues = await _apiResult.LocationValues(reservation.DropValue);
 
-                var httpClient = new HttpClient();
-
-                var s = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric";
-                var apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + reservation.PickValue + "&key=" + api_key;
-                var response = await httpClient.GetAsync(apiUrl);
-                var content = await response.Content.ReadAsStringAsync();
-                var contentJsonResult = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content);
-
-
-                var apiReturnUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + reservation.DropValue + "&key=" + api_key;
-                var returnResponse = await httpClient.GetAsync(apiReturnUrl);
-                var content3 = await returnResponse.Content.ReadAsStringAsync();
-                var contentJsonResult2 = JsonConvert.DeserializeObject<GetGoogleAPIVM>(content3);
-
-                var fullUrl2 = s + $"&origins={contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}&destinations={contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}&key=" + api_key;
-                HttpResponseMessage response4 = httpClient.GetAsync(fullUrl2).Result;
-                var content4 = response4.Content.ReadAsStringAsync().Result;
-                var betweenLocation = JsonConvert.DeserializeObject<DistanceMatrixApiResponse>(content4);
+                var betweenLocation = await _apiResult.DistanceMatrixValues(pickLocationValues.Result.Geometry.Location.lat, pickLocationValues.Result.Geometry.Location.lng, dropLocationValues.Result.Geometry.Location.lat, dropLocationValues.Result.Geometry.Location.lng);
 
                 if (betweenLocation.status == "OK")
                 {
-                    var locations = _location.SelectByFunc(a => !a.IsDelete);
-                    var listlocation = new List<ReservationLocationCarsVM>();
-                    var locationCars = new List<List<ReservationLocationCarsVM>>();
-                    int i = 0;
-
-                    locations.ForEach(a =>
-                    {
-                        a.LocationCars = _locationCar.SelectByFunc(b => b.LocationId == a.Id);
-
-                        listlocation.Add(new ReservationLocationCarsVM
-                        {
-                            LocationCar = a.LocationCars,
-                            PlaceId = a.LocationMapId,
-                            ZoneValue = a.LocationRadius,
-                            Lat = a.Lat,
-                            Lng = a.Lng
-                        });
-                    });
-
-                    if (listlocation.Count != 0)
-                    {
-                        locationCars.Add(listlocation);
-                    }
-
-                    var allDatas = new List<AllDatas>();
-                    locationCars.ForEach(a =>
-                    {
-                        string carLatLngString = "";
-                        a.ForEach(b =>
-                        {
-                            carLatLngString += b.Lat + "," + b.Lng + "|";
-                        });
-
-                        var apiArrayUrl = $"https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins={contentJsonResult.Result.Geometry.Location.lat + "," + contentJsonResult.Result.Geometry.Location.lng}&destinations={carLatLngString}&key=" + api_key;
-                        var arrayResponse = httpClient.GetAsync(apiArrayUrl).Result;
-                        var arrayContent = arrayResponse.Content.ReadAsStringAsync().Result;
-                        var data = JsonConvert.DeserializeObject<DistanceMatrixApiResponse>(arrayContent);
-
-                        var apiArrayUrl2 = $"https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins={contentJsonResult2.Result.Geometry.Location.lat + "," + contentJsonResult2.Result.Geometry.Location.lng}&destinations={carLatLngString}&key=" + api_key;
-                        var arrayResponse2 = httpClient.GetAsync(apiArrayUrl2).Result;
-                        var arrayContent2 = arrayResponse2.Content.ReadAsStringAsync().Result;
-                        var data2 = JsonConvert.DeserializeObject<DistanceMatrixApiResponse>(arrayContent2);
-                        if (data.status == "OK")
-                        {
-                            int i2 = 0;
-                            var locationdatas = carLatLngString.Split("|");
-                            data.destination_addresses.ForEach(a =>
-                            {
-                                if (data.rows[0].elements[i2].status == "OK" && data2.rows[0].elements[i2].status == "OK")
-                                {
-                                    allDatas.Add(new AllDatas
-                                    {
-                                        DisanceValue = data.rows[0].elements[i2].distance.value.ToString(),
-                                        DurationeValue = data.rows[0].elements[i2].distance.value.ToString(),
-                                        Lat = locationdatas[i2].Split(",")[0],
-                                        Lng = locationdatas[i2].Split(",")[1],
-                                        Destinationaddresses = data.destination_addresses[i2],
-                                        DropDisanceValue = data2.rows[0].elements[i2].distance.value.ToString(),
-                                        DropDurationeValue = data2.rows[0].elements[i2].distance.value.ToString(),
-                                        DropLat = locationdatas[i2].Split(",")[0],
-                                        DropLng = locationdatas[i2].Split(",")[1],
-                                        DropDestinationaddresses = data2.destination_addresses[i2]
-                                    });
-                                }
-                                i2++;
-                            });
-                        }
-                    });
-
-                    var selectedLocations = new List<LocationIsOutVM>();
-
-                    allDatas.ForEach(a =>
-                    {
-                        var convertLocation = _location.SelectByFunc(b => b.Lat == a.Lat && b.Lng == a.Lng && !b.IsDelete);
-                        convertLocation.ForEach(b =>
-                        {
-                            var realRadiusValue = Convert.ToInt32(b.LocationRadius) * 1000;
-                            if (realRadiusValue > Convert.ToInt32(a.DisanceValue))
-                            {
-                                if (realRadiusValue > Convert.ToInt32(a.DropDisanceValue))
-                                {
-                                    selectedLocations.Add(new LocationIsOutVM
-                                    {
-                                        IsOutZone = false,
-                                        Location = b,
-                                        IsOutZoneOutside = false
-                                    });
-                                }
-                                else
-                                {
-                                    selectedLocations.Add(new LocationIsOutVM
-                                    {
-                                        IsOutZone = false,
-                                        Location = b,
-                                        IsOutZoneOutside = true
-                                    });
-                                }
-                            }
-                            else if (b.OutZonePricePerKM > 0 && realRadiusValue < Convert.ToInt32(a.DisanceValue))
-                            {
-                                if (realRadiusValue > Convert.ToInt32(a.DropDisanceValue))
-                                {
-                                    selectedLocations.Add(new LocationIsOutVM
-                                    {
-                                        IsOutZone = true,
-                                        Location = b,
-                                        IsOutZoneOutside = false
-                                    });
-                                }
-                                else
-                                {
-                                    selectedLocations.Add(new LocationIsOutVM
-                                    {
-                                        IsOutZone = true,
-                                        Location = b,
-                                        IsOutZoneOutside = true
-                                    });
-                                }
-
-                            }
-                        });
-                    });
+                    var allDatas = await _reservationT.GetLocationAllDataList(pickLocationValues, dropLocationValues);
 
                     var getreservation = new List<GetReservationValues>();
-                    selectedLocations = selectedLocations.Distinct().ToList();
                     var selectedLocationsMini = new List<LocationIsOutMiniVM>();
+
+                    var selectedLocations = await _reservationT.GetLocationIsOutList(allDatas);
+
                     double minKm = 0;
 
                     if (betweenLocation.rows[0].elements[0].status == "OK")
                     {
                         var lastKm = Math.Round(Convert.ToDouble(betweenLocation.rows[0].elements[0].distance.value) / 100) * 100;
                         minKm = lastKm / 1000;
-                        selectedLocations.ForEach(a =>
-                        {
-                            a.Location.LocationCars = _locationCar.SelectByFunc(b => b.LocationId == a.Location.Id);
+                        var lastLocations = await _reservationT.ReservationList(selectedLocations, reservation, minKm, pickLocationValues, dropLocationValues);
 
-                            a.Location.LocationCars.ForEach(b =>
-                            {
-                                selectedLocationsMini.Add(new LocationIsOutMiniVM
-                                {
-                                    LocationCarId = b.Id,
-                                    IsOutZone = a.IsOutZone,
-                                    IsOutZoneOutside = a.IsOutZoneOutside,
-                                });
-
-                                b.Car = _carDetail.CarDetail(b.CarId);
-                                if (b.Car.MaxPassenger >= reservation.PeopleCount)
-                                {
-                                    double price = 0;
-                                    if (a.IsOutZone)
-                                    {
-                                        price = a.Location.DropCharge + (minKm * a.Location.OutZonePricePerKM);
-                                    }
-                                    else
-                                    {
-                                        b.LocationCarsFares = _locationCarsFare.SelectByFunc(c => c.LocationCarId == b.Id);
-                                        var lastUp = 0;
-                                        double lastPrice = 0;
-
-                                        b.LocationCarsFares.ForEach(c =>
-                                        {
-                                            var fare = Convert.ToDouble(c.Fare);
-
-                                            price = _payment.ReservationPrice(c.StartFrom, minKm, c.PriceType, c.UpTo, fare);
-
-                                            lastUp = c.UpTo;
-                                            lastPrice = fare;
-                                        });
-
-
-                                        if (lastUp < minKm)
-                                        {
-                                            var plusPrice = minKm - lastUp;
-                                            price += lastPrice * plusPrice;
-                                        }
-                                    }
-
-                                    if (reservation.ReturnStatus)
-                                    {
-                                        price *= 2;
-                                    }
-
-                                    price = Math.Round(price, 2);
-                                    var checkCar = getreservation.Where(c => c.LocationCars.CarId == b.CarId).FirstOrDefault();
-
-                                    var rate = _reservations.SelectByFunc(c => c.LocationCarId == b.Id && c.Rate > 0);
-                                    if (checkCar != null)
-                                    {
-                                        if (checkCar.LastPrice < price)
-                                        {
-                                            checkCar.LastPrice = price;
-                                            checkCar.LocationCars = b;
-                                            checkCar.ReservationDate = reservation.FlightTime;
-                                            checkCar.PickLocationName = contentJsonResult.Result.formatted_address;
-                                            checkCar.DropLocationName = contentJsonResult2.Result.formatted_address;
-                                            checkCar.PassangerCount = reservation.PeopleCount;
-                                            checkCar.DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}";
-                                            checkCar.PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}";
-                                            checkCar.DropLocationPlaceId = reservation.DropValue;
-                                            checkCar.PickLocationPlaceId = reservation.PickValue;
-                                            checkCar.Rate = rate.Count > 0 ? Math.Round(rate.Average(c => c.Rate), 2).ToString() : "0";
-                                            checkCar.RateCount = rate.Count > 0 ? rate.Count.ToString() : "0";
-                                            getreservation[getreservation.IndexOf(checkCar)] = checkCar;
-                                        }
-                                    }
-                                    else
-                                    {
-
-
-                                        if (a.IsOutZoneOutside)
-                                        {
-                                            if (a.Location.IsOkeyOut)
-                                            {
-                                                if (price > 0)
-                                                {
-                                                    getreservation.Add(new GetReservationValues
-                                                    {
-                                                        LocationCars = b,
-                                                        LastPrice = price,
-                                                        ReservationDate = reservation.FlightTime,
-                                                        PickLocationName = contentJsonResult.Result.formatted_address,
-                                                        DropLocationName = contentJsonResult2.Result.formatted_address,
-                                                        PassangerCount = reservation.PeopleCount,
-                                                        DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
-                                                        PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
-                                                        DropLocationPlaceId = reservation.DropValue,
-                                                        PickLocationPlaceId = reservation.PickValue,
-                                                        Rate = rate.Count > 0 ? Math.Round(rate.Average(c => c.Rate), 2).ToString() : "0",
-                                                        RateCount = rate.Count > 0 ? rate.Count.ToString() : "0",
-                                                    });
-                                                }
-                                            }
-
-                                        }
-                                        else
-                                        {
-                                            if (price > 0)
-                                            {
-                                                getreservation.Add(new GetReservationValues
-                                                {
-                                                    LocationCars = b,
-                                                    LastPrice = price,
-                                                    ReservationDate = reservation.FlightTime,
-                                                    PickLocationName = contentJsonResult.Result.formatted_address,
-                                                    DropLocationName = contentJsonResult2.Result.formatted_address,
-                                                    PassangerCount = reservation.PeopleCount,
-                                                    DropLocationLatLng = $"{contentJsonResult.Result.Geometry.Location.lat},{contentJsonResult.Result.Geometry.Location.lng}",
-                                                    PickLocationLatLng = $"{contentJsonResult2.Result.Geometry.Location.lat},{contentJsonResult2.Result.Geometry.Location.lng}",
-                                                    DropLocationPlaceId = reservation.DropValue,
-                                                    PickLocationPlaceId = reservation.PickValue,
-                                                    Rate = rate.Count > 0 ? Math.Round(rate.Average(c => c.Rate), 2).ToString() : "0",
-                                                    RateCount = rate.Count > 0 ? rate.Count.ToString() : "0",
-                                                });
-                                            }
-                                        }
-                                    }
-                                }
-
-                            });
-                        });
+                        getreservation = lastLocations.Locations;
+                        selectedLocationsMini = lastLocations.MiniLocations;
                     }
-
-
-
-                    getreservation = getreservation.Distinct().ToList();
 
                     var lastVM = new ReservationStepTwoVM()
                     {
                         ReservationValues = getreservation,
-                        DropLocationLatLng = $"lat:{contentJsonResult.Result.Geometry.Location.lat},lng:{contentJsonResult.Result.Geometry.Location.lng}",
-                        PickLocationLatLng = $"lat:{contentJsonResult2.Result.Geometry.Location.lat},lng:{contentJsonResult2.Result.Geometry.Location.lng}",
+                        DropLocationLatLng = $"lat:{dropLocationValues.Result.Geometry.Location.lat},lng:{dropLocationValues.Result.Geometry.Location.lng}",
+                        PickLocationLatLng = $"lat:{pickLocationValues.Result.Geometry.Location.lat},lng:{pickLocationValues.Result.Geometry.Location.lng}",
                         DropLocationPlaceId = reservation.DropValue,
                         PickLocationPlaceId = reservation.PickValue,
                         Distance = betweenLocation.rows[0].elements[0].distance?.text,
@@ -1276,12 +686,12 @@ namespace Airport.UI.Controllers
 
                     var reservationDatas = new ReservationDatasVM()
                     {
-                        DropLocationLatLng = $"lat:{contentJsonResult.Result.Geometry.Location.lat},lng:{contentJsonResult.Result.Geometry.Location.lng}",
-                        PickLocationLatLng = $"lat:{contentJsonResult2.Result.Geometry.Location.lat},lng:{contentJsonResult2.Result.Geometry.Location.lng}",
+                        DropLocationLatLng = $"lat:{dropLocationValues.Result.Geometry.Location.lat},lng:{dropLocationValues.Result.Geometry.Location.lng}",
+                        PickLocationLatLng = $"lat:{pickLocationValues.Result.Geometry.Location.lat},lng:{pickLocationValues.Result.Geometry.Location.lng}",
                         DropLocationPlaceId = reservation.DropValue,
                         PickLocationPlaceId = reservation.PickValue,
-                        PickLocationName = contentJsonResult.Result.formatted_address,
-                        DropLocationName = contentJsonResult2.Result.formatted_address,
+                        PickLocationName = pickLocationValues.Result.formatted_address,
+                        DropLocationName = dropLocationValues.Result.formatted_address,
                         KM = minKm,
                         ReservationValues = reservation,
                         Distance = betweenLocation.rows[0].elements[0].distance?.text,
@@ -1347,46 +757,16 @@ namespace Airport.UI.Controllers
                     var locationCar = _locationCar.SelectByID(selectedDatasMini.LocationCarId);
 
 
-                    locationCar.LocationCarsFares = _locationCarsFare.SelectByFunc(a => a.LocationCarId == id);
-                    locationCar.Location = _location.SelectByID(locationCar.LocationId);
+                    var prices = _tReservationHelpers.ReservationPrice(locationCar.Id, datas.KM, false, 0, datas.ReservationValues.ReturnStatus, selectedDatasMini.IsOutZone);
 
-                    double price = 0;
-                    var lastUp = 0;
-                    double lastPrice = 0;
-                    if (selectedDatasMini.IsOutZone)
-                    {
-                        price = locationCar.Location.DropCharge + (datas.KM * locationCar.Location.OutZonePricePerKM);
-                    }
-                    else
-                    {
-                        locationCar.LocationCarsFares = _locationCarsFare.SelectByFunc(c => c.LocationCarId == locationCar.Id);
+                    datas.OfferPrice = prices.OfferPrice;
+                    datas.ServiceFee = prices.ServiceFee;
+                    datas.TotalPrice = prices.LastPrice;
+                    datas.ExtraServiceFee = prices.ExtraServiceFee;
+                    datas.SalesFee = prices.SalesFee;
+                    datas.PartnerFee = prices.PartnerFee;
+                    datas.GlobalPartnerFee = prices.GlobalPartnerFee;
 
-                        locationCar.LocationCarsFares.ForEach(c =>
-                        {
-
-                            var fare = Convert.ToDouble(c.Fare);
-
-                            price = _payment.ReservationPrice(c.StartFrom, datas.KM, c.PriceType, c.UpTo, fare);
-
-                            lastUp = c.UpTo;
-                            lastPrice = fare;
-                        });
-
-
-                        if (lastUp < datas.KM)
-                        {
-                            var plusPrice = datas.KM - lastUp;
-                            price += lastPrice * plusPrice;
-                        }
-                    }
-
-                    if (datas.ReservationValues.ReturnStatus)
-                    {
-                        price *= 2;
-                    }
-
-                    price = Math.Round(price, 2);
-                    datas.LastPrice = price;
                     datas.LocationCar = locationCar;
                     datas.LocationCar.Car = _carDetail.CarDetail(locationCar.CarId);
                     datas.LocationCar.Car.Service = _services.SelectByID(datas.LocationCar.Car.ServiceId);
@@ -1507,11 +887,8 @@ namespace Airport.UI.Controllers
                     user = null;
                 }
 
-                if (user != null)
-                {
+                var totalprice = createReservation.TotalPrice;
 
-                }
-                var totalprice = createReservation.LastPrice + totalServiceFee;
                 if (userRole == "0" || userRole == "4")
                 {
                     totalprice = reservation.IsDiscount ? Convert.ToDouble(reservation.Discount) : totalprice;
@@ -1536,7 +913,6 @@ namespace Airport.UI.Controllers
                     LocationCarId = createReservation.LocationCar.Id,
                     Name = reservation.Name,
                     ReservationCode = kod,
-                    OfferPrice = createReservation.LastPrice,
                     Surname = reservation.Surname,
                     DropFullName = createReservation.DropLocationName,
                     PickFullName = createReservation.PickLocationName,
@@ -1554,7 +930,6 @@ namespace Airport.UI.Controllers
                     Status = 1,
                     IsDelete = false,
                     HidePrice = reservation.HidePrice,
-                    TotalPrice = totalprice,
                     RealPhone = reservation.RealPhone,
                     DiscountText = reservation.DiscountText,
                     ReservationUserId = user?.Id,
@@ -1562,6 +937,14 @@ namespace Airport.UI.Controllers
                     SalesAgencyId = salesAgency,
                     LastUpdate = DateTime.Now,
                     CreateDate = DateTime.Now,
+
+                    PartnerFee = createReservation.PartnerFee,
+                    SalesFee = createReservation.SalesFee,
+                    ServiceFee = createReservation.ServiceFee,
+                    OfferPrice = createReservation.OfferPrice,
+                    TotalPrice = totalprice,
+                    GlobalPartnerFee = createReservation.GlobalPartnerFee,
+                    
                 });
 
                 var reservationItemsList = new List<ReservationServicesTable>();
@@ -1643,20 +1026,7 @@ namespace Airport.UI.Controllers
             var reservation = _reservations.SelectByID(id);
             if (reservation != null)
             {
-
-                reservation.LocationCars = _locationCar.SelectByID(reservation.LocationCarId);
-                reservation.LocationCars.Car = _getCar.CarDetail(reservation.LocationCars.CarId);
-
-                reservation.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == reservation.Id);
-
-                var loginAuth2 = _loginAuth.SelectByID(reservation.UserId);
-                reservation.User = _userDatas.SelectByID(loginAuth2.UserId);
-
-                reservation.ReservationServicesTables.ForEach(a =>
-                {
-                    a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
-                    a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
-                });
+                reservation = _tReservationHelpers.GetReservationAll(id);
 
                 return View(reservation);
             }
