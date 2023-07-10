@@ -4,6 +4,15 @@
 
 @model Reservations
 
+@section pageCss{
+    <style>
+        label.error {
+            position: initial !important;
+        }
+    </style>
+}
+
+
 <section class="my-5">
     <div class="container">
         <div class="row step3-page-row">
@@ -157,7 +166,19 @@
                             <p class="text">Total</p>
                         </div>
                         <div>
+                            @if (Model.Coupon != 0 && Model.Coupon != null)
+                            {
+                                <p style="font-size: .8rem;
+    text-decoration: line-through;
+    color: #545151;
+    margin: 0;
+    float: right;">@Math.Round(Convert.ToDouble(Model.OfferPrice + Model.ExtraServiceFee + Model.ServiceFee),2) € </p>
+                            }
+
                             <p class="total-price-text">@Model.TotalPrice € </p>
+
+
+                            
                         </div>
                     </div>
 
@@ -171,10 +192,24 @@
                                     </p>
                                 </div>
                                 <div>
-                                    <p class="text price">@Model.TotalPrice € </p>
+                                    <p class="text price">@(Model.Coupon != 0 && Model.Coupon != null ?  Model.DiscountOfferPrice : Model.OfferPrice) € </p>
                                 </div>
                             </div>
                             <p>Includes waiting time, toll roads (if applicable) and taxes</p>
+                        </div>
+
+                        <div class="step3-extra-detail-item">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="text">
+                                       Extra Service Fee
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="text price">@(Model.Coupon != 0 && Model.Coupon != null ? Model.DiscountExtraService : Model.ExtraServiceFee) €</p>
+                                </div>
+                            </div>
+                            <p>Extra services of your choice</p>
                         </div>
                         <div class="step3-extra-detail-item">
                             <div class="d-flex justify-content-between">
@@ -184,7 +219,7 @@
                                     </p>
                                 </div>
                                 <div>
-                                    <p class="text price">@Model.ExtraServiceFee €</p>
+                                    <p class="text price">@(Model.Coupon != 0 && Model.Coupon != null ? Model.DiscountServiceFee : Model.ServiceFee) €</p>
                                 </div>
                             </div>
                             <p>This fee helps us improve our service</p>
@@ -253,16 +288,6 @@
     </div>
 </section>
 
-
-
-
-
-
-<style>
-    label.error {
-        position: initial !important;
-    }
-</style>
 
 
 

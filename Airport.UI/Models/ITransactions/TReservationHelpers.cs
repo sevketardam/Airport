@@ -110,6 +110,17 @@ namespace Airport.UI.Models.ITransactions
                 price *= 2;
             }
 
+            //if (couponCode != null && couponCode != "")
+            //{
+            //    var getCoupon = _coupons.SelectByFunc(a => a.Active && a.CouponCode == couponCode && a.CouponStartDate <= DateTime.Now && a.CouponFinishDate >= DateTime.Now && (a.IsPerma || (!a.IsPerma && a.CouponLimit > a.UsingCount))).FirstOrDefault();
+
+            //    if (getCoupon != null)
+            //    { 
+            //        price = priceVM.LastPrice - (priceVM.LastPrice * getCoupon.Discount / 100);
+            //    }
+            //}
+
+
             priceVM.OfferPrice = Math.Round(price, 2);
             priceVM.PartnerFee = Math.Round(priceVM.OfferPrice - (priceVM.OfferPrice * partnerFee) / 100, 2);
             priceVM.GlobalPartnerFee = Math.Round(priceVM.OfferPrice * partnerFee / 100, 2);
@@ -128,9 +139,19 @@ namespace Airport.UI.Models.ITransactions
                 {
                     priceVM.DiscountRate = getCoupon.Discount;
 
-                    priceVM.LastPrice = priceVM.LastPrice - (priceVM.LastPrice * getCoupon.Discount / 100);
+                    priceVM.LastPrice = Math.Round(priceVM.LastPrice - (priceVM.LastPrice * getCoupon.Discount / 100), 2);
 
-                    priceVM.DiscountPrice = priceVM.LastPrice * getCoupon.Discount / 100;
+                    priceVM.DiscountPrice = Math.Round(priceVM.LastPrice * getCoupon.Discount / 100, 2);
+
+
+                    priceVM.PartnerFee = Math.Round(priceVM.LastPrice - (priceVM.LastPrice * partnerFee) / 100, 2);
+                    priceVM.GlobalPartnerFee = Math.Round(priceVM.GlobalPartnerFee - (priceVM.GlobalPartnerFee * getCoupon.Discount / 100), 2);
+                    priceVM.SalesFee = Math.Round(priceVM.SalesFee - (priceVM.SalesFee * getCoupon.Discount / 100), 2);
+                    priceVM.DiscountExtraService = Math.Round(priceVM.ExtraServiceFee - (priceVM.ExtraServiceFee * getCoupon.Discount / 100), 2);
+                    priceVM.DiscountServiceFee = Math.Round(priceVM.ServiceFee - (priceVM.ServiceFee * getCoupon.Discount / 100), 2);
+                    priceVM.DiscountOfferPrice = Math.Round(price - (price * getCoupon.Discount / 100), 2);
+
+                    priceVM.LastPrice = Math.Round(priceVM.DiscountOfferPrice + priceVM.DiscountServiceFee + priceVM.SalesFee + priceVM.DiscountExtraService, 2);
                 }
             }
 
@@ -165,6 +186,11 @@ namespace Airport.UI.Models.ITransactions
             {
                 reservation.LocationCars = _locationCar.SelectByID(reservation.LocationCarId);
                 reservation.LocationCars.Car = _getCar.CarDetail(reservation.LocationCars.CarId);
+                reservation.LocationCars.Location = _locations.SelectByID(reservation.LocationCars.LocationId);
+
+                var loginAuth = _loginAuth.SelectByID(reservation.LocationCars.Location.UserId);
+
+                reservation.LocationCars.Location.User = _userDatas.SelectByID(loginAuth.UserId);
 
                 reservation.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == reservation.Id);
 

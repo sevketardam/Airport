@@ -60,6 +60,9 @@ namespace Airport.DBEntities.Entities
         public double? DiscountRate { get; set; }
         public double? GlobalPartnerFee { get; set; }
         public double? Discount { get; set; }
+        public double? DiscountServiceFee { get; set; }
+        public double? DiscountOfferPrice { get; set; }
+        public double? DiscountExtraService { get; set; }
 
 
 

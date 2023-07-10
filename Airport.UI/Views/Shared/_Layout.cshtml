@@ -418,6 +418,23 @@ var formattedDateStr = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}T${parts[
             }
         }, 1000);
         }
+
+        var buttonOldContent;
+
+        function formButtonLoader(button) {
+            var button = $(button)
+            buttonOldContent = button.html();
+            button.attr("disabled", true);
+            button.addClass("buttonload");
+            button.html(`<i class="fa fa-spinner fa-spin"></i> Loading`);
+        }
+
+        function formButtonLoaderReturn(button) {
+            var button = $(button)
+            button.attr("disabled", false);
+            button.removeClass("buttonload");
+            button.html(buttonOldContent);
+        }
     </script>
 
     @RenderSection("pageJs", required: false)

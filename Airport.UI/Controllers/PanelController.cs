@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using static iText.Svg.SvgConstants;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using Airport.UI.Models.ITransactions;
 
 namespace Airport.UI.Controllers
 {
@@ -42,7 +43,8 @@ namespace Airport.UI.Controllers
         IFileOperation _fileOperation;
         IUserDocsDAL _docs;
         IPayment _payment;
-        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars, IFileOperation fileOperation, IUserDocsDAL docs, IPayment payment)
+        ITReservationHelpers _tReservationHelpers;
+        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars, IFileOperation fileOperation, IUserDocsDAL docs, IPayment payment, ITReservationHelpers tReservationHelpers)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -64,6 +66,7 @@ namespace Airport.UI.Controllers
             _fileOperation = fileOperation;
             _docs = docs;
             _payment = payment;
+            _tReservationHelpers = tReservationHelpers;
         }
 
 
@@ -335,9 +338,13 @@ namespace Airport.UI.Controllers
                 {
                     reservations = _reservations.SelectByFunc(a => a.SalesAgencyId == userId).OrderByDescending(a => a.ReservationDate).ToList();
                 }
-                else if (userRole == "0")
+                else if (userRole == "0" || userRole == "4")
                 {
                     reservations = _reservations.Select().OrderByDescending(a => a.ReservationDate).ToList();
+                    reservations.ForEach(a =>
+                    {
+                        a = _tReservationHelpers.GetReservationAll(a.Id);
+                    });
                 }
                 else
                 {

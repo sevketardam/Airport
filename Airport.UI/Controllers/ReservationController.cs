@@ -228,6 +228,7 @@ namespace Airport.UI.Controllers
                     datas.LocationCar = locationCar;
                     datas.LocationCar.Car = _carDetail.CarDetail(locationCar.CarId);
                     datas.LocationCar.Car.Service = _services.SelectByID(datas.LocationCar.Car.ServiceId);
+                    datas.IsOutZone = selectedDatasMini.IsOutZone;
                     var selectedCarItems = new List<PriceServiceList>();
                     if (datas.LocationCar.Car.Service != null)
                     {
@@ -248,7 +249,7 @@ namespace Airport.UI.Controllers
                     {
                         SelectedData = datas,
                         User = user,
-                        ServiceItems = selectedCarItems
+                        ServiceItems = selectedCarItems,
                     };
 
                     return View(reservation);
@@ -327,27 +328,20 @@ namespace Airport.UI.Controllers
                                                                        && a.CouponFinishDate >= DateTime.Now && (a.CouponLimit > a.UsingCount && !a.IsPerma)).FirstOrDefault();
                 }
 
-                var total = createReservation.TotalPrice;
+                //var total = createReservation.TotalPrice;
 
-                if (getCoupon is not null)
-                {
-                    total = total - ((total * getCoupon.Discount) / 100);
-                    total = Math.Round(total, 2);
-                }
+                var calcPrice = _tReservationHelpers.ReservationPrice(createReservation.LocationCar.Id,createReservation.KM,false,totalServiceFee,createReservation.ReservationValues.ReturnStatus,createReservation.IsOutZone,coupon);
 
-                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var user = new UserDatas();
+                //if (getCoupon is not null)
+                //{
+                //    total = total - ((total * getCoupon.Discount) / 100);
+                //    total = Math.Round(total, 2);
+                //}
 
-                if (userId != 0)
-                {
-                    var loginAuth = _loginAuth.SelectByID(userId);
-                    user = _userDatas.SelectByID(loginAuth?.UserId);
-                    user.LoginAuth = loginAuth;
-                }
-                else
-                {
-                    user = null;
-                }
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.FirstOrDefault(a => a.Type == ClaimTypes.Sid)?.Value);
+                var loginAuth = userId == 0 ? null : _loginAuth.SelectByID(userId);
+                var user = loginAuth == null ? null : _userDatas.SelectByID(loginAuth.UserId);
+                if (user != null) user.LoginAuth = loginAuth;
 
 
 
@@ -363,12 +357,15 @@ namespace Airport.UI.Controllers
                     Name = reservation.Name,
                     ReservationCode = kod,
 
-                    PartnerFee = createReservation.PartnerFee,
-                    SalesFee = createReservation.SalesFee,
-                    ServiceFee = createReservation.ServiceFee,
-                    OfferPrice = createReservation.OfferPrice,
-                    TotalPrice = total,
-                    GlobalPartnerFee = createReservation.GlobalPartnerFee,
+                    PartnerFee = calcPrice.PartnerFee,
+                    SalesFee = calcPrice.SalesFee,
+                    ServiceFee = calcPrice.ServiceFee,
+                    OfferPrice = calcPrice.OfferPrice,
+                    TotalPrice = calcPrice.LastPrice,
+                    GlobalPartnerFee = calcPrice.GlobalPartnerFee,
+                    DiscountServiceFee = calcPrice.DiscountServiceFee,
+                    DiscountOfferPrice = calcPrice.DiscountOfferPrice,
+                    DiscountExtraService = calcPrice.DiscountExtraService,
 
                     Surname = reservation.Surname,
                     DropFullName = createReservation.DropLocationName,
@@ -541,6 +538,9 @@ namespace Airport.UI.Controllers
                             OfferPrice = reservation.OfferPrice,
                             TotalPrice = reservation.TotalPrice,
                             GlobalPartnerFee = reservation.GlobalPartnerFee,
+                            DiscountServiceFee = reservation.DiscountServiceFee,
+                            DiscountOfferPrice = reservation.DiscountOfferPrice,
+                            DiscountExtraService = reservation.DiscountExtraService,
                         });
 
                         reservation.Id = createdReservation.Id;
@@ -1083,22 +1083,33 @@ namespace Airport.UI.Controllers
             }
         }
 
-        public JsonResult CheckCoupon(string coupon)
+        public JsonResult CheckCoupon(string coupon, List<SelectServiceVM> selectedServices)
         {
             try
             {
-                var coupons = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now
-                                                                                        && a.CouponFinishDate >= DateTime.Now && a.IsPerma).FirstOrDefault();
-                if (coupons == null)
+
+                var createReservation = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
+                if (createReservation != null)
                 {
-                    coupons = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now
-                                                                       && a.CouponFinishDate >= DateTime.Now && (a.CouponLimit > a.UsingCount && !a.IsPerma)).FirstOrDefault();
+                    var totalServiceFee = 0.0;
+                    if (selectedServices != null)
+                    {
+                        foreach (var item1 in selectedServices)
+                        {
+                            var serviceFee = _serviceItems.SelectByID(item1.SelectedValue);
+                            totalServiceFee += serviceFee.Price * item1.PeopleCountInput;
+                        }
+                    }
+
+                    var prices = _tReservationHelpers.ReservationPrice(createReservation.LocationCar.Id, createReservation.KM, false, totalServiceFee, createReservation.ReservationValues.ReturnStatus, createReservation.IsOutZone, coupon);
+
+                    var coupons = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now
+                                                                                            && a.CouponFinishDate >= DateTime.Now && a.IsPerma).FirstOrDefault();
+                    
+                    var JsonData = new JsonResult(new { price = prices.LastPrice, oldPrice = Math.Round(prices.OfferPrice + prices.ServiceFee + prices.SalesFee + prices.ExtraServiceFee, 2) });
+                    return new JsonResult(new { result = coupons == null ? 2 : 1, data = JsonData });
                 }
 
-                if (coupons != null)
-                {
-                    return new JsonResult(new { result = 1, data = coupons });
-                }
 
                 return new JsonResult(new { result = 2 });
             }

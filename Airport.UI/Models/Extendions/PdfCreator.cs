@@ -94,13 +94,14 @@ namespace Airport.UI.Models.Extendions
 
                 if (reservation.IsDiscount)
                 {
+                    servicefee = reservation.DiscountExtraService;
                     specialDiscountHtml = @$"       
 <div style=""display: flex; justify-content: space-between;width:100%;    text-decoration: line-through;"">
             <div>
                       <p style=""font-weight: bold;margin: 0px;"">Total:</p>
             </div>
             <div>
-                      <p style=""margin: 0px;margin-left:.5rem;"">{Math.Round(Convert.ToDouble(reservation.OfferPrice + reservation.ExtraServiceFee + reservation.ServiceFee),2)} €</p>
+                      <p style=""margin: 0px;margin-left:.5rem;"">{price} €</p>
             </div>
         </div>
 <div style=""display: flex; justify-content: space-between;width:100%;"">
@@ -130,7 +131,7 @@ namespace Airport.UI.Models.Extendions
                       <p style=""font-weight: bold;margin: 0px;"">TOTAL:</p>
             </div>
             <div>
-                       <p style=""margin: 0px;margin-left:.5rem;"">{Math.Round(Convert.ToDouble(reservation.OfferPrice + reservation.ExtraServiceFee + reservation.ServiceFee), 2)} €</p>
+                       <p style=""margin: 0px;margin-left:.5rem;"">{Math.Round(Convert.ToDecimal(reservation.OfferPrice + reservation.ServiceFee + reservation.SalesFee + reservation.ExtraServiceFee), 2)} €</p>
             </div>
         </div>
 <div style=""display: flex; justify-content: space-between;width:100%;"">
@@ -138,13 +139,13 @@ namespace Airport.UI.Models.Extendions
                       <p style=""font-weight: bold;margin: 0px;"">Discount Price:</p>
             </div>
             <div>
-                       <p style=""margin: 0px;margin-left:.5rem;"">€{totalprice} €</p>
+                       <p style=""margin: 0px;margin-left:.5rem;"">{price} €</p>
             </div>
         </div>
 
 <div style=""display: flex; justify-content: space-between;width:100%;"">
             <div>
-                       <p style=""margin: 0px;"">€{reservation.Coupons.Comment} €</p>
+                       <p style=""margin: 0px;"">{reservation.Coupons.Comment} </p>
             </div>
         </div>
 
@@ -172,7 +173,7 @@ namespace Airport.UI.Models.Extendions
                       <p style=""margin: 0px;"">Offer price:</p>
             </div>
             <div>
-                      <p style=""margin: 0px;margin-left:.5rem"">{reservation.OfferPrice} €</p>
+                      <p style=""margin: 0px;margin-left:.5rem"">{(reservation.Coupon != 0 && reservation.Coupon != null ? reservation.DiscountOfferPrice : reservation.OfferPrice)} €</p>
             </div>
         </div>
 
@@ -183,7 +184,7 @@ namespace Airport.UI.Models.Extendions
                       <p style=""margin: 0px;"">Service fee:</p>
             </div>
             <div>
-                      <p style=""margin: 0px;margin-left:.5rem;"">{reservation.ServiceFee} €</p>
+                      <p style=""margin: 0px;margin-left:.5rem;"">{(reservation.Coupon != 0 && reservation.Coupon != null ? reservation.DiscountServiceFee : reservation.ServiceFee)} €</p>
             </div>
         </div>
 
@@ -192,7 +193,7 @@ namespace Airport.UI.Models.Extendions
                       <p style=""margin: 0px;"">Extra Service Price:</p>
             </div>
             <div>
-                      <p style=""margin: 0px;margin-left:.5rem;"">{reservation.ExtraServiceFee} €</p>
+                      <p style=""margin: 0px;margin-left:.5rem;"">{(reservation.Coupon != 0 && reservation.Coupon != null ? reservation.DiscountExtraService : reservation.ExtraServiceFee)} €</p>
             </div>
         </div>
 

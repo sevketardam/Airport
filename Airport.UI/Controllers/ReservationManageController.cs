@@ -284,6 +284,7 @@ namespace Airport.UI.Controllers
                         reservation.DriverName = driver.DriverName;
                         reservation.DriverSurname = driver.DriverSurname;
                         reservation.DriverPhone = driver.DriverPhone;
+                        reservation.DriverFee = driver.DriverFee;
                         _reservations.Update(reservation);
 
                         var allMessage = new List<Mesaj>();

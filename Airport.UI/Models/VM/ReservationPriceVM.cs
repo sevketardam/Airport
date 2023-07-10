@@ -12,5 +12,8 @@
         public double DiscountRate { get; set; } = 0;
         public double PartnerFee { get; set; } = 0;
         public double GlobalPartnerFee { get; set; } = 0;
+        public double DiscountServiceFee { get; set; } = 0;
+        public double DiscountOfferPrice { get; set; } = 0;
+        public double DiscountExtraService { get; set; } = 0;
     }
 }

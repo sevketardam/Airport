@@ -14,7 +14,8 @@ namespace Airport.UI.Models.VM
         public double KM { get; set; }
         public string Distance { get; set; }
         public string Duration { get; set; }
-        public GetResevationIM ReservationValues{ get; set; }
+        public bool IsOutZone { get; set; } 
+        public GetResevationIM ReservationValues { get; set; }
         public LocationCars LocationCar { get; set; }
         public Reservations UpdateReservation { get; set; }
 
