@@ -165,7 +165,7 @@
                             }
                         </td>
                         <td class="text-muted">
-                            @item.TotalPrice €
+                            @(userRole == 0 || userRole == 5 || userRole == 4 ? item.TotalPrice : userRole == 2 ? item.OfferPrice : 0) €
                         </td>
                     </tr>
                 }
