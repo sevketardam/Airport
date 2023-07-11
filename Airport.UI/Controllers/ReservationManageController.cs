@@ -299,7 +299,7 @@ namespace Airport.UI.Controllers
                 return Json(new { result = 2 });
             }
             catch (Exception)
-            {
+            { 
                 return Json(new { });
             }
 
