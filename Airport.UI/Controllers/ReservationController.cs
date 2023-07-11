@@ -55,8 +55,9 @@ namespace Airport.UI.Controllers
         IApiResult _apiResult;
         ITReservationHelpers _tReservationHelpers;
         IGlobalSettings _globalSettings;
+        IPayment _payment;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons, ISMS sms, ILoginAuthDAL loginAuth, ITReservations reservationT, IOptions<GoogleAPIKeys> googleAPIKeys, IApiResult apiResult, ITReservationHelpers tReservationHelpers, IGlobalSettings globalSettings)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons, ISMS sms, ILoginAuthDAL loginAuth, ITReservations reservationT, IOptions<GoogleAPIKeys> googleAPIKeys, IApiResult apiResult, ITReservationHelpers tReservationHelpers, IGlobalSettings globalSettings, IPayment payment)
         {
             _location = location;
             _locationCar = locationCar;
@@ -81,11 +82,14 @@ namespace Airport.UI.Controllers
             _apiResult = apiResult;
             _tReservationHelpers = tReservationHelpers;
             _globalSettings = globalSettings;
+            _payment = payment;
         }
 
         [HttpGet("step")]
         public IActionResult StepPay()
         {
+            _payment.SendPost()
+            
             return View();
 
         }
