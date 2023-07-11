@@ -1,11 +1,24 @@
-iText.Kernel.Exceptions.PdfException: Unknown PdfException.
- ---> System.NotSupportedException: Either itext7.bouncy-castle-adapter or itext7.bouncy-castle-fips-adapter dependency must be added in order to use BouncyCastleFactoryCreator
-   at iText.Bouncycastleconnector.BouncyCastleDefaultFactory.CreateIDigest(String hashAlgorithm)
-   at iText.Kernel.Pdf.SmartModePdfObjectsSerializer..ctor()
-   --- End of inner exception stack trace ---
-   at iText.Kernel.Pdf.SmartModePdfObjectsSerializer..ctor()
-   at iText.Kernel.Pdf.PdfWriter..ctor(Stream os, WriterProperties properties)
-   at iText.Kernel.Pdf.PdfWriter..ctor(String filename, WriterProperties properties)
-   at iText.Kernel.Pdf.PdfWriter..ctor(String filename)
-   at Airport.UI.Models.Extendions.PdfCreator.CreateReservationPDF(String fileName, Reservations reservation) in C:\Users\arda2\OneDrive\Masaüstü\Airport2\Airport\Airport.UI\Models\Extendions\PdfCreator.cs:line 343
-   at Airport.UI.Controllers.ReservationController.ReservationLastStep(Reservations reservation, List`1 OthersName, List`1 OthersSurname, List`1 serviceItems, String selectedServiceItems, String coupon) in C:\Users\arda2\OneDrive\Masaüstü\Airport2\Airport\Airport.UI\Controllers\ReservationController.cs:line 733
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'DiscountExtraService'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at Microsoft.Data.SqlClient.SqlDataReader.get_MetaData()
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Linq.Enumerable.WhereEnumerableIterator`1.ToList()
+   at Airport.EF.EfRepo`2.SelectByFunc(Func`2 whereCondition) in C:\Users\Gökçe\Desktop\Airport2\Airport\Airport.EF\EfRepo.cs:line 79
+   at Airport.UI.Models.ITransactions.TReservations.ReservationList(List`1 locationIsOutVM, GetResevationIM reservation, Double minKm, GetGoogleAPIVM pickLocationValues, GetGoogleAPIVM dropLocationValues) in C:\Users\Gökçe\Desktop\Airport2\Airport\Airport.UI\Models\ITransactions\TReservations.cs:line 126
+   at Airport.UI.Controllers.ReservationController.ReservationStepTwo(GetResevationIM reservation) in C:\Users\Gökçe\Desktop\Airport2\Airport\Airport.UI\Controllers\ReservationController.cs:line 118
+ClientConnectionId:e6d3dc6c-4fe1-4822-a389-e8217ec295d4
+Error Number:207,State:1,Class:16

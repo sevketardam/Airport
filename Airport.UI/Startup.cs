@@ -11,6 +11,7 @@ using Airport.UI.Models.VM;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -62,14 +63,20 @@ namespace Airport.UI
             services.AddScoped<ICouponsDAL, CouponsDAL>();
             services.AddScoped<ILoginAuthDAL, LoginAuthDAL>();
             services.AddScoped<IUserDocsDAL, UserDocsDAL>();
+            services.AddScoped<IGlobalSettingsDAL, GlobalSettingsDAL>();
 
 
             services.AddScoped<IMail, MailRepo>();
             services.AddScoped<ISMS, SMSRepo>();
-            services.AddScoped<IPayment, GetPrice>();
+            services.AddScoped<IPayment, PaymentMethods>();
+            services.AddScoped<ITReservations, TReservations>();
+            services.AddScoped<ITReservationHelpers, TReservationHelpers>();
             services.AddScoped<IFileOperation, FileOperation>();
+            services.AddScoped<IApiResult, ApiResults>();
+            services.AddScoped<IGlobalSettings, TGlobalSettings>();
 
 
+            services.AddHttpContextAccessor();
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
             {

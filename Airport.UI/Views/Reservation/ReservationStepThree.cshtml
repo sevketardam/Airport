@@ -135,6 +135,13 @@
             font-weight: 600;
         }
 
+        .discountText {
+            font-size: .8rem !important;
+            float: right;
+            color: #5c5c5c;
+            text-decoration: line-through;
+        }
+
     </style>
 }
 
@@ -180,9 +187,11 @@
                                 <h3>
                                     Total
                                 </h3>
-                                <p>
-                                    <span id="priceBox">@Model.SelectedData.LastPrice</span> €
-                                </p>
+                                <div class="priceBox">
+                                    <p>
+                                        <span id="priceBox">@Model.SelectedData.TotalPrice</span> €
+                                    </p>
+                                </div>
                             </div>
                             <p>
                                 Free Cancellation <br>
@@ -195,7 +204,7 @@
                             </div>
                             <div style="display: flex;">
                                 <input id="DiscountCode" type="text" />
-                                <button class="btn btn-success" id="DiscountCodeBtn">Check Code</button>
+                                <button class="btn btn-success" id="DiscountCodeBtn" type="button">Check Code</button>
                             </div>
                         </div>
                     </div>
@@ -243,7 +252,7 @@
                                         the driver at this number.
                                     </span>
                                 </div>
-                                <input name="Coupon" type="hidden" id="couponCode"/>
+                                <input name="Coupon" type="hidden" id="couponCode" />
                                 @for (int i = 0; i < Model.SelectedData.ReservationValues.PeopleCount - 1; i++)
                                 {
                                     <div class="_Form_Div">
@@ -341,31 +350,71 @@
 
 
 
-        $('#DiscountCodeBtn').on("click", function (e) {
-            e.preventDefault()
+        function checkCoupon(isButton,button) {
+
+            var code = $('#couponCode').val()
+
+
+            listCheckedItems = []
+            var price = 0;
+            $.each($('.itemCheckbox'), function (key, value) {
+                if ($(value).is(":checked")) {
+                    var peoplecount = $(value).closest(".pageServiceDownItem").find(".passengerInputs").val()
+                    listCheckedItems.push({
+                        SelectedValue: $(value).val(),
+                        PeopleCountInput: peoplecount == "" || peoplecount == 0 ? 1 : peoplecount
+                    })
+                    price += (parseFloat($(this).closest('.pageServiceDownItem').find(".servicePrice").text().trim()) * parseFloat($(this).closest('.pageServiceDownItem').find("#peopleCountInput").val()))
+                }
+            })
+
+            if (isButton) {
+                formButtonLoader(button)
+            }
+
+            $.ajax({
+                url: '/Reservation/CheckCoupon',
+                type: "POST",
+                data: { coupon: code, selectedServices: listCheckedItems },
+                success: function (response) {
+                    if (response.result == 1) {
+
+                        $('.priceBox').html(`<p class="discountText">
+                                                                                        <span id="discountBox">${response.data.value.oldPrice}</span> €
+                                                                            </p>
+
+                                                                            <p>
+                                                                                        <span id="priceBox">${response.data.value.price}</span> €
+                                                                            </p>
+                                                            `)
+                    }
+                    else if(response.result == 2){
+
+                        $('.priceBox').html(`<p>
+                                                                                                        <span id="priceBox">${response.data.value.oldPrice}</span> €
+                                                                                    </p>
+                                                                    `)
+                    }
+
+                    if(isButton){
+                        formButtonLoaderReturn(button)
+                    }
+                }
+            });
+
+        }
+
+
+        $('#DiscountCodeBtn').on("click", function () {
             var code = $('#DiscountCode').val()
             $('#couponCode').val(code)
-
-            if (code != null && code != undefined && code.trim() != "") {
-                $.ajax({
-                    url: '/Reservation/CheckCoupon',
-                    type: "POST",
-                    data: { coupon: code },
-                    success: function (response) {
-                        if (response.result == 1) {
-                            var discountPrice = response.data.discount;
-                            
-                            $('#priceBox').text((parseFloat(currentPrice) - ((parseFloat(currentPrice) * discountPrice) / 100)).toFixed(2))
-                        }
-                    }
-                });
-            }
+            checkCoupon(true,$(this))
         })
 
-        var currentPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
+        var currentPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
 
         let listCheckedItems = []
-        const lastPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
+        const lastPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
         $('.itemCheckbox').on("click", function () {
             listCheckedItems = []
             var price = 0;
@@ -380,8 +429,9 @@
                 }
             })
             currentPrice = lastPrice + price;
-            $('#priceBox').text(lastPrice + price)
             $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
+
+            checkCoupon()
         })
 
 
@@ -399,12 +449,12 @@
                 }
             })
             currentPrice = lastPrice + price;
-            $('#priceBox').text(lastPrice + price)
             $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
+            checkCoupon()
         })
 
-        const firstPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".")
-            
+        const firstPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".")
+
 
     </script>
 }

@@ -1,8 +1,26 @@
-﻿@{
+﻿@using System.Security.Claims;
+@{
     Layout = "_PanelLayout";
     ViewData["title"] = "Satış Acentası";
-}
+    var userRole = Convert.ToInt32(Context.User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault());
 
+    decimal discountedSum = 0;
+
+    if (userRole == 0)
+    {
+        discountedSum = Math.Round(Model.Where(a => a.Status != 4).Select(a => Convert.ToDecimal(a.GlobalPartnerFee)).Sum(), 2);
+        discountedSum = Math.Round(discountedSum + Math.Round(Model.Where(a => a.Status != 4).Select(a => Convert.ToDecimal(a.ServiceFee)).Sum(), 2), 2);
+    }
+    else if (userRole == 2)
+    {
+        discountedSum = Math.Round(Model.Where(a => a.Status != 4).Select(a => Convert.ToDecimal(a.PartnerFee)).Sum(), 2);
+    }
+    else if (userRole == 5)
+    {
+        discountedSum = Math.Round(Model.Where(a => a.Status != 4).Select(a => Convert.ToDecimal(a.SalesFee)).Sum(), 2);
+    }
+
+}
 @model List<Reservations>
 
 <div class="calc-flex">
@@ -53,7 +71,7 @@
                 <p class="">Total Earnings</p>
             </div>
             <div>
-                <p class="calc-length"><span>0</span>€</p>
+                <p class="calc-length"><span>@discountedSum</span>€</p>
             </div>
         </div>
         <div>
@@ -103,9 +121,14 @@
             <thead>
                 <tr>
                     <th>Reservation Code</th>
+                    @if (userRole == 0 || userRole == 4)
+                    {
+                        <th>Agency Name</th>
+                    }
                     <th>Name</th>
                     <th>Date</th>
-                    <th>Situation</th>
+                    <th>Status</th>
+                    <th>Price</th>
                 </tr>
             </thead>
             <tbody>
@@ -115,6 +138,12 @@
                         <td>
                             <p class="list-item-heading">@item.ReservationCode</p>
                         </td>
+                        @if (userRole == 0 || userRole == 4)
+                        {
+                            <td class="text-muted">
+                                @item.LocationCars.Location.User.CompanyName
+                            </td>
+                        }
                         <td class="text-muted">
                             @item.Name
                         </td>
@@ -134,6 +163,9 @@
                             {
                                 <span class="badge badge-danger">Cancel Reservation</span>
                             }
+                        </td>
+                        <td class="text-muted">
+                            @(userRole == 0 || userRole == 5 || userRole == 4 ? item.TotalPrice : userRole == 2 ? item.OfferPrice : 0) €
                         </td>
                     </tr>
                 }
@@ -180,7 +212,6 @@
 
 
             tablefirstdata = $dataTableRows.data();
-
         }
 
         var tablefirstdata;
@@ -193,9 +224,16 @@
             pageLength: 10,
             columns: [
                 { data: "ReservationCode" },
+        @if (userRole == 0 || userRole == 4)
+        {
+            <text>
+                    { data: "CompanyName" },
+            </text>
+        }
                 { data: "Name" },
                 { data: "Date" },
                 { data: "Situation" },
+                { data: "Price" },
             ],
             columnDefs: [
                 { "type": "date-euro", targets: 2 }

@@ -202,10 +202,10 @@
                             </div>
                             <div class="_Total_Flex _Price_Flex">
                                 <div class="price">
-                                    <p><span> <span id="priceBox">@Model.SelectedData.LastPrice</span> €</span></p>
+                                    <p><span> <span id="priceBox">@Model.SelectedData.TotalPrice</span> €</span></p>
                                     @if (userRole == "0" || userRole == "4")
                                     {
-                                        <input class="newPriceInput" type="number" id="newPriceInput" value="@Model.SelectedData.LastPrice">
+                                        <input class="newPriceInput" type="number" id="newPriceInput" value="@Model.SelectedData.TotalPrice">
                                         <textarea class="newPriveDesc" placeholder="Discount Description" id="discountDescription"></textarea>
                                     }
 
@@ -268,7 +268,7 @@
                                         the driver at this number.
                                     </span>
                                     <input type="hidden" name="IsDiscount" value="false" />
-                                    <input type="hidden" name="Discount" value="@Model.SelectedData.LastPrice" />
+                                    <input type="hidden" name="Discount" value="@Model.SelectedData.TotalPrice" />
                                     <input type="hidden" name="DiscountText" id="discountDescriptionWR" />
                                 </div>
 
@@ -415,7 +415,7 @@
         $('#newPriceInput').on('change keyup keypress', function () {
             $('input[name="Discount"]').val($(this).val().replace(".", ","))
         })
-        var currentPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
+        var currentPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
 
         var cleave = new Cleave('[name="Phone"]', {
             numericOnly: true,
@@ -423,7 +423,7 @@
         });
 
         let listCheckedItems = []
-        let lastPrice = @Model.SelectedData.LastPrice.ToString().Replace(",",".");
+        let lastPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
         $('.itemCheckbox').on("click", function () {
             listCheckedItems = []
             var price = 0;

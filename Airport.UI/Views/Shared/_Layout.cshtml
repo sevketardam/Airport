@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="/img/favicon.png">
 
-    <title>Airport Global | @ViewData["title"]</title>
+    <title>@ViewData["title"]</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css"
           integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -417,6 +417,23 @@ var formattedDateStr = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}T${parts[
                 document.getElementById("timeSecond").innerText = "00";
             }
         }, 1000);
+        }
+
+        var buttonOldContent;
+
+        function formButtonLoader(button) {
+            var button = $(button)
+            buttonOldContent = button.html();
+            button.attr("disabled", true);
+            button.addClass("buttonload");
+            button.html(`<i class="fa fa-spinner fa-spin"></i> Loading`);
+        }
+
+        function formButtonLoaderReturn(button) {
+            var button = $(button)
+            button.attr("disabled", false);
+            button.removeClass("buttonload");
+            button.html(buttonOldContent);
         }
     </script>
 

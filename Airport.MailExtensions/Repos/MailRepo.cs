@@ -46,7 +46,7 @@ namespace Airport.MessageExtensions.Repos
 
             }
             var price = reservationDetail.IsDiscount ? reservationDetail.Discount : reservationDetail.OfferPrice;
-            var servicefee = reservationDetail.ServiceFee;
+            var servicefee = reservationDetail.ExtraServiceFee;
 
             var priceHtml = "";
             var totalprice = price + servicefee;
@@ -79,7 +79,7 @@ namespace Airport.MessageExtensions.Repos
                       <p style=""font-weight: bold;margin: 0px;"">Total:</p>
             </div>
             <div>
-                      <p style=""margin: 0px;margin-left:.5rem;"">{reservationDetail.OfferPrice + reservationDetail.ServiceFee} €</p>
+                      <p style=""margin: 0px;margin-left:.5rem;"">{reservationDetail.OfferPrice + reservationDetail.ExtraServiceFee} €</p>
             </div>
         </div>
 <div style=""display: flex; justify-content: space-between;width:100%;"">
@@ -109,7 +109,7 @@ namespace Airport.MessageExtensions.Repos
                       <p style=""font-weight: bold;margin: 0px;"">TOTAL:</p>
             </div>
             <div>
-                       <p style=""margin: 0px;margin-left:.5rem;"">{reservationDetail.ServiceFee + reservationDetail.OfferPrice} €</p>
+                       <p style=""margin: 0px;margin-left:.5rem;"">{reservationDetail.ExtraServiceFee + reservationDetail.OfferPrice} €</p>
             </div>
         </div>
 <div style=""display: flex; justify-content: space-between;width:100%;"">
@@ -162,7 +162,7 @@ namespace Airport.MessageExtensions.Repos
                       <p style=""margin: 0px;"">Service fee:</p>
             </div>
             <div>
-                      <p style=""margin: 0px;margin-left:.5rem;"">{reservationDetail.ServiceFee} €</p>
+                      <p style=""margin: 0px;margin-left:.5rem;"">{reservationDetail.ExtraServiceFee} €</p>
             </div>
         </div>
         {discountHtml}

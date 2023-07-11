@@ -18,12 +18,14 @@ namespace Airport.UI.Controllers
         ILoginAuthDAL _loginAuth;
         IUserDatasDAL _userData;
         IUserDocsDAL _userDocs;
-        public GlobalAdminController(ICouponsDAL coupons, ILoginAuthDAL loginAuth, IUserDatasDAL userDta, IUserDocsDAL userDocs)
+        IGlobalSettingsDAL _globalSettings;
+        public GlobalAdminController(ICouponsDAL coupons, ILoginAuthDAL loginAuth, IUserDatasDAL userDta, IUserDocsDAL userDocs, IGlobalSettingsDAL globalSettings)
         {
             _coupons = coupons;
             _loginAuth = loginAuth;
             _userData = userDta;
             _userDocs = userDocs;
+            _globalSettings = globalSettings;
         }
 
         [HttpGet("panel/coupons")]
@@ -222,6 +224,40 @@ namespace Airport.UI.Controllers
                 return Json(new { });
             }
 
+        }
+
+        [Authorize(Roles = "0,4")]
+        [HttpGet("global-settings")]
+        public IActionResult Settings()
+        {
+            var settings = _globalSettings.SelectByID(1);
+
+            return View(settings);
+        }
+
+        [Authorize(Roles = "0,4")]
+        [HttpPost("global-settings")]
+        public IActionResult Settings(GlobalSettings settings)
+        {
+            try
+            {
+                var globalSettings = _globalSettings.SelectByID(1);
+                if (globalSettings != null)
+                {
+                    globalSettings.SalesPer = settings.SalesPer;
+                    globalSettings.GlobalPer = settings.GlobalPer;
+                    globalSettings.PartnerPer = settings.PartnerPer;
+                    globalSettings.LastChange = DateTime.Now;
+
+                    _globalSettings.Update(globalSettings);
+                    return Json(new { result = 1 });
+                }
+                return Json(new { });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 

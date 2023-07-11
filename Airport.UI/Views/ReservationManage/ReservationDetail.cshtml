@@ -517,7 +517,7 @@
             <div>
                 <h4 class="infosTitle">Total Service Fee</h4>
                 <p class="infosP">
-                    @Model.Reservation.ServiceFee €
+                    @Model.Reservation.ExtraServiceFee €
                 </p>
             </div>
 
@@ -526,7 +526,7 @@
                 <p class="infosP">
                     @if (Model.Reservation.IsDiscount || (Model.Reservation.Coupon != null && Model.Reservation.Coupon != 0))
                     {
-                        <span style="text-decoration: line-through;opacity: .5;font-size: 1rem;font-weight: 700;">@(Math.Round(Convert.ToDouble(Model.Reservation.OfferPrice + Model.Reservation.ServiceFee), 2)) €</span>
+                        <span style="text-decoration: line-through;opacity: .5;font-size: 1rem;font-weight: 700;">@(Math.Round(Convert.ToDouble(Model.Reservation.OfferPrice + Model.Reservation.ExtraServiceFee), 2)) €</span>
                     }
 
                     <b>@Model.Reservation.TotalPrice €</b>
@@ -752,17 +752,29 @@
                                 <div class="tab-pane fade @(Convert.ToBoolean(Model.Reservation.IsManuelDriver) ? "active show" : "")" id="secondFull" role="tabpanel" aria-labelledby="second-tab_">
                                     <form id="manualDriver">
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label for="DriverName">Driver Name</label>
                                                 <input type="text" required value="@(Model.Reservation.IsManuelDriver != null && Model.Reservation.IsManuelDriver == true ? Model.Reservation.DriverName : "")" name="DriverName" id="DriverName" class="form-control" />
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label for="DriverSurname">Driver Surname</label>
                                                 <input type="text" required name="DriverSurname" value="@(Model.Reservation.IsManuelDriver != null && Model.Reservation.IsManuelDriver == true ? Model.Reservation.DriverSurname : "")" id="DriverSurname" class="form-control" />
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label for="DriverPhone">Driver Phone</label>
                                                 <input type="text" required name="DriverPhone" value="@(Model.Reservation.IsManuelDriver != null && Model.Reservation.IsManuelDriver == true ? Model.Reservation.DriverPhone : "")" id="DriverPhone" class="form-control" />
+                                            </div>
+                                            <div class="col-md-3">
+
+                                                <label for="DriverPrice">Driver Price</label>
+                                                <div class="input-group">
+                                                    <input type="number" required name="DriverFee" aria-describedby="basic-addon1" value="@(Model.Reservation.IsManuelDriver != null && Model.Reservation.IsManuelDriver == true ? Model.Reservation.DriverFee : 0)" id="DriverPrice" class="form-control" />
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">€</span>
+                                                    </div>
+
+                                                </div>
+
                                             </div>
                                             <div class="col-md-12 mt-3">
                                                 <div>
@@ -953,7 +965,8 @@
                 var driver = {
                     DriverName: $(this).find("input[name='DriverName']").val(),
                     DriverSurname: $(this).find("input[name='DriverSurname']").val(),
-                    DriverPhone: $(this).find("input[name='DriverPhone']").val()
+                    DriverPhone: $(this).find("input[name='DriverPhone']").val(),
+                    DriverFee: $(this).find("input[name='DriverFee']").val()
                 }
 
                 $.ajax({
