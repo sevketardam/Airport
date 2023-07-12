@@ -153,6 +153,12 @@
             top: 0.4rem !important;
         }
 
+        .service_length_controle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
     </style>
 }
 
@@ -311,7 +317,14 @@
                                                                 </p>
                                                             </div>
                                                             <div class="pageServicePrice">
-                                                                <input type="number" name="peopleCountInput" id="peopleCountInput" value="1" class="passengerInputs">
+                                                                <div class="service_length_controle">
+                                                                    <div class="negative_icon">
+                                                                        <i class="fa-solid fa-minus"></i>
+                                                                    </div>
+                                                                    <input type="number" class="passengerInputs valid" name="peopleCountInput"
+                                                                           id="peopleCountInput" value="0" min="0">
+                                                                    <div class="positive_icon"><i class="fa-solid fa-plus"></i></div>
+                                                                </div>
                                                                 <p>
                                                                     <b class="servicePrice">@item.Price</b> €
                                                                 </p>
@@ -328,9 +341,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="checkServiceDiv">
-                                                        <input type="checkbox" class="itemCheckbox w-100" name="selectedValue" value="@item.Id" />
-                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -364,6 +375,22 @@
 
 @section pageJs{
     <script>
+
+        $(".positive_icon").on("click", function () {
+            setTimeout(() => {
+                let input = $(this).closest(".pageServicePrice").find("input");
+                $(input).val(Number($(input).val()) + 1)
+            }, 50);
+        })
+
+        $(".negative_icon").on("click", function () {
+            setTimeout(() => {
+                let input = $(this).closest(".pageServicePrice").find("input");
+                if ($(input).val() > 0) {
+                    $(input).val(Number($(input).val()) - 1)
+                }
+            }, 50);
+        })
 
         $('#discountDescription').on("click keyup change keydown", function () {
             $('#discountDescriptionWR').val($(this).val())

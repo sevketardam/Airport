@@ -366,7 +366,13 @@ $("#_Passenger_Form").validate({
 
 $("body").on("click", ".pageServiceDownItemTop", function (e) {
     console.log($(e.target).attr("class"))
-    if ($(e.target).attr("class") != "passengerInputs" && $(e.target).attr("class") != "passengerInputs valid" && $(e.target).attr("class") != "passengerInputs error")  {
+    if ($(e.target).attr("class") != "passengerInputs" &&
+        $(e.target).attr("class") != "passengerInputs valid" &&
+        $(e.target).attr("class") != "passengerInputs error" &&
+        $(e.target).attr("class") != "negative_icon" &&
+        $(e.target).attr("class") != "fa-solid fa-minus" &&
+        $(e.target).attr("class") != "positive_icon" &&
+        $(e.target).attr("class") != "fa-solid fa-plus") {
         $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
         $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
     }
@@ -374,7 +380,7 @@ $("body").on("click", ".pageServiceDownItemTop", function (e) {
 
 $("input[name = 'PickValueText'], input[name = 'DropValueText']").on("keypress, keydown", function () {
 
-    
+
     setTimeout(() => {
         if ($(this).val().length > 0) {
             $(this).addClass("focusinput")
@@ -400,7 +406,7 @@ $("input[name = 'PickValueText'], input[name = 'DropValueText']").on("focus", fu
 $("input[name = 'PickValueText'], input[name = 'DropValueText']").on("focusout", function () {
     $(this).removeClass("focusinput")
     $(this).removeClass("testb")
-    
+
 })
 
 $(window).ready(function () {

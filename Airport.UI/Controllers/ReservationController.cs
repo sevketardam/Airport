@@ -85,14 +85,14 @@ namespace Airport.UI.Controllers
             _payment = payment;
         }
 
-        [HttpGet("step")]
-        public IActionResult StepPay()
-        {
-            _payment.SendPost()
+        //[HttpGet("step")]
+        //public IActionResult StepPay()
+        //{
+        //    _payment.SendPost();
             
-            return View();
+        //    return View();
 
-        }
+        //}
 
         [HttpGet("reservation", Name = "getLocationValue")]
         public async Task<IActionResult> ReservationStepTwo(GetResevationIM reservation)

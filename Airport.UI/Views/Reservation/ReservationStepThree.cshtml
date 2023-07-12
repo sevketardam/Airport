@@ -142,6 +142,12 @@
             text-decoration: line-through;
         }
 
+        .service_length_controle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
     </style>
 }
 
@@ -289,7 +295,14 @@
                                                                     </p>
                                                                 </div>
                                                                 <div class="pageServicePrice">
-                                                                    <input type="number" class="passengerInputs" name="peopleCountInput" id="peopleCountInput" value="1">
+                                                                    <div class="service_length_controle">
+                                                                        <div class="negative_icon">
+                                                                            <i class="fa-solid fa-minus"></i>
+                                                                        </div>
+                                                                        <input type="number" class="passengerInputs valid" name="peopleCountInput"
+                                                                               id="peopleCountInput" value="0" min="0">
+                                                                        <div class="positive_icon"><i class="fa-solid fa-plus"></i></div>
+                                                                    </div>
                                                                     <p>
                                                                         <b class="servicePrice">@item.Price</b> €
                                                                     </p>
@@ -306,12 +319,12 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="checkServiceDiv">
-                                                            <input type="checkbox" class="itemCheckbox w-100" name="selectedValue" value="@item.Id" />
-                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                         }
                                     </div>
                                 }
@@ -338,6 +351,25 @@
 @section pageJs{
     <script>
 
+
+        $(".positive_icon").on("click", function () {
+            setTimeout(() => {
+                let input = $(this).closest(".pageServicePrice").find("input");
+                $(input).val(Number($(input).val()) + 1)
+            }, 50);
+        })
+
+        $(".negative_icon").on("click", function () {
+            setTimeout(() => {
+                let input = $(this).closest(".pageServicePrice").find("input");
+                if ($(input).val() > 0) {
+                    $(input).val(Number($(input).val()) - 1)
+                }
+            }, 50);
+        })
+
+
+
         const phoneInputField = document.querySelector("input[name='Phone']");
         const phoneInput = window.intlTelInput(phoneInputField, {
             utilsScript:
@@ -350,7 +382,7 @@
 
 
 
-        function checkCoupon(isButton,button) {
+        function checkCoupon(isButton, button) {
 
             var code = $('#couponCode').val()
 
@@ -380,23 +412,23 @@
                     if (response.result == 1) {
 
                         $('.priceBox').html(`<p class="discountText">
-                                                                                        <span id="discountBox">${response.data.value.oldPrice}</span> €
-                                                                            </p>
+                                                                                                <span id="discountBox">${response.data.value.oldPrice}</span> €
+                                                                                    </p>
 
-                                                                            <p>
-                                                                                        <span id="priceBox">${response.data.value.price}</span> €
-                                                                            </p>
-                                                            `)
-                    }
-                    else if(response.result == 2){
-
-                        $('.priceBox').html(`<p>
-                                                                                                        <span id="priceBox">${response.data.value.oldPrice}</span> €
+                                                                                    <p>
+                                                                                                <span id="priceBox">${response.data.value.price}</span> €
                                                                                     </p>
                                                                     `)
                     }
+                    else if (response.result == 2) {
 
-                    if(isButton){
+                        $('.priceBox').html(`<p>
+                                                                                                                <span id="priceBox">${response.data.value.oldPrice}</span> €
+                                                                                            </p>
+                                                                            `)
+                    }
+
+                    if (isButton) {
                         formButtonLoaderReturn(button)
                     }
                 }
@@ -408,7 +440,7 @@
         $('#DiscountCodeBtn').on("click", function () {
             var code = $('#DiscountCode').val()
             $('#couponCode').val(code)
-            checkCoupon(true,$(this))
+            checkCoupon(true, $(this))
         })
 
         var currentPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
