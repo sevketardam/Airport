@@ -276,8 +276,8 @@ namespace Airport.UI.Controllers
 
         }
 
-        [HttpPost("reservation-get-code", Name = "getBookValues")]
-        public async Task<IActionResult> ReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, string selectedServiceItems, string coupon)
+        [HttpPost("reservation-get-code")]
+        public async Task<IActionResult> ReservationLastStep(Reservations reservation, List<string> OthersName, List<string> OthersSurname, List<GetReservationServiceVM> list, string coupon)
         {
             try
             {
@@ -314,13 +314,12 @@ namespace Airport.UI.Controllers
 
                 var totalServiceFee = 0.0;
                 var services = new List<SelectServiceVM>();
-                if (selectedServiceItems != null)
+                if (list != null && list.Count >0)
                 {
-                    services = JsonConvert.DeserializeObject<List<SelectServiceVM>>(selectedServiceItems);
-                    foreach (var item1 in services)
+                    foreach (var item1 in list)
                     {
-                        var serviceFee = _serviceItems.SelectByID(item1.SelectedValue);
-                        totalServiceFee += serviceFee.Price * item1.PeopleCountInput;
+                        var serviceFee = _serviceItems.SelectByID(item1.ServiceId);
+                        totalServiceFee += serviceFee.Price * item1.ServiceCount;
                     }
                 }
 
@@ -334,7 +333,7 @@ namespace Airport.UI.Controllers
 
                 //var total = createReservation.TotalPrice;
 
-                var calcPrice = _tReservationHelpers.ReservationPrice(createReservation.LocationCar.Id,createReservation.KM,false,totalServiceFee,createReservation.ReservationValues.ReturnStatus,createReservation.IsOutZone,coupon);
+                var calcPrice = _tReservationHelpers.ReservationPrice(createReservation.LocationCar.Id, createReservation.KM, false, totalServiceFee, createReservation.ReservationValues.ReturnStatus, createReservation.IsOutZone, coupon);
 
                 //if (getCoupon is not null)
                 //{
@@ -394,7 +393,7 @@ namespace Airport.UI.Controllers
                     ReservationUserId = user?.Id,
                     Rate = 0,
                     DiscountRate = getCoupon?.Discount
-                    
+
                 };
 
                 item.Coupons = getCoupon;

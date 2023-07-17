@@ -240,7 +240,8 @@
                     </div>
 
                     <div>
-                        <form id="_Passenger_Form" asp-route="getBookValues" method="post">
+                        @*<form id="_Passenger_Form" asp-route="getBookValues" method="post">*@
+                        <form id="_Passenger_Form" method="post">
                             <div class="_Form_Flex_Style">
                                 <div class="_Form_Div">
                                     <label class="_Form_Label">Name</label>
@@ -268,18 +269,20 @@
                                     </span>
                                 </div>
                                 <input name="Coupon" type="hidden" id="couponCode" />
+
                                 @for (int i = 0; i < Model.SelectedData.ReservationValues.PeopleCount - 1; i++)
                                 {
-                                    <div class="_Form_Div">
-                                        <label class="_Form_Label">@(i + 2) People Name</label>
-                                        <input type="text" name="OthersName">
-                                    </div>
-                                    <div class="_Form_Div">
-                                        <label class="_Form_Label">@(i + 2) People Surname</label>
-                                        <input type="text" name="OthersSurname">
+                                    <div class="peopleList">
+                                        <div class="_Form_Div">
+                                            <label class="_Form_Label">@(i + 2) People Name</label>
+                                            <input type="text" name="OthersName">
+                                        </div>
+                                        <div class="_Form_Div">
+                                            <label class="_Form_Label">@(i + 2) People Surname</label>
+                                            <input type="text" name="OthersSurname">
+                                        </div>
                                     </div>
                                 }
-
                                 <input type="hidden" name="selectedServiceItems" />
 
                                 <div class="w-100">
@@ -293,7 +296,7 @@
                                     <div class="servicesFlexDiv">
                                         @foreach (var item in Model.SelectedData.LocationCar.Car.Service.ServiceItems)
                                         {
-                                            <div class="pageServiceDownItems service-category-items">
+                                            <div class="pageServiceDownItems service-category-items" data-id="@item.Id">
                                                 <div class="pageServiceDownItem service-category-item">
                                                     <div style="display: flex;">
                                                         <div class="pageServiceDownItemTop" style="width:100%;">
@@ -360,6 +363,48 @@
 @section pageJs{
     <script>
 
+        function getFormDataVal(name) {
+            return $('#_Passenger_Form').find("[name='" + name + "']").val()
+        }
+
+        $('#_Passenger_Form').on("submit", function (e) {
+            e.preventDefault()
+            var returnedData = {
+                passengerName: getFormDataVal("Name"),
+                passengerSurname: getFormDataVal("Surname"),
+                passengerEmail: getFormDataVal("Email"),
+                passengerPhone: getFormDataVal("Phone"),
+                passengerRealPhone: getFormDataVal("RealPhone"),
+                couponCode: $('#DiscountCode').val(),
+                serviceList:[],
+                passengerList:[]
+            }
+
+            var serviceList = []
+            $.each($('.pageServiceDownItems'), function (key, value) {
+                serviceList.push({
+                    serviceId: $(value).attr("data-id"),
+                    serviceCount: parseInt($(value).find("#peopleCountInput").text().trim())
+                })
+            })
+
+            var passengerList = []
+            $.each($('.peopleList'), function (key, value) {
+                passengerList.push({
+                    passengerName: $(value).find("[name='OthersName']"),
+                    passengerSurname: $(value).find("[name='OthersSurname']")
+                })
+            })
+            returnedData.serviceList = serviceList;
+            returnedData.passengerList = passengerList;
+
+            console.log(returnedData)
+            //$.ajax({
+            //    url: '/reservation-get-code',
+            //    type: "POST",
+            //    data: { list: list },
+            //});
+        })
 
         $(".positive_icon").on("click", function () {
             setTimeout(() => {
@@ -433,20 +478,20 @@
                     if (response.result == 1) {
 
                         $('.priceBox').html(`<p class="discountText">
-                                                                                                        <span id="discountBox">${response.data.value.oldPrice}</span> €
-                                                                                            </p>
+                                                                                                                                        <span id="discountBox">${response.data.value.oldPrice}</span> €
+                                                                                                                            </p>
 
-                                                                                            <p>
-                                                                                                        <span id="priceBox">${response.data.value.price}</span> €
-                                                                                            </p>
-                                                                            `)
+                                                                                                                            <p>
+                                                                                                                                        <span id="priceBox">${response.data.value.price}</span> €
+                                                                                                                            </p>
+                                                                                                            `)
                     }
                     else if (response.result == 2) {
 
                         $('.priceBox').html(`<p>
-                                                                                                                        <span id="priceBox">${response.data.value.oldPrice}</span> €
-                                                                                                    </p>
-                                                                                    `)
+                                                                                                                                                        <span id="priceBox">${response.data.value.oldPrice}</span> €
+                                                                                                                                    </p>
+                                                                                                                    `)
                     }
 
                     if (isButton) {
