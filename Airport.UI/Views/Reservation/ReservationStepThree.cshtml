@@ -376,6 +376,7 @@
                 passengerPhone: getFormDataVal("Phone"),
                 passengerRealPhone: getFormDataVal("RealPhone"),
                 couponCode: couponCode,
+                passengerComment: getFormDataVal("comment"),
                 serviceList: [],
                 passengerList: []
             }
@@ -383,8 +384,8 @@
             var serviceList = []
             $.each($('.pageServiceDownItems'), function (key, value) {
                 serviceList.push({
-                    serviceId: $(value).attr("data-id"),
-                    serviceCount: parseInt($(value).find("#peopleCountInput").text().trim())
+                    SelectedValue: $(value).attr("data-id"),
+                    PeopleCountInput: parseInt($(value).find("#peopleCountInput").text().trim())
                 })
             })
 
@@ -404,8 +405,13 @@
                     url: '/reservation-get-code',
                     type: "POST",
                     data: { reservation: returnedData },
+                    success: function (response) {
+                        if(response.result == 1){
+                            location.href = "/reservation-step-payment"
+                        }
+                        //$(document).html(result); // HTML içeriğini hedef div'e ekle
+                    }
                 });
-                console.log(returnedData)
             }
 
         })
