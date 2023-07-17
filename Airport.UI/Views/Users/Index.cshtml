@@ -1,0 +1,432 @@
+﻿@model List<UserListVM>
+
+@{
+    Layout = "_PanelLayout";
+
+    ViewData["title"] = "Player List";
+}
+@section pageCss{
+    <style>
+
+        .reservation-table-icon {
+            color: orange !important;
+            font-size: 1.3rem;
+            filter: drop-shadow(0 0 1px);
+        }
+
+            .reservation-table-icon:hover {
+                filter: drop-shadow(0 0 7px);
+            }
+
+        .get-member {
+            font-size: 1.3rem;
+        }
+
+        .delete-member {
+            font-size: 1.3rem;
+        }
+
+        .reservation-delete {
+            color: red !important;
+            font-size: 1.1rem;
+            filter: drop-shadow(0 0 1px);
+        }
+
+
+        #reservationTable tbody tr {
+            cursor: pointer;
+        }
+
+            #reservationTable tbody tr:hover {
+                box-shadow: 0 3px 30px rgba(0,0,0,.1), 0 3px 20px rgba(0,0,0,.1);
+            }
+    </style>
+}
+@*
+<div style=" overflow-x: auto;">
+    <table id="recourseTable">
+        <thead>
+            <tr>
+                <th style="text-align:center">Reservation Code</th>
+                <th style="text-align:center">Name</th>
+                <th style="text-align:center">Date</th>
+                <th style="text-align:center">Situation</th>
+                <th style="text-align:center">Driver Situation</th>
+                <th style="text-align:center">Transactions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Reservations)
+            {
+                <tr class="goDetail" data-id="@item.Id">
+                    <td>@item.ReservationCode</td>
+                    <td>@item.Name @item.Surname</td>
+                    <td>@item.ReservationDate.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>
+                        @if (item.Status == 1)
+                        {
+                            <span class="badge badge-success">Waiting For Transaction</span>
+                        }
+                        else if (item.Status == 3)
+                        {
+                            <span class="badge badge-info">Finished Reservation</span>
+                        }
+                        else if (item.Status == 4)
+                        {
+                            <span class="badge badge-danger">Cancel Reservation</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.DriverId != null && item.DriverId != 0)
+                        {
+                            <span class="badge badge-success">Driver Assigned</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-warning">Driver Not Assigned</span>
+                        }
+                    </td>
+                    <td>
+                        <a title="Go to detail" href="/panel/reservation-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
+                        <a title="Leave a note" class="open-note reservation-table-icon"><i class="iconsminds-file-edit"></i></a>
+                        <a title="Select Driver" class="select-driver reservation-table-icon"><i class="iconsminds-doctor"></i></a>
+                        <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
+                            <i class="iconsminds-file"></i>
+                        </a>
+                        <a title="Cancel Reservation" class="reservation-delete"><i class="fa-regular fa-xmark"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.Reservations.Count <= 0)
+    {
+        <div style="
+    width: 100%;
+    height: 7rem;
+    background: #ffffff6e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .8rem;
+    text-align: center;
+">
+            No Data
+
+        </div>
+    }
+</div>
+
+
+
+*@
+
+<div class="row icon-cards-row mb-4">
+    <div class="col-md-3 col-lg-3 col-sm-6 col-6 mb-3">
+        <a href="#" class="card">
+            <div class="card-body text-center">
+                <i class="fa-light fa-ban"></i>
+                <p class="card-text font-weight-semibold mb-0">Canceled</p>
+                <p id="canceledReservation" class="lead text-center">0</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 col-lg-3 col-sm-6 col-6 mb-3">
+        <a href="#" class="card">
+            <div class="card-body text-center">
+                <i class="fa-regular fa-check"></i>
+                <p class="card-text font-weight-semibold mb-0">Completed</p>
+                <p id="completedReservation" class="lead text-center">0</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 col-lg-3 col-sm-6 col-6 mb-3">
+        <a href="#" class="card">
+            <div class="card-body text-center">
+                <i class="iconsminds-clock"></i>
+                <p class="card-text font-weight-semibold mb-0">Pending Approval</p>
+                <p id="pendingReservation" class="lead text-center">0</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 col-lg-3 col-sm-6 col-6 mb-3">
+        <a href="#" class="card">
+            <div class="card-body text-center">
+                <i class="fa-regular fa-list"></i>
+                <p class="card-text font-weight-semibold mb-0">Total</p>
+                <p id="totalReservation" class="lead text-center">0</p>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        @*        <div class="btn-group float-right" style="top: -.6rem">
+        <button class="btn btn-outline-primary btn-lg dropdown-toggle" type="button"
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        EXPORT
+        </button>
+        <div class="dropdown-menu">
+        <a class="dropdown-item" id="dataTablesCopy" href="#">Copy</a>
+        <a class="dropdown-item" id="dataTablesExcel" href="#">Excel</a>
+        <a class="dropdown-item" id="dataTablesCsv" href="#">Csv</a>
+        <a class="dropdown-item" id="dataTablesPdf" href="#">Pdf</a>
+        </div>
+        </div>*@
+        <div class="mb-2 mt-5">
+            @*<a class="btn pt-0 pl-0 d-inline-block d-md-none" data-toggle="collapse" href="#displayOptions"
+            role="button" aria-expanded="true" aria-controls="displayOptions">
+            Display Options
+            <i class="simple-icon-arrow-down align-middle"></i>
+            </a>*@
+            <div>
+                <div class="d-block d-md-inline-block">
+                    <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
+                        <input class="form-control" placeholder="Search Table" id="searchDatatable">
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="separator"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 mb-4 data-table-rows data-tables-hide-filter">
+        <table id="usersTable" class="data-table responsive nowrap"
+               data-order="[[ 1, &quot;desc&quot; ]]">
+            <thead>
+                <tr>
+
+                    <th>Name</th>
+                    <th>Company Name</th>
+                    <th>Email</th>
+                    <th>User Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="users" data-id="@item.Id">
+                        <td>@item.Name</td>
+                        <td>@item.CompanyName</td>
+                        <td>@item.Email</td>
+                        <td>
+                            @if (item.Role == 0)
+                            {
+                                <span>
+                                    Global Admin
+                                </span>
+                            }
+                            else if (item.Role == 1)
+                            {
+                                <span>
+                                    Müşteri
+                                </span>
+                            }
+                            else if (item.Role == 2)
+                            {
+                                <span>
+                                    Partner Acente
+                                </span>
+                            }
+                            else if (item.Role == 3)
+                            {
+                                <span>
+                                    Sürücü
+                                </span>
+                            }
+                            else if (item.Role == 4)
+                            {
+                                <span>
+                                    Junior Admin
+                                </span>
+                            }
+                            else if (item.Role == 5)
+                            {
+                                <span>
+                                    Satış Acentesi
+                                </span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="float-left dropdown-as-select" id="pageCountDatatable" style="float: left;
+    margin-top: -4.9rem;
+    z-index: 99;
+    position: relative;">
+            <span class="text-muted text-small">Displaying 1-10 of 40 items </span>
+            <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                10
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">5</a>
+                <a class="dropdown-item active" href="#">10</a>
+                <a class="dropdown-item" href="#">20</a>
+            </div>
+        </div>
+        <div class="top-right-button-container" style="top: -1.5rem;">
+        </div>
+    </div>
+</div>
+
+@section pageJs {
+    <script>
+
+        function CountAnimation(item, count) {
+            var i = 0;
+
+            var countInterval = setInterval(function () {
+
+                $(item).text(i)
+                if (count <= i) {
+                    clearInterval(countInterval)
+                }
+                i++;
+            }, 100)
+        }
+
+        @*window.onload = () => {
+        CountAnimation("#canceledReservation", @Model.Reservations.Where(a=>a.Status == 4).ToList().Count);
+        CountAnimation("#completedReservation", @Model.Reservations.Where(a=>a.Status == 3).ToList().Count);
+        CountAnimation("#pendingReservation", @Model.Reservations.Where(a=>a.Status == 1).ToList().Count);
+        CountAnimation("#totalReservation", @Model.Reservations.Count);
+        }*@
+
+                                                        var $dataTableRows = $("#usersTable").DataTable({
+                bLengthChange: false,
+                //buttons: [
+                //    'copy',
+                //    'excel',
+                //    'csv',
+                //    'pdf'
+                //],
+                destroy: true,
+                info: false,
+                sDom: '<"row view-filter"<"col-sm-12"<"float-left"l><"float-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
+                pageLength: 10,
+                columns: [
+                    { data: "Name" },
+                    { data: "CompanyName" },
+                    { data: "Email" },
+                    { data: "UserRole" },
+                ],
+                language: {
+                    paginate: {
+                        previous: "<i class='simple-icon-arrow-left'></i>",
+                        next: "<i class='simple-icon-arrow-right'></i>"
+                    }
+                },
+                drawCallback: function () {
+                    unCheckAllRows();
+                    $("#checkAllDataTables").prop("checked", false);
+                    $("#checkAllDataTables").prop("indeterminate", false).trigger("change");
+
+                    $($(".dataTables_wrapper .pagination li:first-of-type"))
+                        .find("a")
+                        .addClass("prev");
+                    $($(".dataTables_wrapper .pagination li:last-of-type"))
+                        .find("a")
+                        .addClass("next");
+                    $(".dataTables_wrapper .pagination").addClass("pagination-sm");
+                    var api = $(this).dataTable().api();
+                    $("#pageCountDatatable span").html("Displaying " + parseInt(api.page.info().start + 1) + "-" + api.page.info().end + " of " + api.page.info().recordsTotal + " items");
+                }
+            });
+
+        $("#dataTablesCopy").on("click", function (event) {
+            event.preventDefault();
+            $dataTableRows.buttons(0).trigger();
+        });
+
+        $("#dataTablesExcel").on("click", function (event) {
+            event.preventDefault();
+            $dataTableRows.buttons(1).trigger();
+        });
+
+        $("#dataTablesCsv").on("click", function (event) {
+            event.preventDefault();
+            $dataTableRows.buttons(2).trigger();
+        });
+
+        $("#dataTablesPdf").on("click", function (event) {
+            event.preventDefault();
+            $dataTableRows.buttons(3).trigger();
+        });
+
+        //$('#reservationTable tbody').on('click', 'tr', function () {
+        //    $(this).toggleClass('selected');
+        //    var $checkBox = $(this).find(".custom-checkbox input");
+        //    $checkBox.prop("checked", !$checkBox.prop("checked")).trigger("change");
+        //    controlCheckAll();
+        //});
+
+        function controlCheckAll() {
+            var anyChecked = false;
+            var allChecked = true;
+            $('#usersTable tbody tr .custom-checkbox input').each(function () {
+                if ($(this).prop("checked")) {
+                    anyChecked = true;
+                } else {
+                    allChecked = false;
+                }
+            });
+
+            if (anyChecked) {
+                $("#checkAllDataTables").prop("indeterminate", anyChecked);
+            } else {
+                $("#checkAllDataTables").prop("indeterminate", anyChecked);
+                $("#checkAllDataTables").prop("checked", anyChecked);
+            }
+
+            if (allChecked) {
+                $("#checkAllDataTables").prop("indeterminate", false);
+                $("#checkAllDataTables").prop("checked", allChecked);
+            }
+        }
+
+        function unCheckAllRows() {
+            $('#usersTable tbody tr').removeClass('selected');
+            $('#usersTable tbody tr .custom-checkbox input').prop("checked", false).trigger("change");
+        }
+
+        function checkAllRows() {
+            $('#usersTable tbody tr').addClass('selected');
+            $('#usersTable tbody tr .custom-checkbox input').prop("checked", true).trigger("change");
+        }
+
+        $("#checkAllDataTables").on("click", function (event) {
+            var isCheckedAll = $("#checkAllDataTables").prop("checked");
+            if (isCheckedAll) {
+                checkAllRows();
+            } else {
+                unCheckAllRows();
+            }
+        });
+
+        function getSelectedRows() {
+            //Getting Selected Ones
+            console.log($dataTableRows.rows('.selected').data());
+        }
+
+        $("#searchDatatable").on("keyup", function (event) {
+            $dataTableRows.search($(this).val()).draw();
+        });
+
+        $("#pageCountDatatable .dropdown-menu a").on("click", function (event) {
+            var selText = $(this).text();
+            $dataTableRows.page.len(parseInt(selText)).draw();
+        });
+
+
+
+
+
+    </script>
+}
