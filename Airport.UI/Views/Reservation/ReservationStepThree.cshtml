@@ -270,8 +270,8 @@
                                 </div>
                                 <input name="Coupon" type="hidden" id="couponCode" />
                                 <div class="peopleList">
-                                @for (int i = 0; i < Model.SelectedData.ReservationValues.PeopleCount - 1; i++)
-                                {
+                                    @for (int i = 0; i < Model.SelectedData.ReservationValues.PeopleCount - 1; i++)
+                                    {
                                         <div class="_Form_Div">
                                             <label class="_Form_Label">@(i + 2) People Name</label>
                                             <input type="text" name="OthersName">
@@ -280,7 +280,7 @@
                                             <label class="_Form_Label">@(i + 2) People Surname</label>
                                             <input type="text" name="OthersSurname">
                                         </div>
-                                }
+                                    }
                                 </div>
                                 <input type="hidden" name="selectedServiceItems" />
 
@@ -375,8 +375,8 @@
                 passengerPhone: getFormDataVal("Phone"),
                 passengerRealPhone: getFormDataVal("RealPhone"),
                 couponCode: $('#DiscountCode').val(),
-                serviceList:[],
-                passengerList:[]
+                serviceList: [],
+                passengerList: []
             }
 
             var serviceList = []
@@ -477,20 +477,20 @@
                     if (response.result == 1) {
 
                         $('.priceBox').html(`<p class="discountText">
-                                                                                                                                        <span id="discountBox">${response.data.value.oldPrice}</span> €
-                                                                                                                            </p>
+                                                                                                                                                <span id="discountBox">${response.data.value.oldPrice}</span> €
+                                                                                                                                    </p>
 
-                                                                                                                            <p>
-                                                                                                                                        <span id="priceBox">${response.data.value.price}</span> €
-                                                                                                                            </p>
-                                                                                                            `)
+                                                                                                                                    <p>
+                                                                                                                                                <span id="priceBox">${response.data.value.price}</span> €
+                                                                                                                                    </p>
+                                                                                                                    `)
                     }
                     else if (response.result == 2) {
 
                         $('.priceBox').html(`<p>
-                                                                                                                                                        <span id="priceBox">${response.data.value.oldPrice}</span> €
-                                                                                                                                    </p>
-                                                                                                                    `)
+                                                                                                                                                                <span id="priceBox">${response.data.value.oldPrice}</span> €
+                                                                                                                                            </p>
+                                                                                                                            `)
                     }
 
                     if (isButton) {
