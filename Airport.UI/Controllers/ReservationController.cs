@@ -994,7 +994,7 @@ namespace Airport.UI.Controllers
                                                                                             && a.CouponFinishDate >= DateTime.Now && a.IsPerma).FirstOrDefault();
 
                     var JsonData = new JsonResult(new { price = prices.LastPrice, oldPrice = Math.Round(prices.OfferPrice + prices.ServiceFee + prices.SalesFee + prices.ExtraServiceFee, 2), discount = coupons?.Discount });
-                    return new JsonResult(new { result = coupons == null ? 2 : 1, data = JsonData });
+                    return new JsonResult(new { result = coupons == null ? 2 : 1, data = JsonData,discount = coupons?.Discount });
                 }
 
 

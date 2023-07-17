@@ -206,9 +206,9 @@
                                     <p>
                                         <span id="priceBox">@Model.SelectedData.TotalPrice</span> €
                                     </p>
-                                </div> 
+                                </div>
                             </div>
-                            <p> 
+                            <p>
                                 Free Cancellation <br>
                                 All Taxes included
                             </p>
@@ -224,7 +224,7 @@
                             </div>
                         </div>
                     </div>
-                     
+
                 </div>
             </div>
             <div class="_Profile_Right _None_Shodow">
@@ -269,7 +269,6 @@
                                         the driver at this number.
                                     </span>
                                 </div>
-                                <input name="Coupon" type="hidden" id="couponCode" />
                                 <div class="peopleList">
                                     @for (int i = 0; i < Model.SelectedData.ReservationValues.PeopleCount - 1; i++)
                                     {
@@ -283,7 +282,6 @@
                                         </div>
                                     }
                                 </div>
-                                <input type="hidden" name="selectedServiceItems" />
 
                                 <div class="w-100">
                                     <label class="_Form_Label">Comment</label>
@@ -377,7 +375,7 @@
                 passengerEmail: getFormDataVal("Email"),
                 passengerPhone: getFormDataVal("Phone"),
                 passengerRealPhone: getFormDataVal("RealPhone"),
-                couponCode: $('#DiscountCode').val(),
+                couponCode: couponCode,
                 serviceList: [],
                 passengerList: []
             }
@@ -407,7 +405,7 @@
                     type: "POST",
                     data: { reservation: returnedData },
                     success: function (response) {
-                        if(response.result == 1){
+                        if (response.result == 1) {
                             location.href = "/reservation-step-payment"
                         }
                         //$(document).html(result); // HTML içeriğini hedef div'e ekle
@@ -468,16 +466,16 @@
             $('#DiscountCode').attr("disabled", false)
             $('#DiscountCode').val("")
             isClear = true;
-            $('#DiscountCodeBtn').trigger("click")
             couponCode = "";
-            $('.discount-message').remove();
+            $('.discount-text').remove();
+            checkCoupon();
 
             $(this).addClass("d-none")
         })
 
         function checkCoupon(isButton, button) {
 
-            var code = $('#couponCode').val()
+            var code = couponCode
 
 
             listCheckedItems = []
@@ -499,25 +497,45 @@
                 type: "POST",
                 data: { coupon: code, selectedServices: listCheckedItems },
                 success: function (response) {
-                    $('.discount-message').remove();
                     if (response.result == 1) {
 
                         $('.priceBox').html(`<p class="discountText">
-                                                                                                                                                <span id="discountBox">${response.data.value.oldPrice}</span> €
-                                                                                                                                    </p>
+                                                                                                                                                        <span id="discountBox">${response.data.value.oldPrice}</span> €
+                                                                                                                                            </p>
 
-                                                                                                                                    <p>
-                                                                                                                                                <span id="priceBox">${response.data.value.price}</span> €
-                                                                                                                                    </p>
-                                                                                                                    `)
+                                                                                                                                            <p>
+                                                                                                                                                        <span id="priceBox">${response.data.value.price}</span> €
+                                                                                                                                            </p>
+                                                                                                                            `)
+
+
+                        if (!isClear) {
+                            $('.discount-text').remove();
+                            $("#DiscountCode").attr("disabled", true)
+                            $("#clearCoupon").removeClass("d-none")
+
+                            $('._Total_Flex').after(`<div class="alert alert-success discount-text" role="alert">
+                                          Your ${response.data.value.discount}% discount code has been successfully applied
+                        </div>`)
+                        }
                     }
                     else if (response.result == 2) {
 
                         $('.priceBox').html(`<p>
-                                                                                                                                                                <span id="priceBox">${response.data.value.oldPrice}</span> €
-                                                                                                                                            </p>
-                                                                                                                            `)
+                                                                                                                                                                        <span id="priceBox">${response.data.value.oldPrice}</span> €
+                                                                                                                                                    </p>
+                                                                                                                                    `)
+
+                        if (!isClear) {
+                            $('.discount-text').remove();
+                            $('._Total_Flex').after(`<div class="alert alert-danger discount-text" role="alert">
+                                                                         Incorrect or expired discount coupon
+                                        </div>`)
+                        }
+
                     }
+
+
                     isClear = false;
 
                     if (isButton) {
@@ -531,9 +549,9 @@
 
         $('#DiscountCodeBtn').on("click", function () {
             var code = $('#DiscountCode').val()
-            $('#couponCode').val(code)
-            checkCoupon(true, $(this))
+            isClear = false;
             couponCode = code;
+            checkCoupon(true, $(this))
         })
 
         var currentPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
