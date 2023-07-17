@@ -476,3 +476,8 @@ $('form[id="payForm"]').validate({
         form.submit();
     },
 });
+
+
+$("._Auth .btn-group").on("click", function () {
+    $(this).toggleClass("active");
+})

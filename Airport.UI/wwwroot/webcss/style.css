@@ -372,7 +372,7 @@ label.error {
         flex-direction: column;
         padding: 1rem 0;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: center;
         gap: 2rem;
         padding: 5rem 0 3rem 0;
         transition: left 250ms;
