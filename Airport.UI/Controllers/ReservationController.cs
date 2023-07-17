@@ -89,7 +89,7 @@ namespace Airport.UI.Controllers
         //public IActionResult StepPay()
         //{
         //    _payment.SendPost();
-            
+
         //    return View();
 
         //}
@@ -314,7 +314,7 @@ namespace Airport.UI.Controllers
 
                 var totalServiceFee = 0.0;
                 var services = new List<SelectServiceVM>();
-                if (list != null && list.Count >0)
+                if (list != null && list.Count > 0)
                 {
                     foreach (var item1 in list)
                     {
@@ -947,7 +947,7 @@ namespace Airport.UI.Controllers
                     OfferPrice = createReservation.OfferPrice,
                     TotalPrice = totalprice,
                     GlobalPartnerFee = createReservation.GlobalPartnerFee,
-                    
+
                 });
 
                 var reservationItemsList = new List<ReservationServicesTable>();
@@ -1108,8 +1108,8 @@ namespace Airport.UI.Controllers
 
                     var coupons = _coupons.SelectByFunc(a => a.Active && a.CouponCode == coupon && a.CouponStartDate <= DateTime.Now
                                                                                             && a.CouponFinishDate >= DateTime.Now && a.IsPerma).FirstOrDefault();
-                    
-                    var JsonData = new JsonResult(new { price = prices.LastPrice, oldPrice = Math.Round(prices.OfferPrice + prices.ServiceFee + prices.SalesFee + prices.ExtraServiceFee, 2) });
+
+                    var JsonData = new JsonResult(new { price = prices.LastPrice, oldPrice = Math.Round(prices.OfferPrice + prices.ServiceFee + prices.SalesFee + prices.ExtraServiceFee, 2), discount = coupons?.Discount });
                     return new JsonResult(new { result = coupons == null ? 2 : 1, data = JsonData });
                 }
 

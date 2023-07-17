@@ -220,6 +220,7 @@
                             <div style="display: flex;">
                                 <input id="DiscountCode" type="text" />
                                 <button class="btn btn-success" id="DiscountCodeBtn" type="button">Check Code</button>
+                                <button class="btn btn-danger d-none" id="clearCoupon">Clear Coupon</button>
                             </div>
                         </div>
                     </div>
@@ -283,7 +284,6 @@
                                         </div>
                                     </div>
                                 }
-                                <input type="hidden" name="selectedServiceItems" />
 
                                 <div class="w-100">
                                     <label class="_Form_Label">Comment</label>
@@ -367,6 +367,8 @@
             return $('#_Passenger_Form').find("[name='" + name + "']").val()
         }
 
+        let couponCode;
+
         $('#_Passenger_Form').on("submit", function (e) {
             e.preventDefault()
             var returnedData = {
@@ -375,9 +377,9 @@
                 passengerEmail: getFormDataVal("Email"),
                 passengerPhone: getFormDataVal("Phone"),
                 passengerRealPhone: getFormDataVal("RealPhone"),
-                couponCode: $('#DiscountCode').val(),
-                serviceList:[],
-                passengerList:[]
+                couponCode: couponCode,
+                serviceList: [],
+                passengerList: []
             }
 
             var serviceList = []
@@ -391,19 +393,23 @@
             var passengerList = []
             $.each($('.peopleList'), function (key, value) {
                 passengerList.push({
-                    passengerName: $(value).find("[name='OthersName']"),
-                    passengerSurname: $(value).find("[name='OthersSurname']")
+                    passengerName: $(value).find("[name='OthersName']").val(),
+                    passengerSurname: $(value).find("[name='OthersSurname']").val()
                 })
             })
             returnedData.serviceList = serviceList;
             returnedData.passengerList = passengerList;
 
-            console.log(returnedData)
-            //$.ajax({
-            //    url: '/reservation-get-code',
-            //    type: "POST",
-            //    data: { list: list },
-            //});
+
+            if ($(this).valid()) {
+                //$.ajax({
+                //    url: '/reservation-get-code',
+                //    type: "POST",
+                //    data: { list: list },
+                //});
+                console.log(returnedData)
+            }
+
         })
 
         $(".positive_icon").on("click", function () {
@@ -446,7 +452,15 @@
             $('#realPhoneInpt').val(phoneInput.getNumber().replace("+", ""))
         })
 
-
+        var isClear = false;
+        $('#clearCoupon').on("click", function () {
+            $('#DiscountCode').attr("disabled", false)
+            $('#DiscountCode').val("")
+            isClear = true;
+            $('#DiscountCodeBtn').trigger("click")
+            couponCode = "";
+            $('.discount-message').remove();
+        })
 
         function checkCoupon(isButton, button) {
 
@@ -475,24 +489,43 @@
                 type: "POST",
                 data: { coupon: code, selectedServices: listCheckedItems },
                 success: function (response) {
+                    $('.discount-message').remove();
                     if (response.result == 1) {
 
                         $('.priceBox').html(`<p class="discountText">
-                                                                                                                                        <span id="discountBox">${response.data.value.oldPrice}</span> €
-                                                                                                                            </p>
+                                                                                                                                                                <span id="discountBox">${response.data.value.oldPrice}</span> €
+                                                                                                                                                    </p>
 
-                                                                                                                            <p>
-                                                                                                                                        <span id="priceBox">${response.data.value.price}</span> €
-                                                                                                                            </p>
-                                                                                                            `)
+                                                                                                                                                    <p>
+                                                                                                                                                                <span id="priceBox">${response.data.value.price}</span> €
+                                                                                                                                                    </p>
+                                                                                                                                    `)
+
+
+
+                        $('#DiscountCode').attr("disabled", true)
+
+                        $('#clearCoupon').removeClass("d-none")
+
+                        $('._Total_Flex').after(`<div class="alert alert-success discount-message" role="alert">
+                                          Your ${response.data.value.discount}% discount coupon has been successfully applied
+                        </div>`)
                     }
                     else if (response.result == 2) {
 
                         $('.priceBox').html(`<p>
-                                                                                                                                                        <span id="priceBox">${response.data.value.oldPrice}</span> €
-                                                                                                                                    </p>
-                                                                                                                    `)
+                                                                                                                                                                                <span id="priceBox">${response.data.value.oldPrice}</span> €
+                                                                                                                                                            </p>
+                                                                                                                                                    `)
+                        if (!isClear) {
+                            $('._Total_Flex').after(`<div class="alert alert-danger discount-message" role="alert">
+                        Incorrect or expired discount coupon
+                        </div>`)
+                            $('#clearCoupon').removeClass("d-none")
+                        }
+
                     }
+                    isClear = false;
 
                     if (isButton) {
                         formButtonLoaderReturn(button)
@@ -507,6 +540,7 @@
             var code = $('#DiscountCode').val()
             $('#couponCode').val(code)
             checkCoupon(true, $(this))
+            couponCode = code;
         })
 
         var currentPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
