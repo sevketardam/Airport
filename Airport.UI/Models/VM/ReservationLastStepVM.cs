@@ -9,7 +9,7 @@ namespace Airport.UI.Models.VM
         public string PassengerEmail { get; set; }
         public string PassengerPhone { get; set; }
         public string PassengerRealPhone { get; set; }
-        public string CouponCode { get; set; }
+        public string CouponCode { get; set; } = "";
         public bool HidePrice { get; set; } = false;
         public string PassengerComment { get; set; }
         public string DiscountText { get; set; }

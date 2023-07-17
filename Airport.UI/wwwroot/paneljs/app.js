@@ -327,21 +327,21 @@ $("#_Passenger_Form").validate({
             required: "!",
         },
     },
-    submitHandler: function (form) {
+    //submitHandler: function (form) {
 
-        $("body").append(`
-        <div class="createLoader active">
-            <p>Creating</p>
-            <div class="words">
-                <span class="word">Reservation</span>
-                <span class="word">Voucher</span>
-            </div>
-        </div>
-        `)
-        $("html, body").css("overflow", "hidden");
+    //    $("body").append(`
+    //    <div class="createLoader active">
+    //        <p>Creating</p>
+    //        <div class="words">
+    //            <span class="word">Reservation</span>
+    //            <span class="word">Voucher</span>
+    //        </div>
+    //    </div>
+    //    `)
+    //    $("html, body").css("overflow", "hidden");
 
-        form.submit();
-    },
+    //    form.submit();
+    //},
 });
 
 //$("body").on("click", ".pageServiceDownItemTop", function (e) {

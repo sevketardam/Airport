@@ -347,7 +347,7 @@ namespace Airport.UI.Controllers
                     DiscountRate = getCoupon?.Discount,
                     LastUpdate = DateTime.Now,
                     CreateDate = DateTime.Now,
-                    
+
                 };
 
                 item.Coupons = getCoupon;
@@ -492,8 +492,16 @@ namespace Airport.UI.Controllers
                         reservation.ReservationPeoples.ForEach(item => item.ReservationId = createdReservation.Id);
                         reservation.ReservationServicesTables.ForEach(item => item.ReservationId = createdReservation.Id);
 
-                        _reservationsPeople.InsertRage(reservation.ReservationPeoples);
-                        _reservationServicesTable.InsertRage(reservation.ReservationServicesTables);
+                        if (reservation.ReservationPeoples != null)
+                        {
+                            _reservationsPeople.InsertRage(reservation.ReservationPeoples);
+                        }
+
+                        reservation.ReservationServicesTables = reservation.ReservationServicesTables.Where(a => a.PeopleCount > 0).ToList();
+                        if (reservation.ReservationServicesTables != null && reservation.ReservationServicesTables.Count > 0)
+                        {
+                            _reservationServicesTable.InsertRage(reservation.ReservationServicesTables);
+                        }
 
                         PdfCreator pdfCreator = new PdfCreator(_env);
                         pdfCreator.CreateReservationPDF(reservation.ReservationCode + "-" + reservation.Id, reservation);
@@ -711,6 +719,7 @@ namespace Airport.UI.Controllers
                     datas.SalesFee = prices.SalesFee;
                     datas.PartnerFee = prices.PartnerFee;
                     datas.GlobalPartnerFee = prices.GlobalPartnerFee;
+                    datas.IsOutZone = selectedDatasMini.IsOutZone;
 
                     datas.LocationCar = locationCar;
                     datas.LocationCar.Car = _carDetail.CarDetail(locationCar.CarId);
@@ -768,7 +777,7 @@ namespace Airport.UI.Controllers
         }
 
         [Authorize(Roles = "0,2,4,5")]
-        [HttpPost("panel/manual-reservation-three/{id}", Name = "getManualBookValues")]
+        [HttpPost("panel/manual-reservation-three")]
         public IActionResult ManualReservationLastStep(ReservationLastStepVM reservation)
         {
             try
@@ -781,7 +790,6 @@ namespace Airport.UI.Controllers
                 {
                     return NotFound();
                 }
-
 
                 var totalServiceFee = reservation.ServiceList?.Sum(item1 => _serviceItems.SelectByID(item1.SelectedValue).Price * item1.PeopleCountInput) ?? 0.0;
 
@@ -858,7 +866,11 @@ namespace Airport.UI.Controllers
                     ServiceItemId = item1.SelectedValue
                 }).ToList();
 
-                _reservationServicesTable.InsertRage(reservationItemsList);
+                reservationItemsList = reservationItemsList?.Where(a => a.PeopleCount > 0).ToList();
+                if (reservationItemsList != null && reservationItemsList.Count > 0)
+                {
+                    _reservationServicesTable.InsertRage(reservationItemsList);
+                }
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
                 item.LocationCars.Car = _getCar.CarDetail(item.LocationCars.CarId);
@@ -873,7 +885,10 @@ namespace Airport.UI.Controllers
                     ReservationId = item.Id
                 }).ToList();
 
-                _reservationsPeople.InsertRage(reservationPeople);
+                if (reservationPeople != null)
+                {
+                    _reservationsPeople.InsertRage(reservationPeople);
+                }
 
                 item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
                 item.ReservationServicesTables.ForEach(a =>
@@ -888,17 +903,17 @@ namespace Airport.UI.Controllers
                 _mail.SendReservationMail(item);
 
                 var allMessage = new List<Mesaj>
-{
-    new Mesaj
-    {
-        dest = reservation.PassengerRealPhone,
-        msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{item.ReservationCode}-{item.Id}.pdf"
-    }
-};
+                {
+                    new Mesaj
+                    {
+                        dest = reservation.PassengerRealPhone,
+                        msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{item.ReservationCode}-{item.Id}.pdf"
+                    }
+                };
 
                 _sms.SmsForReservation(allMessage.ToArray());
 
-                return RedirectToAction("ManualCreatedReservationDetail", "Reservation", new { id = item.Id });
+                return Json(new { result = 1, id = item.Id });
             }
             catch (Exception)
             {
@@ -994,7 +1009,7 @@ namespace Airport.UI.Controllers
                                                                                             && a.CouponFinishDate >= DateTime.Now && a.IsPerma).FirstOrDefault();
 
                     var JsonData = new JsonResult(new { price = prices.LastPrice, oldPrice = Math.Round(prices.OfferPrice + prices.ServiceFee + prices.SalesFee + prices.ExtraServiceFee, 2), discount = coupons?.Discount });
-                    return new JsonResult(new { result = coupons == null ? 2 : 1, data = JsonData,discount = coupons?.Discount });
+                    return new JsonResult(new { result = coupons == null ? 2 : 1, data = JsonData, discount = coupons?.Discount });
                 }
 
 

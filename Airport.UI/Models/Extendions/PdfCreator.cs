@@ -56,10 +56,10 @@ namespace Airport.UI.Models.Extendions
             byte[] imageBytes = imageResponse.Content.ReadAsByteArrayAsync().Result;
             string base64String = Convert.ToBase64String(imageBytes);
 
-            var price = reservation.IsDiscount ? reservation.Discount : reservation.TotalPrice;
+            var totalprice = reservation.IsDiscount ? reservation.Discount : reservation.TotalPrice;
+            var realPrice = Math.Round(Convert.ToDecimal(reservation.OfferPrice + reservation.SalesFee + reservation.ServiceFee + reservation.ExtraServiceFee),2);
             var servicefee = reservation.ExtraServiceFee;
 
-            var totalprice = price;
 
             var commentStr = "";
             if (reservation.Comment != null && reservation.Comment.Trim() != "")
@@ -73,6 +73,7 @@ namespace Airport.UI.Models.Extendions
 
             var priceHtml = "";
 
+            var serviceHtml = "";
             if (reservation.HidePrice == false)
             {
                 var discountHtml = "";
@@ -101,7 +102,7 @@ namespace Airport.UI.Models.Extendions
                       <p style=""font-weight: bold;margin: 0px;"">Total:</p>
             </div>
             <div>
-                      <p style=""margin: 0px;margin-left:.5rem;"">{price} €</p>
+                      <p style=""margin: 0px;margin-left:.5rem;"">{realPrice} €</p>
             </div>
         </div>
 <div style=""display: flex; justify-content: space-between;width:100%;"">
@@ -139,7 +140,7 @@ namespace Airport.UI.Models.Extendions
                       <p style=""font-weight: bold;margin: 0px;"">Discount Price:</p>
             </div>
             <div>
-                       <p style=""margin: 0px;margin-left:.5rem;"">{price} €</p>
+                       <p style=""margin: 0px;margin-left:.5rem;"">{totalprice} €</p>
             </div>
         </div>
 
@@ -201,24 +202,25 @@ namespace Airport.UI.Models.Extendions
         {specialDiscountHtml}
 ";
 
-            }
-
-            var serviceHtml = "";
-            if (reservation.ReservationServicesTables.Count > 0)
-            {
-                serviceHtml = @"
+                if (reservation.ReservationServicesTables.Count > 0)
+                {
+                    serviceHtml = @"
 <div style=""margin: 10px 10px; border-bottom: 4px solid #FF6900;"">
 <h3 style=""font-size: 23px;text-align: center;"">SERVICES DETAILS</h3>";
-                foreach (var item in reservation.ReservationServicesTables)
-                {
-                    serviceHtml += @$" <div>
+                    foreach (var item in reservation.ReservationServicesTables)
+                    {
+                        serviceHtml += @$" <div>
             <div>
-                      <p style=""margin: 0px;font-weight: bold;"">{item.ServiceItem.ServiceProperty.ServicePropertyName} {item.Price}x{item.PeopleCount}={item.Price*item.PeopleCount}€</p>
+                      <p style=""margin: 0px;font-weight: bold;"">{item.ServiceItem.ServiceProperty.ServicePropertyName} {item.Price}x{item.PeopleCount}={item.Price * item.PeopleCount}€</p>
             </div>
         </div>";
+                    }
+                    serviceHtml += "</div></div>";
                 }
-                serviceHtml += "</div></div>";
+
+
             }
+
 
             var returnString = "";
             if (reservation.ReturnStatus)
