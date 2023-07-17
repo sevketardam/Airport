@@ -148,6 +148,15 @@
             gap: 0.5rem;
         }
 
+        p[type='peopleCountControl'] {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .text-block {
+            opacity: .5;
+        }
+
     </style>
 }
 
@@ -299,8 +308,8 @@
                                                                         <div class="negative_icon">
                                                                             <i class="fa-solid fa-minus"></i>
                                                                         </div>
-                                                                        <input type="number" class="passengerInputs valid" name="peopleCountInput"
-                                                                               id="peopleCountInput" value="0" min="0">
+                                                                        <p type="peopleCountControl" class="peopleCountText text-center text-block" name="peopleCountInput"
+                                                                           id="peopleCountInput">0</p>
                                                                         <div class="positive_icon"><i class="fa-solid fa-plus"></i></div>
                                                                     </div>
                                                                     <p>
@@ -354,16 +363,28 @@
 
         $(".positive_icon").on("click", function () {
             setTimeout(() => {
-                let input = $(this).closest(".pageServicePrice").find("input");
-                $(input).val(Number($(input).val()) + 1)
+                let input = $(this).closest(".pageServicePrice").find("p[type='peopleCountControl']");
+                $(input).text(Number($(input).text()) + 1)
+                if (Number($(input).text()) > 0) {
+                    $(input).removeClass("text-block")
+                }
+                else {
+                    $(input).addClass("text-block")
+                }
             }, 50);
         })
 
         $(".negative_icon").on("click", function () {
             setTimeout(() => {
-                let input = $(this).closest(".pageServicePrice").find("input");
-                if ($(input).val() > 0) {
-                    $(input).val(Number($(input).val()) - 1)
+                let input = $(this).closest(".pageServicePrice").find("p[type='peopleCountControl']");
+                if (Number($(input).text()) > 0) {
+                    $(input).text(Number($(input).text()) - 1)
+                }
+                if (Number($(input).text()) > 0) {
+                    $(input).removeClass("text-block")
+                }
+                else {
+                    $(input).addClass("text-block")
                 }
             }, 50);
         })
@@ -412,20 +433,20 @@
                     if (response.result == 1) {
 
                         $('.priceBox').html(`<p class="discountText">
-                                                                                                <span id="discountBox">${response.data.value.oldPrice}</span> €
-                                                                                    </p>
+                                                                                                        <span id="discountBox">${response.data.value.oldPrice}</span> €
+                                                                                            </p>
 
-                                                                                    <p>
-                                                                                                <span id="priceBox">${response.data.value.price}</span> €
-                                                                                    </p>
-                                                                    `)
+                                                                                            <p>
+                                                                                                        <span id="priceBox">${response.data.value.price}</span> €
+                                                                                            </p>
+                                                                            `)
                     }
                     else if (response.result == 2) {
 
                         $('.priceBox').html(`<p>
-                                                                                                                <span id="priceBox">${response.data.value.oldPrice}</span> €
-                                                                                            </p>
-                                                                            `)
+                                                                                                                        <span id="priceBox">${response.data.value.oldPrice}</span> €
+                                                                                                    </p>
+                                                                                    `)
                     }
 
                     if (isButton) {
