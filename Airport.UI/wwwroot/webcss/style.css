@@ -4503,3 +4503,12 @@ textarea.form-control-custom {
         height: 2.3rem;
     }
 }
+
+
+.peopleList {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
