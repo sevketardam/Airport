@@ -220,6 +220,7 @@
                             <div style="display: flex;">
                                 <input id="DiscountCode" type="text" />
                                 <button class="btn btn-success" id="DiscountCodeBtn" type="button">Check Code</button>
+                                <button class="btn btn-danger d-none" id="clearCoupon">Clear Coupon</button>
                             </div>
                         </div>
                     </div>
@@ -366,6 +367,8 @@
             return $('#_Passenger_Form').find("[name='" + name + "']").val()
         }
 
+        let couponCode;
+
         $('#_Passenger_Form').on("submit", function (e) {
             e.preventDefault()
             var returnedData = {
@@ -382,30 +385,41 @@
             var serviceList = []
             $.each($('.pageServiceDownItems'), function (key, value) {
                 serviceList.push({
-                    serviceId: $(value).attr("data-id"),
-                    serviceCount: parseInt($(value).find("#peopleCountInput").text().trim())
+                    SelectedValue: $(value).attr("data-id"),
+                    PeopleCountInput: parseInt($(value).find("#peopleCountInput").text().trim())
                 })
             })
 
             var passengerList = []
             $.each($('.peopleList'), function (key, value) {
                 passengerList.push({
-                    passengerName: $(value).find("[name='OthersName']"),
-                    passengerSurname: $(value).find("[name='OthersSurname']")
+                    passengerName: $(value).find("[name='OthersName']").val(),
+                    passengerSurname: $(value).find("[name='OthersSurname']").val()
                 })
             })
             returnedData.serviceList = serviceList;
             returnedData.passengerList = passengerList;
 
-            console.log(returnedData)
-            //$.ajax({
-            //    url: '/reservation-get-code',
-            //    type: "POST",
-            //    data: { list: list },
-            //});
+
+            if ($(this).valid()) {
+                $.ajax({
+                    url: '/reservation-get-code',
+                    type: "POST",
+                    data: { reservation: returnedData },
+                    success: function (response) {
+                        if(response.result == 1){
+                            location.href = "/reservation-step-payment"
+                        }
+                        //$(document).html(result); // HTML içeriğini hedef div'e ekle
+                    }
+                });
+            }
+
         })
 
         $(".positive_icon").on("click", function () {
+
+
             setTimeout(() => {
                 let input = $(this).closest(".pageServicePrice").find("p[type='peopleCountControl']");
                 $(input).text(Number($(input).text()) + 1)
@@ -415,6 +429,8 @@
                 else {
                     $(input).addClass("text-block")
                 }
+                isClear = true;
+                checkCoupon()
             }, 50);
         })
 
@@ -430,6 +446,8 @@
                 else {
                     $(input).addClass("text-block")
                 }
+                isClear = true;
+                checkCoupon()
             }, 50);
         })
 
@@ -445,7 +463,17 @@
             $('#realPhoneInpt').val(phoneInput.getNumber().replace("+", ""))
         })
 
+        var isClear = false;
+        $('#clearCoupon').on("click", function () {
+            $('#DiscountCode').attr("disabled", false)
+            $('#DiscountCode').val("")
+            isClear = true;
+            $('#DiscountCodeBtn').trigger("click")
+            couponCode = "";
+            $('.discount-message').remove();
 
+            $(this).addClass("d-none")
+        })
 
         function checkCoupon(isButton, button) {
 
@@ -454,15 +482,12 @@
 
             listCheckedItems = []
             var price = 0;
-            $.each($('.itemCheckbox'), function (key, value) {
-                if ($(value).is(":checked")) {
-                    var peoplecount = $(value).closest(".pageServiceDownItem").find(".passengerInputs").val()
-                    listCheckedItems.push({
-                        SelectedValue: $(value).val(),
-                        PeopleCountInput: peoplecount == "" || peoplecount == 0 ? 1 : peoplecount
-                    })
-                    price += (parseFloat($(this).closest('.pageServiceDownItem').find(".servicePrice").text().trim()) * parseFloat($(this).closest('.pageServiceDownItem').find("#peopleCountInput").val()))
-                }
+
+            $.each($('.pageServiceDownItems'), function (key, value) {
+                listCheckedItems.push({
+                    SelectedValue: $(value).attr("data-id"),
+                    PeopleCountInput: parseInt($(value).find("#peopleCountInput").text().trim())
+                })
             })
 
             if (isButton) {
@@ -474,6 +499,7 @@
                 type: "POST",
                 data: { coupon: code, selectedServices: listCheckedItems },
                 success: function (response) {
+                    $('.discount-message').remove();
                     if (response.result == 1) {
 
                         $('.priceBox').html(`<p class="discountText">
@@ -492,6 +518,7 @@
                                                                                                                                             </p>
                                                                                                                             `)
                     }
+                    isClear = false;
 
                     if (isButton) {
                         formButtonLoaderReturn(button)
@@ -506,49 +533,14 @@
             var code = $('#DiscountCode').val()
             $('#couponCode').val(code)
             checkCoupon(true, $(this))
+            couponCode = code;
         })
 
         var currentPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
 
         let listCheckedItems = []
         const lastPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
-        $('.itemCheckbox').on("click", function () {
-            listCheckedItems = []
-            var price = 0;
-            $.each($('.itemCheckbox'), function (key, value) {
-                if ($(value).is(":checked")) {
-                    var peoplecount = $(value).closest(".pageServiceDownItem").find(".passengerInputs").val()
-                    listCheckedItems.push({
-                        SelectedValue: $(value).val(),
-                        PeopleCountInput: peoplecount == "" || peoplecount == 0 ? 1 : peoplecount
-                    })
-                    price += (parseFloat($(this).closest('.pageServiceDownItem').find(".servicePrice").text().trim()) * parseFloat($(this).closest('.pageServiceDownItem').find("#peopleCountInput").val()))
-                }
-            })
-            currentPrice = lastPrice + price;
-            $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
 
-            checkCoupon()
-        })
-
-
-        $('.passengerInputs').on("change", function () {
-            listCheckedItems = []
-            var price = 0;
-            $.each($('.itemCheckbox'), function (key, value) {
-                if ($(value).is(":checked")) {
-                    var peoplecount = $(value).closest(".pageServiceDownItem").find(".passengerInputs").val()
-                    listCheckedItems.push({
-                        SelectedValue: $(value).val(),
-                        PeopleCountInput: peoplecount == "" || peoplecount == 0 ? 1 : peoplecount
-                    })
-                    price += (parseFloat($(this).closest('.pageServiceDownItem').find(".servicePrice").text().trim()) * parseFloat($(this).closest('.pageServiceDownItem').find("#peopleCountInput").val()))
-                }
-            })
-            currentPrice = lastPrice + price;
-            $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
-            checkCoupon()
-        })
 
         const firstPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".")
 

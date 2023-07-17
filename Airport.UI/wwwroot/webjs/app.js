@@ -348,19 +348,19 @@ $("#_Passenger_Form").validate({
             required: "!",
         },
     },
-    submitHandler: function (form) {
-        $("body").append(`
-                        <div class="createLoader active">
-                            <p>Creating</p>
-                            <div class="words">
-                                <span class="word">Reservation</span>
-                                <span class="word">Voucher</span>
-                            </div>
-                        </div>
-                        `)
-        $("html, body").css("overflow", "hidden");
-        form.submit()
-    },
+    //submitHandler: function (form) {
+    //    $("body").append(`
+    //                    <div class="createLoader active">
+    //                        <p>Creating</p>
+    //                        <div class="words">
+    //                            <span class="word">Reservation</span>
+    //                            <span class="word">Voucher</span>
+    //                        </div>
+    //                    </div>
+    //                    `)
+    //    $("html, body").css("overflow", "hidden");
+    //    form.submit()
+    //},
 });
 
 
