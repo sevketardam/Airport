@@ -1205,7 +1205,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     }
 
     ._Agency_Flex ._Form_Div,
-    ._Form_Flex_Style .peopleList ._Form_Div {
+    ._Form_Flex_Style ._Form_Div {
         width: calc(50% - 1rem);
         display: flex;
         flex-direction: column;
