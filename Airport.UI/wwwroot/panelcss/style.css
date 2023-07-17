@@ -1053,3 +1053,11 @@ a.pull_price {
         .link-btn-flex a:hover {
             background-color: #d15406;
         }
+
+.peopleList {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}

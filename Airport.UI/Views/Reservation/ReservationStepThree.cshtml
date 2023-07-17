@@ -270,10 +270,9 @@
                                     </span>
                                 </div>
                                 <input name="Coupon" type="hidden" id="couponCode" />
-
+                                <div class="peopleList">
                                 @for (int i = 0; i < Model.SelectedData.ReservationValues.PeopleCount - 1; i++)
                                 {
-                                    <div class="peopleList">
                                         <div class="_Form_Div">
                                             <label class="_Form_Label">@(i + 2) People Name</label>
                                             <input type="text" name="OthersName">
@@ -282,7 +281,6 @@
                                             <label class="_Form_Label">@(i + 2) People Surname</label>
                                             <input type="text" name="OthersSurname">
                                         </div>
-                                    </div>
                                 }
 
                                 <div class="w-100">
