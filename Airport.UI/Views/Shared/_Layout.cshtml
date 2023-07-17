@@ -25,6 +25,85 @@
     <link rel="stylesheet" href="~/webcss/style.css" asp-append-version="true">
     <link rel="stylesheet" href="~/panelcss/style.css" asp-append-version="true">
 
+
+    <style>
+         a.profile_list_link {
+        display: block;
+        background-color: var(--orange);
+        color: white;
+        padding: 0.5rem 2rem;
+        border-radius: 0.5rem;
+        text-align: center;
+    }
+
+    ul.profile_list {
+        position: absolute;
+        top: 2.6rem;
+        right: -30px;
+        flex-direction: column;
+        padding: 0;
+        background: white;
+        opacity: 0;
+        visibility: hidden;
+        border: 1px solid var(--orange);
+        gap: 0;
+        overflow: hidden;
+        transition: opacity 150ms, visibility 150ms, max-height 150ms;
+    }
+
+
+
+        ul.profile_list li a {
+            border-bottom: 1px solid var(--orange);
+            width: 100%;
+            padding: 0.5rem 3rem;
+            display: block;
+            color: var(--orange);
+            transition: color 150ms, background-color 150ms;
+        }
+
+            ul.profile_list li a:hover {
+                color: white;
+                background-color: var(--orange);
+            }
+
+        ul.profile_list li:last-child a {
+            border-bottom: none;
+        }
+
+        ul.profile_list li {
+            text-align: center;
+            width: 100%;
+        }
+
+    @@media (min-width: 768px) {
+        ._Auth .btn-group:hover ul.profile_list {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        ul.profile_list {
+            position: relative;
+            top: 0.2rem;
+            opacity: 0;
+            visibility: visible;
+            max-height: 0rem;
+        }
+
+        ._Auth .btn-group.active ul.profile_list {
+            opacity: 1;
+            visibility: visible;
+            max-height: 10rem;
+        }
+
+        ._Auth .btn-group {
+            flex-direction: column;
+        }
+    }
+    </style>
+
     @RenderSection("pageCss", required: false)
 </head>
 
