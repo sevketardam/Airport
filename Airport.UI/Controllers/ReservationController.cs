@@ -801,6 +801,7 @@ namespace Airport.UI.Controllers
                     totalprice = reservation.IsDiscount ? Convert.ToDouble(reservation.Discount) : totalprice;
                 }
 
+
                 var salesAgency = userRole == "5" ? userId : 0;
 
                 totalprice = Math.Round(totalprice, 2);
