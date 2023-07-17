@@ -782,6 +782,7 @@ namespace Airport.UI.Controllers
                     return NotFound();
                 }
 
+
                 var totalServiceFee = reservation.ServiceList?.Sum(item1 => _serviceItems.SelectByID(item1.SelectedValue).Price * item1.PeopleCountInput) ?? 0.0;
 
                 Random random = new Random();
