@@ -108,6 +108,12 @@
             visibility: visible;
         }
 
+        .service_length_controle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
         .discountP {
             text-decoration: line-through;
             font-size: .9rem !important;
@@ -129,6 +135,15 @@
             bottom: auto;
             font-size: 1.2rem !important;
             font-weight: 600;
+        }
+
+        p[type='peopleCountControl'] {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .text-block {
+            opacity: .5;
         }
 
     </style>
@@ -273,7 +288,14 @@
                                                                 </p>
                                                             </div>
                                                             <div class="pageServicePrice">
-                                                                <input type="number" name="peopleCountInput" id="peopleCountInput" value="1" min="1" max="@Model.SelectedData.ReservationValues.PeopleCount" class="passengerInputs">
+                                                                <div class="service_length_controle">
+                                                                    <div class="negative_icon">
+                                                                        <i class="fa-solid fa-minus"></i>
+                                                                    </div>
+                                                                    <p type="peopleCountControl" class="peopleCountText text-center @(Model.SelectedData.ReservationValues.PeopleCount == 0 ? "text-block" : "")" name="peopleCountInput"
+                                                                       id="peopleCountInput">@Model.SelectedData.ReservationValues.PeopleCount</p>
+                                                                    <div class="positive_icon"><i class="fa-solid fa-plus"></i></div>
+                                                                </div>
                                                                 <p>
                                                                     <b class="servicePrice">@item.Price</b>€
                                                                 </p>
@@ -290,9 +312,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="checkServiceDiv">
-                                                        <input type="checkbox" class="itemCheckbox w-100" name="selectedValue" value="@item.Id" @(Model.UpdateServiceItem.Contains(item) ? "checked" : "") />
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -300,7 +319,7 @@
                                 </div>
 
                             }
-                  
+
                             <div class="_Form_Div ml-2 mt-2">
                                 <input type="checkbox" name="hidePrice" value="true" @(Model.UpdateReservation.HidePrice ? "checked" : "") /> <label for="name">Hide Price on Voucher</label>
                             </div>
@@ -326,12 +345,41 @@
 @section pageJs{
     <script>
 
-        $("body").on("click", ".pageServiceDownItemTop", function (e) {
-            if ($(e.target).attr("class") != "passengerInputs" && $(e.target).attr("class") != "passengerInputs valid" && $(e.target).attr("class") != "passengerInputs error") {
-                $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
-                $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
-            }
+        $(".positive_icon").on("click", function () {
+            setTimeout(() => {
+                let input = $(this).closest(".pageServicePrice").find("p[type='peopleCountControl']");
+                $(input).text(Number($(input).text()) + 1)
+                if (Number($(input).text()) > 0) {
+                    $(input).removeClass("text-block")
+                }
+                else {
+                    $(input).addClass("text-block")
+                }
+            }, 50);
         })
+
+        $(".negative_icon").on("click", function () {
+            setTimeout(() => {
+                let input = $(this).closest(".pageServicePrice").find("p[type='peopleCountControl']");
+                if (Number($(input).text()) > 0) {
+                    $(input).text(Number($(input).text()) - 1)
+                }
+                if (Number($(input).text()) > 0) {
+                    $(input).removeClass("text-block")
+                }
+                else {
+                    $(input).addClass("text-block")
+                }
+            }, 50);
+        })
+
+
+        //$("body").on("click", ".pageServiceDownItemTop", function (e) {
+        //    if ($(e.target).attr("class") != "peopleCountText text-center" && $(e.target).attr("class") != "peopleCountText text-center text-block") {
+        //        $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
+        //        $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
+        //    }
+        //})
 
 
         $('#discountCheck').on("change", function () {
@@ -389,7 +437,7 @@
             $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
         })
 
-        window.onload = ()=>{
+        window.onload = () => {
             $('.itemCheckbox').trigger("change");
         }
 

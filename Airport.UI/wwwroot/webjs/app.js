@@ -366,9 +366,9 @@ $("#_Passenger_Form").validate({
 
 $("body").on("click", ".pageServiceDownItemTop", function (e) {
     console.log($(e.target).attr("class"))
-    if ($(e.target).attr("class") != "passengerInputs" &&
-        $(e.target).attr("class") != "passengerInputs valid" &&
-        $(e.target).attr("class") != "passengerInputs error" &&
+    if ($(e.target).attr("class") != "peopleCountText" &&
+        $(e.target).attr("class") != "peopleCountText text-center" &&
+        $(e.target).attr("class") != "peopleCountText text-center text-block" &&
         $(e.target).attr("class") != "negative_icon" &&
         $(e.target).attr("class") != "fa-solid fa-minus" &&
         $(e.target).attr("class") != "positive_icon" &&

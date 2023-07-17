@@ -408,3 +408,17 @@ $(".hidden-link a").on("click", function () {
 $(".doc-item input").on("change", function () {
     $(this).closest(".doc-item").find("p").text($(this).val().split(`\\`)[$(this).val().split(`\\`).length - 1])
 })
+
+$("body").on("click", ".pageServiceDownItemTop", function (e) {
+    console.log($(e.target).attr("class"))
+    if ($(e.target).attr("class") != "peopleCountText" &&
+        $(e.target).attr("class") != "peopleCountText text-center" &&
+        $(e.target).attr("class") != "peopleCountText text-center text-block" &&
+        $(e.target).attr("class") != "negative_icon" &&
+        $(e.target).attr("class") != "fa-solid fa-minus" &&
+        $(e.target).attr("class") != "positive_icon" &&
+        $(e.target).attr("class") != "fa-solid fa-plus") {
+        $(this).closest(".pageServiceDownItem").find(".pageServiceDownItemBottom").slideToggle(250);
+        $(this).closest(".pageServiceDownItem").find(".pageServiceAngle").toggleClass("active");
+    }
+})
