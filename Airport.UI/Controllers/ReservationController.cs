@@ -773,7 +773,7 @@ namespace Airport.UI.Controllers
         {
             try
             {
-                var userRole = User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault();
+                var userRole = User.Claims.FirstOrDefault(a => a.Type == ClaimTypes.Role)?.Value;
 
                 var createReservation = HttpContext.Session.MyGet<ReservationDatasVM>("reservationData");
 
@@ -782,41 +782,17 @@ namespace Airport.UI.Controllers
                     return NotFound();
                 }
 
-                var totalServiceFee = 0.0;
-                if (reservation.ServiceList != null)
-                {
-                    foreach (var item1 in reservation.ServiceList)
-                    {
-                        var serviceFee = _serviceItems.SelectByID(item1.SelectedValue);
-                        totalServiceFee += serviceFee.Price * item1.PeopleCountInput;
-                    }
-                }
+                var totalServiceFee = reservation.ServiceList?.Sum(item1 => _serviceItems.SelectByID(item1.SelectedValue).Price * item1.PeopleCountInput) ?? 0.0;
 
                 Random random = new Random();
                 int kodUzunlugu = 6;
                 string karakterler = "0123456789";
-                string kod = "";
-                for (int i = 0; i < kodUzunlugu; i++)
-                {
-                    int index = random.Next(karakterler.Length);
-                    kod += karakterler[index];
-                }
+                string kod = string.Concat(Enumerable.Range(0, kodUzunlugu).Select(_ => karakterler[random.Next(karakterler.Length)]));
+
                 createReservation.LocationCar.Location = _location.SelectByID(createReservation.LocationCar.LocationId);
 
-                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var user = new UserDatas();
-
-
-                if (userId != 0)
-                {
-                    var loginAuth = _loginAuth.SelectByID(userId);
-                    user = _userDatas.SelectByID(loginAuth?.UserId);
-                    user.LoginAuth = loginAuth;
-                }
-                else
-                {
-                    user = null;
-                }
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.FirstOrDefault(a => a.Type == ClaimTypes.Sid)?.Value);
+                var user = userId != 0 ? _userDatas.SelectByID(_loginAuth.SelectByID(userId)?.UserId) : null;
 
                 var totalprice = createReservation.TotalPrice;
 
@@ -825,12 +801,7 @@ namespace Airport.UI.Controllers
                     totalprice = reservation.IsDiscount ? Convert.ToDouble(reservation.Discount) : totalprice;
                 }
 
-                var salesAgency = 0;
-
-                if (userRole == "5")
-                {
-                    salesAgency = userId;
-                }
+                var salesAgency = userRole == "5" ? userId : 0;
 
                 totalprice = Math.Round(totalprice, 2);
                 var item = _reservations.Insert(new Reservations
@@ -874,26 +845,18 @@ namespace Airport.UI.Controllers
                     ServiceFee = createReservation.ServiceFee,
                     OfferPrice = createReservation.OfferPrice,
                     TotalPrice = totalprice,
-                    GlobalPartnerFee = createReservation.GlobalPartnerFee,
-
+                    GlobalPartnerFee = createReservation.GlobalPartnerFee
                 });
 
-                var reservationItemsList = new List<ReservationServicesTable>();
-
-                foreach (var item1 in reservation.ServiceList)
+                var reservationItemsList = reservation.ServiceList?.Select(item1 => new ReservationServicesTable
                 {
-                    var serviceFee = _serviceItems.SelectByID(item1.SelectedValue);
-                    reservationItemsList.Add(new ReservationServicesTable
-                    {
-                        ReservationId = item.Id,
-                        PeopleCount = item1.PeopleCountInput,
-                        Price = serviceFee.Price,
-                        ServiceItemId = item1.SelectedValue,
-                    });
-                }
+                    ReservationId = item.Id,
+                    PeopleCount = item1.PeopleCountInput,
+                    Price = _serviceItems.SelectByID(item1.SelectedValue).Price,
+                    ServiceItemId = item1.SelectedValue
+                }).ToList();
 
                 _reservationServicesTable.InsertRage(reservationItemsList);
-
 
                 item.LocationCars = _locationCar.SelectByID(item.LocationCarId);
                 item.LocationCars.Car = _getCar.CarDetail(item.LocationCars.CarId);
@@ -901,21 +864,14 @@ namespace Airport.UI.Controllers
                 var loginAuth2 = _loginAuth.SelectByID(item.UserId);
                 item.User = _userDatas.SelectByID(loginAuth2.UserId);
 
-                var reservationPeople = new List<ReservationPeople>();
-
-                reservation.PassengerList.ForEach(a =>
+                var reservationPeople = reservation.PassengerList?.Select(a => new ReservationPeople
                 {
-                    reservationPeople.Add(new ReservationPeople
-                    {
-                        Name = a.PassengerName,
-                        Surname = a.PassengerSurname,
-                        ReservationId = item.Id
-                    });
-                });
+                    Name = a.PassengerName,
+                    Surname = a.PassengerSurname,
+                    ReservationId = item.Id
+                }).ToList();
 
                 _reservationsPeople.InsertRage(reservationPeople);
-
-
 
                 item.ReservationServicesTables = _reservationServicesTable.SelectByFunc(a => a.ReservationId == item.Id);
                 item.ReservationServicesTables.ForEach(a =>
@@ -924,23 +880,21 @@ namespace Airport.UI.Controllers
                     a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
                 });
 
-
-
                 PdfCreator pdfCreator = new PdfCreator(_env);
-                pdfCreator.CreateReservationPDF(kod + "-" + item.Id, item);
+                pdfCreator.CreateReservationPDF($"{kod}-{item.Id}", item);
 
                 _mail.SendReservationMail(item);
 
-                var allMessage = new List<Mesaj>();
-                allMessage.Add(new Mesaj
-                {
-                    dest = reservation.PassengerRealPhone,
-                    msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{item.ReservationCode}-{item.Id}.pdf"
-                });
+                var allMessage = new List<Mesaj>
+{
+    new Mesaj
+    {
+        dest = reservation.PassengerRealPhone,
+        msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{item.ReservationCode}-{item.Id}.pdf"
+    }
+};
 
-                var mesaj = allMessage.ToArray();
-
-                _sms.SmsForReservation(mesaj);
+                _sms.SmsForReservation(allMessage.ToArray());
 
                 return RedirectToAction("ManualCreatedReservationDetail", "Reservation", new { id = item.Id });
             }
