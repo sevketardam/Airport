@@ -1,0 +1,178 @@
+﻿@{
+    Layout = "_PanelLayout";
+}
+@model List<WithdrawalRequest>
+
+@section pageCss{
+    <style>
+        .transaction-btn-box{
+            display: flex;
+            gap: 12px;
+            color: white;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-12 mb-4 data-table-rows data-tables-hide-filter">
+        <table id="financialTable" class="data-table responsive nowrap"
+               data-order="[[ 1, &quot;desc&quot; ]]">
+            <thead>
+                <tr>
+                    <th>User Name</th>
+                    <th>Company Name</th>
+                    <th>Request Amount</th>
+                    <th>Status</th>
+                    <th>Transaction</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <p class="list-item-heading">@item.User.Name</p>
+                        </td>
+                        <td class="text-muted">
+                            @item.User.CompanyName
+                        </td>
+                        <td class="text-muted">
+                            @item.Price €
+                        </td>
+                        <td>
+                            @if (item.Status == null)
+                            {
+                                <span class="badge badge-secondary">Waiting</span>
+                            }
+                            else if (item.Status == true)
+                            {
+                                <span class="badge badge-success">Completed</span>
+                            }
+                            else if (item.Status == false)
+                            {
+                                <span class="badge badge-danger">Rejected</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="transaction-btn-box">
+                                <a class="btn btn-success">Complete</a>
+                                <a class="btn btn-danger">Rejected</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="float-left dropdown-as-select" id="pageCountDatatable" style="float: left;
+    margin-top: -4.9rem;
+    z-index: 99;
+    position: relative;">
+            <span class="text-muted text-small">Displaying 1-10 of 40 items </span>
+            <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                10
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">5</a>
+                <a class="dropdown-item active" href="#">10</a>
+                <a class="dropdown-item" href="#">20</a>
+            </div>
+        </div>
+        <div class="top-right-button-container" style="top: -1.5rem;">
+        </div>
+    </div>
+</div>
+
+@section pageJs{
+    <script>
+        var $dataTableRows = $("#financialTable").DataTable({
+            bLengthChange: false,
+            destroy: true,
+            info: false,
+            sDom: '<"row view-filter"<"col-sm-12"<"float-left"l><"float-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
+            pageLength: 10,
+            columns: [
+                { data: "UserName" },
+                { data: "CompanyName" },
+                { data: "RequestAmount" },
+                { data: "Status" },
+                { data: "Transaction" },
+            ],
+            columnDefs: [
+                { "type": "date-euro", targets: 2 }
+            ],
+            language: {
+                paginate: {
+                    previous: "<i class='simple-icon-arrow-left'></i>",
+                    next: "<i class='simple-icon-arrow-right'></i>"
+                }
+            },
+            drawCallback: function () {
+                unCheckAllRows();
+                $("#checkAllDataTables").prop("checked", false);
+                $("#checkAllDataTables").prop("indeterminate", false).trigger("change");
+
+                $($(".financialTable_wrapper .pagination li:first-of-type"))
+                    .find("a")
+                    .addClass("prev");
+                $($(".financialTable_wrapper .pagination li:last-of-type"))
+                    .find("a")
+                    .addClass("next");
+                $(".dataTables_wrapper .pagination").addClass("pagination-sm");
+                var api = $(this).dataTable().api();
+                $("#pageCountDatatable span").html("Displaying " + parseInt(api.page.info().start + 1) + "-" + api.page.info().end + " of " + api.page.info().recordsTotal + " items");
+            }
+        });
+
+        function resetTable() {
+            $dataTableRows.clear()
+
+            $.each(tablefirstdata, function (key, value) {
+                $dataTableRows.row.add(value)
+            })
+
+            $dataTableRows.draw()
+        }
+
+        $('#reservationTable tbody').on('click', 'tr', function () {
+            $(this).toggleClass('selected');
+            var $checkBox = $(this).find(".custom-checkbox input");
+            $checkBox.prop("checked", !$checkBox.prop("checked")).trigger("change");
+            controlCheckAll();
+        });
+
+
+        function unCheckAllRows() {
+            $('#reservationTable tbody tr').removeClass('selected');
+            $('#reservationTable tbody tr .custom-checkbox input').prop("checked", false).trigger("change");
+        }
+
+        function checkAllRows() {
+            $('#reservationTable tbody tr').addClass('selected');
+            $('#reservationTable tbody tr .custom-checkbox input').prop("checked", true).trigger("change");
+        }
+
+        $("#checkAllDataTables").on("click", function (event) {
+            var isCheckedAll = $("#checkAllDataTables").prop("checked");
+            if (isCheckedAll) {
+                checkAllRows();
+            } else {
+                unCheckAllRows();
+            }
+        });
+
+        function getSelectedRows() {
+            //Getting Selected Ones
+            console.log($dataTableRows.rows('.selected').data());
+        }
+
+        $("#searchDatatable").on("keyup", function (event) {
+            $dataTableRows.search($(this).val()).draw();
+        });
+
+        $("#pageCountDatatable .dropdown-menu a").on("click", function (event) {
+            var selText = $(this).text();
+            $dataTableRows.page.len(parseInt(selText)).draw();
+        });
+    </script>
+}

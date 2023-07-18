@@ -49,6 +49,7 @@ namespace Airport.UI.Controllers
                 user.Name = updateUser.Name;
                 user.PhoneNumber = updateUser.PhoneNumber;
                 user.Profession = updateUser.Profession;
+                user.Img = updateUser.Img;
 
                 _user.Update(user);
 

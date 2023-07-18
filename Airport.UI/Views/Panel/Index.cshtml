@@ -15,8 +15,9 @@
             <div class="_Dash_Left">
                 <div class="_Profil_Trailer_Style">
                     <div>
-                        <div class="_Profil_Image">
-                        </div>
+                        <img class="_Profil_Image" alt="" src="@(Model.User?.Img != null && Model.User?.Img != "" ? Model.User.Img : "~/img/car3.png")" />
+                        @*<div class="">
+                        </div>*@
                     </div>
                     <div class="_Profile_Padding">
                         <h2>

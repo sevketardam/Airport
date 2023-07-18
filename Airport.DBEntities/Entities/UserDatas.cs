@@ -32,6 +32,7 @@ namespace Airport.DBEntities.Entities
         public string? Title { get; set; }
         public string RealPhone { get; set; }
         public string? CompanyRealPhone { get; set; }
+        public string? Img { get; set; }
 
         public List<Services> Services { get; set; }
         public List<MyCars> MyCars { get; set; }
@@ -40,6 +41,7 @@ namespace Airport.DBEntities.Entities
         public List<ServiceCategories> ServiceCategories{ get; set; }
         public List<Reservations> Reservations { get; set; }
         public List<Coupons> Coupons { get; set; }
+        public List<WithdrawalRequest> WithdrawalRequests { get; set; }
         public UserDocs Docs { get; set; }
         public LoginAuth LoginAuth { get; set; }
     }

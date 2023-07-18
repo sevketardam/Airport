@@ -175,6 +175,11 @@ namespace Airport.DBEntities.Context
                 .HasOne<UserDatas>(a => a.User)
                 .WithOne(a => a.Docs);
 
+            modelBuilder.Entity<WithdrawalRequest>()
+                .HasOne<UserDatas>(a => a.User)
+                .WithMany(a => a.WithdrawalRequests)
+                .HasForeignKey(a => a.UserId);
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -189,7 +194,7 @@ namespace Airport.DBEntities.Context
         public DbSet<MyCars> MyCars { get; set; }
         public DbSet<Drivers> Drivers { get; set; }
         public DbSet<GlobalSettings> GlobalSettings { get; set; }
-        public DbSet<WithdrawalRequest> withdrawalRequest { get; set; }
+        public DbSet<WithdrawalRequest> WithdrawalRequest { get; set; }
       
     }
 }

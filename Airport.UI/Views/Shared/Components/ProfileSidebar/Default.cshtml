@@ -60,7 +60,7 @@
 <div class="profile-tab-nav border-right">
     <div class="profile-left-top-image">
         <div class="_Pos_Rel">
-            <img src="~/img/car3.png" alt="">
+            <img src="@(Model.User?.Img != null && Model.User?.Img != "" ? Model.User.Img : "~/img/car3.png")" alt="" id="userImg">
             <div class="updateProfilePhoto">
                 <i class="fa-solid fa-camera"></i>
                 <input type="file" class="updateProfilePhotoInput">

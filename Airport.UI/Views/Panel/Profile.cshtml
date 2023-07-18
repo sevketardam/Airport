@@ -3,6 +3,11 @@
     Layout = "_PanelLayout";
     ViewData["title"] = "My Profile";
 }
+@section pageCss{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.15/css/jquery.Jcrop.min.css" integrity="sha512-bbAsdySYlqC/kxg7Id5vEUVWy3nOfYKzVHCKDFgiT+GsHG/3MD7ywtJnJNSgw++HBc+w4j71MLiaeVm1XY5KDQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+}
+
 <section class="_Module_Margin">
     <div class="container">
         <div class="bg-white rounded-lg d-block d-md-flex out-style">
@@ -17,7 +22,7 @@
                             Details about your profile information
                         </p>
                     </div>
-                    <form>
+                    <form id="_Profile_Form">
                         <div class="row g-4">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -25,22 +30,23 @@
                                     <input type="text" value="@Model.LoginAuth?.Email" disabled class="form-control form-control-custom">
                                 </div>
                             </div>
+                            <input name="Img" type="hidden" value="@Model.Img" />
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="_Form_Label">Name</label>
-                                    <input type="text" value="@Model.Name" class="form-control form-control-custom">
+                                    <input type="text" value="@Model.Name" name="Name" class="form-control form-control-custom">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="_Form_Label">Profession</label>
-                                    <input type="text" value="@Model.Profession" class="form-control form-control-custom">
+                                    <input type="text" value="@Model.Profession" name="Profession" class="form-control form-control-custom">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="_Form_Label">Mobile Phone</label>
-                                    <input type="text" value="@Model.PhoneNumber" class="form-control form-control-custom">
+                                    <input type="text" value="@Model.PhoneNumber" name="PhoneNumber" class="form-control form-control-custom">
                                 </div>
                             </div>
                         </div>
@@ -56,15 +62,119 @@
     </div>
 </section>
 
+<div class="modal fade" id="photoCropModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: min-content;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Photo Crop</h5>
+                <button type="button" class="close" data-bs-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="result">
+                    <img id="targetimg" class="targetimg" height="300" width="300" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="getBase64" class="btn btn-primary">Crop</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 @section pageJs{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.15/js/jquery.Jcrop.min.js" integrity="sha512-KKpgpD20ujD3yJ5gIJqfesYNuisuxguvTMcIrSnqGQP767QNHjEP+2s1WONIQ7j6zkdzGD4zgBHUwYmro5vMAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
+
+        $('.updateProfilePhotoInput').on('click', function () {
+            $(this).val(null);
+        })
+        var jcrop_api;
+        $('.updateProfilePhotoInput').on('change', function () {
+            if (this.files && this.files[0]) {
+                if (this.files[0].type.match(/^image\//)) {
+                    var reader = new FileReader();
+                    selectedImg = $(this)
+                    reader.onload = function (evt) {
+
+                        if (jcrop_api != undefined) {
+                            jcrop_api.destroy()
+                        }
+
+                        $('#targetimg').attr("src", evt.target.result);
+
+                        $('#targetimg').Jcrop({
+                            bgColor: 'white',
+                            bgOpacity: .6,
+                            setSelect: [0, 0, 50, 50],
+                            aspectRatio: 1,
+                            drawImage: false,
+                            allowSelect: false,
+                        }, function () {
+                            jcrop_api = this;
+                        })
+                    };
+                    reader.readAsDataURL(this.files[0]);
+
+                    $('#photoCropModal').modal("show");
+
+                    const fileName = this.files[0].name;
+                    this.textContent = fileName;
+
+                }
+            }
+        });
+
+        $('#getBase64').on("click", function () {
+            const base64String = $("#targetimg").attr('src');
+
+            const img = new Image();
+            img.src = base64String;
+            var imgSizeWidth = img.width / 300;
+            var imgSizeHeight = img.height / 300;
+
+            img.style.objectFit = "contain";
+            const canvas = document.createElement("canvas");
+            canvas.width = 250;
+            canvas.height = 250;
+
+            const context = canvas.getContext("2d");
+
+            img.onload = function () {
+                const croppedWidth = jcrop_api.tellSelect().w * imgSizeWidth;
+                const croppedHeight = jcrop_api.tellSelect().h * imgSizeHeight;
+
+                const croppedX = jcrop_api.tellSelect().x * imgSizeWidth;
+                const croppedY = jcrop_api.tellSelect().y * imgSizeHeight;
+
+                context.drawImage(img, croppedX, croppedY, croppedWidth, croppedHeight, 0, 0, 250, 250);
+
+                const croppedBase64String = canvas.toDataURL("image/png");
+
+                $('#userImg').attr("src", croppedBase64String)
+                $('[name="Img"]').val(croppedBase64String)
+
+
+                $('#photoCropModal').modal('hide');
+            };
+        })
+
+
 
         $('#_Profile_Form').on("submit", function (e) {
             e.preventDefault();
             if ($(this).valid()) {
                 var formData = $(this).serialize()
+                //var file = $('#userImg').attr("src")
+
+                //var formdata = new FormData($(this));
+                //formdata.append("img", file);
+                //formdata.append($(this).serialize());
+
                 $.ajax({
                     url: '@Url.Action(nameof(Airport.UI.Controllers.PanelController.Profile))',
                     type: "POST",

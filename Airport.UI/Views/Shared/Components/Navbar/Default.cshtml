@@ -101,7 +101,7 @@
                     aria-expanded="false">
                 <span class="name">@Model.Name 2</span>
                 <span>
-                    <img alt="Profile Picture" src="~/img/blackPhoto.jpg" />
+                    <img alt="Profile Picture" src="@(Model.User?.Img != null && Model.User?.Img != "" ? Model.User.Img : "~/img/car3.png")" />
                 </span>
             </button>
 

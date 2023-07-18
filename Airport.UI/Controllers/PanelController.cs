@@ -44,7 +44,8 @@ namespace Airport.UI.Controllers
         IUserDocsDAL _docs;
         IPayment _payment;
         ITReservationHelpers _tReservationHelpers;
-        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars, IFileOperation fileOperation, IUserDocsDAL docs, IPayment payment, ITReservationHelpers tReservationHelpers)
+        IWithdrawalRequestDAL _withdrawalRequest;
+        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars, IFileOperation fileOperation, IUserDocsDAL docs, IPayment payment, ITReservationHelpers tReservationHelpers, IWithdrawalRequestDAL withdrawalRequest)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -67,11 +68,12 @@ namespace Airport.UI.Controllers
             _docs = docs;
             _payment = payment;
             _tReservationHelpers = tReservationHelpers;
+            _withdrawalRequest = withdrawalRequest;
         }
 
 
         [HttpGet("denemeee")]
-        public IActionResult deneme()       
+        public IActionResult deneme()
         {
             var adSoyadParse = "Sevket Arda".Split(' ');
             string musteriSoyad = adSoyadParse[adSoyadParse.Length - 1];
@@ -172,7 +174,7 @@ namespace Airport.UI.Controllers
                 {
                     MyCars = myCars,
                     MyLocations = _location.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
-                    User = _user.SelectByID(userId),
+                    User = _user.SelectByID(loginAuth.UserId),
                     Reservations = _reservations.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
                     AWeekReservations = _reservations.SelectByFunc(a => a.ReservationDate >= today && a.ReservationDate < lastWeek && a.UserId == userId && !a.IsDelete)
                 };
@@ -351,7 +353,14 @@ namespace Airport.UI.Controllers
                     reservations = _reservations.SelectByFunc(a => a.UserId == userId).OrderByDescending(a => a.ReservationDate).ToList();
                 }
 
-                return View(reservations);
+
+                var PageVM = new FinancialAccountingPageVM()
+                {
+                    Reservation = reservations,
+                    IsPendingRequest = _withdrawalRequest.SelectByFunc(a => a.UserId == userId && a.Status == null).OrderBy(a => a.Date).FirstOrDefault()?.Status == null ? true : false
+                };
+
+                return View(PageVM);
             }
             catch (Exception)
             {
@@ -360,8 +369,90 @@ namespace Airport.UI.Controllers
 
         }
 
-        [HttpPost]
+        [HttpGet("withdrawal-request")]
+        public IActionResult GetWithdrawalRequest()
+        {
+            var withdrawalRequest = _withdrawalRequest.Select().OrderBy(a=>a.Status).ToList();
 
+            withdrawalRequest.ForEach(a =>
+            {
+                var userId = _loginAuth.SelectByID(a.UserId);
+
+                a.User = _user.SelectByID(userId.UserId);
+               
+            });
+
+            return View(withdrawalRequest);
+        }
+
+
+        [HttpPost("post-withdrawal-request")]
+        public IActionResult PostWithdrawalRequest()
+        {
+            try
+            {
+
+                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+
+                if (_withdrawalRequest.SelectByFunc(a => a.UserId == userId && a.Status == null).FirstOrDefault() is not null)
+                {
+                    return Json(new { result = 2 });
+                }
+
+                var userRole = User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault();
+
+                var reservations = new List<Reservations>();
+                if (userRole == "5")
+                {
+                    reservations = _reservations.SelectByFunc(a => a.SalesAgencyId == userId).OrderByDescending(a => a.ReservationDate).ToList();
+                }
+                else if (userRole == "0" || userRole == "4")
+                {
+                    reservations = _reservations.Select().OrderByDescending(a => a.ReservationDate).ToList();
+                    reservations.ForEach(a =>
+                    {
+                        a = _tReservationHelpers.GetReservationAll(a.Id);
+                    });
+                }
+                else
+                {
+                    reservations = _reservations.SelectByFunc(a => a.UserId == userId).OrderByDescending(a => a.ReservationDate).ToList();
+                }
+
+                decimal discountedSum = 0;
+
+                if (userRole == "0")
+                {
+                    discountedSum = Math.Round(reservations.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.GlobalPartnerFee)).Sum(), 2);
+                    discountedSum = Math.Round(discountedSum + Math.Round(reservations.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.ServiceFee)).Sum(), 2), 2);
+                }
+                else if (userRole == "2")
+                {
+                    discountedSum = Math.Round(reservations.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.PartnerFee)).Sum(), 2);
+                }
+                else if (userRole == "5")
+                {
+                    discountedSum = Math.Round(reservations.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.SalesFee)).Sum(), 2);
+                }
+
+                _withdrawalRequest.Insert(new WithdrawalRequest
+                {
+                    Date = DateTime.Now,
+                    UserId = userId,
+                    Price = (double)discountedSum,
+                });
+
+
+
+
+                return Json(new { result = 1 });
+            }
+            catch (Exception)
+            {
+
+                return Json(new { });
+            }
+        }
 
 
         [Authorize(Roles = "0,2,4,5")]
@@ -383,7 +474,7 @@ namespace Airport.UI.Controllers
 
         [Authorize(Roles = "0,2,4,5")]
         [HttpPost("panel/profile")]
-        public IActionResult Profile(UserDatas updateUser)
+        public IActionResult Profile(UserDatas updateUser,IFormFile Img)
         {
             try
             {
@@ -397,6 +488,7 @@ namespace Airport.UI.Controllers
                 user.Name = updateUser.Name;
                 user.PhoneNumber = updateUser.PhoneNumber;
                 user.Profession = updateUser.Profession;
+                user.Img = updateUser.Img;
 
                 _user.Update(user);
 

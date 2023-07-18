@@ -8,20 +8,20 @@
 
     if (userRole == 0)
     {
-        discountedSum = Math.Round(Model.Where(a => a.Status != 4).Select(a => Convert.ToDecimal(a.GlobalPartnerFee)).Sum(), 2);
-        discountedSum = Math.Round(discountedSum + Math.Round(Model.Where(a => a.Status != 4).Select(a => Convert.ToDecimal(a.ServiceFee)).Sum(), 2), 2);
+        discountedSum = Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.GlobalPartnerFee)).Sum(), 2);
+        discountedSum = Math.Round(discountedSum + Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.ServiceFee)).Sum(), 2), 2);
     }
     else if (userRole == 2)
     {
-        discountedSum = Math.Round(Model.Where(a => a.Status != 4).Select(a => Convert.ToDecimal(a.PartnerFee)).Sum(), 2);
+        discountedSum = Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.PartnerFee)).Sum(), 2);
     }
     else if (userRole == 5)
     {
-        discountedSum = Math.Round(Model.Where(a => a.Status != 4).Select(a => Convert.ToDecimal(a.SalesFee)).Sum(), 2);
+        discountedSum = Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.SalesFee)).Sum(), 2);
     }
 
 }
-@model List<Reservations>
+@model FinancialAccountingPageVM
 
 <div class="calc-flex">
 
@@ -58,7 +58,7 @@
                 <p class="">Total Price</p>
             </div>
             <div>
-                <p class="calc-length"><span id="totalPrice">@Math.Round(Model.Where(a=>a.Status != 4).Select(a=>a.TotalPrice).Sum(),2)</span> €</p>
+                <p class="calc-length"><span id="totalPrice">@Math.Round(Model.Reservation.Where(a=>a.Status != 4).Select(a=>a.TotalPrice).Sum(),2)</span> €</p>
             </div>
         </div>
         <div>
@@ -75,7 +75,7 @@
             </div>
         </div>
         <div>
-            <a href="#test" class="pull_price">Withdrawal Request</a>
+            <a class="pull_price" @(Model.IsPendingRequest ? "disabled" : "")>Withdrawal Request</a>
         </div>
     </div>
 </div>
@@ -132,7 +132,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.Reservation)
                 {
                     <tr>
                         <td>
@@ -193,6 +193,58 @@
 
 @section pageJs{
     <script>
+
+        $('.pull_price').on("click", function () {
+            var thisBtn = $(this)
+            Swal.fire({
+                title: 'Are you sure you want to initiate the withdrawal process?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed == true) {
+
+                    $.ajax({
+                        url: '/post-withdrawal-request',
+                        type: "POST",
+                        success: function (response) {
+                            if (response.result == 1) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Your withdrawal request has been processed',
+                                })
+
+                                $(thisBtn).attr("disabled", true)
+                            } else if (response.result == 2) {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Warning',
+                                    text: 'There is a pending withdrawal request.',
+                                })
+
+                                $(thisBtn).attr("disabled", true)
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    html: 'Something went wrong',
+                                    icon: 'error',
+                                    confirmButtonText: 'Okey'
+                                }).then(() => {
+                                    location.reload()
+                                })
+                            }
+                        }
+                    });
+
+                }
+            })
+
+        })
+
         function CountAnimation(item, count) {
             var i = 0;
 
@@ -207,8 +259,8 @@
         }
 
         window.onload = () => {
-            CountAnimation("#canceledReservation", @Model.Where(a=>a.Status == 4).ToList().Count);
-            CountAnimation("#completedReservation", @Model.Where(a=>a.Status == 3).ToList().Count);
+            CountAnimation("#canceledReservation", @Model.Reservation.Where(a=>a.Status == 4).ToList().Count);
+            CountAnimation("#completedReservation", @Model.Reservation.Where(a=>a.Status == 3).ToList().Count);
 
 
             tablefirstdata = $dataTableRows.data();
