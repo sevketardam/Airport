@@ -1,8 +1,10 @@
-﻿@model ReservationStepThreeVM
+﻿@using System.Security.Claims;
+@model ReservationStepThreeVM
 
 @{
     Layout = "_PanelLayout";
     ViewData["title"] = "Update Reservation";
+    var userRole = User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault();
 }
 
 
@@ -55,6 +57,12 @@
             justify-content: space-between;
         }
 
+            ._Total_Flex._Price_Flex {
+                align-items: flex-start;
+                justify-content: center;
+                flex-direction: column;
+            }
+
         #_Passenger_Form span {
             font-size: 12px;
         }
@@ -67,14 +75,14 @@
 
         ._Total_Flex div.price {
             border: 1px solid rgb(0, 0, 0, .5);
-            width: 9rem;
+            width: 11rem;
             position: relative;
             padding: .5rem .5rem .5rem .5rem;
             transition: padding 250ms;
         }
 
             ._Total_Flex div.price.active {
-                padding: .5rem .5rem 2.5rem .5rem;
+                padding: .5rem .5rem 8rem .5rem;
             }
 
 
@@ -86,7 +94,7 @@
             transition: font-size 250ms, font-weight 250ms, text-decoration 250ms;
         }
 
-        .newPriceInput {
+        .newPriceInput, .newPriveDesc {
             width: 89%;
             padding: 0 1rem;
             height: 2rem;
@@ -103,18 +111,18 @@
             transition: opacity 250ms, visibility 250ms;
         }
 
-        div.price.active .newPriceInput {
+        div.price.active .newPriceInput, div.price.active .newPriveDesc {
             opacity: 1;
             visibility: visible;
         }
 
-        .service_length_controle {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .newPriveDesc {
+            height: 5rem;
+            top: 4.2rem;
+            padding: 0.5rem !important;
         }
 
-        .discountP {
+        .discountP, .price.active p {
             text-decoration: line-through;
             font-size: .9rem !important;
             font-weight: 200 !important;
@@ -135,6 +143,16 @@
             bottom: auto;
             font-size: 1.2rem !important;
             font-weight: 600;
+        }
+
+        ._Pos_Phone label.error {
+            top: 0.4rem !important;
+        }
+
+        .service_length_controle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         p[type='peopleCountControl'] {
@@ -192,12 +210,22 @@
                                 <h3>
                                     Total
                                 </h3>
-                                <div>
+                                <div class="_Total_Flex _Price_Flex">
                                     <div class="price">
                                         <p><span> <span id="priceBox">@Model.SelectedData.TotalPrice</span> €</span></p>
-                                        <input class="newPriceInput" type="number" id="newPriceInput" value="@Model.SelectedData.TotalPrice">
+                                        @if (userRole == "0" || userRole == "4")
+                                        {
+                                            <input class="newPriceInput" type="number" id="newPriceInput" value="@Model.SelectedData.TotalPrice">
+                                            <textarea class="newPriveDesc" placeholder="Discount Description" id="discountDescription"></textarea>
+                                        }
+
                                     </div>
-                                    <input id="discountCheck" type="checkbox"> Discount
+                                    @if (userRole == "0" || userRole == "4")
+                                    {
+                                        <div>
+                                            <input id="discountCheck" type="checkbox" value="true"> Discount
+                                        </div>
+                                    }
                                 </div>
                             </div>
 
@@ -277,7 +305,7 @@
                                 <div class="servicesFlexDiv">
                                     @foreach (var item in Model.SelectedData.LocationCar.Car.Service.ServiceItems)
                                     {
-                                        <div class="pageServiceDownItems service-category-items">
+                                        <div class="pageServiceDownItems service-category-items" data-id="@item.Id">
                                             <div class="pageServiceDownItem service-category-item">
                                                 <div style="display: flex;">
                                                     <div class="pageServiceDownItemTop" style="width:100%;">
@@ -345,6 +373,59 @@
 @section pageJs{
     <script>
 
+        $('#_Passenger_Form').on("submit", function (e) {
+            e.preventDefault()
+            var returnedData = {
+                passengerName: getFormDataVal("Name"),
+                passengerSurname: getFormDataVal("Surname"),
+                passengerEmail: getFormDataVal("Email"),
+                passengerPhone: getFormDataVal("Phone"),
+                passengerRealPhone: getFormDataVal("RealPhone"),
+                serviceList: [],
+                passengerList: [],
+                hidePrice: $("#hidePrice").is(":checked"),
+                isDiscount: $('#discountCheck').is(":checked"),
+                discount: $('#discountCheck').is(":checked") ? $('#newPriceInput').val() : null,
+                discountText: $('#discountCheck').is(":checked") ? $('#discountDescription').val() : "",
+                passengerComment: getFormDataVal("comment")
+
+            }
+
+            var serviceList = []
+            $.each($('.pageServiceDownItems'), function (key, value) {
+                serviceList.push({
+                    SelectedValue: $(value).attr("data-id"),
+                    PeopleCountInput: parseInt($(value).find("#peopleCountInput").text().trim())
+                })
+            })
+
+            var passengerList = []
+            $.each($('.peopleList'), function (key, value) {
+                passengerList.push({
+                    passengerName: $(value).find("[name='OthersName']").val(),
+                    passengerSurname: $(value).find("[name='OthersSurname']").val()
+                })
+            })
+            returnedData.serviceList = serviceList;
+            returnedData.passengerList = passengerList;
+
+
+            if ($(this).valid()) {
+                $.ajax({
+                    url: '/panel/manual-reservation-three',
+                    type: "POST",
+                    data: { reservation: returnedData },
+                    success: function (response) {
+                        if (response.result == 1) {
+                            location.href = "/panel/reservation-success?id=" + response.id
+                        }
+                        //$(document).html(result); // HTML içeriğini hedef div'e ekle
+                    }
+                });
+            }
+
+        })
+        
         $(".positive_icon").on("click", function () {
             setTimeout(() => {
                 let input = $(this).closest(".pageServicePrice").find("p[type='peopleCountControl']");
@@ -355,6 +436,7 @@
                 else {
                     $(input).addClass("text-block")
                 }
+                checkCoupon()
             }, 50);
         })
 
@@ -370,9 +452,59 @@
                 else {
                     $(input).addClass("text-block")
                 }
+                checkCoupon()
             }, 50);
         })
 
+
+
+        function checkCoupon() {
+
+            var code = ""
+
+
+            listCheckedItems = []
+            var price = 0;
+
+            $.each($('.pageServiceDownItems'), function (key, value) {
+                listCheckedItems.push({
+                    SelectedValue: $(value).attr("data-id"),
+                    PeopleCountInput: parseInt($(value).find("#peopleCountInput").text().trim())
+                })
+            })
+
+            $.ajax({
+                url: '/Reservation/CheckCoupon',
+                type: "POST",
+                data: { coupon: code, selectedServices: listCheckedItems },
+                success: function (response) {
+                    if (response.result == 1) {
+
+                        $('#priceBox').html(`<p class="discountText">
+                                                                                                                                                                                <span id="discountBox">${response.data.value.oldPrice}</span> €
+                                                                                                                                                                    </p>
+
+                                                                                                                                                                    <p>
+                                                                                                                                                                                <span id="priceBox">${response.data.value.price}</span> €
+                                                                                                                                                                    </p>
+                                                                                                                                                    `)
+
+
+                    }
+                    else if (response.result == 2) {
+
+                        $('#priceBox').html(`
+                                                                                                                                                                                                <span id="priceBox">${response.data.value.oldPrice}</span>
+                                                                                                                                                            `)
+
+
+                    }
+
+
+                }
+            });
+
+        }
 
         //$("body").on("click", ".pageServiceDownItemTop", function (e) {
         //    if ($(e.target).attr("class") != "peopleCountText text-center" && $(e.target).attr("class") != "peopleCountText text-center text-block") {
@@ -381,65 +513,10 @@
         //    }
         //})
 
-
-        $('#discountCheck').on("change", function () {
-            $('input[name="IsDiscount"]').val($(this).is(":checked"))
-        })
-
-        $('#newPriceInput').on('change', function () {
-            $('input[name="Discount"]').val($(this).val())
-        })
-
         var cleave = new Cleave('[name="Phone"]', {
             numericOnly: true,
             blocks: [15]
         });
-
-
-        let listCheckedItems = []
-        const lastPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
-        $('.itemCheckbox').on("change", function () {
-            listCheckedItems = []
-            var price = 0;
-            $.each($('.itemCheckbox'), function (key, value) {
-                if ($(value).is(":checked")) {
-                    var peoplecount = $(value).closest(".pageServiceDownItem").find(".passengerInputs").val()
-                    listCheckedItems.push({
-                        SelectedValue: $(value).val(),
-                        PeopleCountInput: peoplecount == "" || peoplecount == 0 ? 1 : peoplecount
-                    })
-                    price += (parseFloat($(this).closest('.pageServiceDownItem').find(".servicePrice").text().trim()) * parseFloat($(this).closest('.pageServiceDownItem').find("#peopleCountInput").val()))
-                }
-            })
-
-            $('#priceBox').text(lastPrice + price)
-            $('#newPriceInput').val(lastPrice + price)
-            $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
-        })
-
-
-        $('.passengerInputs').on("change", function () {
-            listCheckedItems = []
-            var price = 0;
-            $.each($('.itemCheckbox'), function (key, value) {
-                if ($(value).is(":checked")) {
-                    var peoplecount = $(value).closest(".pageServiceDownItem").find(".passengerInputs").val()
-                    listCheckedItems.push({
-                        SelectedValue: $(value).val(),
-                        PeopleCountInput: peoplecount == "" || peoplecount == 0 ? 1 : peoplecount
-                    })
-                    price += (parseFloat($(this).closest('.pageServiceDownItem').find(".servicePrice").text().trim()) * parseFloat($(this).closest('.pageServiceDownItem').find("#peopleCountInput").val()))
-                }
-            })
-
-            $('#priceBox').text(lastPrice + price)
-            $('#newPriceInput').val(lastPrice + price)
-            $('input[name="selectedServiceItems"]').val(JSON.stringify(listCheckedItems))
-        })
-
-        window.onload = () => {
-            $('.itemCheckbox').trigger("change");
-        }
 
     </script>
 }

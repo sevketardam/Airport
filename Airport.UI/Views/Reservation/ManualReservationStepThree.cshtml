@@ -542,14 +542,7 @@
 
         }
 
-        $('#discountCheck').on("change", function () {
-            $('input[name="IsDiscount"]').val($(this).is(":checked"))
-        })
 
-        $('#newPriceInput').on('change keyup keypress', function () {
-            $('input[name="Discount"]').val($(this).val().replace(".", ","))
-        })
-        var currentPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
 
         var cleave = new Cleave('[name="Phone"]', {
             numericOnly: true,
@@ -557,7 +550,6 @@
         });
 
         let listCheckedItems = []
-        let lastPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
 
 
     </script>

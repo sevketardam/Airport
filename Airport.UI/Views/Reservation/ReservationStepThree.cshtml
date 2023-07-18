@@ -2,6 +2,7 @@
 @{
     ViewData["title"] = "Reservation";
 }
+
 @section pageCSSLink{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
 }
@@ -555,13 +556,10 @@
             checkCoupon(true, $(this))
         })
 
-        var currentPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
 
         let listCheckedItems = []
-        const lastPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".");
 
 
-        const firstPrice = @Model.SelectedData.TotalPrice.ToString().Replace(",",".")
 
 
     </script>

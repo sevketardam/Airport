@@ -363,7 +363,16 @@ namespace Airport.UI.Controllers
             try
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var reservation = _reservations.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
+
+                var userRole = User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault();
+                Func<Reservations, bool> isAdmin = a => a.Id == id && a.UserId == userId;
+
+                if (userRole == "0" || userRole == "4")
+                {
+                    isAdmin = a => a.Id == id;
+                }
+
+                var reservation = _reservations.SelectByFunc(isAdmin).FirstOrDefault();
                 if (!(reservation.Status == 3 && reservation.LastUpdate.AddDays(1) <= DateTime.Now))
                 {
                     if (reservation != null)
@@ -506,6 +515,7 @@ namespace Airport.UI.Controllers
                     datas.LocationCar = locationCar;
                     datas.LocationCar.Car = _carDetail.CarDetail(locationCar.CarId);
                     datas.LocationCar.Car.Service = _services.SelectByID(datas.LocationCar.Car.ServiceId);
+                    datas.IsOutZone = selectedDatasMini.IsOutZone;
                     var selectedCarItems = new List<PriceServiceList>();
                     if (datas.LocationCar.Car.Service != null)
                     {
