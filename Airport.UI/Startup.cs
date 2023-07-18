@@ -64,6 +64,7 @@ namespace Airport.UI
             services.AddScoped<ILoginAuthDAL, LoginAuthDAL>();
             services.AddScoped<IUserDocsDAL, UserDocsDAL>();
             services.AddScoped<IGlobalSettingsDAL, GlobalSettingsDAL>();
+            services.AddScoped<IWithdrawalRequestDAL, WithdrawalRequestDAL>();
 
 
             services.AddScoped<IMail, MailRepo>();
@@ -82,7 +83,6 @@ namespace Airport.UI
             {
                 opt.LoginPath = "/";
                 opt.SlidingExpiration = false;
-                opt.ExpireTimeSpan = TimeSpan.FromHours(6);
                 opt.AccessDeniedPath = "/NotFound";
             });
 

@@ -1,5 +1,6 @@
 ﻿using Airport.DBEntitiesDAL.Interfaces;
 using Airport.UI.Models.VM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace Airport.UI.Controllers
 
         }
 
+        [Authorize(Roles = "0,4")]
         [HttpGet("user-list")]
         public IActionResult Index()
         {

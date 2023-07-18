@@ -153,6 +153,15 @@
                                 </li>
                             }
 
+                            @if (userRole == "4" || userRole == "0")
+                            {
+                                <li>
+                                    <a href="/user-list">
+                                        <i class="simple-icon-user"></i> User List
+                                    </a>
+                                </li>
+                            }
+
                             @if (userRole == "0")
                             {
                                 <li>
@@ -167,10 +176,16 @@
                                     </a>
                                 </li>
                                 <li>
+                                    <a href="/withdrawal-request">
+                                        <i class="iconsminds-pound"></i>  Withdrawal Request
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="#">
                                         <i class="iconsminds-digital-drawing"></i> Pages
                                     </a>
                                 </li>
+
                             }
 
                             @if (userRole == "2" || userRole == "4" || userRole == "5" || userRole == "0")

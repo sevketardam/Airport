@@ -253,7 +253,7 @@
 
 
                     <div>
-                        <form id="_Passenger_Form" asp-route="UpdateReservationForm">
+                        <form id="_Passenger_Form">
                             <div class="_Form_Flex_Style">
                                 <div class="_Form_Div">
                                     <label class="_Form_Label">Name</label>
@@ -284,13 +284,15 @@
 
                                 @for (int i = 0; i < Model.SelectedData.ReservationValues.PeopleCount - 1; i++)
                                 {
-                                    <div class="_Form_Div">
-                                        <label class="_Form_Label">@(i + 2) People Name</label>
-                                        <input type="text" name="OthersName">
-                                    </div>
-                                    <div class="_Form_Div">
-                                        <label class="_Form_Label">@(i + 2) People Surname</label>
-                                        <input type="text" name="OthersSurname">
+                                    <div class="peopleList">
+                                        <div class="_Form_Div">
+                                            <label class="_Form_Label">@(i + 2) People Name</label>
+                                            <input type="text" name="OthersName">
+                                        </div>
+                                        <div class="_Form_Div">
+                                            <label class="_Form_Label">@(i + 2) People Surname</label>
+                                            <input type="text" name="OthersSurname">
+                                        </div>
                                     </div>
                                 }
 
@@ -373,6 +375,10 @@
 @section pageJs{
     <script>
 
+        function getFormDataVal(name) {
+            return $('#_Passenger_Form').find("[name='" + name + "']").val()
+        }
+
         $('#_Passenger_Form').on("submit", function (e) {
             e.preventDefault()
             var returnedData = {
@@ -385,7 +391,7 @@
                 passengerList: [],
                 hidePrice: $("#hidePrice").is(":checked"),
                 isDiscount: $('#discountCheck').is(":checked"),
-                discount: $('#discountCheck').is(":checked") ? $('#newPriceInput').val() : null,
+                discount: $('#discountCheck').is(":checked") ? $('#newPriceInput').val().replaceAll(".",",") : null,
                 discountText: $('#discountCheck').is(":checked") ? $('#discountDescription').val() : "",
                 passengerComment: getFormDataVal("comment")
 
@@ -412,7 +418,7 @@
 
             if ($(this).valid()) {
                 $.ajax({
-                    url: '/panel/manual-reservation-three',
+                    url: '/panel/update-reservation-user',
                     type: "POST",
                     data: { reservation: returnedData },
                     success: function (response) {
@@ -425,7 +431,7 @@
             }
 
         })
-        
+
         $(".positive_icon").on("click", function () {
             setTimeout(() => {
                 let input = $(this).closest(".pageServicePrice").find("p[type='peopleCountControl']");
@@ -481,21 +487,21 @@
                     if (response.result == 1) {
 
                         $('#priceBox').html(`<p class="discountText">
-                                                                                                                                                                                <span id="discountBox">${response.data.value.oldPrice}</span> €
-                                                                                                                                                                    </p>
+                                                                                                                                                                                        <span id="discountBox">${response.data.value.oldPrice}</span> €
+                                                                                                                                                                            </p>
 
-                                                                                                                                                                    <p>
-                                                                                                                                                                                <span id="priceBox">${response.data.value.price}</span> €
-                                                                                                                                                                    </p>
-                                                                                                                                                    `)
+                                                                                                                                                                            <p>
+                                                                                                                                                                                        <span id="priceBox">${response.data.value.price}</span> €
+                                                                                                                                                                            </p>
+                                                                                                                                                            `)
 
 
                     }
                     else if (response.result == 2) {
 
                         $('#priceBox').html(`
-                                                                                                                                                                                                <span id="priceBox">${response.data.value.oldPrice}</span>
-                                                                                                                                                            `)
+                                                                                                                                                                                                        <span id="priceBox">${response.data.value.oldPrice}</span>
+                                                                                                                                                                    `)
 
 
                     }

@@ -360,6 +360,10 @@ namespace Airport.UI.Controllers
 
         }
 
+        [HttpPost]
+
+
+
         [Authorize(Roles = "0,2,4,5")]
         [HttpGet("panel/profile")]
         public IActionResult Profile()
