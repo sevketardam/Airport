@@ -204,6 +204,10 @@
                 <tr>
 
                     <th>Reservation Code</th>
+                    @if (userRole == "0")
+                    {
+                        <th>Agency Name</th>
+                    }
                     <th>Name</th>
                     <th>Date</th>
                     <th>Situation</th>
@@ -217,6 +221,10 @@
                 {
                     <tr class="goDetail" data-id="@item.Id">
                         <td>@item.ReservationCode</td>
+                        @if (userRole == "0")
+                        {
+                            <td>@item.LocationCars?.Location?.User?.CompanyName</td>
+                        }
                         <td>@item.Name @item.Surname</td>
                         <td>@item.ReservationDate.ToString("dd.MM.yyyy HH:mm")</td>
                         <td>
@@ -401,6 +409,12 @@
             pageLength: 10,
             columns: [
                 { data: "ReservationCode" },
+        @if (userRole == "0")
+        {
+            <text>
+                    { data: "AgencyName" },
+            </text>
+        }
                 { data: "Name" },
                 { data: "Date" },
                 { data: "Situation" },

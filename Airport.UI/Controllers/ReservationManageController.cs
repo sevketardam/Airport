@@ -95,6 +95,13 @@ namespace Airport.UI.Controllers
                 {
                     reservations = _reservations.Select().OrderByDescending(a => a.ReservationDate).ToList();
                     drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
+                    reservations.ForEach(a =>
+                    {
+                        a.LocationCars = _locationCars.SelectByID(a.LocationCarId);
+                        a.LocationCars.Location = _location.SelectByID(a.LocationCars?.LocationId);
+                        var userAuth = _loginAuth.SelectByID(a.LocationCars?.Location?.UserId);
+                        a.LocationCars.Location.User = _userDatas.SelectByID(userAuth?.UserId);
+                    });
                 }
                 else
                 {
@@ -285,6 +292,7 @@ namespace Airport.UI.Controllers
                         reservation.DriverSurname = driver.DriverSurname;
                         reservation.DriverPhone = driver.DriverPhone;
                         reservation.DriverFee = driver.DriverFee;
+                        reservation.ManuelPlate = driver.ManuelPlate;
                         _reservations.Update(reservation);
 
                         var allMessage = new List<Mesaj>();

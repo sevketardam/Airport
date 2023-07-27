@@ -304,7 +304,9 @@
                                 <label class="_Form_Label" style="font-size: 0.9rem;
     font-weight: 500;
     margin-bottom: 0.1rem;">Comment</label>
-                                <textarea class="form-control form-control-custom non-bor formTextarea mt-0" name="comment"></textarea>
+                                <textarea class="form-control form-control-custom non-bor formTextarea mt-0" name="comment">Flight Number:
+Comment:
+                                </textarea>
                             </div>
 
                             @if (Model.SelectedData.LocationCar.Car.Service != null)
@@ -517,21 +519,21 @@
                     if (response.result == 1) {
 
                         $('#priceBox').html(`<p class="discountText">
-                                                                                                                                                                        <span id="discountBox">${response.data.value.oldPrice}</span> €
-                                                                                                                                                            </p>
+                                                                                                                                                                                        <span id="discountBox">${response.data.value.oldPrice}</span> €
+                                                                                                                                                                            </p>
 
-                                                                                                                                                            <p>
-                                                                                                                                                                        <span id="priceBox">${response.data.value.price}</span> €
-                                                                                                                                                            </p>
-                                                                                                                                            `)
+                                                                                                                                                                            <p>
+                                                                                                                                                                                        <span id="priceBox">${response.data.value.price}</span> €
+                                                                                                                                                                            </p>
+                                                                                                                                                            `)
 
 
                     }
                     else if (response.result == 2) {
 
                         $('#priceBox').html(`
-                                                                                                                                                                                        <span id="priceBox">${response.data.value.oldPrice}</span>
-                                                                                                                                                    `)
+                                                                                                                                                                                                        <span id="priceBox">${response.data.value.oldPrice}</span>
+                                                                                                                                                                    `)
 
 
                     }

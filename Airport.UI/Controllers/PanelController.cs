@@ -157,12 +157,24 @@ namespace Airport.UI.Controllers
             {
                 var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
 
+                var userRole = Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault();
+
                 var loginAuth = _loginAuth.SelectByID(userId);
 
                 var today = DateTime.Today;
                 var lastWeek = today.AddDays(7);
 
+                var myLocationList = _location.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
                 var myCarsList = _myCars.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
+                var myReservations = _reservations.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
+                var myAWeekReservations = _reservations.SelectByFunc(a => a.ReservationDate >= today && a.ReservationDate < lastWeek && a.UserId == userId && !a.IsDelete);
+                if (userRole == "0")
+                {
+                    myCarsList = _myCars.SelectByFunc(a => !a.IsDelete).Take(5).ToList();
+                    myLocationList = _location.SelectByFunc(a => !a.IsDelete).Take(5).ToList();
+                    myReservations = _reservations.SelectByFunc(a => !a.IsDelete).Take(50).ToList();
+                    myAWeekReservations = _reservations.SelectByFunc(a => a.ReservationDate >= today && a.ReservationDate < lastWeek && !a.IsDelete).Take(50).ToList();
+                }
 
                 var myCars = new List<MyCars>();
                 myCarsList.ForEach(a =>
@@ -173,10 +185,10 @@ namespace Airport.UI.Controllers
                 var myDashboard = new DashboardVM()
                 {
                     MyCars = myCars,
-                    MyLocations = _location.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
+                    MyLocations = myLocationList,
                     User = _user.SelectByID(loginAuth.UserId),
-                    Reservations = _reservations.SelectByFunc(a => a.UserId == userId && !a.IsDelete),
-                    AWeekReservations = _reservations.SelectByFunc(a => a.ReservationDate >= today && a.ReservationDate < lastWeek && a.UserId == userId && !a.IsDelete)
+                    Reservations = myReservations,
+                    AWeekReservations = myAWeekReservations
                 };
 
                 return View(myDashboard);
@@ -372,14 +384,14 @@ namespace Airport.UI.Controllers
         [HttpGet("withdrawal-request")]
         public IActionResult GetWithdrawalRequest()
         {
-            var withdrawalRequest = _withdrawalRequest.Select().OrderBy(a=>a.Status).ToList();
+            var withdrawalRequest = _withdrawalRequest.Select().OrderBy(a => a.Status).ToList();
 
             withdrawalRequest.ForEach(a =>
             {
                 var userId = _loginAuth.SelectByID(a.UserId);
 
                 a.User = _user.SelectByID(userId.UserId);
-               
+
             });
 
             return View(withdrawalRequest);
@@ -474,7 +486,7 @@ namespace Airport.UI.Controllers
 
         [Authorize(Roles = "0,2,4,5")]
         [HttpPost("panel/profile")]
-        public IActionResult Profile(UserDatas updateUser,IFormFile Img)
+        public IActionResult Profile(UserDatas updateUser, IFormFile Img)
         {
             try
             {

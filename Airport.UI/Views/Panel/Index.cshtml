@@ -1,6 +1,9 @@
-﻿@{
+﻿@using System.Security.Claims;
+@{
     Layout = "_PanelLayout";
     ViewData["title"] = "Dashboard";
+    var userRole = Context.User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault();
+
 }
 @model DashboardVM
 
@@ -42,7 +45,7 @@
                                 </div>
                             </div>
                             <div class="_Profile_Attr_Right">
-                                <img src="img/pro-attr.png" alt="">
+                                <img src="~/img/pro-attr.png" alt="">
                             </div>
                         </div>
                         <div class="_Profile_Attr_Item">
@@ -55,7 +58,7 @@
                                 </div>
                             </div>
                             <div class="_Profile_Attr_Right">
-                                <img src="img/pro-attr.png" alt="">
+                                <img src="~/img/pro-attr.png" alt="">
                             </div>
                         </div>
                         <div class="_Profile_Attr_Item">
@@ -81,7 +84,7 @@
                                 </div>
                             </div>
                             <div class="_Profile_Attr_Right">
-                                <img src="img/pro-attr.png" alt="">
+                                <img src="~/img/pro-attr.png" alt="">
                             </div>
                         </div>
                     </div>
@@ -398,11 +401,15 @@
                                 Cars
                             </h2>
                         </div>
-                        <div class="_Cars_Head_Right">
-                            <button type="button" class="_Btn_Style" href="/panel/add-car">
-                                + Add New
-                            </button>
-                        </div>
+                        @if (userRole != "0")
+                        {
+                            <div class="_Cars_Head_Right">
+                                <button type="button" class="_Btn_Style" href="/panel/add-car">
+                                    + Add New
+                                </button>
+                            </div>
+                        }
+
                     </div>
                     <div class="swiper _Cars_Body _Car_Slider">
                         <div class="swiper-wrapper" style="align-items: flex-end;">
@@ -432,11 +439,14 @@
                                 Locations
                             </h2>
                         </div>
-                        <div class="_Cars_Head_Right">
-                            <button type="button" class="_Btn_Style" href="/panel/add-location/step-one">
-                                + Add New
-                            </button>
-                        </div>
+                                                @if (userRole != "0")
+                        {
+                            <div class="_Cars_Head_Right">
+                                <button type="button" class="_Btn_Style" href="/panel/add-location/step-one">
+                                    + Add New
+                                </button>
+                            </div>
+                        }
                     </div>
                     <div class="swiper _Cars_Body _Location_Slider">
                         <div class="swiper-wrapper">

@@ -403,7 +403,6 @@ namespace Airport.UI.Controllers
 
         }
 
-
         [HttpGet("reservation-step-payment")]
         public async Task<IActionResult> ReservationStepPayment()
         {

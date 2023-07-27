@@ -4107,7 +4107,7 @@ textarea.form-control-custom {
         height: auto;
         text-align: center;
         border-radius: 10px;
-        background-color: #ff6709;
+        background-color: #0ba70b;
         color: white !important;
         border: none;
         cursor: pointer;
@@ -4116,9 +4116,9 @@ textarea.form-control-custom {
         padding: .3rem 0;
         transition: background-color 250ms;
     }
-    .step2_cars_item_right a:hover {
-        background: #d46723;
-    }
+        .step2_cars_item_right a:hover {
+            background: #0dc71d;
+        }
 
 .car_price {
     margin: 0;
@@ -4425,7 +4425,7 @@ textarea.form-control-custom {
     }
 
 .step3-card-area button {
-    background-color: #ff6709;
+    background-color: #0ba70b;
     color: white;
     border: none;
     outline: none;
@@ -4441,7 +4441,7 @@ textarea.form-control-custom {
 }
 
     .step3-card-area button:hover {
-        background-color: #e35800;
+        background-color: #0dc71d;
     }
 
 .step3-card-area p {

@@ -752,19 +752,23 @@
                                 <div class="tab-pane fade @(Convert.ToBoolean(Model.Reservation.IsManuelDriver) ? "active show" : "")" id="secondFull" role="tabpanel" aria-labelledby="second-tab_">
                                     <form id="manualDriver">
                                         <div class="row">
-                                            <div class="col-md-3">
+                                            <div class="col-md-6">
                                                 <label for="DriverName">Driver Name</label>
                                                 <input type="text" required value="@(Model.Reservation.IsManuelDriver != null && Model.Reservation.IsManuelDriver == true ? Model.Reservation.DriverName : "")" name="DriverName" id="DriverName" class="form-control" />
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-6">
                                                 <label for="DriverSurname">Driver Surname</label>
                                                 <input type="text" required name="DriverSurname" value="@(Model.Reservation.IsManuelDriver != null && Model.Reservation.IsManuelDriver == true ? Model.Reservation.DriverSurname : "")" id="DriverSurname" class="form-control" />
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <label for="DriverPhone">Driver Phone</label>
                                                 <input type="text" required name="DriverPhone" value="@(Model.Reservation.IsManuelDriver != null && Model.Reservation.IsManuelDriver == true ? Model.Reservation.DriverPhone : "")" id="DriverPhone" class="form-control" />
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
+                                                <label for="DriverPhone">Driver Plate</label>
+                                                <input type="text" required name="ManuelPlate" value="@(Model.Reservation.IsManuelDriver != null && Model.Reservation.IsManuelDriver == true ? Model.Reservation.ManuelPlate : "")" id="ManuelPlate" class="form-control" />
+                                            </div>
+                                            <div class="col-md-4">
 
                                                 <label for="DriverPrice">Driver Price</label>
                                                 <div class="input-group">
@@ -774,7 +778,6 @@
                                                     </div>
 
                                                 </div>
-
                                             </div>
                                             <div class="col-md-12 mt-3">
                                                 <div>
@@ -809,6 +812,10 @@
                                     <div>
                                         <label>Phone</label>
                                         <div>@Model.Reservation.DriverPhone</div>
+                                    </div>
+                                    <div>
+                                        <label>Phone</label>
+                                        <div>@Model.Reservation.ManuelPlate</div>
                                     </div>
 
                                 </div>
@@ -887,7 +894,10 @@
                                     <label>Phone</label>
                                     <div>@Model.Reservation.DriverPhone</div>
                                 </div>
-
+                                <div>
+                                    <label>Phone</label>
+                                    <div>@Model.Reservation.ManuelPlate</div>
+                                </div>
                             </div>
                         </div>
 
@@ -966,7 +976,8 @@
                     DriverName: $(this).find("input[name='DriverName']").val(),
                     DriverSurname: $(this).find("input[name='DriverSurname']").val(),
                     DriverPhone: $(this).find("input[name='DriverPhone']").val(),
-                    DriverFee: $(this).find("input[name='DriverFee']").val()
+                    DriverFee: $(this).find("input[name='DriverFee']").val(),
+                    ManuelPlate: $(this).find("input[name='ManuelPlate']").val()
                 }
 
                 $.ajax({
