@@ -457,7 +457,7 @@ namespace Airport.UI.Controllers
                             PeopleCount = reservation.PeopleCount,
                             ReservationDate = reservation.ReservationDate,
                             ReturnDate = reservation.ReturnDate,
-                            ReturnStatus = reservation.ReturnStatus,
+                            ReturnStatus = false,
                             DistanceText = reservation.DistanceText,
                             DurationText = reservation.DurationText,
                             Discount = reservation.Discount,
@@ -475,6 +475,7 @@ namespace Airport.UI.Controllers
                             Rate = reservation.Rate,
                             LastUpdate = DateTime.Now,
                             CreateDate = DateTime.Now,
+                            IsThisReturn = false, 
 
                             PartnerFee = reservation.PartnerFee,
                             SalesFee = reservation.SalesFee,
@@ -486,6 +487,58 @@ namespace Airport.UI.Controllers
                             DiscountOfferPrice = reservation.DiscountOfferPrice,
                             DiscountExtraService = reservation.DiscountExtraService,
                         });
+
+
+                        if (createdReservation.ReturnStatus)
+                        {
+                            _reservations.Insert(new Reservations
+                            {
+                                DropLatLng = reservation.DropLatLng,
+                                PickLatLng = reservation.PickLatLng,
+                                Phone = reservation.Phone,
+                                DropPlaceId = reservation.DropPlaceId,
+                                PickPlaceId = reservation.PickPlaceId,
+                                Email = reservation.Email,
+                                LocationCarId = reservation.LocationCars.Id,
+                                Name = reservation.Name,
+                                ReservationCode = reservation.ReservationCode,
+                                Surname = reservation.Surname,
+                                DropFullName = reservation.DropFullName,
+                                PickFullName = reservation.PickFullName,
+                                PeopleCount = reservation.PeopleCount,
+                                ReservationDate = reservation.ReturnDate,
+                                ReturnDate = reservation.ReturnDate,
+                                ReturnStatus = false,
+                                DistanceText = reservation.DistanceText,
+                                DurationText = reservation.DurationText,
+                                Discount = reservation.Discount,
+                                IsDiscount = reservation.IsDiscount,
+                                UserId = reservation.UserId,
+                                ExtraServiceFee = reservation.ExtraServiceFee,
+                                Comment = reservation.Comment,
+                                Status = reservation.Status,
+                                IsDelete = reservation.IsDelete,
+                                HidePrice = reservation.HidePrice,
+                                Coupon = reservation.Coupon,
+                                RealPhone = reservation.RealPhone,
+                                DiscountText = reservation.DiscountText,
+                                ReservationUserId = reservation.ReservationUserId,
+                                Rate = reservation.Rate,
+                                LastUpdate = DateTime.Now,
+                                CreateDate = DateTime.Now,
+                                IsThisReturn = true,
+
+                                PartnerFee = reservation.PartnerFee,
+                                SalesFee = reservation.SalesFee,
+                                ServiceFee = reservation.ServiceFee,
+                                OfferPrice = reservation.OfferPrice,
+                                TotalPrice = reservation.TotalPrice,
+                                GlobalPartnerFee = reservation.GlobalPartnerFee,
+                                DiscountServiceFee = reservation.DiscountServiceFee,
+                                DiscountOfferPrice = reservation.DiscountOfferPrice,
+                                DiscountExtraService = reservation.DiscountExtraService,
+                            });
+                        }
 
                         reservation.Id = createdReservation.Id;
                         reservation.ReservationPeoples.ForEach(item => item.ReservationId = createdReservation.Id);
@@ -848,6 +901,7 @@ namespace Airport.UI.Controllers
                     SalesAgencyId = salesAgency,
                     LastUpdate = DateTime.Now,
                     CreateDate = DateTime.Now,
+                    IsThisReturn = false,
 
                     PartnerFee = createReservation.PartnerFee,
                     SalesFee = createReservation.SalesFee,
@@ -856,6 +910,55 @@ namespace Airport.UI.Controllers
                     TotalPrice = totalprice,
                     GlobalPartnerFee = createReservation.GlobalPartnerFee
                 });
+
+
+                if (item.ReturnStatus)
+                {
+                    _reservations.Insert(new Reservations
+                    {
+                        DropLatLng = createReservation.DropLocationLatLng,
+                        PickLatLng = createReservation.PickLocationLatLng,
+                        Phone = reservation.PassengerPhone,
+                        DropPlaceId = createReservation.DropLocationPlaceId,
+                        PickPlaceId = createReservation.PickLocationPlaceId,
+                        Email = reservation.PassengerEmail,
+                        LocationCarId = createReservation.LocationCar.Id,
+                        Name = reservation.PassengerName,
+                        ReservationCode = kod,
+                        Surname = reservation.PassengerSurname,
+                        DropFullName = createReservation.DropLocationName,
+                        PickFullName = createReservation.PickLocationName,
+                        PeopleCount = createReservation.ReservationValues.PeopleCount,
+                        ReservationDate = createReservation.ReservationValues.ReturnDate,
+                        ReturnDate = createReservation.ReservationValues.ReturnDate,
+                        ReturnStatus = false,
+                        DistanceText = createReservation.Distance,
+                        DurationText = createReservation.Duration,
+                        IsDiscount = reservation.IsDiscount,
+                        Discount = reservation.Discount,
+                        UserId = _location.SelectByID(createReservation.LocationCar.LocationId).UserId,
+                        ExtraServiceFee = totalServiceFee,
+                        Comment = reservation.PassengerComment,
+                        Status = 1,
+                        IsDelete = false,
+                        HidePrice = reservation.HidePrice,
+                        RealPhone = reservation.PassengerRealPhone,
+                        DiscountText = reservation.DiscountText,
+                        ReservationUserId = user?.Id,
+                        Rate = 0,
+                        SalesAgencyId = salesAgency,
+                        LastUpdate = DateTime.Now,
+                        CreateDate = DateTime.Now,
+                        IsThisReturn = true,
+
+                        PartnerFee = createReservation.PartnerFee,
+                        SalesFee = createReservation.SalesFee,
+                        ServiceFee = createReservation.ServiceFee,
+                        OfferPrice = createReservation.OfferPrice,
+                        TotalPrice = totalprice,
+                        GlobalPartnerFee = createReservation.GlobalPartnerFee
+                    });
+                }
 
                 var reservationItemsList = reservation.ServiceList?.Select(item1 => new ReservationServicesTable
                 {
