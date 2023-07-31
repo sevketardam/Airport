@@ -2,9 +2,9 @@
 @using Newtonsoft.Json;
 @model ReservationStepTwoVM
 @{
-
     ViewData["title"] = "Reservation";
 }
+
 @section pageCss{
     <style>
         ._Form_Inputs > div {
@@ -17,7 +17,7 @@
     </style>
 }
 
-@*<section class="_Module_Margin">
+<section class="_Module_Margin">
     <div class="container">
         <div class="_Step_Flex">
 
@@ -47,7 +47,7 @@
                     </div>
                     <div>
                         <div class="_Step_Travel_Form">
-                            <form asp-route="getLocationValue" method="post">
+                            <form asp-route="getLocationValue" method="get">
                                 <div class="_Form_Inputs">
                                     <div class="_Pos_Rel">
                                         <div>
@@ -89,10 +89,10 @@
                                             <label for="">Adults</label>
                                             <input type="number" name="PeopleCount" onkeydown="return numControl(event)" value="@Model.SelectedReservationValues.PeopleCount" min="1">
                                             <div class="_user_btns">
-                                                <div class="_up_number">
+                                                <div class="_up_number" rol="_up_number">
                                                     <i class="fa-sharp fa-solid fa-caret-up"></i>
                                                 </div>
-                                                <div class="_down_number">
+                                                <div class="_down_number" rol="_down_number">
                                                     <i class="fa-sharp fa-solid fa-caret-down"></i>
                                                 </div>
                                             </div>
@@ -208,8 +208,6 @@
 
 @section pageJs{
     <script>
-        console.log(@Json.Serialize(ViewBag.test))
-        console.log(@Json.Serialize(Model))
         var pickPlaceId;
         var dropPlaceId;
 
@@ -285,8 +283,8 @@
         document.getElementsByName("FlightTime")[0].min = minDate;
 
     </script>
-}*@
-
+}
+@*
 
 <div class="container my-5">
     <p class="step2_top_date">@Model.SelectedReservationValues.FlightTime.ToString("f")</p>
@@ -561,4 +559,4 @@
         document.getElementsByName("FlightTime")[0].min = minDate;
 
     </script>
-    }
+    }*@
