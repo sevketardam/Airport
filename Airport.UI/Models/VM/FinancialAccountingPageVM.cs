@@ -7,5 +7,6 @@ namespace Airport.UI.Models.VM
     {
         public List<Reservations> Reservation { get; set; }
         public bool IsPendingRequest { get; set; }
+        public decimal RequestPrice { get; set; } = 0;
     }
 }

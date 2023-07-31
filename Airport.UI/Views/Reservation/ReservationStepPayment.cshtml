@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["title"] = "Payment";
 }
-
+@inject IConfiguration Configuration
 @model Reservations
 
 @section pageCss{
@@ -20,96 +20,97 @@
                 <h3>
                     Travel Details
                 </h3>
+                <div class="reservation-detail-box">
 
-                <div class="row step3-left-details">
-                    <div class="col-6">
-                        <label>Pick Up</label>
-                        <p>@Model.PickFullName</p>
-                    </div>
-                    <div class="col-6">
-                        <label>Drop Off</label>
-                        <p>@Model.DropFullName</p>
-                    </div>
-                    <div class="col-6">
-                        <label>Passengers</label>
-                        <p>@Model.PeopleCount Adult</p>
-                    </div>
-                    <div class="col-6">
-                        <label>Date</label>
-                        <p>@Model.ReservationDate.ToString("f")</p>
-                    </div>
-                    <div class="col-6">
-                        <label>Booking Type</label>
-                        <p>@(!Model.ReturnStatus ? "One Way" : "Return")</p>
-                    </div>
-
-                    @if (Model.ReturnStatus)
-                    {
+                    <div class="row step3-left-details">
                         <div class="col-6">
-                            <label>Return Date</label>
-                            <p>@Model.ReturnDate.ToString("f")</p>
+                            <label>Pick Up</label>
+                            <p>@Model.PickFullName</p>
                         </div>
-                    }
-                </div>
+                        <div class="col-6">
+                            <label>Drop Off</label>
+                            <p>@Model.DropFullName</p>
+                        </div>
+                        <div class="col-6">
+                            <label>Passengers</label>
+                            <p>@Model.PeopleCount Adult</p>
+                        </div>
+                        <div class="col-6">
+                            <label>Date</label>
+                            <p>@Model.ReservationDate.ToString("f")</p>
+                        </div>
+                        <div class="col-6">
+                            <label>Booking Type</label>
+                            <p>@(!Model.ReturnStatus ? "One Way" : "Return")</p>
+                        </div>
 
-                <div class="step3-line"></div>
-
-                <div class="row step3-left-details">
-                    <div class="col-12">
-                        <h5>
-                            Passengers Detail
-                        </h5>
-                    </div>
-                    <div class="col-6">
-                        <label>Name</label>
-                        <p>@Model.Name</p>
-                    </div>
-                    <div class="col-6">
-                        <label>Surname</label>
-                        <p>@Model.Surname</p>
-                    </div>
-                    <div class="col-6">
-                        <label>Phone</label>
-                        <p>@Model.RealPhone</p>
-                    </div>
-                    <div class="col-6">
-                        <label>E-mail</label>
-                        <p>@Model.Email</p>
-                    </div>
-                    <div class="col-6">
-                        <label>Reservation Number</label>
-                        <p>@Model.ReservationCode</p>
-                    </div>
-                </div>
-
-                <div class="step3-line"></div>
-
-                <div class="row step3-left-details">
-                    <div class="col-12">
-                        <h5>
-                            Car Information
-                        </h5>
-                    </div>
-                    <div class="col-6 step3-left-image">
-                        <img src="@Model.LocationCars.Car.Type.CarImageURL"
-                             alt="">
-                    </div>
-                    <div class="col-6 step3-left-car-detail">
-                        <div class="step2_car_attrs">
-                            <div>
-                                <i class="fa-solid fa-user"></i> <span>1-@Model.LocationCars.Car.MaxPassenger</span>
+                        @if (Model.ReturnStatus)
+                        {
+                            <div class="col-6">
+                                <label>Return Date</label>
+                                <p>@Model.ReturnDate.ToString("f")</p>
                             </div>
-                            <div>
-                                <i class="fa-solid fa-suitcase-rolling"></i> <span>@Model.LocationCars.Car.SuitCase</span>
-                            </div>
-                            <div>
-                                <i class="fa-solid fa-briefcase-blank"></i> <span>@Model.LocationCars.Car.SmallBags</span>
-                            </div>
+                        }
+                    </div>
+
+                    <div class="step3-line"></div>
+
+                    <div class="row step3-left-details">
+                        <div class="col-12">
+                            <h5>
+                                Passengers Detail
+                            </h5>
+                        </div>
+                        <div class="col-6">
+                            <label>Name</label>
+                            <p>@Model.Name</p>
+                        </div>
+                        <div class="col-6">
+                            <label>Surname</label>
+                            <p>@Model.Surname</p>
+                        </div>
+                        <div class="col-6">
+                            <label>Phone</label>
+                            <p>@Model.RealPhone</p>
+                        </div>
+                        <div class="col-6">
+                            <label>E-mail</label>
+                            <p>@Model.Email</p>
+                        </div>
+                        <div class="col-6">
+                            <label>Reservation Number</label>
+                            <p>@Model.ReservationCode</p>
                         </div>
                     </div>
+
+                    <div class="step3-line"></div>
+
+                    <div class="row step3-left-details">
+                        <div class="col-12">
+                            <h5>
+                                Car Information
+                            </h5>
+                        </div>
+                        <div class="col-6 step3-left-image">
+                            <img src="@Model.LocationCars.Car.Type.CarImageURL"
+                                 alt="">
+                        </div>
+                        <div class="col-6 step3-left-car-detail">
+                            <div class="step2_car_attrs">
+                                <div>
+                                    <i class="fa-solid fa-user"></i> <span>1-@Model.LocationCars.Car.MaxPassenger</span>
+                                </div>
+                                <div>
+                                    <i class="fa-solid fa-suitcase-rolling"></i> <span>@Model.LocationCars.Car.SuitCase</span>
+                                </div>
+                                <div>
+                                    <i class="fa-solid fa-briefcase-blank"></i> <span>@Model.LocationCars.Car.SmallBags</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-
-
             </div>
             <div class="col-md-6 h-100" style="
                 color: black;
@@ -129,36 +130,6 @@
                                 </p>
                             </div>
                         </div>
-                        @*<div>
-                        <div>
-                        <input type="radio" name="refund" id=""> <span>Full Refund</span>
-                        </div>
-                        <div>
-                        <p>
-                        € 50
-                        </p>
-                        </div>
-                        </div>
-                        <div>
-                        <div>
-                        <input type="radio" name="lorem" id=""> <span>Lorem Ipsum</span>
-                        </div>
-                        <div>
-                        <p>
-                        € 50
-                        </p>
-                        </div>
-                        </div>
-                        <div>
-                        <div>
-                        <input type="radio" name="lorem" id=""> <span>Lorem Ipsum</span>
-                        </div>
-                        <div>
-                        <p>
-                        € 50
-                        </p>
-                        </div>
-                        </div>*@
                     </div>
                     <hr>
                     <div class="total-price">
@@ -178,7 +149,7 @@
                             <p class="total-price-text">@Model.TotalPrice € </p>
 
 
-                            
+
                         </div>
                     </div>
 
@@ -192,7 +163,7 @@
                                     </p>
                                 </div>
                                 <div>
-                                    <p class="text price">@(Model.Coupon != 0 && Model.Coupon != null ?  Model.DiscountOfferPrice : Model.OfferPrice) € </p>
+                                    <p class="text price">@(Model.Coupon != 0 && Model.Coupon != null ? Model.DiscountOfferPrice : Model.OfferPrice) € </p>
                                 </div>
                             </div>
                             <p>Includes waiting time, toll roads (if applicable) and taxes</p>
@@ -202,7 +173,7 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <p class="text">
-                                       Extra Service Fee
+                                        Extra Service Fee
                                     </p>
                                 </div>
                                 <div>
@@ -224,18 +195,6 @@
                             </div>
                             <p>This fee helps us improve our service</p>
                         </div>
-                        @* <div class="step3-extra-detail-item">
-                        <div class="d-flex justify-content-between">
-                        <div>
-                        <p class="text">
-                        Refundable Cancellation
-                        </p>
-                        </div>
-                        <div>
-                        <p class="text price">€ 90</p>
-                        </div>
-                        </div>
-                        </div>*@
                         <hr>
                     </div>
 
@@ -300,12 +259,14 @@
     <script>
         var CardNumber = new Cleave('input[name="CardNumber"]', {
             numericOnly: true,
-            blocks: [4,4,4,4],
+            blocks: [4, 4, 4, 4],
             delimiter: '-'
         });
+
         var CardDate = new Cleave('input[name="CardDate"]', {
             date: true, datePattern: ['m', 'Y']
         });
+
         var CVC = new Cleave('input[name="CVC"]', {
             numericOnly: true,
             blocks: [3]

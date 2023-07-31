@@ -1,4 +1,5 @@
 ﻿@model Reservations
+@inject IConfiguration Configuration
 @{
 
     ViewData["title"] = "Reservation";
@@ -147,7 +148,7 @@
                         </li>
                     </ul>
 
-                    <a class="_Btn_Style btn" href="http://airportglobaltransfer.com/pdf/@(Model.ReservationCode)-@(Model.Id).pdf" target="_blank">Download Voucher</a>
+                    <a class="_Btn_Style btn" href="@Configuration["PageLinks:PageGlobalLink"]/pdf/@(Model.ReservationCode)-@(Model.Id).pdf" target="_blank">Download Voucher</a>
                 </div>
             </div>
 

@@ -26,11 +26,14 @@ using Microsoft.Extensions.Options;
 using Minio.DataModel;
 using Airport.UI.Models.ITransactions;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
+using Microsoft.Extensions.Configuration;
 
 namespace Airport.UI.Controllers
 {
     public class ReservationController : Controller
     {
+
+        private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _env;
         private readonly IOptions<GoogleAPIKeys> _googleAPIKeys;
 
@@ -57,7 +60,7 @@ namespace Airport.UI.Controllers
         IGlobalSettings _globalSettings;
         IPayment _payment;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons, ISMS sms, ILoginAuthDAL loginAuth, ITReservations reservationT, IOptions<GoogleAPIKeys> googleAPIKeys, IApiResult apiResult, ITReservationHelpers tReservationHelpers, IGlobalSettings globalSettings, IPayment payment)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons, ISMS sms, ILoginAuthDAL loginAuth, ITReservations reservationT, IOptions<GoogleAPIKeys> googleAPIKeys, IApiResult apiResult, ITReservationHelpers tReservationHelpers, IGlobalSettings globalSettings, IPayment payment,IConfiguration configuration)
         {
             _location = location;
             _locationCar = locationCar;
@@ -83,6 +86,7 @@ namespace Airport.UI.Controllers
             _tReservationHelpers = tReservationHelpers;
             _globalSettings = globalSettings;
             _payment = payment;
+            _configuration = configuration;
         }
 
         [HttpGet("reservation", Name = "getLocationValue")]
@@ -457,7 +461,7 @@ namespace Airport.UI.Controllers
                             PeopleCount = reservation.PeopleCount,
                             ReservationDate = reservation.ReservationDate,
                             ReturnDate = reservation.ReturnDate,
-                            ReturnStatus = false,
+                            ReturnStatus = reservation.ReturnStatus,
                             DistanceText = reservation.DistanceText,
                             DurationText = reservation.DurationText,
                             Discount = reservation.Discount,
@@ -541,8 +545,10 @@ namespace Airport.UI.Controllers
                         }
 
                         reservation.Id = createdReservation.Id;
-                        reservation.ReservationPeoples.ForEach(item => item.ReservationId = createdReservation.Id);
-                        reservation.ReservationServicesTables.ForEach(item => item.ReservationId = createdReservation.Id);
+
+                        reservation.ReservationPeoples?.ForEach(item => item.ReservationId = createdReservation.Id);
+
+                        reservation.ReservationServicesTables?.ForEach(item => item.ReservationId = createdReservation.Id);
 
                         if (reservation.ReservationPeoples != null)
                         {
@@ -565,7 +571,7 @@ namespace Airport.UI.Controllers
                             new Mesaj
                             {
                                 dest = reservation.RealPhone,
-                                msg = @$"Your reservation code {reservation.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{reservation.ReservationCode}-{reservation.Id}.pdf"
+                                msg = @$"Your reservation code {reservation.ReservationCode} has been created. Voucher Link {_configuration["PageLinks:PageGlobalLink"]}/pdf/{reservation.ReservationCode}-{reservation.Id}.pdf"
                             }
                         };
 
@@ -1009,7 +1015,7 @@ namespace Airport.UI.Controllers
                     new Mesaj
                     {
                         dest = reservation.PassengerRealPhone,
-                        msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link http://airportglobaltransfer.com/pdf/{item.ReservationCode}-{item.Id}.pdf"
+                        msg = @$"Your reservation code {item.ReservationCode} has been created. Voucher Link {_configuration["PageLinks:PageGlobalLink"]}/pdf/{item.ReservationCode}-{item.Id}.pdf"
                     }
                 };
 

@@ -2,6 +2,8 @@
 @{
     ViewData["title"] = "Dashboard";
 }
+@inject IConfiguration Configuration
+
 @section pageCSSLink{
     <link rel="stylesheet" href="~/font/iconsmind-s/css/iconsminds.css" />
 
@@ -341,7 +343,7 @@
                                 }
                                 else
                                 {
-                                    <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
+                                    <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="@Configuration["PageLinks:PageGlobalLink"]/pdf/@(item.ReservationCode)-@(item.Id).pdf">
                                         <i class="iconsminds-file"></i>
                                     </a>
                                     <a title="Cancel Reservation" class="reservation-delete"><i class="fa-regular fa-xmark"></i></a>

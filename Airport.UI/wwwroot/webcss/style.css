@@ -82,7 +82,7 @@ body {
 ._Nav_List {
     display: flex;
     justify-content: flex-end;
-    margin-right:1rem;
+    margin-right: 1rem;
 }
 
 nav {
@@ -177,14 +177,14 @@ label.error {
         color: white;
     }
 
-    ._Auth ul._Btns > li._Active{
-        background: var(--orange);
-        border-radius: 10px;
-    }
+._Auth ul._Btns > li._Active {
+    background: var(--orange);
+    border-radius: 10px;
+}
 
-    ._Form_Inputs_Div > div:last-child {
-        justify-content: flex-end;
-    }
+._Form_Inputs_Div > div:last-child {
+    justify-content: flex-end;
+}
 
 
 ._Sing_Form_Main {
@@ -353,7 +353,7 @@ label.error {
         padding: 1rem;
     }
 
-    
+
 
     ._Nav_Content {
         position: absolute;
@@ -1577,6 +1577,7 @@ label._Down_Label {
         display: block;
         margin: 0;
     }
+
     ._Profile_Item:not(._Profile_Item:first-child, ._Profile_Item:last-child) a {
         max-width: 55%;
     }
@@ -2207,7 +2208,6 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 @media only screen and (max-width: 768px) {
-
 }
 
 ._History_Style {
@@ -2331,6 +2331,7 @@ input[type="number"]::-webkit-outer-spin-button {
         text-align: center;
         font-size: 0.75rem;
     }
+
 ._Bottom_Table {
     overflow: auto;
     max-height: 13rem;
@@ -2866,8 +2867,6 @@ input[type="number"]::-webkit-outer-spin-button {
     ._Profile_Right {
         width: 100%;
     }
-
-
 }
 
 @media only screen and (max-width: 768px) {
@@ -2994,10 +2993,6 @@ input[type="number"]::-webkit-outer-spin-button {
         justify-content: center;
         align-items: center;
     }
-
-
-
-
 }
 
 .noneSliderHappySection {
@@ -3803,7 +3798,7 @@ label.error {
     }
 
 
-._Step_Travel_Form ._Pos_Rel{
+._Step_Travel_Form ._Pos_Rel {
     background: white;
     border-radius: 0.6rem;
 }
@@ -3821,8 +3816,8 @@ label.error {
 }
 
 
-@media only screen and (max-width: 768px){
-    .pageServiceDownItemTop .pageServicePrice p{
+@media only screen and (max-width: 768px) {
+    .pageServiceDownItemTop .pageServicePrice p {
         font-size: 1.1rem !important;
     }
 }
@@ -3839,13 +3834,13 @@ label.error {
         margin: 0 !important;
     }
 
-    .pageServiceAngle{
+    .pageServiceAngle {
         display: none !important;
     }
 
-    .pageServiceDownItemTop .pageServicePrice p{
+    .pageServiceDownItemTop .pageServicePrice p {
         font-size: 1.1rem;
-        min-width: 2rem ;
+        min-width: 2rem;
         text-align: center;
     }
 
@@ -4116,6 +4111,7 @@ textarea.form-control-custom {
         padding: .3rem 0;
         transition: background-color 250ms;
     }
+
         .step2_cars_item_right a:hover {
             background: #0dc71d;
         }
@@ -4288,9 +4284,13 @@ textarea.form-control-custom {
         margin: 0;
     }
 
-    .step3-left-car-detail i {
-        color: white !important;
-    }
+.step3-page-row .reservation-detail-box {
+    border-radius: 5px;
+    padding: 1rem;
+    box-shadow: 0 0 5px rgb(0, 0, 0, .16);
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .16);
+}
 
 .step3-right-radios > div input[type='radio'] {
     cursor: pointer;
@@ -4467,9 +4467,7 @@ textarea.form-control-custom {
 }
 
     .step3-page-row > div:first-child {
-        background-color: var(--orange);
         border-radius: 10px;
-        color: white;
         padding: 1rem;
     }
 
@@ -4486,13 +4484,12 @@ textarea.form-control-custom {
     font-size: 0.8rem;
 }
 
-.non-bor{
+.non-bor {
     border-radius: 0 !important;
 }
 
 .form-control-custom:not(.non-bor) {
-
-     padding: 0.5rem 0.75rem !important; 
+    padding: 0.5rem 0.75rem !important;
 }
 
 

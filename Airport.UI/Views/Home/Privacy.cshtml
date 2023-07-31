@@ -1,4 +1,5 @@
-﻿@{
+﻿@inject IConfiguration Configuration
+@{
     ViewData["title"] = "Privacy";
 }
 
@@ -13,7 +14,7 @@
             protecting and respecting your privacy.
         </p>
         <p>
-            This Privacy Policy (together with our Terms of Use published on our website <a href="https://www.airportglobaltransfer.com/">https://www.airportglobaltransfer.com/</a>(hereinafter
+            This Privacy Policy (together with our Terms of Use published on our website <a href="@Configuration["PageLinks:PageGlobalLink"]">@Configuration["PageLinks:PageGlobalLink"]</a>(hereinafter
             referred to as: &laquo;Website&raquo;;) and any other documents referred to on it) sets out the basis on
             which any personal data we collect from you, or that you provide to us, will be processed by us. This
             Privacy Policy applies to our online service for the use of the Airport Global Transfer Service,

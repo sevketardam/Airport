@@ -13,6 +13,7 @@ namespace Airport.DBEntities.Context
 {
     public class AirportContext : DbContext
     {
+
         public AirportContext()
         {
 

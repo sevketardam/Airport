@@ -5,25 +5,78 @@
     var userRole = Convert.ToInt32(Context.User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault());
 
     decimal discountedSum = 0;
+    decimal turnover = 0;
+    decimal balance = 0;
 
     if (userRole == 0)
     {
         discountedSum = Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.GlobalPartnerFee)).Sum(), 2);
-        discountedSum = Math.Round(discountedSum + Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.ServiceFee)).Sum(), 2), 2);
+        
+        discountedSum = Math.Round(discountedSum + Math.Round(Model.Reservation.Where(a => a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.ServiceFee)).Sum(), 2), 2);
+        
+        turnover = Math.Round(Model.Reservation.Where(a => a.Status != 4).Select(a => Convert.ToDecimal(a.TotalPrice)).Sum(), 2);
     }
     else if (userRole == 2)
     {
-        discountedSum = Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.PartnerFee)).Sum(), 2);
+        discountedSum = Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.OfferPrice) + Convert.ToDecimal(a.ServiceFee) + Convert.ToDecimal(a.ExtraServiceFee)).Sum(), 2);
+        
+        turnover = Math.Round(Model.Reservation.Where(a => a.Status != 4).Select(a => a.IsDiscount ? Convert.ToDecimal(a.DiscountOfferPrice) + Convert.ToDecimal(a.DiscountServiceFee) + Convert.ToDecimal(a.DiscountExtraService) : Convert.ToDecimal(a.OfferPrice) + Convert.ToDecimal(a.ServiceFee) + Convert.ToDecimal(a.ExtraServiceFee)).Sum(), 2);
+        
+        balance = Math.Round(Model.RequestPrice - Math.Round(Model.Reservation.Where(a => a.Status != 4).Select(a => a.IsDiscount ? Convert.ToDecimal(a.DiscountOfferPrice) + Convert.ToDecimal(a.DiscountServiceFee) + Convert.ToDecimal(a.DiscountExtraService) : Convert.ToDecimal(a.OfferPrice) + Convert.ToDecimal(a.ServiceFee) + Convert.ToDecimal(a.ExtraServiceFee)).Sum(), 2),2);
     }
     else if (userRole == 5)
     {
         discountedSum = Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.SalesFee)).Sum(), 2);
+        
+        turnover = Math.Round(Model.Reservation.Where(a => a.Status != 4).Select(a => Convert.ToDecimal(a.SalesFee)).Sum(), 2);
+        
+        balance = Math.Round(Model.RequestPrice - Math.Round(Model.Reservation.Where(a => a.Status != 4).Select(a => Convert.ToDecimal(a.SalesFee)).Sum(), 2), 2);
     }
 
 }
 @model FinancialAccountingPageVM
 
-<div class="calc-flex">
+@section pageCss{
+    <style>
+        .financial-price-box {
+            position: relative;
+        }
+
+        .financial-price-detail {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            overflow: hidden;
+        }
+
+        .financial-price-detail-box {
+            overflow: hidden;
+            max-height: 0px;
+            position: absolute;
+            left: -10px;
+            top: 25px;
+            background: white;
+            box-shadow: 0 0 5px #00000047;
+            z-index: 2;
+            border-radius: 6px;
+            transition: 400ms;
+        }
+
+        .financial-price-box:hover .financial-price-detail-box {
+            max-height: 300px;
+        }
+
+        .last-price-box {
+            background: green;
+            color: white;
+            padding: 0.3rem;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+}
+
+<div class="calc-flex mb-3">
 
     <div class="calc-item">
         <div class="calc-first-div">
@@ -34,8 +87,6 @@
             <div>
                 <p id="completedReservation" class="calc-length">0</p>
             </div>
-        </div>
-        <div>
         </div>
     </div>
     <div class="calc-item">
@@ -48,8 +99,6 @@
                 <p id="canceledReservation" class="calc-length">0</p>
             </div>
         </div>
-        <div>
-        </div>
     </div>
     <div class="calc-item">
         <div class="calc-first-div">
@@ -61,14 +110,15 @@
                 <p class="calc-length"><span id="totalPrice">@Math.Round(Model.Reservation.Where(a=>a.Status != 4).Select(a=>a.TotalPrice).Sum(),2)</span> €</p>
             </div>
         </div>
-        <div>
-        </div>
     </div>
     <div class="calc-item">
         <div class="calc-first-div">
             <div>
                 <i class="iconsminds-euro"></i>
-                <p class="">Total Earnings</p>
+                <div class="d-flex flex-column">
+                    <p class="">Withdrawable Balance</p>
+                    <span class="" style="font-size: .6rem;">(16 days or earlier)</span>
+                </div>
             </div>
             <div>
                 <p class="calc-length"><span>@discountedSum</span>€</p>
@@ -80,6 +130,34 @@
     </div>
 </div>
 
+<div class="calc-flex">
+    <div class="calc-item">
+        <div class="calc-first-div">
+            <div>
+                <i class="iconsminds-euro"></i>
+                <div class="d-flex flex-column">
+                    <p class="">Turnover</p>
+                </div>
+            </div>
+            <div>
+                <p class="calc-length"><span>@turnover</span>€</p>
+            </div>
+        </div>
+    </div>
+    <div class="calc-item">
+        <div class="calc-first-div">
+            <div>
+                <i class="iconsminds-euro"></i>
+                <div class="d-flex flex-column">
+                    <p class="">Balance</p>
+                </div>
+            </div>
+            <div>
+                <p class="calc-length"><span>@turnover</span>€</p>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-12">
         <div class="mb-2 mt-5">
@@ -165,7 +243,50 @@
                             }
                         </td>
                         <td class="text-muted">
-                            @(userRole == 0 || userRole == 5 || userRole == 4 ? item.TotalPrice : userRole == 2 ? item.OfferPrice : 0) €
+                            <div class="financial-price-box">
+                                <span class="last-price-box">
+                                    @if (userRole == 0 || userRole == 5 || userRole == 4)
+                                    {
+                                        @item.TotalPrice
+                                    }
+                                    else if (userRole == 2)
+                                    {
+                                        @(item.IsDiscount ? (item.DiscountOfferPrice + item.DiscountServiceFee + item.DiscountExtraService) : (item.OfferPrice + item.ServiceFee + item.ExtraServiceFee))
+                                    }
+                                    else
+                                    {
+                                        @:N/A
+                                    }
+                                    €
+                                </span>
+                                <div class="financial-price-detail-box">
+                                    <div class="financial-price-detail">
+                                        @if (userRole == 0 || userRole == 5 || userRole == 4)
+                                        {
+                                            <span>Offer Price: @item.OfferPrice €</span>
+                                            <span>Service Fee: @item.ServiceFee €</span>
+                                            <span>Extra Service Fee: @item.ExtraServiceFee €</span>
+                                            <span>Sales Fee: @item.SalesFee €</span>
+                                        }
+                                        else if (userRole == 2)
+                                        {
+                                            if (item.IsDiscount)
+                                            {
+                                                <span>Offer Price: @item.DiscountOfferPrice €</span>
+                                                <span>Service Fee: @item.DiscountServiceFee €</span>
+                                                <span>Extra Service Fee: @item.DiscountExtraService €</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Offer Price: @item.OfferPrice €</span>
+                                                <span>Service Fee: @item.ServiceFee €</span>
+                                                <span>Extra Service Fee: @item.ExtraServiceFee €</span>
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 }

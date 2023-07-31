@@ -1,5 +1,6 @@
 ﻿@using System.Security.Claims;
 @model ReservationsIndexVM
+@inject IConfiguration Configuration
 @{
     Layout = "_PanelLayout";
 
@@ -8,6 +9,7 @@
     var userRole = User.Claims.Where(a => a.Type == ClaimTypes.Role).Select(a => a.Value).SingleOrDefault();
 }
 @section pageCss{
+
     <style>
 
         .reservation-table-icon {
@@ -42,86 +44,34 @@
             #reservationTable tbody tr:hover {
                 box-shadow: 0 3px 30px rgba(0,0,0,.1), 0 3px 20px rgba(0,0,0,.1);
             }
+
+
+            .reservation-return-box{
+            border: 1px solid orange;
+            position: relative;
+            padding: .2rem;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            color: orange;
+            }
+
+            .reservation-return-icon{
+            transform: rotate(90deg);
+            position: relative;
+            left: -1px;
+            }
+
+            .reservation-code-box{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            }
     </style>
 }
-@*
-<div style=" overflow-x: auto;">
-    <table id="recourseTable">
-        <thead>
-            <tr>
-                <th style="text-align:center">Reservation Code</th>
-                <th style="text-align:center">Name</th>
-                <th style="text-align:center">Date</th>
-                <th style="text-align:center">Situation</th>
-                <th style="text-align:center">Driver Situation</th>
-                <th style="text-align:center">Transactions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Reservations)
-            {
-                <tr class="goDetail" data-id="@item.Id">
-                    <td>@item.ReservationCode</td>
-                    <td>@item.Name @item.Surname</td>
-                    <td>@item.ReservationDate.ToString("dd.MM.yyyy HH:mm")</td>
-                    <td>
-                        @if (item.Status == 1)
-                        {
-                            <span class="badge badge-success">Waiting For Transaction</span>
-                        }
-                        else if (item.Status == 3)
-                        {
-                            <span class="badge badge-info">Finished Reservation</span>
-                        }
-                        else if (item.Status == 4)
-                        {
-                            <span class="badge badge-danger">Cancel Reservation</span>
-                        }
-                    </td>
-                    <td>
-                        @if (item.DriverId != null && item.DriverId != 0)
-                        {
-                            <span class="badge badge-success">Driver Assigned</span>
-                        }
-                        else
-                        {
-                            <span class="badge badge-warning">Driver Not Assigned</span>
-                        }
-                    </td>
-                    <td>
-                        <a title="Go to detail" href="/panel/reservation-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
-                        <a title="Leave a note" class="open-note reservation-table-icon"><i class="iconsminds-file-edit"></i></a>
-                        <a title="Select Driver" class="select-driver reservation-table-icon"><i class="iconsminds-doctor"></i></a>
-                        <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
-                            <i class="iconsminds-file"></i>
-                        </a>
-                        <a title="Cancel Reservation" class="reservation-delete"><i class="fa-regular fa-xmark"></i></a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    @if (Model.Reservations.Count <= 0)
-    {
-        <div style="
-    width: 100%;
-    height: 7rem;
-    background: #ffffff6e;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: .8rem;
-    text-align: center;
-">
-            No Data
-
-        </div>
-    }
-</div>
-
-
-
-*@
 
 <div class="row icon-cards-row mb-4">
     <div class="col-md-3 col-lg-3 col-sm-6 col-6 mb-3">
@@ -164,32 +114,13 @@
 
 <div class="row">
     <div class="col-12">
-        @*        <div class="btn-group float-right" style="top: -.6rem">
-        <button class="btn btn-outline-primary btn-lg dropdown-toggle" type="button"
-        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        EXPORT
-        </button>
-        <div class="dropdown-menu">
-        <a class="dropdown-item" id="dataTablesCopy" href="#">Copy</a>
-        <a class="dropdown-item" id="dataTablesExcel" href="#">Excel</a>
-        <a class="dropdown-item" id="dataTablesCsv" href="#">Csv</a>
-        <a class="dropdown-item" id="dataTablesPdf" href="#">Pdf</a>
-        </div>
-        </div>*@
         <div class="mb-2 mt-5">
-            @*<a class="btn pt-0 pl-0 d-inline-block d-md-none" data-toggle="collapse" href="#displayOptions"
-            role="button" aria-expanded="true" aria-controls="displayOptions">
-            Display Options
-            <i class="simple-icon-arrow-down align-middle"></i>
-            </a>*@
             <div>
                 <div class="d-block d-md-inline-block">
                     <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
                         <input class="form-control" placeholder="Search Table" id="searchDatatable">
                     </div>
                 </div>
-
-
             </div>
         </div>
         <div class="separator"></div>
@@ -220,7 +151,18 @@
                 @foreach (var item in Model.Reservations)
                 {
                     <tr class="goDetail" data-id="@item.Id">
-                        <td>@item.ReservationCode</td>
+                        <td>
+                            <div class="reservation-code-box">
+                            @if (item.IsThisReturn)
+                            {
+                                <div class="reservation-return-box">
+                                    <i class="iconsminds-sync reservation-return-icon"></i>
+                                </div>
+                            } 
+                            
+                            @item.ReservationCode
+                            </div>
+                        </td>
                         @if (userRole == "0")
                         {
                             <td>@item.LocationCars?.Location?.User?.CompanyName</td>
@@ -260,7 +202,7 @@
                                     <a title="Leave a note" class="open-note reservation-table-icon"><i class="iconsminds-file-edit"></i></a>
 
                                     <a title="Select Driver" class="select-driver reservation-table-icon"><i class="iconsminds-doctor"></i></a>
-                                    <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
+                                    <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="@Configuration["PageLinks:PageGlobalLink"]/pdf/@(item.ReservationCode)-@(item.Id).pdf">
                                         <i class="iconsminds-file"></i>
                                     </a>
                                     <a title="Cancel Reservation" class="reservation-delete"><i class="fa-regular fa-xmark"></i></a>

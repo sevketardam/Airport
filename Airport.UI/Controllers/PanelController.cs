@@ -365,11 +365,14 @@ namespace Airport.UI.Controllers
                     reservations = _reservations.SelectByFunc(a => a.UserId == userId).OrderByDescending(a => a.ReservationDate).ToList();
                 }
 
+                var acceptedRequest = Math.Round(Convert.ToDecimal(_withdrawalRequest.SelectByFunc(a => a.UserId == userId && a.Status == true).Select(a => a.Price).Sum()), 2);
+
 
                 var PageVM = new FinancialAccountingPageVM()
                 {
                     Reservation = reservations,
-                    IsPendingRequest = _withdrawalRequest.SelectByFunc(a => a.UserId == userId && a.Status == null).OrderBy(a => a.Date).FirstOrDefault()?.Status == null ? true : false
+                    IsPendingRequest = _withdrawalRequest.SelectByFunc(a => a.UserId == userId && a.Status == null).OrderBy(a => a.Date).FirstOrDefault()?.Status == null ? true : false,
+                    RequestPrice = acceptedRequest
                 };
 
                 return View(PageVM);

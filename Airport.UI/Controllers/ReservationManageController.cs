@@ -21,12 +21,13 @@ using System.IO;
 using Microsoft.Extensions.Options;
 using Airport.MessageExtension.Interfaces;
 using Airport.MessageExtension.VM;
+using Microsoft.Extensions.Configuration;
 
 namespace Airport.UI.Controllers
 {
     public class ReservationManageController : PanelAuthController
     {
-
+        private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _env;
         private readonly IOptions<GoogleAPIKeys> _googleAPIKeys;
 
@@ -50,7 +51,7 @@ namespace Airport.UI.Controllers
         ISMS _sms;
         IApiResult _apiResult;
         ITReservationHelpers _tReservationHelpers;
-        public ReservationManageController(IReservationsDAL reservations, ISMS sms, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, ITReservations reservationT, IOptions<GoogleAPIKeys> googleAPIKeys, IApiResult apiResult, ITReservationHelpers tReservationHelpers)
+        public ReservationManageController(IReservationsDAL reservations, ISMS sms, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, ITReservations reservationT, IOptions<GoogleAPIKeys> googleAPIKeys, IApiResult apiResult, ITReservationHelpers tReservationHelpers,IConfiguration configuration)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -74,6 +75,7 @@ namespace Airport.UI.Controllers
             _sms = sms;
             _apiResult = apiResult;
             _tReservationHelpers = tReservationHelpers;
+            _configuration = configuration;
         }
 
 
@@ -299,7 +301,7 @@ namespace Airport.UI.Controllers
                         allMessage.Add(new Mesaj
                         {
                             dest = reservation.RealPhone,
-                            msg = @$"Your driver is ready. Voucher Link http://airportglobaltransfer.com/pdf/{reservation.ReservationCode}-{reservation.Id}.pdf"
+                            msg = @$"Your driver is ready. Voucher Link {_configuration["PageLinks:PageGlobalLink"]}/pdf/{reservation.ReservationCode}-{reservation.Id}.pdf"
                         });
 
                         var mesaj = allMessage.ToArray();
