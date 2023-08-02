@@ -1,171 +1,173 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Airport.UI.Models.ITransactions
 {
-    //public class Bank
-    //{
-    //    public string Name { get; set; }
-    //    public string BankName { get; set; }
-    //    public bool Installments { get; set; }
-    //}
+    public class EsnekposProgram
+    {
+        public string Name { get; set; }
+        public string Bank { get; set; }
+        public bool Installments { get; set; }
+    }
 
-    //public class Installment
-    //{
-    //    public float Value { get; set; }
-    //    public int Active { get; set; }
-    //}
+    public class EsnekposInstallment
+    {
+        public double Value { get; set; }
+        public int Active { get; set; }
+    }
 
-    //public class BankRates
-    //{
-    //    public int Active { get; set; }
-    //    public List<Installment> Installments { get; set; }
-    //}
+    public class PayConfig
+    {
+        public string MERCHANT { get; set; }
+        public string MERCHANT_KEY { get; set; }
+        public string BACK_URL { get; set; }
+        public string PRICES_CURRENCY { get; set; }
+        public string ORDER_REF_NUMBER { get; set; }
+        public string ORDER_AMOUNT { get; set; }
+    }
+
+    public class PayCard
+    {
+        public string CC_NUMBER { get; set; }
+        public string EXP_MONTH { get; set; }
+        public string EXP_YEAR { get; set; }
+        public string CC_CVV { get; set; }
+        public string CC_OWNER { get; set; }
+        public string INSTALLMENT_NUMBER { get; set; }
+    }
+
+    public class PayCustomer
+    {
+        public string FIRST_NAME { get; set; }
+        public string LAST_NAME { get; set; }
+        public string MAIL { get; set; }
+        public string PHONE { get; set; }
+        public string CITY { get; set; }
+        public string STATE { get; set; }
+        public string ADDRESS { get; set; }
+        public string CLIENT_IP { get; set; }
+    }
+
+    public class PayProduct
+    {
+        public string PRODUCT_ID { get; set; }
+        public string PRODUCT_NAME { get; set; }
+        public string PRODUCT_CATEGORY { get; set; }
+        public string PRODUCT_DESCRIPTION { get; set; }
+        public string PRODUCT_AMOUNT { get; set; }
+    }
+
+    public class PayDetail
+    {
+        public PayConfig Config { get; set; }
+        public PayCard CreditCard { get; set; }
+        public PayCustomer Customer { get; set; }
+        public List<PayProduct> Product { get; set; } = new List<PayProduct>();
+
+        public string HASH { get; set; }
+        public string POST_URL { get; set; }
+
+
+    }
 
     public class EsnekposConfig
     {
-        //public readonly int MaxInstallment = 12;
+        public const int MaxInstallment = 12;
 
-        //private List<Bank> GetAvailablePrograms()
-        //{
-        //    return new List<Bank>
-        //{
-        //    new Bank { Name = "axess", BankName = "Akbank A.Ş.", Installments = true },
-        //    new Bank { Name = "world", BankName = "Yapı Kredi Bankası", Installments = true },
-        //    new Bank { Name = "bonus", BankName = "Garanti Bankası A.Ş.", Installments = true },
-        //    new Bank { Name = "cardfinans", BankName = "FinansBank A.Ş.", Installments = true },
-        //    new Bank { Name = "maximum", BankName = "T.C. İş Bankası", Installments = true },
-        //    new Bank { Name = "paraf", BankName = "Halk Bankası", Installments = true },
-        //    new Bank { Name = "combo", BankName = "Ziraat Bankası", Installments = true }
-        //};
-        //}
+        public static List<EsnekposProgram> GetAvailablePrograms()
+        {
+            return new List<EsnekposProgram>
+        {
+            new EsnekposProgram { Name = "Axess", Bank = "Akbank A.Ş.", Installments = true },
+            new EsnekposProgram { Name = "WordCard", Bank = "Yapı Kredi Bankası", Installments = true },
+            new EsnekposProgram { Name = "BonusCard", Bank = "Garanti Bankası A.Ş.", Installments = true },
+            new EsnekposProgram { Name = "CardFinans", Bank = "FinansBank A.Ş.", Installments = true },
+            new EsnekposProgram { Name = "Maximum", Bank = "T.C. İş Bankası", Installments = true },
+            new EsnekposProgram { Name = "Paraf", Bank = "Halk Bankası", Installments = true },
+            new EsnekposProgram { Name = "Combo", Bank = "Ziraat Bankası", Installments = true }
+        };
+        }
 
-        //public List<BankRates> SetRatesFromPost(List<BankRates> postedData)
-        //{
-        //    var banks = GetAvailablePrograms();
-        //    var result = new List<BankRates>();
-        //    foreach (var bank in banks)
-        //    {
-        //        var bankRates = new BankRates { Active = 0, Installments = new List<Installment>() };
-        //        for (int i = 1; i <= MaxInstallment; i++)
-        //        {
-        //            var postedInstallment = postedData.Find(rate => rate.Name == bank.Name)?.Installments?.Find(installment => installment.Value == i);
-        //            bankRates.Installments.Add(new Installment
-        //            {
-        //                Value = postedInstallment?.Value ?? 0.0f,
-        //                Active = postedInstallment?.Active ?? 0
-        //            });
-        //        }
-        //        result.Add(bankRates);
-        //    }
-        //    return result;
-        //}
+        public static string GetCheckKey(string dealerCode, string username, string password)
+        {
+            string concatenatedString = $"{dealerCode}MK{username}PD{password}";
+            byte[] byteArray = Encoding.UTF8.GetBytes(concatenatedString);
 
-        //public List<BankRates> SetRatesDefault()
-        //{
-        //    var banks = GetAvailablePrograms();
-        //    var result = new List<BankRates>();
-        //    foreach (var bank in banks)
-        //    {
-        //        var bankRates = new BankRates { Active = 0, Installments = new List<Installment>() };
-        //        for (int i = 1; i <= MaxInstallment; i++)
-        //        {
-        //            bankRates.Installments.Add(new Installment
-        //            {
-        //                Value = (float)(1 + i + (i / 5) + 0.1),
-        //                Active = bank.Installments ? 1 : 0
-        //            });
-        //            if (i == 1)
-        //            {
-        //                bankRates.Installments[i - 1].Value = 0.0f;
-        //                bankRates.Installments[i - 1].Active = 1;
-        //            }
-        //        }
-        //        result.Add(bankRates);
-        //    }
-        //    return result;
-        //}
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashedBytes = sha256.ComputeHash(byteArray);
+                return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+            }
+        }
 
-        //public List<BankRates> SetRatesNull()
-        //{
-        //    var banks = GetAvailablePrograms();
-        //    var result = new List<BankRates>();
-        //    foreach (var bank in banks)
-        //    {
-        //        var bankRates = new BankRates { Active = 0, Installments = new List<Installment>() };
-        //        for (int i = 1; i <= MaxInstallment; i++)
-        //        {
-        //            bankRates.Installments.Add(new Installment { Value = 0.0f, Active = 0 });
-        //        }
-        //        result.Add(bankRates);
-        //    }
-        //    return result;
-        //}
+        public static List<EsnekposInstallment> SetRatesFromPost(List<EsnekposInstallment> postedData, string bankName)
+        {
+            var banks = GetAvailablePrograms();
+            var result = new List<EsnekposInstallment>();
 
-        //public string CreateRatesUpdateForm(List<BankRates> rates)
-        //{
-        //    string returnHtml = "<table class=\"esnekpos_table table\">" +
-        //                        "<thead><tr><th>Banka</th><th>Durum</th>";
-        //    for (int i = 1; i <= MaxInstallment; i++)
-        //    {
-        //        returnHtml += $"<th>{i} taksit</th>";
-        //    }
-        //    returnHtml += "</tr></thead><tbody>";
+            foreach (var bank in banks)
+            {
+                for (int i = 1; i <= MaxInstallment; i++)
+                {
+                    var installment = new EsnekposInstallment
+                    {
+                        Value = postedData.Find(data => bankName == bank.Name && data.Active == i)?.Value ?? 0.0,
+                        Active = postedData.Find(data => bankName == bank.Name && data.Active == i)?.Active ?? 0
+                    };
+                    result.Add(installment);
+                }
+            }
 
-        //    var banks = GetAvailablePrograms();
-        //    foreach (var bank in banks)
-        //    {
-        //        var bankRates = rates.Find(rate => rate.Name == bank.Name);
-        //        if (bankRates == null)
-        //            continue;
+            return result;
+        }
 
-        //        returnHtml += "<tr>" +
-        //                      $"<th><img src=\"{MaxInstallment}catalog/view/theme/default/image/esnekpos_payment/{bank.Name}.svg\" width=\"105px\"></th>" +
-        //                      "<th><select name=\"payment_esnekpos_payment_rates[" + bank.Name + "][active]\">" +
-        //                      "<option value=\"1\">Aktif</option>" +
-        //                      $"<option value=\"0\" {(int)bankRates.Active == 0 ? "selected=\"selected\"" : ""}>Pasif</option>" +
-        //                      "</select></th>";
+        public static List<EsnekposInstallment> SetRatesDefault()
+        {
+            var banks = GetAvailablePrograms();
+            var result = new List<EsnekposInstallment>();
 
-        //        foreach (var installment in bankRates.Installments)
-        //        {
-        //            var active = installment.Active;
-        //            var value = installment.Value;
-        //            returnHtml +=
-        //                "<td>" +
-        //                $"Aktif <input type=\"checkbox\" name=\"payment_esnekpos_payment_rates[{bank.Name}][installments][{i}][active]\" value=\"1\" {(int)active == 1 ? "checked=\"checked\"" : ""}/>" +
-        //                $"% <input type=\"number\" step=\"0.01\" maxlength=\"4\" size=\"4\" style=\"width:60px\" {(int)active == 0 ? "disabled=\"disabled\"" : ""} value=\"{value}\" name=\"payment_esnekpos_payment_rates[{bank.Name}][installments][{i}][value]\"/>" +
-        //                "</td>";
-        //        }
-        //        returnHtml += "</tr>";
-        //    }
+            foreach (var bank in banks)
+            {
+                for (int i = 1; i <= MaxInstallment; i++)
+                {
+                    var installment = new EsnekposInstallment
+                    {
+                        Value = (i == 1) ? 0.00 : 1 + i + (i / 5) + 0.1,
+                        Active = bank.Installments ? 1 : 0
+                    };
+                    result.Add(installment);
+                }
+            }
 
-        //    returnHtml += "</tbody></table>";
-        //    return returnHtml;
-        //}
+            return result;
+        }
 
-        //public List<BankRates> CalculatePrices(float price, List<BankRates> rates)
-        //{
-        //    var banks = GetAvailablePrograms();
-        //    var result = new List<BankRates>();
-        //    foreach (var bank in banks)
-        //    {
-        //        var bankRates = rates.Find(rate => rate.Name == bank.Name);
-        //        if (!bank.Installments || bankRates == null)
-        //            continue;
+        public static List<EsnekposInstallment> SetRatesNull()
+        {
+            var banks = GetAvailablePrograms();
+            var result = new List<EsnekposInstallment>();
 
-        //        var bankResult = new BankRates { Active = bankRates.Active, Installments = new List<Installment>() };
-        //        for (int i = 1; i <= MaxInstallment; i++)
-        //        {
-        //            var installmentValue = bankRates.Installments.Find(installment => installment.Value == i)?.Value ?? 0.0f;
-        //            bankResult.Installments.Add(new Installment
-        //            {
-        //                Value = (100 + installmentValue) * price / 100,
-        //                Active = installmentValue
-        //            });
-        //        }
-        //        result.Add(bankResult);
-        //    }
-        //    return result;
-        //}
+            foreach (var bank in banks)
+            {
+                for (int i = 1; i <= MaxInstallment; i++)
+                {
+                    var installment = new EsnekposInstallment
+                    {
+                        Value = 0,
+                        Active = 0
+                    };
+                    result.Add(installment);
+                }
+            }
+
+            return result;
+        }
+
+
+        // The rest of the methods can be similarly refactored using lists of custom classes.
+
+        // Note: For the HTML table generation, you can use C#'s StringBuilder or other approaches.
     }
 }

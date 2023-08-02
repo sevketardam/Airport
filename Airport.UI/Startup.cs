@@ -93,7 +93,7 @@ namespace Airport.UI
         {
             if (env.IsDevelopment())
             {
-                app.UseExceptionHandler("/error");
+                app.UseDeveloperExceptionPage();
             }
             else
             {
@@ -107,7 +107,9 @@ namespace Airport.UI
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
+
             app.UseCookiePolicy();
 
             app.UseSession();

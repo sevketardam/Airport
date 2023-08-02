@@ -1,0 +1,49 @@
+﻿@using Airport.UI.Models.ITransactions;
+@{
+    Layout = null;
+}
+
+@model PayDetail
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset =iso-8859-9" />
+</head>
+@*<body onload='document.forms[0].submit()'>*@
+<body>
+    <form action='@Model.POST_URL' method='POST' id="PaymentForm">
+        <input type='text' name='MERCHANT' value='@Model.Config.MERCHANT'>
+        <input type='text' name='MERCHANT_KEY' value='@Model.Config.MERCHANT_KEY'>
+        <input type='text' name='BACK_URL' value='@Model.Config.BACK_URL'>
+        <input type='text' name='PRICES_CURRENCY' value='@Model.Config.PRICES_CURRENCY'>
+        <input type='text' name='ORDER_REF_NUMBER' value='@Model.Config.ORDER_REF_NUMBER'>
+        <input type='text' name='ORDER_AMOUNT' value='@Model.Config.ORDER_AMOUNT'>
+        <input type='text' name='CC_NUMBER' value='@Model.CreditCard.CC_NUMBER'>
+        <input type='text' name='EXP_MONTH' value='@Model.CreditCard.EXP_MONTH'>
+        <input type='text' name='EXP_YEAR' value='@Model.CreditCard.EXP_YEAR'>
+        <input type='text' name='CC_CVV' value='@Model.CreditCard.CC_CVV'>
+        <input type='text' name='CC_OWNER' value='@Model.CreditCard.CC_OWNER'>
+        <input type='text' name='INSTALLMENT_NUMBER' value='@Model.CreditCard.INSTALLMENT_NUMBER'>
+        <input type='text' name='FIRST_NAME' value='@Model.Customer.FIRST_NAME'>
+        <input type='text' name='LAST_NAME' value='@Model.Customer.LAST_NAME'>
+        <input type='text' name='PHONE' value='@Model.Customer.PHONE'>
+        <input type='text' name='CITY' value='@Model.Customer.CITY'>
+        <input type='text' name='STATE' value='@Model.Customer.STATE'>
+        <input type='text' name='ADDRESS' value='@Model.Customer.ADDRESS'>
+        <input type='text' name='CLIENT_IP' value='@Model.Customer.CLIENT_IP'>
+        <input type='text' name='HASH' value='@Model.HASH'>
+        @foreach (var product in Model.Product)
+        {
+            <input type='hidden' name='PRODUCT_ID' value='@product.PRODUCT_ID'>
+            <input type='hidden' name='PRODUCT_NAME' value='@product.PRODUCT_NAME'>
+            <input type='hidden' name='PRODUCT_CATEGORY' value='@product.PRODUCT_CATEGORY'>
+            <input type='hidden' name='PRODUCT_DESCRIPTION' value='@product.PRODUCT_DESCRIPTION'>
+            <input type='hidden' name='PRODUCT_AMOUNT' value='@product.PRODUCT_AMOUNT'>
+        }
+
+        <button type="submit">submit</button>
+    </form>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</body>
+</html>

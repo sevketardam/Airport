@@ -18,6 +18,9 @@ using static iText.Svg.SvgConstants;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using Airport.UI.Models.ITransactions;
+using static Org.BouncyCastle.Utilities.Test.FixedSecureRandom;
+using System.Net.Http;
+using System.Text;
 
 namespace Airport.UI.Controllers
 {
@@ -71,81 +74,79 @@ namespace Airport.UI.Controllers
             _withdrawalRequest = withdrawalRequest;
         }
 
-
         [HttpGet("denemeee")]
-        public IActionResult deneme()
+        public async Task<IActionResult> deneme(string data, bool json = false)
         {
-            var adSoyadParse = "Sevket Arda".Split(' ');
-            string musteriSoyad = adSoyadParse[adSoyadParse.Length - 1];
-            adSoyadParse = adSoyadParse.Take(adSoyadParse.Length - 1).ToArray();
-            string musteriAdi = String.Join(" ", adSoyadParse);
 
-            var linkData = new Dictionary<string, string>
+            var newPayment = new PayDetail();
+
+            newPayment.POST_URL = "https://posservicetest.esnekpos.com/api/pay/EYV3DPay";
+
+            newPayment.Config = new PayConfig()
             {
-                {"productName", "deneme22"},
-                {"productData", JsonConvert.SerializeObject(new List<object>
-                    {
-                        new
-                        {
-                            productName = "deneme12",
-                            productPrice = "1",
-                            productType = "DIJITAL_URUN"
-                        }
-                    })
-    },
-                {"productType", "DIJITAL_URUN"},
-                {"productsTotalPrice", "10"},
-                {"orderPrice", "10"},
-                {"currency", "TRY"},
-                {"orderId", "1231236323"},
-                {"locale", "TR".ToLower()},
-                {"conversationId", "12315323"},
-                {"buyerName", musteriAdi},
-                {"buyerSurName", musteriSoyad},
-                {"buyerGsmNo", "5555555555"},
-                {"buyerIp", _payment.GetClientIp()},
-                {"buyerMail", "asd@ad.com"},
-                {"buyerAdress", "Deneme"},
-                {"buyerCountry", "Turkey"},
-                {"buyerCity", "Istanbul"},
-                {"buyerDistrict", "34000"},
-                {"callbackOkUrl", "/tamamlandi"},
-                {"callbackFailUrl", "/tamamlanmadi"},
+                MERCHANT = "TEST1234",
+                MERCHANT_KEY = "4oK26hK8MOXrIV1bzTRVPA==",
+                BACK_URL = "http://localhost:55032/fiyat-gel",
+                ORDER_AMOUNT = "80",
+                ORDER_REF_NUMBER = "RFN4786",
+                PRICES_CURRENCY = "TRY"
             };
 
-            //        var linkData = new Dictionary<string, string>
-            //        {
-            //            productName = "deneme2",
-            //            productData = new List<object>
-            //{
-            //    new
-            //    {
-            //        productName = "deneme",
-            //        productPrice = "1",
-            //        productType = "DIJITAL_URUN"
-            //    }
-            //},
-            //            productType = "DIJITAL_URUN",
-            //            productsTotalPrice = "10",
-            //            orderPrice = "10",
-            //            currency = "TRY",
-            //            orderId = "123123",
-            //            locale = "TR".ToLower(),
-            //            conversationId = "123",
-            //            buyerName = musteriAdi,
-            //            buyerSurName = musteriSoyad,
-            //            buyerGsmNo = "5555555555",
-            //            buyerIp = _payment.GetClientIp(HttpContext), // This is assuming you have a similar function in your Vallet_light_api class
-            //            buyerMail = "asd@ad.com",
-            //            buyerAdress = "deneme adres",
-            //            buyerCountry = "Turkey",
-            //            buyerCity = "Istanbul",
-            //            buyerDistrict = "",
-            //            callbackOkUrl = "/tamamlandi",
-            //            callbackFailUrl = "/tamamlanmadi"
-            //        };
+            newPayment.CreditCard = new PayCard()
+            {
+                CC_NUMBER = "5100050000006661",
+                CC_CVV = "000",
+                EXP_MONTH = "12",
+                EXP_YEAR = "2023",
+                CC_OWNER = "TEST USER",
+                INSTALLMENT_NUMBER = "1"
+            };
 
-            var result = _payment.CreatePaymentLink(linkData);
+            newPayment.Customer = new PayCustomer()
+            {
+                FIRST_NAME = "firstName",
+                LAST_NAME = "LastName",
+                MAIL = "asdasd@asdad.com",
+                PHONE = "05455456558",
+                CITY = "İstanbul",
+                STATE = "Kağıthane",
+                ADDRESS = "Merkez Mahallesi, Ayazma Cd. No:37/91 Papirus Plaza Kat:5, 34406 Kağıthane / İSTANBUL",
+                CLIENT_IP = HttpContext.Connection.RemoteIpAddress?.ToString()
+            };
+
+            newPayment.Product.Add(new PayProduct
+            {
+                PRODUCT_AMOUNT = "80",
+                PRODUCT_CATEGORY = "TRANSFER",
+                PRODUCT_DESCRIPTION = "A'dan B'ye Transfer",
+                PRODUCT_NAME = "4565456 Reservasyon Kodu",
+                PRODUCT_ID = "4565456"
+            });
+
+
+            newPayment.HASH = EsnekposConfig.GetCheckKey("123456", "isyeri@bkm.com", "147258");
+
+
+            //using (var client = new HttpClient())
+            //{
+
+            //    //client.DefaultRequestHeaders.Add("Content-Type", "application/json");
+
+            //    var content = new StringContent(JsonConvert.SerializeObject(newPayment), Encoding.UTF8, "application/json");
+            //    var response = await client.PostAsync(url, content);
+            //    response.EnsureSuccessStatusCode();
+            //    var s = await response.Content.ReadAsStringAsync();
+            //}
+
+            return View(newPayment);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("fiyat-gel")]
+        public async Task<IActionResult> FiyatAl(string RETURN_CODE)
+        {
+            
+
             return View();
         }
 
