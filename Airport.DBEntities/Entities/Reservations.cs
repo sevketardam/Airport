@@ -51,6 +51,8 @@ namespace Airport.DBEntities.Entities
         public string? DriverSurname { get; set; }
         public string? DriverPhone { get; set; }
         public string? ManuelPlate { get; set; }
+        public string PaymentStatus { get; set; }
+        public string? PaymentStatusText { get; set; }
 
 
         public double TotalPrice { get; set; }
@@ -73,6 +75,7 @@ namespace Airport.DBEntities.Entities
         public List<ReservationPeople> ReservationPeoples { get; set; }
         public Drivers Driver { get; set; }
         public List<ReservationServicesTable> ReservationServicesTables { get; set; }
+        public List<PaymentDetail> PaymentDetails { get; set; }
         public Coupons Coupons { get; set; }
     }
 }

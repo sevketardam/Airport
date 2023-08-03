@@ -433,69 +433,21 @@ namespace Airport.UI.Controllers
                 var reservation = HttpContext.Session.MyGet<Reservations>("reservation");
                 if (reservation != null)
                 {
-                    if (cardDetail.CardNumber == "1111-1111-1111-1111")
+                    cardDetail.InstallmentNumber = "1";
+                    var returnStatus = await _payment.CreatePayment(cardDetail, reservation);
+                    if (returnStatus.RETURN_CODE == "0")
                     {
-                        var getCoupon = _coupons.Select().FirstOrDefault(a => a.Active && a.Id == reservation.Coupon && a.CouponStartDate <= DateTime.Now
-                        && a.CouponFinishDate >= DateTime.Now && (a.IsPerma || a.CouponLimit > a.UsingCount));
-
-                        if (getCoupon != null)
+                        if (!_reservations.SelectByFunc(a=>a.ReservationCode == reservation.ReservationCode).Any())
                         {
-                            getCoupon.UsingCount++;
-                            _coupons.Update(getCoupon);
-                        }
+                            var getCoupon = _coupons.Select().FirstOrDefault(a => a.Active && a.Id == reservation.Coupon && a.CouponStartDate <= DateTime.Now
+&& a.CouponFinishDate >= DateTime.Now && (a.IsPerma || a.CouponLimit > a.UsingCount));
 
-                        var createdReservation = _reservations.Insert(new Reservations
-                        {
-                            DropLatLng = reservation.DropLatLng,
-                            PickLatLng = reservation.PickLatLng,
-                            Phone = reservation.Phone,
-                            DropPlaceId = reservation.DropPlaceId,
-                            PickPlaceId = reservation.PickPlaceId,
-                            Email = reservation.Email,
-                            LocationCarId = reservation.LocationCars.Id,
-                            Name = reservation.Name,
-                            ReservationCode = reservation.ReservationCode,
-                            Surname = reservation.Surname,
-                            DropFullName = reservation.DropFullName,
-                            PickFullName = reservation.PickFullName,
-                            PeopleCount = reservation.PeopleCount,
-                            ReservationDate = reservation.ReservationDate,
-                            ReturnDate = reservation.ReturnDate,
-                            ReturnStatus = reservation.ReturnStatus,
-                            DistanceText = reservation.DistanceText,
-                            DurationText = reservation.DurationText,
-                            Discount = reservation.Discount,
-                            IsDiscount = reservation.IsDiscount,
-                            UserId = reservation.UserId,
-                            ExtraServiceFee = reservation.ExtraServiceFee,
-                            Comment = reservation.Comment,
-                            Status = reservation.Status,
-                            IsDelete = reservation.IsDelete,
-                            HidePrice = reservation.HidePrice,
-                            Coupon = reservation.Coupon,
-                            RealPhone = reservation.RealPhone,
-                            DiscountText = reservation.DiscountText,
-                            ReservationUserId = reservation.ReservationUserId,
-                            Rate = reservation.Rate,
-                            LastUpdate = DateTime.Now,
-                            CreateDate = DateTime.Now,
-                            IsThisReturn = false, 
-
-                            PartnerFee = reservation.PartnerFee,
-                            SalesFee = reservation.SalesFee,
-                            ServiceFee = reservation.ServiceFee,
-                            OfferPrice = reservation.OfferPrice,
-                            TotalPrice = reservation.TotalPrice,
-                            GlobalPartnerFee = reservation.GlobalPartnerFee,
-                            DiscountServiceFee = reservation.DiscountServiceFee,
-                            DiscountOfferPrice = reservation.DiscountOfferPrice,
-                            DiscountExtraService = reservation.DiscountExtraService,
-                        });
-
-
-                        if (createdReservation.ReturnStatus)
-                        {
-                            _reservations.Insert(new Reservations
+                            if (getCoupon != null)
+                            {
+                                getCoupon.UsingCount++;
+                                _coupons.Update(getCoupon);
+                            }
+                            var createdReservation = _reservations.Insert(new Reservations
                             {
                                 DropLatLng = reservation.DropLatLng,
                                 PickLatLng = reservation.PickLatLng,
@@ -510,9 +462,9 @@ namespace Airport.UI.Controllers
                                 DropFullName = reservation.DropFullName,
                                 PickFullName = reservation.PickFullName,
                                 PeopleCount = reservation.PeopleCount,
-                                ReservationDate = reservation.ReturnDate,
+                                ReservationDate = reservation.ReservationDate,
                                 ReturnDate = reservation.ReturnDate,
-                                ReturnStatus = false,
+                                ReturnStatus = reservation.ReturnStatus,
                                 DistanceText = reservation.DistanceText,
                                 DurationText = reservation.DurationText,
                                 Discount = reservation.Discount,
@@ -530,8 +482,7 @@ namespace Airport.UI.Controllers
                                 Rate = reservation.Rate,
                                 LastUpdate = DateTime.Now,
                                 CreateDate = DateTime.Now,
-                                IsThisReturn = true,
-
+                                IsThisReturn = false,
                                 PartnerFee = reservation.PartnerFee,
                                 SalesFee = reservation.SalesFee,
                                 ServiceFee = reservation.ServiceFee,
@@ -541,45 +492,99 @@ namespace Airport.UI.Controllers
                                 DiscountServiceFee = reservation.DiscountServiceFee,
                                 DiscountOfferPrice = reservation.DiscountOfferPrice,
                                 DiscountExtraService = reservation.DiscountExtraService,
+                                PaymentStatus = "1"
                             });
-                        }
 
-                        reservation.Id = createdReservation.Id;
+                            if (createdReservation.ReturnStatus)
+                            {
+                                _reservations.Insert(new Reservations
+                                {
+                                    DropLatLng = reservation.DropLatLng,
+                                    PickLatLng = reservation.PickLatLng,
+                                    Phone = reservation.Phone,
+                                    DropPlaceId = reservation.DropPlaceId,
+                                    PickPlaceId = reservation.PickPlaceId,
+                                    Email = reservation.Email,
+                                    LocationCarId = reservation.LocationCars.Id,
+                                    Name = reservation.Name,
+                                    ReservationCode = reservation.ReservationCode,
+                                    Surname = reservation.Surname,
+                                    DropFullName = reservation.DropFullName,
+                                    PickFullName = reservation.PickFullName,
+                                    PeopleCount = reservation.PeopleCount,
+                                    ReservationDate = reservation.ReturnDate,
+                                    ReturnDate = reservation.ReturnDate,
+                                    ReturnStatus = false,
+                                    DistanceText = reservation.DistanceText,
+                                    DurationText = reservation.DurationText,
+                                    Discount = reservation.Discount,
+                                    IsDiscount = reservation.IsDiscount,
+                                    UserId = reservation.UserId,
+                                    ExtraServiceFee = reservation.ExtraServiceFee,
+                                    Comment = reservation.Comment,
+                                    Status = reservation.Status,
+                                    IsDelete = reservation.IsDelete,
+                                    HidePrice = reservation.HidePrice,
+                                    Coupon = reservation.Coupon,
+                                    RealPhone = reservation.RealPhone,
+                                    DiscountText = reservation.DiscountText,
+                                    ReservationUserId = reservation.ReservationUserId,
+                                    Rate = reservation.Rate,
+                                    LastUpdate = DateTime.Now,
+                                    CreateDate = DateTime.Now,
+                                    IsThisReturn = true,
 
-                        reservation.ReservationPeoples?.ForEach(item => item.ReservationId = createdReservation.Id);
+                                    PartnerFee = reservation.PartnerFee,
+                                    SalesFee = reservation.SalesFee,
+                                    ServiceFee = reservation.ServiceFee,
+                                    OfferPrice = reservation.OfferPrice,
+                                    TotalPrice = reservation.TotalPrice,
+                                    GlobalPartnerFee = reservation.GlobalPartnerFee,
+                                    DiscountServiceFee = reservation.DiscountServiceFee,
+                                    DiscountOfferPrice = reservation.DiscountOfferPrice,
+                                    DiscountExtraService = reservation.DiscountExtraService,
+                                    PaymentStatus = "1"
+                                });
+                            }
 
-                        reservation.ReservationServicesTables?.ForEach(item => item.ReservationId = createdReservation.Id);
+                            reservation.Id = createdReservation.Id;
 
-                        if (reservation.ReservationPeoples != null)
-                        {
-                            _reservationsPeople.InsertRage(reservation.ReservationPeoples);
-                        }
+                            reservation.ReservationPeoples?.ForEach(item => item.ReservationId = createdReservation.Id);
 
-                        reservation.ReservationServicesTables = reservation.ReservationServicesTables.Where(a => a.PeopleCount > 0).ToList();
-                        if (reservation.ReservationServicesTables != null && reservation.ReservationServicesTables.Count > 0)
-                        {
-                            _reservationServicesTable.InsertRage(reservation.ReservationServicesTables);
-                        }
+                            reservation.ReservationServicesTables?.ForEach(item => item.ReservationId = createdReservation.Id);
 
-                        PdfCreator pdfCreator = new PdfCreator(_env);
-                        pdfCreator.CreateReservationPDF(reservation.ReservationCode + "-" + reservation.Id, reservation);
+                            if (reservation.ReservationPeoples != null)
+                            {
+                                _reservationsPeople?.InsertRage(reservation.ReservationPeoples);
+                            }
 
-                        _mail.SendReservationMail(reservation);
+                            reservation.ReservationServicesTables = reservation.ReservationServicesTables.Where(a => a.PeopleCount > 0).ToList();
+                            if (reservation.ReservationServicesTables != null && reservation.ReservationServicesTables.Count > 0)
+                            {
+                                _reservationServicesTable.InsertRage(reservation.ReservationServicesTables);
+                            }
 
-                        var mesaj = new Mesaj[]
-                        {
+                            PdfCreator pdfCreator = new PdfCreator(_env);
+                            pdfCreator.CreateReservationPDF(reservation.ReservationCode + "-" + reservation.Id, reservation);
+
+                            _mail.SendReservationMail(reservation);
+
+                            var mesaj = new Mesaj[]
+                            {
                             new Mesaj
                             {
                                 dest = reservation.RealPhone,
                                 msg = @$"Your reservation code {reservation.ReservationCode} has been created. Voucher Link {_configuration["PageLinks:PageGlobalLink"]}/pdf/{reservation.ReservationCode}-{reservation.Id}.pdf"
                             }
-                        };
+                            };
 
-                        _sms.SmsForReservation(mesaj);
+                            _sms.SmsForReservation(mesaj);
 
-                        HttpContext.Session.MySet("reservation", createdReservation);
+                            HttpContext.Session.MySet("reservation", reservation);
+                        }
 
-                        return RedirectToAction("CreatedReservationDetail", "Reservation", new { id = reservation.Id });
+                       
+                        return Redirect(returnStatus.URL_3DS);
                     }
                     else
                     {
@@ -588,9 +593,9 @@ namespace Airport.UI.Controllers
                 }
                 return NotFound();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception();
+                throw;
             }
         }
 
@@ -609,12 +614,19 @@ namespace Airport.UI.Controllers
         }
 
         [HttpGet("reservation-cancel")]
-        public IActionResult CancelReservation()
+        public IActionResult CancelReservation(string error_code,string error_text,string reservationId)
         {
             var reservation = HttpContext.Session.MyGet<Reservations>("reservation");
             if (reservation != null)
             {
-                return View();
+                var PageVM = new CancelPaymentVM()
+                {
+                    Error_Code = error_code,
+                    Error_Text = error_text,
+                    ReservationId = reservationId
+                };
+
+                return View(PageVM);
             }
             return NotFound();
         }

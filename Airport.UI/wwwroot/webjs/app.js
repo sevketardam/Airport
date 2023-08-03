@@ -441,6 +441,7 @@ $('form[id="payForm"]').validate({
     rules: {
         CardHolderName: {
             required: true,
+            minlength: 6,
         },
         CardNumber: {
             required: true,

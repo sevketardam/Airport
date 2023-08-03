@@ -48,7 +48,8 @@ namespace Airport.UI.Controllers
         IPayment _payment;
         ITReservationHelpers _tReservationHelpers;
         IWithdrawalRequestDAL _withdrawalRequest;
-        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars, IFileOperation fileOperation, IUserDocsDAL docs, IPayment payment, ITReservationHelpers tReservationHelpers, IWithdrawalRequestDAL withdrawalRequest)
+        IPaymentDetailDAL _paymentDetail;
+        public PanelController(IReservationsDAL reservations, IDriversDAL drivers, IGetCarDetail carDetail, ILocationCarsDAL locationCars, IReservationPeopleDAL reservationPeople, ILocationsDAL locations, ILocationCarsFareDAL locationCarsFare, IUserDatasDAL userDatas, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, IWebHostEnvironment env, IMail mail, ILoginAuthDAL loginAuth, ICouponsDAL coupons, IMyCarsDAL myCars, IFileOperation fileOperation, IUserDocsDAL docs, IPayment payment, ITReservationHelpers tReservationHelpers, IWithdrawalRequestDAL withdrawalRequest, IPaymentDetailDAL paymentDetail)
         {
             _drivers = drivers;
             _reservations = reservations;
@@ -72,82 +73,149 @@ namespace Airport.UI.Controllers
             _payment = payment;
             _tReservationHelpers = tReservationHelpers;
             _withdrawalRequest = withdrawalRequest;
+            _paymentDetail = paymentDetail;
         }
 
         [HttpGet("denemeee")]
         public async Task<IActionResult> deneme(string data, bool json = false)
         {
-
-            var newPayment = new PayDetail();
-
-            newPayment.POST_URL = "https://posservicetest.esnekpos.com/api/pay/EYV3DPay";
-
-            newPayment.Config = new PayConfig()
+            try
             {
-                MERCHANT = "TEST1234",
-                MERCHANT_KEY = "4oK26hK8MOXrIV1bzTRVPA==",
-                BACK_URL = "http://localhost:55032/fiyat-gel",
-                ORDER_AMOUNT = "80",
-                ORDER_REF_NUMBER = "RFN4786",
-                PRICES_CURRENCY = "TRY"
-            };
+                var newPayment = new PayDetail();
 
-            newPayment.CreditCard = new PayCard()
+                newPayment.POST_URL = "https://posservicetest.esnekpos.com/api/pay/EYV3DPay";
+
+                newPayment.Config = new PayConfig()
+                {
+                    MERCHANT = "TEST1234",
+                    MERCHANT_KEY = "4oK26hK8MOXrIV1bzTRVPA==",
+                    BACK_URL = "https://localhost:5001/fiyat-gel",
+                    ORDER_AMOUNT = "80",
+                    ORDER_REF_NUMBER = "RFN4786234",
+                    PRICES_CURRENCY = "TRY"
+                };
+
+                newPayment.CreditCard = new PayCard()
+                {
+                    CC_NUMBER = "9792380000000009",
+                    CC_CVV = "000",
+                    EXP_MONTH = "12",
+                    EXP_YEAR = "2023",
+                    CC_OWNER = "TEST USER",
+                    INSTALLMENT_NUMBER = "1"
+                };
+
+                newPayment.Customer = new PayCustomer()
+                {
+                    FIRST_NAME = "firstName",
+                    LAST_NAME = "LastName",
+                    MAIL = "asdasd@asdad.com",
+                    PHONE = "05455456558",
+                    CITY = "İstanbul",
+                    STATE = "Kağıthane",
+                    ADDRESS = "Merkez Mahallesi, Ayazma Cd. No:37/91 Papirus Plaza Kat:5, 34406 Kağıthane / İSTANBUL",
+                    CLIENT_IP = HttpContext.Connection.RemoteIpAddress?.ToString()
+                };
+
+                newPayment.Product.Add(new PayProduct
+                {
+                    PRODUCT_AMOUNT = "80",
+                    PRODUCT_CATEGORY = "TRANSFER",
+                    PRODUCT_DESCRIPTION = "A'dan B'ye Transfer",
+                    PRODUCT_NAME = "4565456 Reservasyon Kodu",
+                    PRODUCT_ID = "4565456"
+                });
+
+
+                newPayment.HASH = EsnekposConfig.GetCheckKey("123456", "isyeri@bkm.com", "147258");
+
+                var s = "";
+                using (var client = new HttpClient())
+                {
+                    var content = new StringContent(JsonConvert.SerializeObject(newPayment), Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync(newPayment.POST_URL, content);
+                    response.EnsureSuccessStatusCode();
+                    s = await response.Content.ReadAsStringAsync();
+                }
+
+                //string dosyaYolu = "wwwroot/error.txt";
+
+                //using (StreamWriter yazici = new StreamWriter(dosyaYolu))
+                //{
+                //    string metin = s;
+                //    yazici.WriteLine(metin);
+                //}
+
+                return View(newPayment);
+            }
+            catch (Exception ex)
             {
-                CC_NUMBER = "5100050000006661",
-                CC_CVV = "000",
-                EXP_MONTH = "12",
-                EXP_YEAR = "2023",
-                CC_OWNER = "TEST USER",
-                INSTALLMENT_NUMBER = "1"
-            };
+                string dosyaYolu = "wwwroot/error.txt";
 
-            newPayment.Customer = new PayCustomer()
-            {
-                FIRST_NAME = "firstName",
-                LAST_NAME = "LastName",
-                MAIL = "asdasd@asdad.com",
-                PHONE = "05455456558",
-                CITY = "İstanbul",
-                STATE = "Kağıthane",
-                ADDRESS = "Merkez Mahallesi, Ayazma Cd. No:37/91 Papirus Plaza Kat:5, 34406 Kağıthane / İSTANBUL",
-                CLIENT_IP = HttpContext.Connection.RemoteIpAddress?.ToString()
-            };
-
-            newPayment.Product.Add(new PayProduct
-            {
-                PRODUCT_AMOUNT = "80",
-                PRODUCT_CATEGORY = "TRANSFER",
-                PRODUCT_DESCRIPTION = "A'dan B'ye Transfer",
-                PRODUCT_NAME = "4565456 Reservasyon Kodu",
-                PRODUCT_ID = "4565456"
-            });
-
-
-            newPayment.HASH = EsnekposConfig.GetCheckKey("123456", "isyeri@bkm.com", "147258");
-
-
-            //using (var client = new HttpClient())
-            //{
-
-            //    //client.DefaultRequestHeaders.Add("Content-Type", "application/json");
-
-            //    var content = new StringContent(JsonConvert.SerializeObject(newPayment), Encoding.UTF8, "application/json");
-            //    var response = await client.PostAsync(url, content);
-            //    response.EnsureSuccessStatusCode();
-            //    var s = await response.Content.ReadAsStringAsync();
-            //}
-
-            return View(newPayment);
+                using (StreamWriter yazici = new StreamWriter(dosyaYolu))
+                {
+                    string metin = ex.ToString();
+                    yazici.WriteLine(metin);
+                }
+                throw;
+            }
         }
 
         [AllowAnonymous]
-        [HttpPost("fiyat-gel")]
-        public async Task<IActionResult> FiyatAl(string RETURN_CODE)
+        [HttpPost("is-payment-success")]
+        public IActionResult FiyatAl(string ORDER_REF_NUMBER, string RETURN_CODE, string RETURN_MESSAGE, string DATE)
         {
+            try
+            {
+                var reservation = _reservations.SelectByFunc(a => a.ReservationCode == ORDER_REF_NUMBER && !a.IsThisReturn).FirstOrDefault();
+                if (reservation is not null)
+                {
+                    if (RETURN_CODE == "0")
+                    {
+                        reservation.PaymentStatus = "0";
+                        reservation.PaymentStatusText = "Ödeme Başarılı";
+                        _reservations.Update(reservation);
+
+                        _paymentDetail.Insert(new PaymentDetail
+                        {
+                            Date = DateTime.Now,
+                            PaymentPrice = reservation.TotalPrice.ToString(),
+                            PaymentStatusCode = RETURN_CODE,
+                            PaymentStatusText = RETURN_MESSAGE,
+                            POSTDate = DATE,
+                            ReservationCode = reservation.ReservationCode,
+                            ReservationId = reservation.Id
+
+                        });
+
+                        return RedirectToAction("CreatedReservationDetail", "Reservation", new { id = reservation.Id });
+                    }
+                    else
+                    {
+                        _paymentDetail.Insert(new PaymentDetail
+                        {
+                            Date = DateTime.Now,
+                            PaymentPrice = reservation.TotalPrice.ToString(),
+                            PaymentStatusCode = RETURN_CODE,
+                            PaymentStatusText = RETURN_MESSAGE,
+                            POSTDate = DATE,
+                            ReservationCode = reservation.ReservationCode,
+                            ReservationId = reservation.Id
+
+                        });
+
+                        return RedirectToAction("CancelReservation", "Reservation", new { error_code = RETURN_CODE, error_text = RETURN_MESSAGE,reservationId = reservation.Id });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             
 
-            return View();
+            return BadRequest();
         }
 
 

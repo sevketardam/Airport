@@ -181,6 +181,11 @@ namespace Airport.DBEntities.Context
                 .WithMany(a => a.WithdrawalRequests)
                 .HasForeignKey(a => a.UserId);
 
+            modelBuilder.Entity<PaymentDetail>()
+                .HasOne<Reservations>(a => a.Reservation)
+                .WithMany(a => a.PaymentDetails)
+                .HasForeignKey(a => a.ReservationId);
+
             base.OnModelCreating(modelBuilder);
         }
 

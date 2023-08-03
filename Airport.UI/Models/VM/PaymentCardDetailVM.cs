@@ -6,5 +6,7 @@
         public string CardNumber { get; set; }
         public string CardDate { get; set; }
         public string CVC { get; set; }
+        public string InstallmentNumber{ get; set; }
+
     }
 }

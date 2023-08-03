@@ -16,18 +16,21 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-
+using System.Net;
 
 namespace Airport.UI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
+
+        private readonly IWebHostEnvironment _env;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -65,6 +68,7 @@ namespace Airport.UI
             services.AddScoped<IUserDocsDAL, UserDocsDAL>();
             services.AddScoped<IGlobalSettingsDAL, GlobalSettingsDAL>();
             services.AddScoped<IWithdrawalRequestDAL, WithdrawalRequestDAL>();
+            services.AddScoped<IPaymentDetailDAL, PaymentDetailDAL>();
 
 
             services.AddScoped<IMail, MailRepo>();
@@ -86,6 +90,7 @@ namespace Airport.UI
                 opt.AccessDeniedPath = "/NotFound";
             });
 
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,11 +99,15 @@ namespace Airport.UI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseHsts();
             }
             else
             {
+                //app.UseDeveloperExceptionPage();
                 app.UseExceptionHandler("/error");
             }
+
+            //app.UseHttpsRedirection();
 
             app.UseStatusCodePagesWithReExecute("/Error/Index", "?code={0}");
 

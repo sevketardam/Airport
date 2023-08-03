@@ -1,4 +1,6 @@
-﻿using Airport.UI.Models.Interface;
+﻿using Airport.DBEntities.Entities;
+using Airport.UI.Models.Interface;
+using Airport.UI.Models.VM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -16,10 +18,10 @@ namespace Airport.UI.Models.ITransactions
     public class PaymentMethods : IPayment
     {
         private IConfiguration Configuration { get; set; }
-        private string UserName => Configuration["PosInfo:UserName"];
-        private string Password => Configuration["PosInfo:Password"];
-        private string ShopCode => Configuration["PosInfo:ShopCode"];
-        private string Hash => Configuration["PosInfo:HashCode"];
+        private string MERCHANT => Configuration["Payment:EsnekPos:Merchant"];
+        private string MERCHANT_KEY => Configuration["Payment:EsnekPos:MerchantKey"];
+        private string BACK_URL => Configuration["Payment:EsnekPos:BackURL"];
+        private string POST_URL => Configuration["Payment:EsnekPos:PostURL"];
         public HttpContext Context { get; set; }
 
 
@@ -29,137 +31,71 @@ namespace Airport.UI.Models.ITransactions
             Context = httpContextAccessor.HttpContext;
         }
 
-        public string HashGenerate(string hashCode)
+        public async Task<ReturnPayment> CreatePayment(PaymentCardDetailVM cardDetail,Reservations reservation)
         {
-            string concatenatedString = UserName + Password + ShopCode + hashCode + Hash;
-            byte[] sha1Bytes = SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(concatenatedString));
-            string hashed = BitConverter.ToString(sha1Bytes).Replace("-", "");
-            byte[] result = new byte[hashed.Length / 2];
-            for (int i = 0; i < result.Length; i++)
-            {
-                result[i] = Convert.ToByte(hashed.Substring(i * 2, 2), 16);
-            }
-            return Convert.ToBase64String(result);
-        }
+            var newPayDetail = new PayDetail();
 
-        public double ReservationPrice(int StartForm, double KM, int PriceType, int UpTo, double fare)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<Dictionary<string, string>> CreatePaymentLink(Dictionary<string, string> OrderData)
-        {
-            var postData = new Dictionary<string, string>
+            newPayDetail.Config = new PayConfig()
             {
-                {"userName", this.UserName},
-                {"password", this.Password},
-                {"shopCode", this.ShopCode},
-                {"productName", OrderData["productName"]},
-                {"productData", OrderData["productData"]},
-                {"productType", OrderData["productType"]},
-                {"productsTotalPrice", OrderData["productsTotalPrice"]},
-                {"orderPrice", OrderData["orderPrice"]},
-                {"currency", OrderData["currency"]},
-                {"orderId", OrderData["orderId"]},
-                {"locale", OrderData["locale"]},
-                {"conversationId", OrderData["conversationId"]},
-                {"buyerName", OrderData["buyerName"]},
-                {"buyerSurName", OrderData["buyerSurName"]},
-                {"buyerGsmNo", OrderData["buyerGsmNo"]},
-                {"buyerIp", OrderData["buyerIp"]},
-                {"buyerMail", OrderData["buyerMail"]},
-                {"buyerAdress", OrderData["buyerAdress"]},
-                {"buyerCountry", OrderData["buyerCountry"]},
-                {"buyerCity", OrderData["buyerCity"]},
-                {"buyerDistrict", OrderData["buyerDistrict"]},
-                {"callbackOkUrl", OrderData["callbackOkUrl"]},
-                {"callbackFailUrl", OrderData["callbackFailUrl"]},
-                {"module", "NIVUSOSYAL-V1.003"}
+                MERCHANT = this.MERCHANT,
+                MERCHANT_KEY = this.MERCHANT_KEY,
+                BACK_URL = this.BACK_URL,
+                ORDER_AMOUNT = reservation.TotalPrice.ToString(),
+                ORDER_REF_NUMBER = reservation.ReservationCode,
+                PRICES_CURRENCY = "EUR"
             };
 
-            postData["hash"] = HashGenerate(postData["orderId"] + postData["currency"] + postData["orderPrice"] + postData["productsTotalPrice"] + postData["productType"] + postData["callbackOkUrl"] + postData["callbackFailUrl"]);
-
-            var response = await SendPost("https://www.vallet.com.tr/api/v1/create-payment-link", postData);
-            if (response["status"] == "success" && response.ContainsKey("payment_page_url"))
+            newPayDetail.CreditCard = new PayCard()
             {
-                return response;
-            }
-            else
-            {
-                return response;
-            }
-        }
-
-      
-
-        public async Task<Dictionary<string, string>> SendPost(string postUrl, Dictionary<string, string> postData)
-        {
-            var httpClient = new HttpClient();
-            var postContent = new FormUrlEncodedContent(postData);
-
-            HttpResponseMessage response = null;
-            Dictionary<string, string> result = null;
-
-            try
-            {
-                response = await httpClient.PostAsync(postUrl, postContent);
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    result = JsonConvert.DeserializeObject<Dictionary<string, string>>(content);
-                    if (result == null)
-                    {
-                        result = new Dictionary<string, string>
-                {
-                    { "status", "error" },
-                    { "errorMessage", "Dönen cevap Array değildi" }
-                };
-                    }
-                }
-                else
-                {
-                    result = new Dictionary<string, string>
-            {
-                { "status", "error" },
-                { "errorMessage", "Curl Geçersiz bir cevap aldı" }
+                CC_NUMBER = cardDetail.CardNumber.Replace("-",""),
+                CC_CVV = cardDetail.CVC,
+                EXP_MONTH = cardDetail.CardDate.Split("/")[0],
+                EXP_YEAR = cardDetail.CardDate.Split("/")[1],
+                CC_OWNER = cardDetail.CardHolderName,
+                INSTALLMENT_NUMBER = cardDetail.InstallmentNumber
             };
-                }
-            }
-            catch (Exception ex)
+
+            newPayDetail.Customer = new PayCustomer()
             {
-                result = new Dictionary<string, string>
-        {
-            { "status", "error" },
-            { "errorMessage", ex.Message }
-        };
+                FIRST_NAME = reservation.Name,
+                LAST_NAME = reservation.Surname,
+                MAIL = reservation.Email,
+                PHONE = reservation.RealPhone,
+                CITY = "",
+                STATE = "",
+                ADDRESS = reservation.PickFullName,
+                CLIENT_IP = Context.Connection.RemoteIpAddress?.ToString()
+            };
+
+            newPayDetail.Product.Add(new PayProduct
+            {
+                PRODUCT_AMOUNT = reservation.ReturnStatus ? Math.Round(reservation.TotalPrice / 2,2).ToString() : reservation.TotalPrice.ToString(),
+                PRODUCT_CATEGORY = "TRANSFER",
+                PRODUCT_DESCRIPTION = $"{reservation.PickFullName}'dan {reservation.DropFullName}'ye Transfer",
+                PRODUCT_NAME = $"{reservation.ReservationCode} Kodlu Reservasyon'un Gidiş Ücreti",
+                PRODUCT_ID = reservation.ReservationCode.ToString()
+            });
+
+            if (reservation.ReturnStatus)
+            {
+                newPayDetail.Product.Add(new PayProduct
+                {
+                    PRODUCT_AMOUNT = Math.Round(reservation.TotalPrice / 2, 2).ToString(),
+                    PRODUCT_CATEGORY = "TRANSFER",
+                    PRODUCT_DESCRIPTION = $"{reservation.DropFullName}'dan {reservation.PickFullName}'ye Transfer",
+                    PRODUCT_NAME = $"{reservation.ReservationCode} Kodlu Reservasyon'un Dönüş Ücreti",
+                    PRODUCT_ID = reservation.ReservationCode.ToString()
+                });
             }
 
-            return result;
-        }
-
-        public string GetClientIp()
-        {
-            if (Context.Request.Headers.ContainsKey("X-Real-IP"))
+            using (var client = new HttpClient())
             {
-                return Context.Request.Headers["X-Real-IP"];
+                var content = new StringContent(JsonConvert.SerializeObject(newPayDetail), Encoding.UTF8, "application/json");
+                var response = await client.PostAsync(POST_URL, content);
+                response.EnsureSuccessStatusCode();
+                var JsonResult = JsonConvert.DeserializeObject<ReturnPayment>(await response.Content.ReadAsStringAsync());
+                return JsonResult;
             }
-            else if (Context.Request.Headers.ContainsKey("HTTP_CLIENT_IP"))
-            {
-                return Context.Request.Headers["HTTP_CLIENT_IP"];
-            }
-            else if (Context.Request.Headers.ContainsKey("X-Forwarded-For"))
-            {
-                return Context.Request.Headers["X-Forwarded-For"].First();
-            }
-            else
-            {
-                return Context.Connection.RemoteIpAddress.ToString();
-            }
-        }
-
-        public void CreatePayment()
-        {
-            throw new NotImplementedException();
         }
     }
 }

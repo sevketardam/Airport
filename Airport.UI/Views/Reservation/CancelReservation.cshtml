@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["title"] = "Cancel Payment";
 }
-
+@model CancelPaymentVM
 @section pageCss{
     <style>
 
@@ -166,10 +166,14 @@
                         Payment Failed
                     </p>
                 </div>
+                <div>
+                    <p>There was a problem with the payment section error code @Model.Error_Code reservation code @Model.ReservationId</p>
+                    <p><b>Error Message:</b> @Model.Error_Text</p>
+                </div>
                 <div class="pay_buttons">
                     <div>
                         <button>
-                            <a href="/">Back to Homepage</a>
+                            <a href="/reservation-step-payment">Return Payment</a>
                         </button>
                     </div>
                 </div>

@@ -1,5 +1,7 @@
-﻿using Airport.UI.Models.IM;
+﻿using Airport.DBEntities.Entities;
+using Airport.UI.Models.IM;
 using Airport.UI.Models.ITransactions;
+using Airport.UI.Models.VM;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,10 +10,7 @@ namespace Airport.UI.Models.Interface
 {
     public interface IPayment
     {
-        string HashGenerate(string hash);
-        Task<Dictionary<string, string>> CreatePaymentLink(Dictionary<string, string> OrderData);
-        Task<Dictionary<string, string>> SendPost(string postUrl, Dictionary<string, string> postData);
-        string GetClientIp();
-        void CreatePayment();
+        Task<ReturnPayment> CreatePayment(PaymentCardDetailVM payDetail,Reservations reservation);
+
     }
 }
