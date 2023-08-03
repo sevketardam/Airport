@@ -172,9 +172,14 @@ namespace Airport.UI.Controllers
                 {
                     if (RETURN_CODE == "0")
                     {
-                        reservation.PaymentStatus = "0";
-                        reservation.PaymentStatusText = "Ödeme Başarılı";
-                        _reservations.Update(reservation);
+
+                        _reservations.SelectByFunc(a => a.ReservationCode == ORDER_REF_NUMBER).ForEach(a =>
+                        {
+                            a.PaymentStatus = "0";
+                            a.PaymentStatusText = "Ödeme Başarılı";
+                            _reservations.Update(a);
+                        });
+
 
                         _paymentDetail.Insert(new PaymentDetail
                         {

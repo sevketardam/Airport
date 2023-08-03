@@ -492,7 +492,8 @@ namespace Airport.UI.Controllers
                                 DiscountServiceFee = reservation.DiscountServiceFee,
                                 DiscountOfferPrice = reservation.DiscountOfferPrice,
                                 DiscountExtraService = reservation.DiscountExtraService,
-                                PaymentStatus = "1"
+                                PaymentStatus = "1",
+                                PaymentStatusText = "Ödeme Yapılmadı"
                             });
 
                             if (createdReservation.ReturnStatus)
@@ -543,7 +544,8 @@ namespace Airport.UI.Controllers
                                     DiscountServiceFee = reservation.DiscountServiceFee,
                                     DiscountOfferPrice = reservation.DiscountOfferPrice,
                                     DiscountExtraService = reservation.DiscountExtraService,
-                                    PaymentStatus = "1"
+                                    PaymentStatus = "1",
+                                    PaymentStatusText = "Ödeme Yapılmadı"
                                 });
                             }
 
