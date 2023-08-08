@@ -60,7 +60,7 @@ namespace Airport.UI.Controllers
         IGlobalSettings _globalSettings;
         IPayment _payment;
 
-        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons, ISMS sms, ILoginAuthDAL loginAuth, ITReservations reservationT, IOptions<GoogleAPIKeys> googleAPIKeys, IApiResult apiResult, ITReservationHelpers tReservationHelpers, IGlobalSettings globalSettings, IPayment payment,IConfiguration configuration)
+        public ReservationController(ILocationsDAL location, ILocationCarsDAL locationCar, ILocationCarsFareDAL locationCarsFare, IGetCarDetail carDetail, IUserDatasDAL userDatas, IReservationsDAL reservations, IGetCarDetail getCar, IReservationPeopleDAL reservationsPeople, IMail mail, IWebHostEnvironment env, IServicesDAL services, IServiceItemsDAL serviceItems, IServicePropertiesDAL serviceProperties, IServiceCategoriesDAL serviceCategories, IReservationServicesTableDAL reservationServicesTable, ICouponsDAL coupons, ISMS sms, ILoginAuthDAL loginAuth, ITReservations reservationT, IOptions<GoogleAPIKeys> googleAPIKeys, IApiResult apiResult, ITReservationHelpers tReservationHelpers, IGlobalSettings globalSettings, IPayment payment, IConfiguration configuration)
         {
             _location = location;
             _locationCar = locationCar;
@@ -437,7 +437,7 @@ namespace Airport.UI.Controllers
                     var returnStatus = await _payment.CreatePayment(cardDetail, reservation);
                     if (returnStatus.RETURN_CODE == "0")
                     {
-                        if (!_reservations.SelectByFunc(a=>a.ReservationCode == reservation.ReservationCode).Any())
+                        if (!_reservations.SelectByFunc(a => a.ReservationCode == reservation.ReservationCode).Any())
                         {
                             var getCoupon = _coupons.Select().FirstOrDefault(a => a.Active && a.Id == reservation.Coupon && a.CouponStartDate <= DateTime.Now
 && a.CouponFinishDate >= DateTime.Now && (a.IsPerma || a.CouponLimit > a.UsingCount));
@@ -585,12 +585,12 @@ namespace Airport.UI.Controllers
                             HttpContext.Session.MySet("reservation", reservation);
                         }
 
-                       
+
                         return Redirect(returnStatus.URL_3DS);
                     }
                     else
                     {
-                        return RedirectToAction("CancelReservation", "Reservation", new {error_code= returnStatus.RETURN_CODE,error_text=returnStatus.RETURN_MESSAGE,reservationId = reservation.Id });
+                        return RedirectToAction("CancelReservation", "Reservation", new { error_code = returnStatus.RETURN_CODE, error_text = returnStatus.RETURN_MESSAGE, reservationId = reservation.Id });
                     }
                 }
                 return NotFound();
@@ -616,7 +616,7 @@ namespace Airport.UI.Controllers
         }
 
         [HttpGet("reservation-cancel")]
-        public IActionResult CancelReservation(string error_code,string error_text,string reservationId)
+        public IActionResult CancelReservation(string error_code, string error_text, string reservationId)
         {
             var reservation = HttpContext.Session.MyGet<Reservations>("reservation");
             if (reservation != null)
