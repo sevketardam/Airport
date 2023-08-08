@@ -42,105 +42,11 @@
             }
     </style>
 }
-@*
-<div style=" overflow-x: auto;">
-    <table id="recourseTable">
-        <thead>
-            <tr>
-                <th style="text-align:center">Reservation Code</th>
-                <th style="text-align:center">Name</th>
-                <th style="text-align:center">Date</th>
-                <th style="text-align:center">Situation</th>
-                <th style="text-align:center">Driver Situation</th>
-                <th style="text-align:center">Transactions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Reservations)
-            {
-                <tr class="goDetail" data-id="@item.Id">
-                    <td>@item.ReservationCode</td>
-                    <td>@item.Name @item.Surname</td>
-                    <td>@item.ReservationDate.ToString("dd.MM.yyyy HH:mm")</td>
-                    <td>
-                        @if (item.Status == 1)
-                        {
-                            <span class="badge badge-success">Waiting For Transaction</span>
-                        }
-                        else if (item.Status == 3)
-                        {
-                            <span class="badge badge-info">Finished Reservation</span>
-                        }
-                        else if (item.Status == 4)
-                        {
-                            <span class="badge badge-danger">Cancel Reservation</span>
-                        }
-                    </td>
-                    <td>
-                        @if (item.DriverId != null && item.DriverId != 0)
-                        {
-                            <span class="badge badge-success">Driver Assigned</span>
-                        }
-                        else
-                        {
-                            <span class="badge badge-warning">Driver Not Assigned</span>
-                        }
-                    </td>
-                    <td>
-                        <a title="Go to detail" href="/panel/reservation-detail/@item.Id" class="reservation-table-icon"><i class="iconsminds-to-left"></i></a>
-                        <a title="Leave a note" class="open-note reservation-table-icon"><i class="iconsminds-file-edit"></i></a>
-                        <a title="Select Driver" class="select-driver reservation-table-icon"><i class="iconsminds-doctor"></i></a>
-                        <a title="Check Voucher" class="reservation-table-icon" target="_blank" href="http://airportglobaltransfer.com/pdf/@(item.ReservationCode)-@(item.Id).pdf">
-                            <i class="iconsminds-file"></i>
-                        </a>
-                        <a title="Cancel Reservation" class="reservation-delete"><i class="fa-regular fa-xmark"></i></a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    @if (Model.Reservations.Count <= 0)
-    {
-        <div style="
-    width: 100%;
-    height: 7rem;
-    background: #ffffff6e;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: .8rem;
-    text-align: center;
-">
-            No Data
 
-        </div>
-    }
-</div>
-
-
-
-*@
 
 <div class="row">
     <div class="col-12">
-        @*        <div class="btn-group float-right" style="top: -.6rem">
-        <button class="btn btn-outline-primary btn-lg dropdown-toggle" type="button"
-        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        EXPORT
-        </button>
-        <div class="dropdown-menu">
-        <a class="dropdown-item" id="dataTablesCopy" href="#">Copy</a>
-        <a class="dropdown-item" id="dataTablesExcel" href="#">Excel</a>
-        <a class="dropdown-item" id="dataTablesCsv" href="#">Csv</a>
-        <a class="dropdown-item" id="dataTablesPdf" href="#">Pdf</a>
-        </div>
-        </div>*@
         <div class="mb-2 mt-5">
-            @*<a class="btn pt-0 pl-0 d-inline-block d-md-none" data-toggle="collapse" href="#displayOptions"
-            role="button" aria-expanded="true" aria-controls="displayOptions">
-            Display Options
-            <i class="simple-icon-arrow-down align-middle"></i>
-            </a>*@
             <div>
                 <div class="d-block d-md-inline-block">
                     <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
@@ -252,14 +158,6 @@
                 i++;
             }, 100)
         }
-
-        @*window.onload = () => {
-        CountAnimation("#canceledReservation", @Model.Reservations.Where(a=>a.Status == 4).ToList().Count);
-        CountAnimation("#completedReservation", @Model.Reservations.Where(a=>a.Status == 3).ToList().Count);
-        CountAnimation("#pendingReservation", @Model.Reservations.Where(a=>a.Status == 1).ToList().Count);
-        CountAnimation("#totalReservation", @Model.Reservations.Count);
-        }*@
-
                                                         var $dataTableRows = $("#usersTable").DataTable({
                 bLengthChange: false,
                 //buttons: [
@@ -321,13 +219,6 @@
             $dataTableRows.buttons(3).trigger();
         });
 
-        //$('#reservationTable tbody').on('click', 'tr', function () {
-        //    $(this).toggleClass('selected');
-        //    var $checkBox = $(this).find(".custom-checkbox input");
-        //    $checkBox.prop("checked", !$checkBox.prop("checked")).trigger("change");
-        //    controlCheckAll();
-        //});
-
         function controlCheckAll() {
             var anyChecked = false;
             var allChecked = true;
@@ -372,7 +263,6 @@
         });
 
         function getSelectedRows() {
-            //Getting Selected Ones
             console.log($dataTableRows.rows('.selected').data());
         }
 
@@ -384,10 +274,6 @@
             var selText = $(this).text();
             $dataTableRows.page.len(parseInt(selText)).draw();
         });
-
-
-
-
 
     </script>
 }
