@@ -85,6 +85,7 @@ namespace Airport.UI.Controllers
                         Name = user.Name,
                         PhoneNumber = user.PhoneNumber,
                         RealPhone = user.RealPhone,
+                        Img = "/img/airglobal-icon-black.png"
                     });
 
                     _loginAuth.Insert(new LoginAuth

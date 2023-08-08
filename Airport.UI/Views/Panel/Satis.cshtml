@@ -10,15 +10,15 @@
 
     if (userRole == 0)
     {
-        discountedSum = Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.GlobalPartnerFee)).Sum(), 2);
+        discountedSum = Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-31)).Select(a => Convert.ToDecimal(a.GlobalPartnerFee)).Sum(), 2);
         
-        discountedSum = Math.Round(discountedSum + Math.Round(Model.Reservation.Where(a => a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.ServiceFee)).Sum(), 2), 2);
+        discountedSum = Math.Round(discountedSum + Math.Round(Model.Reservation.Where(a => a.ReservationDate <= DateTime.Now.AddDays(-31)).Select(a => Convert.ToDecimal(a.ServiceFee)).Sum(), 2), 2);
         
         turnover = Math.Round(Model.Reservation.Where(a => a.Status != 4).Select(a => Convert.ToDecimal(a.TotalPrice)).Sum(), 2);
     }
     else if (userRole == 2)
     {
-        discountedSum = Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.OfferPrice) + Convert.ToDecimal(a.ServiceFee) + Convert.ToDecimal(a.ExtraServiceFee)).Sum(), 2);
+        discountedSum = Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-31)).Select(a => Convert.ToDecimal(a.OfferPrice) + Convert.ToDecimal(a.ServiceFee) + Convert.ToDecimal(a.ExtraServiceFee)).Sum(), 2);
         
         turnover = Math.Round(Model.Reservation.Where(a => a.Status != 4).Select(a => a.IsDiscount ? Convert.ToDecimal(a.DiscountOfferPrice) + Convert.ToDecimal(a.DiscountServiceFee) + Convert.ToDecimal(a.DiscountExtraService) : Convert.ToDecimal(a.OfferPrice) + Convert.ToDecimal(a.ServiceFee) + Convert.ToDecimal(a.ExtraServiceFee)).Sum(), 2);
         
@@ -26,7 +26,7 @@
     }
     else if (userRole == 5)
     {
-        discountedSum = Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.SalesFee)).Sum(), 2);
+        discountedSum = Math.Round(Model.Reservation.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-31)).Select(a => Convert.ToDecimal(a.SalesFee)).Sum(), 2);
         
         turnover = Math.Round(Model.Reservation.Where(a => a.Status != 4).Select(a => Convert.ToDecimal(a.SalesFee)).Sum(), 2);
         
@@ -117,7 +117,7 @@
                 <i class="iconsminds-euro"></i>
                 <div class="d-flex flex-column">
                     <p class="">Withdrawable Balance</p>
-                    <span class="" style="font-size: .6rem;">(16 days or earlier)</span>
+                    <span class="" style="font-size: .6rem;">(31 days or earlier)</span>
                 </div>
             </div>
             <div>

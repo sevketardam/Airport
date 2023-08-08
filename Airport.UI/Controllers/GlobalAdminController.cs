@@ -145,6 +145,7 @@ namespace Airport.UI.Controllers
                         TransferRequest = data.TransferRequest,
                         TransferRequestLocation = data.TransferRequestLocation,
                         PhoneNumber = data.PhoneNumber,
+                        Img = "/img/airglobal-icon-black.png"
                     };
 
                     var addedAgencies = _userData.Insert(newAgencies);

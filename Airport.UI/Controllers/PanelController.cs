@@ -512,16 +512,16 @@ namespace Airport.UI.Controllers
 
                 if (userRole == "0")
                 {
-                    discountedSum = Math.Round(reservations.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.GlobalPartnerFee)).Sum(), 2);
-                    discountedSum = Math.Round(discountedSum + Math.Round(reservations.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.ServiceFee)).Sum(), 2), 2);
+                    discountedSum = Math.Round(reservations.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-31)).Select(a => Convert.ToDecimal(a.GlobalPartnerFee)).Sum(), 2);
+                    discountedSum = Math.Round(discountedSum + Math.Round(reservations.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-31)).Select(a => Convert.ToDecimal(a.ServiceFee)).Sum(), 2), 2);
                 }
                 else if (userRole == "2")
                 {
-                    discountedSum = Math.Round(reservations.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.PartnerFee)).Sum(), 2);
+                    discountedSum = Math.Round(reservations.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-31)).Select(a => Convert.ToDecimal(a.PartnerFee)).Sum(), 2);
                 }
                 else if (userRole == "5")
                 {
-                    discountedSum = Math.Round(reservations.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-16)).Select(a => Convert.ToDecimal(a.SalesFee)).Sum(), 2);
+                    discountedSum = Math.Round(reservations.Where(a => a.Status != 4 && a.ReservationDate <= DateTime.Now.AddDays(-31)).Select(a => Convert.ToDecimal(a.SalesFee)).Sum(), 2);
                 }
 
                 _withdrawalRequest.Insert(new WithdrawalRequest
