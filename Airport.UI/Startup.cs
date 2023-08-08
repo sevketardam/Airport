@@ -103,7 +103,6 @@ namespace Airport.UI
             }
             else
             {
-                //app.UseDeveloperExceptionPage();
                 app.UseExceptionHandler("/error");
             }
 

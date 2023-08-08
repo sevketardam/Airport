@@ -9,7 +9,7 @@ namespace Airport.UI.Models.Interface
     {
         List<MyCars> GetCarsDetail(int[] myCarsId);
 
-        MyCars CarDetail(int CarId);
+        MyCars CarDetail(int? CarId);
 
     }
 }

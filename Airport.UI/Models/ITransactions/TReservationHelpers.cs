@@ -185,8 +185,8 @@ namespace Airport.UI.Models.ITransactions
             if (reservation != null)
             {
                 reservation.LocationCars = _locationCar.SelectByID(reservation.LocationCarId);
-                reservation.LocationCars.Car = _getCar.CarDetail(reservation.LocationCars.CarId);
-                reservation.LocationCars.Location = _locations.SelectByID(reservation.LocationCars.LocationId);
+                reservation.LocationCars.Car = _getCar.CarDetail(reservation.LocationCars?.CarId);
+                reservation.LocationCars.Location = _locations.SelectByID(reservation.LocationCars?.LocationId);
 
                 var loginAuth = _loginAuth.SelectByID(reservation.LocationCars.Location.UserId);
 
@@ -197,11 +197,15 @@ namespace Airport.UI.Models.ITransactions
                 var loginAuth2 = _loginAuth.SelectByID(reservation.UserId);
                 reservation.User = _userDatas.SelectByID(loginAuth2.UserId);
 
-                reservation.ReservationServicesTables.ForEach(a =>
+                if (reservation.ReservationServicesTables.Any())
                 {
-                    a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
-                    a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem.ServicePropertyId);
-                });
+                    reservation.ReservationServicesTables.ForEach(a =>
+                    {
+                        a.ServiceItem = _serviceItems.SelectByID(a.ServiceItemId);
+                        a.ServiceItem.ServiceProperty = _serviceProperties.SelectByID(a.ServiceItem?.ServicePropertyId);
+                    });
+                }
+
             }
 
             return reservation;

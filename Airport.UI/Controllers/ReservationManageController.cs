@@ -121,8 +121,7 @@ namespace Airport.UI.Controllers
             }
             catch (Exception ex)
             {
-
-                return BadRequest(ex.ToString());
+                return BadRequest();
             }
         }
 

@@ -590,7 +590,7 @@ namespace Airport.UI.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("CancelReservation", "Reservation");
+                        return RedirectToAction("CancelReservation", "Reservation", new {error_code= returnStatus.RETURN_CODE,error_text=returnStatus.RETURN_MESSAGE,reservationId = reservation.Id });
                     }
                 }
                 return NotFound();

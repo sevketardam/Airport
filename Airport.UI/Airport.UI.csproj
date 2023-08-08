@@ -24,7 +24,6 @@
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\pdf\" />
-    <Folder Include="wwwroot\pdf\" />
   </ItemGroup>
 
   <ItemGroup>

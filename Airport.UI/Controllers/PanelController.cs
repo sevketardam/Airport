@@ -451,9 +451,17 @@ namespace Airport.UI.Controllers
 
                 return View(PageVM);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return Json(new { });
+                string dosyaYolu = "wwwroot/error.txt";
+
+                using (StreamWriter yazici = new StreamWriter(dosyaYolu))
+                {
+                    string metin = ex.ToString();
+                    yazici.WriteLine(metin);
+                }
+
+                return BadRequest();
             }
 
         }
