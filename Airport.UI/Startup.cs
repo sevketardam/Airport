@@ -104,10 +104,10 @@ namespace Airport.UI
             else
             {
                 app.UseExceptionHandler("/error");
-                app.UseHsts();
+                //app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseStatusCodePagesWithReExecute("/Error/Index", "?code={0}");
 
