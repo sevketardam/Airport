@@ -56,7 +56,25 @@ namespace Airport.UI.Controllers
             return View();
         }
 
-        [HttpGet("register")]
+
+
+		[HttpGet("cookie-policy")]
+        public IActionResult Cookie_Policy()
+        {
+            return View();
+        }
+
+
+		[HttpGet("cancellation-policy")]
+		public IActionResult Cancellation_Policy()
+		{
+			return View();
+		}
+
+		
+
+
+		[HttpGet("register")]
         public IActionResult Register()
         {
             if (!User.Identity.IsAuthenticated)

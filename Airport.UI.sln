@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airport.DBEntitiesDAL", "Ai
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airport.EF", "Airport.EF\Airport.EF.csproj", "{F1E9A8B0-172C-4FCB-BC1C-BD075EFD0795}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airport.MessageExtension", "Airport.MailExtensions\Airport.MessageExtension.csproj", "{4D29743A-5611-4A7D-AA8D-24E68936CC87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airport.MessageExtension", "Airport.MailExtensions\Airport.MessageExtension.csproj", "{4D29743A-5611-4A7D-AA8D-24E68936CC87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
