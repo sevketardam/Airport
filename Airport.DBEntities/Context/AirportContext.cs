@@ -34,7 +34,7 @@ namespace Airport.DBEntities.Context
             optionsBuilder.UseSqlServer(connectionString);
 
             base.OnConfiguring(optionsBuilder);
-        }
+        } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
