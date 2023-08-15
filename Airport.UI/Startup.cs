@@ -99,14 +99,14 @@ namespace Airport.UI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
+				app.UseHsts();
+			}
             else
             {
                 app.UseExceptionHandler("/error");
-                app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseStatusCodePagesWithReExecute("/Error/Index", "?code={0}");
 

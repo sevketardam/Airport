@@ -47,32 +47,23 @@ namespace Airport.UI.Controllers
             return View();
         }
 
- 
-
-
         [HttpGet("privacy")]
         public IActionResult Privacy()
         {
             return View();
         }
 
-
-
 		[HttpGet("cookie-policy")]
-        public IActionResult Cookie_Policy()
+        public IActionResult CookiePolicy()
         {
             return View();
         }
 
-
 		[HttpGet("cancellation-policy")]
-		public IActionResult Cancellation_Policy()
+		public IActionResult CancellationPolicy()
 		{
 			return View();
 		}
-
-		
-
 
 		[HttpGet("register")]
         public IActionResult Register()
