@@ -101,6 +101,11 @@
             visibility: visible;
         }
 
+		label#terms-error {
+			position: absolute !important;
+			bottom: -0.8rem;
+		}
+
     </style>
 }
 
@@ -320,8 +325,8 @@
                                 <input type="text" id="cvc" name="CVC" placeholder="CVC"  class="font-control form-control-custom">
                             </div>
                             <div class="col-12 mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input rounded-0" type="checkbox" value="" id="flexCheckDefault">
+                                <div class="form-check _Pos_Rel">
+                                    <input class="form-check-input rounded-0" name="terms" type="checkbox" value="" id="flexCheckDefault">
                                     <label class="form-check-label">
 										I accept the <span class="link-span" modal="terms-of-use">Terms of Use and Sales Conditions</span>, as well as the Preliminary Information
                                     </label>

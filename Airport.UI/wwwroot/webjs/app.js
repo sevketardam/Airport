@@ -455,6 +455,9 @@ $('form[id="payForm"]').validate({
             required: true,
             minlength: 3,
         },
+        terms: {
+            required: true,
+        }
     },
     messages: {
         CardHolderName: {
@@ -471,6 +474,9 @@ $('form[id="payForm"]').validate({
         CVC: {
             required: "This field is required !",
             minlength: "Please enter a valid cvc!",
+        },
+        terms: {
+            required: "This field is required !",
         },
     },
     submitHandler: function (form) {
