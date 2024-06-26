@@ -1,9 +1,8 @@
-﻿namespace Airport.UI.Models.VM
+﻿namespace Airport.UI.Models.VM;
+
+public class AddServicePropertyVM
 {
-    public class AddServicePropertyVM
-    {
-        public string PropertyName { get; set; }
-        public int ServiceCategoryId { get; set; }
-        public string PropertyDescription { get; set; }
-    }
+    public string PropertyName { get; set; }
+    public int ServiceCategoryId { get; set; }
+    public string PropertyDescription { get; set; }
 }

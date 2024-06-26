@@ -3,13 +3,12 @@ using Airport.UI.Models.VM;
 using System;
 using System.Collections.Generic;
 
-namespace Airport.UI.Models.Interface
+namespace Airport.UI.Models.Interface;
+
+public interface IGetCarDetail 
 {
-    public interface IGetCarDetail 
-    {
-        List<MyCars> GetCarsDetail(int[] myCarsId);
+    List<MyCars> GetCarsDetail(int[] myCarsId);
 
-        MyCars CarDetail(int? CarId);
+    MyCars CarDetail(int? CarId);
 
-    }
 }

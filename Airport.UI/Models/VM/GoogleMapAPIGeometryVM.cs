@@ -1,7 +1,6 @@
-﻿namespace Airport.UI.Models.VM
+﻿namespace Airport.UI.Models.VM;
+
+public class GoogleMapAPIGeometryVM
 {
-    public class GoogleMapAPIGeometryVM
-    {
-        public GoogleMapAPILocationVM Location { get; set; }
-    }
+    public GoogleMapAPILocationVM Location { get; set; }
 }

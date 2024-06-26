@@ -1,11 +1,10 @@
 ﻿using Airport.DBEntities.Entities;
 
-namespace Airport.UI.Models.VM
+namespace Airport.UI.Models.VM;
+
+public class UpdateServiceVM
 {
-    public class UpdateServiceVM
-    {
-        public string ServiceName { get; set; }
-        public string ServiceDescription { get; set; }
-        public int[] ServiceItems { get; set; }
-    }
+    public string ServiceName { get; set; }
+    public string ServiceDescription { get; set; }
+    public int[] ServiceItems { get; set; }
 }

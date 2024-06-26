@@ -2,19 +2,12 @@
 using Airport.DBEntitiesDAL.Interfaces;
 using Airport.UI.Models.Interface;
 
-namespace Airport.UI.Models.ITransactions
-{
-    public class TGlobalSettings : IGlobalSettings
-    {
-        IGlobalSettingsDAL _globalSettings;
-        public TGlobalSettings(IGlobalSettingsDAL globalSettings)
-        {
-            _globalSettings = globalSettings;
-        }
+namespace Airport.UI.Models.ITransactions;
 
-        public GlobalSettings GetSettings()
-        {
-            return _globalSettings.SelectByID(1);
-        }
+public class TGlobalSettings(IGlobalSettingsDAL globalSettings) : IGlobalSettings
+{
+    public GlobalSettings GetSettings()
+    {
+        return globalSettings.SelectByID(1);
     }
 }

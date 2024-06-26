@@ -1,10 +1,9 @@
 ﻿using Airport.DBEntities.Entities;
 using System.Collections.Generic;
 
-namespace Airport.UI.Models.VM
+namespace Airport.UI.Models.VM;
+
+public class ServiceManagementVM
 {
-    public class ServiceManagementVM
-    {
-        public List<ServiceCategories> ServiceCategories { get; set; }
-    }
+    public List<ServiceCategories> ServiceCategories { get; set; }
 }

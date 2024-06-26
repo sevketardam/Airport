@@ -2,19 +2,13 @@
 using Airport.DBEntities.Entities;
 using Airport.DBEntitiesDAL.Interfaces;
 using Airport.EF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Airport.DBEntitiesDAL.Concrete
+namespace Airport.DBEntitiesDAL.Concrete;
+
+public class ServicePropertiesDAL : EfRepo<AirportContext, ServiceProperties>, IServicePropertiesDAL
 {
-    public class ServicePropertiesDAL : EfRepo<AirportContext, ServiceProperties>, IServicePropertiesDAL
+    public void Dispose()
     {
-        public void Dispose()
-        {
 
-        }
     }
 }

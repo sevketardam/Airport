@@ -1,309 +1,248 @@
 ﻿using Airport.DBEntities.Entities;
 using Airport.DBEntitiesDAL.Interfaces;
-using Airport.MessageExtension.Interfaces;
-using Airport.MessageExtension.VM;
 using Airport.UI.Models.IM;
 using Airport.UI.Models.Interface;
 using Airport.UI.Models.VM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Airport.UI.Controllers
+namespace Airport.UI.Controllers;
+
+public class CarsController(IServicesDAL servicesDal, ICarBrandsDAL carBrandsDal, ICarModelsDAL carModelsDal, ICarSeriesDAL carSeriesDal, ICarTypesDAL carTypesDal, IMyCarsDAL myCarsDal, IDriversDAL driversDal, IGetCarDetail getCarDetailDal, IReservationsDAL reservationsDal, ILocationCarsDAL locationCarsDal) : PanelAuthController
 {
-    public class CarsController : PanelAuthController
+
+    [HttpGet("panel/my-cars")]
+    public IActionResult Index()
     {
-        IServicesDAL _services;
-        IServiceItemsDAL _serviceItems;
-        ICarBrandsDAL _carBrands;
-        ICarModelsDAL _carModels;
-        ICarSeriesDAL _carSeries;
-        ICarTypesDAL _carTypes;
-        IMyCarsDAL _myCars;
-        IDriversDAL _drivers;
-        IGetCarDetail _carDetail;
-        IReservationsDAL _reservations;
-        ILocationCarsDAL _locationCars;
-        ILocationCarsFareDAL _locationCarsFare;
-        ISMS _sms;
-
-        public CarsController(ICarBrandsDAL carBrands, IServicesDAL services, IServiceItemsDAL serviceItems, ICarModelsDAL carModels, ICarSeriesDAL carSeries, ICarTypesDAL carTypes, IMyCarsDAL myCars, IDriversDAL drivers, IGetCarDetail getCarDetail, IReservationsDAL reservations, ILocationCarsDAL locationCars, ILocationCarsFareDAL locationCarsFare, ISMS sms)
+        var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+        var myCars = myCarsDal.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
+        myCars.ForEach(a =>
         {
-            _carBrands = carBrands;
-            _services = services;
-            _serviceItems = serviceItems;
-            _carModels = carModels;
-            _carSeries = carSeries;
-            _carTypes = carTypes;
-            _myCars = myCars;
-            _drivers = drivers;
-            _carDetail = getCarDetail;
-            _reservations = reservations;
-            _locationCars = locationCars;
-            _locationCarsFare = locationCarsFare;
-            _sms = sms;
-        }
+            a.Brand = carBrandsDal.SelectByID(a.BrandId);
+            a.Model = carModelsDal.SelectByID(a.ModelId);
+        });
+
+        return View(myCars);
+    }
 
 
-        //public IActionResult SMSDeneme()
-        //{
-        //    var allMessage = new List<Mesaj>();
-        //    allMessage.Add(new Mesaj
-        //    {
-        //        dest = "905365278808",
-        //        msg = "deneme mesaj1"
-        //    });
-        //    allMessage.Add(new Mesaj
-        //    {
-        //        dest = "905531878855",
-        //        msg = "deneme mesaj1"
-        //    });
-        //    var mesaj = allMessage.ToArray();
+    [HttpGet("panel/add-car")]
+    public IActionResult AddMyCar()
+    {
+        var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+        var addCarVM = new AddMyCarsVM();
+        addCarVM.CarBrands = carBrandsDal.Select();
 
-        //    _sms.SmsForReservation(mesaj);
+        var myService = servicesDal.SelectByFunc(a => a.UserId == userId);
+        addCarVM.Drivers = driversDal.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
+        addCarVM.CarTypes = carTypesDal.Select();
 
 
-        //    return View();
-        //}
+        addCarVM.ServiceItems = myService;
+        return View(addCarVM);
+    }
 
+    public IActionResult GetModels(int id)
+    {
+        var carModels = carModelsDal.SelectByFuncPer(a => a.CarBrandId == id);
+        return Json(new { result = 200, models = carModels });
+    }
 
-        [HttpGet("panel/my-cars")]
-        public IActionResult Index()
+    public IActionResult GetSeries(int id)
+    {
+        var carSeries = carSeriesDal.SelectByFuncPer(a => a.CarModelId == id);
+        return Json(new { result = 200, series = carSeries });
+    }
+
+    [HttpPost("panel/add-car", Name = "AddCar")]
+    public IActionResult AddMyCar(AddMyCarIM myCar)
+    {
+        try
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-            var myCars = _myCars.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
-            myCars.ForEach(a =>
+
+            myCarsDal.Insert(new MyCars
             {
-                a.Brand = _carBrands.SelectByID(a.BrandId);
-                a.Model = _carModels.SelectByID(a.ModelId);
+                BrandId = myCar.Brand,
+                ModelId = myCar.Model,
+                MaxPassenger = myCar.MaxPassenger,
+                SeriesId = myCar.Series,
+                ServiceId = myCar.Service,
+                SmallBags = myCar.SmallBags,
+                SuitCase = myCar.SuitCase,
+                TypeId = myCar.Type,
+                UserId = userId,
+                Armored = myCar.Armored,
+                Charger = myCar.Charger,
+                Disabled = myCar.Disabled,
+                Partition = myCar.Partition,
+                Water = myCar.Water,
+                Wifi = myCar.Wifi,
+                DriverId = myCar.Driver,
+                Plate = myCar.Plate,
+                IsDelete = false
             });
 
-            return View(myCars);
+            return RedirectToAction("Index", "Cars");
         }
+        catch (System.Exception)
+        {
+            return BadRequest();
+        }
+    }
 
-
-        [HttpGet("panel/add-car")]
-        public IActionResult AddMyCar()
+    [HttpPost]
+    public JsonResult UpdateMyCar(UpdateMyCarIM updateMyCar, int id)
+    {
+        try
         {
             var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-            var addCarVM = new AddMyCarsVM();
-            addCarVM.CarBrands = _carBrands.Select();
 
-            var myService = _services.SelectByFunc(a => a.UserId == userId);
-            addCarVM.Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
-            addCarVM.CarTypes = _carTypes.Select();
-
-
-            addCarVM.ServiceItems = myService;
-            return View(addCarVM);
-        }
-
-        public IActionResult GetModels(int id)
-        {
-            var carModels = _carModels.SelectByFuncPer(a => a.CarBrandId == id);
-            return Json(new { result = 200, models = carModels });
-        }
-
-        public IActionResult GetSeries(int id)
-        {
-            var carSeries = _carSeries.SelectByFuncPer(a => a.CarModelId == id);
-            return Json(new { result = 200, series = carSeries });
-        }
-
-        [HttpPost("panel/add-car", Name = "AddCar")]
-        public IActionResult AddMyCar(AddMyCarIM myCar)
-        {
-            try
+            var myCar = myCarsDal.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
+            if (myCar != null)
             {
-                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+                myCar.SuitCase = updateMyCar.SuitCase;
+                myCar.BrandId = updateMyCar.Brand;
+                myCar.ServiceId = updateMyCar.Service;
+                myCar.MaxPassenger = updateMyCar.MaxPassenger;
+                myCar.ModelId = updateMyCar.Model;
+                myCar.SeriesId = updateMyCar.Series;
+                myCar.SmallBags = updateMyCar.SmallBags;
+                myCar.Wifi = updateMyCar.Wifi;
+                myCar.Armored = updateMyCar.Armored;
+                myCar.Water = updateMyCar.Water;
+                myCar.Charger = updateMyCar.Charger;
+                myCar.Partition = updateMyCar.Partition;
+                myCar.Disabled = updateMyCar.Disabled;
+                myCar.DriverId = updateMyCar.Driver;
+                myCar.Plate = updateMyCar.Plate;
+                myCarsDal.Update(myCar);
+                return new JsonResult(new { result = 1 });
+            }
+        }
+        catch (System.Exception)
+        {
+            return new JsonResult(new { });
+        }
 
-                _myCars.Insert(new MyCars
+        return new JsonResult(new { });
+    }
+
+    [HttpGet("panel/update-my-car/{id}")]
+    public async Task<IActionResult> UpdateMyCarPage(int id)
+    {
+        try
+        {
+            var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+            var myCar = getCarDetailDal.CarDetail(id);
+            if (myCar != null)
+            {
+                var getCarDetails = getCarDetailDal.CarDetail(myCar.Id);
+
+                var Brands = carBrandsDal.Select();
+                var Models = carModelsDal.SelectByFunc(a => a.CarBrandId == myCar.BrandId);
+                var Series = carSeriesDal.SelectByFunc(a => a.CarModelId == myCar.ModelId);
+                var Types = carTypesDal.Select().ToImmutableList();
+                var Services = servicesDal.SelectByFunc(a => a.UserId == userId);
+                var Drivers = driversDal.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
+
+
+                var updateBrand = new UpdateMyCarVM()
                 {
-                    BrandId = myCar.Brand,
-                    ModelId = myCar.Model,
+                    Id = myCar.Id,
+                    Brands = Brands,
+                    BrandId = myCar.BrandId,
+                    Models = Models,
+                    ModelId = myCar.ModelId,
+                    Series = Series,
+                    SeriesId = myCar.SeriesId,
+                    Types = Types,
+                    TypeId = myCar.TypeId,
                     MaxPassenger = myCar.MaxPassenger,
-                    SeriesId = myCar.Series,
-                    ServiceId = myCar.Service,
                     SmallBags = myCar.SmallBags,
                     SuitCase = myCar.SuitCase,
-                    TypeId = myCar.Type,
-                    UserId = userId,
+                    Services = Services,
+                    ServiceId = myCar.ServiceId,
                     Armored = myCar.Armored,
                     Charger = myCar.Charger,
                     Disabled = myCar.Disabled,
                     Partition = myCar.Partition,
                     Water = myCar.Water,
                     Wifi = myCar.Wifi,
-                    DriverId = myCar.Driver,
-                    Plate = myCar.Plate,
-                    IsDelete = false
+                    DriverId = myCar.DriverId,
+                    Drivers = Drivers,
+                    Plate = myCar.Plate
+                };
+
+
+
+                return View(updateBrand);
+            }
+            return BadRequest();
+        }
+        catch (System.Exception)
+        {
+            return BadRequest();
+        }
+    }
+
+    [Authorize(Roles = "0")]
+    [HttpGet("panel/car-management")]
+    public IActionResult CarManagement()
+    {
+        try
+        {
+
+            return View();
+        }
+        catch (System.Exception)
+        {
+            return BadRequest();
+        }
+    }
+
+
+    public async Task<IActionResult> DeleteMyCar(int id)
+    {
+        try
+        {
+            var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
+            var myCar = myCarsDal.SelectByFunc(a => a.Id == id && a.UserId == userId && !a.IsDelete).FirstOrDefault();
+            if (myCar != null)
+            {
+                var check = false;
+                var locationCars = locationCarsDal.SelectByFunc(a => a.CarId == myCar.Id);
+                locationCars.ForEach(a =>
+                {
+                    var checkReservation = reservationsDal.SelectByFunc(b => b.LocationCarId == a.Id).FirstOrDefault();
+                    if (checkReservation is not null)
+                    {
+                        check = true;
+                    }
                 });
 
-                return RedirectToAction("Index", "Cars");
-            }
-            catch (System.Exception)
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpPost]
-        public JsonResult UpdateMyCar(UpdateMyCarIM updateMyCar, int id)
-        {
-            try
-            {
-                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-
-                var myCar = _myCars.SelectByFunc(a => a.Id == id && a.UserId == userId).FirstOrDefault();
-                if (myCar != null)
+                if (check)
                 {
-                    myCar.SuitCase = updateMyCar.SuitCase;
-                    myCar.BrandId = updateMyCar.Brand;
-                    myCar.ServiceId = updateMyCar.Service;
-                    myCar.MaxPassenger = updateMyCar.MaxPassenger;
-                    myCar.ModelId = updateMyCar.Model;
-                    myCar.SeriesId = updateMyCar.Series;
-                    myCar.SmallBags = updateMyCar.SmallBags;
-                    myCar.Wifi = updateMyCar.Wifi;
-                    myCar.Armored = updateMyCar.Armored;
-                    myCar.Water = updateMyCar.Water;
-                    myCar.Charger = updateMyCar.Charger;
-                    myCar.Partition = updateMyCar.Partition;
-                    myCar.Disabled = updateMyCar.Disabled;
-                    myCar.DriverId = updateMyCar.Driver;
-                    myCar.Plate = updateMyCar.Plate;
-                    _myCars.Update(myCar);
-                    return new JsonResult(new { result = 1 });
+                    myCarsDal.SoftDelete(myCar);
                 }
-            }
-            catch (System.Exception)
-            {
-                return new JsonResult(new { });
-            }
-
-            return new JsonResult(new { });
-        }
-
-        [HttpGet("panel/update-my-car/{id}")]
-        public async Task<IActionResult> UpdateMyCarPage(int id)
-        {
-            try
-            {
-                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var myCar = _carDetail.CarDetail(id);
-                if (myCar != null)
+                else
                 {
-                    var getCarDetails = _carDetail.CarDetail(myCar.Id);
-
-                    var Brands = _carBrands.Select();
-                    var Models = _carModels.SelectByFunc(a => a.CarBrandId == myCar.BrandId);
-                    var Series = _carSeries.SelectByFunc(a => a.CarModelId == myCar.ModelId);
-                    var Types = _carTypes.Select().ToImmutableList();
-                    var Services = _services.SelectByFunc(a => a.UserId == userId);
-                    var Drivers = _drivers.SelectByFunc(a => a.UserId == userId && !a.IsDelete);
-
-
-                    var updateBrand = new UpdateMyCarVM()
-                    {
-                        Id = myCar.Id,
-                        Brands = Brands,
-                        BrandId = myCar.BrandId,
-                        Models = Models,
-                        ModelId = myCar.ModelId,
-                        Series = Series,
-                        SeriesId = myCar.SeriesId,
-                        Types = Types,
-                        TypeId = myCar.TypeId,
-                        MaxPassenger = myCar.MaxPassenger,
-                        SmallBags = myCar.SmallBags,
-                        SuitCase = myCar.SuitCase,
-                        Services = Services,
-                        ServiceId = myCar.ServiceId,
-                        Armored = myCar.Armored,
-                        Charger = myCar.Charger,
-                        Disabled = myCar.Disabled,
-                        Partition = myCar.Partition,
-                        Water = myCar.Water,
-                        Wifi = myCar.Wifi,
-                        DriverId = myCar.DriverId,
-                        Drivers = Drivers,
-                        Plate = myCar.Plate
-                    };
-
-
-
-                    return View(updateBrand);
+                    myCarsDal.HardDelete(myCar);
                 }
-                return BadRequest();
-            }
-            catch (System.Exception)
-            {
-                return BadRequest();
-            }
-        }
 
-        [Authorize(Roles = "0")]
-        [HttpGet("panel/car-management")]
-        public IActionResult CarManagement()
+                return Json(new { result = 1 });
+            }
+            return Json(new { result = 2 });
+        }
+        catch (System.Exception)
         {
-            try
-            {
-
-                return View();
-            }
-            catch (System.Exception)
-            {
-                return BadRequest();
-            }
+            return Json(new { });
         }
-
-
-        public async Task<IActionResult> DeleteMyCar(int id)
-        {
-            try
-            {
-                var userId = Convert.ToInt32(Request.HttpContext.User.Claims.Where(a => a.Type == ClaimTypes.Sid).Select(a => a.Value).SingleOrDefault());
-                var myCar = _myCars.SelectByFunc(a => a.Id == id && a.UserId == userId && !a.IsDelete).FirstOrDefault();
-                if (myCar != null)
-                {
-                    var check = false;
-                    var locationCars = _locationCars.SelectByFunc(a => a.CarId == myCar.Id);
-                    locationCars.ForEach(a =>
-                    {
-                        var checkReservation = _reservations.SelectByFunc(b => b.LocationCarId == a.Id).FirstOrDefault();
-                        if (checkReservation is not null)
-                        {
-                            check = true;
-                        }
-                    });
-
-                    if (check)
-                    {
-                        _myCars.SoftDelete(myCar);
-                    }
-                    else
-                    {
-                        _myCars.HardDelete(myCar);
-                    }
-
-
-
-                    return Json(new { result = 1 });
-                }
-                return Json(new { result = 2 });
-            }
-            catch (System.Exception)
-            {
-                return Json(new { });
-            }
-        }
-
     }
+
 }

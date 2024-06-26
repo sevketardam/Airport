@@ -1,8 +1,7 @@
-﻿namespace Airport.UI.Models.VM
+﻿namespace Airport.UI.Models.VM;
+
+public class GetReservationServiceVM
 {
-    public class GetReservationServiceVM
-    {
-        public int ServiceId { get; set; }
-        public int ServiceCount { get; set; }
-    }
+    public int ServiceId { get; set; }
+    public int ServiceCount { get; set; }
 }

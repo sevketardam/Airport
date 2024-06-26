@@ -6,11 +6,10 @@ using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Airport.UI.Models.Interface
-{
-    public interface IPayment
-    {
-        Task<ReturnPayment> CreatePayment(PaymentCardDetailVM payDetail,Reservations reservation);
+namespace Airport.UI.Models.Interface;
 
-    }
+public interface IPayment
+{
+    Task<ReturnPayment> CreatePayment(PaymentCardDetailVM payDetail,Reservations reservation);
+
 }

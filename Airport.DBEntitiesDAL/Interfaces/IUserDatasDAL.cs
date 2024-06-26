@@ -1,15 +1,8 @@
 ﻿using Airport.Data;
 using Airport.DBEntities.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Airport.DBEntitiesDAL.Interfaces
-{
-    public interface IUserDatasDAL : ISelectableRepo<UserDatas>, IEInsertableRepo<UserDatas>, IUpdatetableRepo<UserDatas>, IDeletableRepo<UserDatas>, IDisposable
-    {
-        void KullaniciRaporuGetir();
-    }
+namespace Airport.DBEntitiesDAL.Interfaces;
+
+public interface IUserDatasDAL : ISelectableRepo<UserDatas>, IEInsertableRepo<UserDatas>, IUpdatetableRepo<UserDatas>, IDeletableRepo<UserDatas>, IDisposable;
 }

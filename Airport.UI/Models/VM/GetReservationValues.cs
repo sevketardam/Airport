@@ -2,22 +2,20 @@
 using System;
 using System.Collections.Generic;
 
-namespace Airport.UI.Models.VM
-{
-    public class GetReservationValues
-    {
-        public LocationCars LocationCars { get; set; }
-        public double LastPrice { get; set; }
-        public DateTime ReservationDate { get; set; }
-        public string PickLocationName{ get; set; }
-        public string DropLocationName{ get; set; }
-        public int PassangerCount{ get; set; }
-        public string PickLocationLatLng { get; set; }
-        public string DropLocationLatLng { get; set; }
-        public string DropLocationPlaceId { get; set; }
-        public string PickLocationPlaceId { get; set; }
-        public string Rate { get; set; }
-        public string RateCount { get; set; }
-    }
+namespace Airport.UI.Models.VM;
 
+public class GetReservationValues
+{
+    public LocationCars LocationCars { get; set; }
+    public double LastPrice { get; set; }
+    public DateTime ReservationDate { get; set; }
+    public string PickLocationName{ get; set; }
+    public string DropLocationName{ get; set; }
+    public int PassangerCount{ get; set; }
+    public string PickLocationLatLng { get; set; }
+    public string DropLocationLatLng { get; set; }
+    public string DropLocationPlaceId { get; set; }
+    public string PickLocationPlaceId { get; set; }
+    public string Rate { get; set; }
+    public string RateCount { get; set; }
 }

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace Airport.UI.Models.VM
+namespace Airport.UI.Models.VM;
+
+public class GetLocationCarsPriceVM
 {
-    public class GetLocationCarsPriceVM
-    {
-        public int CarId { get; set; }
-        public List<CarsPricePerKm> CarsPricePerKm { get; set; }
-    }
+    public int CarId { get; set; }
+    public List<CarsPricePerKm> CarsPricePerKm { get; set; }
 }

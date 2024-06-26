@@ -1,7 +1,6 @@
-﻿namespace Airport.UI.Models.VM
+﻿namespace Airport.UI.Models.VM;
+
+public class GoogleAPIKeys
 {
-    public class GoogleAPIKeys
-    {
-        public string GoogleMapAPIKey { get; set; }
-    }
+    public string GoogleMapAPIKey { get; set; }
 }

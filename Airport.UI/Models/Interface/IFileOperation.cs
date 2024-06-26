@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
-namespace Airport.UI.Models.Interface
+namespace Airport.UI.Models.Interface;
+
+public interface IFileOperation
 {
-    public interface IFileOperation
-    {
-        Task<string> UploadFile(IFormFile file);
-        string GetFile(string key);
-    }
+    Task<string> UploadFile(IFormFile file);
+    string GetFile(string key);
 }

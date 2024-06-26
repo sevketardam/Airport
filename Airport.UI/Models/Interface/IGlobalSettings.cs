@@ -1,9 +1,8 @@
 ﻿using Airport.DBEntities.Entities;
 
-namespace Airport.UI.Models.Interface
+namespace Airport.UI.Models.Interface;
+
+public interface IGlobalSettings
 {
-    public interface IGlobalSettings
-    {
-        GlobalSettings GetSettings();
-    }
+    GlobalSettings GetSettings();
 }

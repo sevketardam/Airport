@@ -2,64 +2,58 @@
 using System;
 using MimeKit;
 using MailKit.Net.Smtp;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using Airport.MessageExtension.VM;
 using Airport.DBEntities.Entities;
 
-namespace Airport.MessageExtensions.Repos
+namespace Airport.MessageExtensions.Repos;
+
+public class MailRepo : IMail
 {
-    public class MailRepo : IMail
+    public void SendReservationMail(Reservations reservationDetail)
     {
-        public void SendReservationMail(Reservations reservationDetail)
+        MimeMessage mimeMessage = new MimeMessage();
+
+        MailboxAddress mailboxAddressFrom = new MailboxAddress
+            ("Airport", "airportglobaltransfer@gmail.com");
+
+        mimeMessage.From.Add(mailboxAddressFrom);
+
+        MailboxAddress mailboxAddressTo = new MailboxAddress("User", reservationDetail.Email);
+
+        var bodyBuilder = new BodyBuilder();
+        mimeMessage.To.Add(mailboxAddressTo);
+
+        var serviceText = "";
+
+        if (reservationDetail.ReservationServicesTables != null && reservationDetail.ReservationServicesTables.Count > 0)
         {
-            MimeMessage mimeMessage = new MimeMessage();
-
-            MailboxAddress mailboxAddressFrom = new MailboxAddress
-                ("Airport", "airportglobaltransfer@gmail.com");
-
-            mimeMessage.From.Add(mailboxAddressFrom);
-
-            MailboxAddress mailboxAddressTo = new MailboxAddress("User", reservationDetail.Email);
-
-            var bodyBuilder = new BodyBuilder();
-            mimeMessage.To.Add(mailboxAddressTo);
-
-            var serviceText = "";
-
-            if (reservationDetail.ReservationServicesTables != null && reservationDetail.ReservationServicesTables.Count > 0)
-            {
-                serviceText = @"
+            serviceText = @"
 <div style=""margin: 10px 10px; border-bottom: 4px solid #FF6900;"">
 <h3 style=""font-size: 23px;text-align: center;"">SERVICES DETAILS</h3>";
-                reservationDetail.ReservationServicesTables.ForEach(a =>
-                {
-                    serviceText += @$"            <div>
+            reservationDetail.ReservationServicesTables.ForEach(a =>
+            {
+                serviceText += @$"            <div>
                 <p style=""margin: 0px;font-weight: bold;"">{a.ServiceItem.ServiceProperty.ServicePropertyName}
                     {a.Price}x{a.PeopleCount}={a.Price*a.PeopleCount}€</p>
             </div>";
-                });
-                serviceText += "</div></div>";
+            });
+            serviceText += "</div></div>";
 
-            }
-            var price = reservationDetail.IsDiscount ? reservationDetail.Discount : reservationDetail.OfferPrice;
-            var servicefee = reservationDetail.ExtraServiceFee;
+        }
+        var price = reservationDetail.IsDiscount ? reservationDetail.Discount : reservationDetail.OfferPrice;
+        var servicefee = reservationDetail.ExtraServiceFee;
 
-            var priceHtml = "";
-            var totalprice = price + servicefee;
+        var priceHtml = "";
+        var totalprice = price + servicefee;
 
-            if (reservationDetail.HidePrice == false)
+        if (reservationDetail.HidePrice == false)
+        {
+            var discountHtml = "";
+            var specialDiscountHtml = "";
+
+            if (reservationDetail.Coupons != null)
             {
-                var discountHtml = "";
-                var specialDiscountHtml = "";
-
-                if (reservationDetail.Coupons != null)
-                {
-                    totalprice = Math.Round(Convert.ToDouble(totalprice) - ((reservationDetail.Coupons.Discount * Convert.ToDouble(totalprice)) / 100), 2);
-                    discountHtml = @$"       
+                totalprice = Math.Round(Convert.ToDouble(totalprice) - ((reservationDetail.Coupons.Discount * Convert.ToDouble(totalprice)) / 100), 2);
+                discountHtml = @$"       
 
 <div style=""display: flex; justify-content: space-between;width:100%;"">
             <div>
@@ -69,11 +63,11 @@ namespace Airport.MessageExtensions.Repos
                       <p style=""margin: 0px;margin-left:.5rem;"">{reservationDetail.Coupons.Discount}%</p>
             </div>
         </div>";
-                }
+            }
 
-                if (reservationDetail.IsDiscount)
-                {
-                    specialDiscountHtml = @$"       
+            if (reservationDetail.IsDiscount)
+            {
+                specialDiscountHtml = @$"       
 <div style=""display: flex; justify-content: space-between;width:100%;    text-decoration: line-through;"">
             <div>
                       <p style=""font-weight: bold;margin: 0px;"">Total:</p>
@@ -97,12 +91,12 @@ namespace Airport.MessageExtensions.Repos
             </div>
         </div>
        ";
-                }
-                else
+            }
+            else
+            {
+                if (reservationDetail.Coupons != null)
                 {
-                    if (reservationDetail.Coupons != null)
-                    {
-                        specialDiscountHtml = $@"
+                    specialDiscountHtml = $@"
 
 <div style=""display: flex; justify-content: space-between;width:100%;text-decoration: line-through;"">
             <div>
@@ -128,10 +122,10 @@ namespace Airport.MessageExtensions.Repos
         </div>
 
 ";
-                    }
-                    else
-                    {
-                        specialDiscountHtml = $@" <div style=""display: flex; justify-content: space-between;width:100%;"">
+                }
+                else
+                {
+                    specialDiscountHtml = $@" <div style=""display: flex; justify-content: space-between;width:100%;"">
             <div>
                       <p style=""font-weight: bold;margin: 0px;"">TOTAL:</p>
             </div>
@@ -139,11 +133,11 @@ namespace Airport.MessageExtensions.Repos
                        <p style=""margin: 0px;margin-left:.5rem;"">{totalprice} €</p>
             </div>
         </div>";
-                    }
-
                 }
 
-                priceHtml = @$"
+            }
+
+            priceHtml = @$"
         <h3 style=""font-size: 23px;text-align: center;"">PAYMENT DETAILS</h3>
 
         <div style=""display: flex; justify-content: space-between;width:100%;"">
@@ -169,62 +163,62 @@ namespace Airport.MessageExtensions.Repos
         {specialDiscountHtml}
 ";
 
-            }
+        }
 
 
 
-            var carAttrHtml = "";
-            if (reservationDetail.LocationCars.Car.Armored)
-            {
-                carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i5.png'>";
-            }
+        var carAttrHtml = "";
+        if (reservationDetail.LocationCars.Car.Armored)
+        {
+            carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i5.png'>";
+        }
 
-            if (reservationDetail.LocationCars.Car.Wifi)
-            {
-                carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i4.png'>";
-            }
+        if (reservationDetail.LocationCars.Car.Wifi)
+        {
+            carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i4.png'>";
+        }
 
-            if (reservationDetail.LocationCars.Car.Water)
-            {
-                carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i1.png'>";
-            }
+        if (reservationDetail.LocationCars.Car.Water)
+        {
+            carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i1.png'>";
+        }
 
-            if (reservationDetail.LocationCars.Car.Partition)
-            {
-                carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i6.png'>";
-            }
+        if (reservationDetail.LocationCars.Car.Partition)
+        {
+            carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i6.png'>";
+        }
 
-            if (reservationDetail.LocationCars.Car.Charger)
-            {
-                carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i3.png'>";
-            }
+        if (reservationDetail.LocationCars.Car.Charger)
+        {
+            carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i3.png'>";
+        }
 
-            if (reservationDetail.LocationCars.Car.Disabled)
-            {
-                carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i2.png'>";
-            }
+        if (reservationDetail.LocationCars.Car.Disabled)
+        {
+            carAttrHtml += "<img style='width: 18px;' src='http://www.airportglobaltransfer.com/img/i2.png'>";
+        }
 
-            var returnIcon = "https://storage.acerapps.io/app-1348/asd/altok.png";
-            var isReturn = false;
-            if (reservationDetail.ReturnStatus)
-            {
-                returnIcon = "https://storage.acerapps.io/app-1348/asd/gelgit.png";
-                isReturn = true;
-            }
+        var returnIcon = "https://storage.acerapps.io/app-1348/asd/altok.png";
+        var isReturn = false;
+        if (reservationDetail.ReturnStatus)
+        {
+            returnIcon = "https://storage.acerapps.io/app-1348/asd/gelgit.png";
+            isReturn = true;
+        }
 
 
-            var returnString = "";
-            if (reservationDetail.ReturnStatus)
-            {
-                returnString = @$"                <p style=""font-weight: bold; margin: 0;"">RETURN DATE</p>
+        var returnString = "";
+        if (reservationDetail.ReturnStatus)
+        {
+            returnString = @$"                <p style=""font-weight: bold; margin: 0;"">RETURN DATE</p>
                 <div>
                     <p style=""margin: 0 0 10px 0px;"">{reservationDetail.ReturnDate.ToString("dd.MM.yyyy HH:mm")} </p>
                 </div>";
-            }
+        }
 
 
-            mimeMessage.Subject = "Reservation Information";
-            bodyBuilder.HtmlBody = @$"<!DOCTYPE html>
+        mimeMessage.Subject = "Reservation Information";
+        bodyBuilder.HtmlBody = @$"<!DOCTYPE html>
 <html lang=""en"">
 
 <head>
@@ -321,15 +315,14 @@ namespace Airport.MessageExtensions.Repos
 </html>";
 
 
-            mimeMessage.Body = bodyBuilder.ToMessageBody();
+        mimeMessage.Body = bodyBuilder.ToMessageBody();
 
 
-            SmtpClient client = new SmtpClient();
-            client.Connect("smtp.gmail.com", 587, false);
-            //sepetispor@gmail.com //cmjvjyecqpnqwkis
-            client.Authenticate("airportglobaltransfer@gmail.com", "jcgbdclwxjpcpcew");
-            client.Send(mimeMessage);
-            client.Disconnect(true);
-        }
+        SmtpClient client = new SmtpClient();
+        client.Connect("smtp.gmail.com", 587, false);
+        //sepetispor@gmail.com //cmjvjyecqpnqwkis
+        client.Authenticate("airportglobaltransfer@gmail.com", "jcgbdclwxjpcpcew");
+        client.Send(mimeMessage);
+        client.Disconnect(true);
     }
 }

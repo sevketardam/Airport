@@ -10,92 +10,79 @@ using Airport.DBEntitiesDAL.Interfaces;
 using System.Security.Cryptography;
 using System.Linq;
 
-namespace Airport.UI.Controllers
+namespace Airport.UI.Controllers;
+
+public class LoginController(ILoginAuthDAL loginAuthDal) : Controller
 {
-    public class LoginController : Controller
+
+    [HttpGet("login")]
+    public IActionResult Index() => View();
+
+    [HttpPost]
+    public async Task<JsonResult> Login(LoginVM loginValues, bool rememberMe)
     {
-        IUserDatasDAL _user;
-        IDriversDAL _drivers;
-        ILoginAuthDAL _loginAuth;
-        public LoginController(IUserDatasDAL user, IDriversDAL drivers, ILoginAuthDAL loginAuth)
+        if (loginValues != null)
         {
-            _user = user;
-            _drivers = drivers;
-            _loginAuth = loginAuth;
-        }
-
-        [HttpGet("login")]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<JsonResult> Login(LoginVM loginValues, bool rememberMe)
-        {
-            if (loginValues != null)
+            try
             {
-                try
+                var convertPassword = GetMD5(loginValues.UserPassword);
+                var userData = loginAuthDal.SelectByFunc(a => a.Email == loginValues.UserEposta && a.Password == convertPassword).FirstOrDefault();
+                if (userData != null)
                 {
-                    var convertPassword = GetMD5(loginValues.UserPassword);
-                    var userData = _loginAuth.SelectByFunc(a => a.Email == loginValues.UserEposta && a.Password == convertPassword).FirstOrDefault();
-                    if (userData != null)
+                    var claims = new List<Claim>()
                     {
-                        var claims = new List<Claim>()
+                        new Claim(ClaimTypes.Sid,userData.Id.ToString()),
+                        new Claim(ClaimTypes.Role,userData.Type.ToString()),
+                    };
+
+                    var userIdentity = new ClaimsIdentity(claims, "login");
+
+                    ClaimsPrincipal pri = new ClaimsPrincipal(userIdentity);
+
+                    if (rememberMe)
+                    {
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, pri, new AuthenticationProperties
                         {
-                            new Claim(ClaimTypes.Sid,userData.Id.ToString()),
-                            new Claim(ClaimTypes.Role,userData.Type.ToString()),
-                        };
-
-                        var userIdentity = new ClaimsIdentity(claims, "login");
-
-                        ClaimsPrincipal pri = new ClaimsPrincipal(userIdentity);
-
-                        if (rememberMe)
-                        {
-                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, pri, new AuthenticationProperties
-                            {
-                                IsPersistent = true,
-                            });
-                        }
-                        else
-                        {
-                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, pri, new AuthenticationProperties
-                            {
-                                ExpiresUtc = DateTime.UtcNow.AddHours(2),
-                                IsPersistent = true,
-                            });
-                        }
-
-                        return new JsonResult(new { status = 200 });
+                            IsPersistent = true,
+                        });
                     }
-                }
-                catch (Exception ex)
-                {
-                    return new JsonResult(new { status = 400 });
+                    else
+                    {
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, pri, new AuthenticationProperties
+                        {
+                            ExpiresUtc = DateTime.UtcNow.AddHours(2),
+                            IsPersistent = true,
+                        });
+                    }
+
+                    return new JsonResult(new { status = 200 });
                 }
             }
-            return new JsonResult(new { status = 404 });
-        }
-
-        [HttpGet("logout")]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync();
-            return RedirectToAction("Index", "Home");
-        }
-
-        public static string GetMD5(string value)
-        {
-            MD5 md5 = MD5.Create();
-            byte[] md5Bytes = System.Text.Encoding.Default.GetBytes(value);
-            byte[] cryString = md5.ComputeHash(md5Bytes);
-            string md5Str = string.Empty;
-            for (int i = 0; i < cryString.Length; i++)
+            catch (Exception ex)
             {
-                md5Str += cryString[i].ToString("X");
+                return new JsonResult(new { status = 400 });
             }
-            return md5Str;
         }
+        return new JsonResult(new { status = 404 });
+    }
+
+    [HttpGet("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync();
+        return RedirectToAction("Index", "Home");
+    }
+
+    public static string GetMD5(string value)
+    {
+        MD5 md5 = MD5.Create();
+        byte[] md5Bytes = System.Text.Encoding.Default.GetBytes(value);
+        byte[] cryString = md5.ComputeHash(md5Bytes);
+        string md5Str = string.Empty;
+        for (int i = 0; i < cryString.Length; i++)
+        {
+            md5Str += cryString[i].ToString("X");
+        }
+        return md5Str;
     }
 }

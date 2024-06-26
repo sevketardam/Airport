@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Airport.Data
+namespace Airport.Data;
+
+public interface IInsertableAsyncRepo<T> : IRepo<T> where T : class, IEntity
 {
-    public interface IInsertableAsyncRepo<T> : IRepo<T> where T : class, IEntity
-    {
-        Task InsertAsync(T addedData);
-        Task InsertRangeAsync(List<T> addedListData);
-    }
+    Task InsertAsync(T addedData);
+    Task InsertRangeAsync(List<T> addedListData);
 }

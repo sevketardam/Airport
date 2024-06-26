@@ -1,15 +1,8 @@
 ﻿using Airport.DBEntities.Entities;
-using Airport.MessageExtension.VM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Airport.MessageExtensions.Interfaces
+namespace Airport.MessageExtensions.Interfaces;
+
+public interface IMail
 {
-    public interface IMail
-    {
-        void SendReservationMail(Reservations mailVM);
-    }
+    void SendReservationMail(Reservations mailVM);
 }
