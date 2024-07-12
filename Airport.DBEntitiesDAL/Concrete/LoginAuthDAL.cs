@@ -5,7 +5,7 @@ using Airport.EF;
 
 namespace Airport.DBEntitiesDAL.Concrete;
 
-public class LoginAuthDAL : EfRepo<AirportContext, LoginAuth>, ILoginAuthDAL
+public class LoginAuthDAL(AirportContext context) : EfRepo<AirportContext, LoginAuth>(context), ILoginAuthDAL
 {
     public void Dispose()
     {

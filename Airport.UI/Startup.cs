@@ -104,8 +104,8 @@ public class Startup
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-				app.UseHsts();
-			}
+            //app.UseHsts();
+        }
         else
         {
             app.UseExceptionHandler("/error");

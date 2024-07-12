@@ -5,7 +5,8 @@ namespace Airport.DBEntities.Context;
 
 public class AirportContext : DbContext
 {
-    public AirportContext()
+    public AirportContext(DbContextOptions<AirportContext> options)
+        : base(options)
     {
 
     }

@@ -5,7 +5,7 @@ using Airport.EF;
 
 namespace Airport.DBEntitiesDAL.Concrete;
 
-public class LocationsDAL : EfRepo<AirportContext, Locations>, ILocationsDAL
+public class LocationsDAL(AirportContext context) : EfRepo<AirportContext, Locations>(context), ILocationsDAL
 {
     public void Dispose()
     {

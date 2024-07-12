@@ -5,7 +5,7 @@ using Airport.EF;
 
 namespace Airport.DBEntitiesDAL.Concrete;
 
-public class WithdrawalRequestDAL : EfRepo<AirportContext, WithdrawalRequest>, IWithdrawalRequestDAL
+public class WithdrawalRequestDAL(AirportContext context) : EfRepo<AirportContext, WithdrawalRequest>(context), IWithdrawalRequestDAL
 {
     public void Dispose()
     {

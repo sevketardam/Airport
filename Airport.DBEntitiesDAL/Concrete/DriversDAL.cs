@@ -5,7 +5,7 @@ using Airport.EF;
 
 namespace Airport.DBEntitiesDAL.Concrete;
 
-public class DriversDAL : EfRepo<AirportContext, Drivers>, IDriversDAL
+public class DriversDAL(AirportContext context) : EfRepo<AirportContext, Drivers>(context), IDriversDAL
 {
     public void Dispose()
     {

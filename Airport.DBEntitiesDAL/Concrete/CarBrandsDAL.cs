@@ -2,10 +2,11 @@
 using Airport.DBEntities.Entities;
 using Airport.DBEntitiesDAL.Interfaces;
 using Airport.EF;
+using System;
 
 namespace Airport.DBEntitiesDAL.Concrete;
 
-public class CarBrandsDAL : EfRepo<AirportContext, CarBrands>, ICarBrandsDAL
+public class CarBrandsDAL(AirportContext context) : EfRepo<AirportContext, CarBrands>(context), ICarBrandsDAL
 {
     public void Dispose()
     {
